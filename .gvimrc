@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-05 23:04:38 DeaR>
+" @timestamp   <2013-06-08 23:14:50 DeaR>
 
 "=============================================================================
 " Resourcing First: {{{
@@ -68,8 +68,8 @@ let s:is_android = has('unix') &&
 "-----------------------------------------------------------------------------
 " System: {{{
 " GUI options
-set guioptions+=a
 set guioptions+=c
+set guioptions-=a
 set guioptions-=m
 set guioptions-=T
 set guicursor+=i-ci:ver50-Cursor/lCursor

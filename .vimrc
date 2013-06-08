@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-08 21:15:54 DeaR>
+" @timestamp   <2013-06-08 23:22:43 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -22,6 +22,7 @@ if !has('vim_starting')
   set viminfo&
   set backupdir&
   set backupskip&
+  set suffixes&
   set undodir&
   set directory&
   set wildignore&
@@ -1088,6 +1089,7 @@ set backupcopy=yes
 set backupdir^=~/.bak
 set backupskip+=*.clean
 set patchmode=.clean
+set suffixes+=.clean
 
 " Swap
 set swapfile
@@ -1102,7 +1104,7 @@ set undofile
 set undodir^=~/.bak
 
 " ClipBoard
-set clipboard=unnamed,autoselect
+set clipboard=unnamed
 
 " Timeout
 set timeout
