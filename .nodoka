@@ -1,0 +1,433 @@
+# -*- mode: mayu -*-
+
+# @name        .nodoka
+# @description HHKB Professional (dip: 101010)
+#              Realforce101
+# @namespace   http://kuonn.mydns.jp/
+# @author      DeaR
+# @timestamp   <2013-06-03 11:37:19 DeaR>
+
+#-----------------------------------------------------------------------------
+# HHKB Professional: {{{
+if(HHKB)
+  include "104.nodoka"
+
+  def subst S-*Escape    = $TILDE
+  def subst   *LWin      = *Caps
+  def subst   *RWin      = *RCtrl
+  def subst   *Caps      = *Tab
+  def subst   *BackSlash = *BackSpace
+  def subst   *BackSpace = *BackSlash
+  def subst   *BackQuote = *Delete
+  def subst   *Delete    = *BackQuote
+
+  # # for another keyboard (109 key)
+  # def key ひらがな Hiragana = 0x70
+  # def key UnderBackSlash    = 0x73
+  # def key 変換 Convert      = 0x79
+  # def key 無変換 NonConvert = 0x7b
+  # def key YenSign Yen       = 0x7d
+  # def subst  S-K0-*_2             = $QUOTATION_MARK
+  # def subst  S-K0-*_6             = $AMPERSAND
+  # def subst  S-K0-*_7             = $APOSTROPHE
+  # def subst  S-K0-*_8             = $LEFT_PARENTHESIS
+  # def subst  S-K0-*_9             = $RIGHT_PARENTHESIS
+  # def subst  S-K0-*_0             = $LOW_LINE
+  # def subst  S-K0-*Hyphen         = $EQUALS_SIGN
+  # def subst ~S-K0-*Equal          = $CIRCUMFLEX_ACCENT
+  # def subst  S-K0-*Equal          = $TILDE
+  # def subst ~S-K0-*BackSlash      = $RIGHT_SQUARE_BRACKET
+  # def subst  S-K0-*BackSlash      = $RIGHT_CURLY_BRACKET
+  # def subst ~S-K0-*OpenBracket    = $COMMERCIAL_AT
+  # def subst  S-K0-*OpenBracket    = $GRAVE_ACCENT
+  # def subst ~S-K0-*CloseBracket   = $LEFT_SQUARE_BRACKET
+  # def subst  S-K0-*CloseBracket   = $LEFT_CURLY_BRACKET
+  # def subst  S-K0-*Semicolon      = $PLUS_SIGN
+  # def subst ~S-K0-*Quote          = $COLON
+  # def subst  S-K0-*Quote          = $ASTERISK
+  # def subst ~S-K0-*UnderBackSlash = $REVERSE_SOLIDUS
+  # def subst  S-K0-*UnderBackSlash = $LOW_LINE
+  # def subst ~S-K0-*Yen            = $REVERSE_SOLIDUS
+  # def subst  S-K0-*Yen            = $VERTICAL_LINE
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Realforce101: {{{
+if(!HHKB)
+  include ".nodoka.d/104.nodoka"
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Emacs: {{{
+if(USEdefault)
+  include "default.nodoka"
+
+  keyseq $WindowClose = A-F4
+  keyseq $EmacsEditMessage = &HelpMessage("EmacsEdit C-x-", \
+      "C-x b	iswitchb\r\n"                               \
+      "C-x h	mark-whole-buffer\r\n"                      \
+      "C-x k	kill-buffer\r\n"                            \
+      "C-x s	save-all-buffers\r\n"                       \
+      "C-x u	undo\r\n"                                   \
+      "C-x C-f	find-file\r\n"                              \
+      "C-x C-s	save-buffer\r\n"                            \
+      "C-x C-w	write-file\r\n"                             \
+      "C-x C-c	kill-application")
+  keyseq $iswitchb = &Toggle(Lock0 on) &HelpMessage("iswitchb", \
+      "C-m	iswitchb-exit\r\n"                                  \
+      "C-s	iswitchb-next-match\r\n"                            \
+      "C-r	iswitchb-prev-match")
+  keyseq $iswitchb-exit = &Toggle(Lock0 off) &HelpMessage
+
+  keymap GeneralC-X
+   event prefixed = $EmacsEditMessage
+   event before-key-down = &HelpMessage
+   key   B      = C-  Tab $iswitchb # iswitchb
+   key   H      = C-  A             # mark-whole-buffer
+   key   S      = C-S-S             # save-all-buffers
+   key C-C      = $WindowClose      # kill-application
+   key C-G      = &Ignore           # quit
+   key   Escape = &Ignore           # quit
+
+  keymap EmacsEdit
+   mod !Alt
+   key C-Period = C-Y # redo
+   key C-O      = &Default
+   key C-U      = &Default
+
+   key L0-C-S        = C-  Tab                # iswitchb-next-match
+   key L0-  Right    = C-  Tab                # iswitchb-next-match
+   key L0-C-R        = C-S-Tab                # iswitchb-prev-match
+   key L0-  Left     = C-S-Tab                # iswitchb-prev-match
+   key L0-C-M        = $iswitchb-exit         # iswitchb-exit
+   key L0-  Enter    = $iswitchb-exit         # iswitchb-exit
+   key L0-  NumEnter = $iswitchb-exit         # iswitchb-exit
+   key L0-C-G        = C-S-Tab $iswitchb-exit # quit
+   key L0-  Escape   = C-S-Tab $iswitchb-exit # quit
+
+  keymap Global
+   key *IC-C-Yen           = &Default # IME ON/OFF をするキーの指定
+   key C-S-M     C-A-M     = &Default # アプリケーションキー
+   key C-S-L     C-A-L     = &Default # ウィンドウを一番下へ
+   key C-S-R     C-A-R     = &Default # ウィンドウを一番上へ
+   key C-S-Z     C-A-Z     = &Default # ウィンドウの最大化 (IE全画面)
+   key C-S-I     C-A-I     = &Default # ウィンドウの最小化
+   key C-S-X     C-A-X     = &Default # ウィンドウの縦最大化
+   key C-S-C     C-A-C     = &Default # ウィンドウの横最大化
+   key C-S-Left  C-A-Left  = &Default # ウィンドウの移動
+   key C-S-Right C-A-Right = &Default # 〃
+   key C-S-Up    C-A-Up    = &Default # 〃
+   key C-S-Down  C-A-Down  = &Default # 〃
+   key C-S-A-Left          = &Default # 〃
+   key C-S-A-Right         = &Default # 〃
+   key C-S-A-Up            = &Default # 〃
+   key C-S-A-Down          = &Default # 〃
+   key W-Left              = &Default # マウスの移動
+   key W-Right             = &Default # 〃
+   key W-Up                = &Default # 〃
+   key W-Down              = &Default # 〃
+   key W-A-C-Left          = &Default # 〃
+   key W-A-C-Right         = &Default # 〃
+   key W-A-C-Up            = &Default # 〃
+   key W-A-C-Down          = &Default # 〃
+   key C-A-A               = &Default # ウィンドウを左に寄せる
+   key C-A-E               = &Default # ウィンドウを右に寄せる
+   key C-A-P               = &Default # ウィンドウを上に寄せる
+   key C-A-N               = &Default # ウィンドウを下に寄せる
+   key C-A-V               = &Default # ウィンドウを見える位置へ移動
+   # key C-S-K     C-A-K     = &Default # ウィンドウを閉じる
+   key C-S-T               = &Default # 最前面トグル
+   key C-S-D               = &Default # ウィンドウの素性を調べる
+   key C-S-H               = &Default # ウィンドウの半透明化
+   key C-S-A-H             = &Default # 半透明化全て解除
+   key C-S-U               = &Default # ウィンドウの再描画
+   key C-S-S               = &Default # 設定ファイルの読み込み
+   key C-S-F1              = &Default # WM_COMMAND の調査
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# One Shot RAlt Toggle IME: {{{
+keymap Global
+ mod Alt = LAlt !!RAlt
+ key *RAlt = $ToggleIME
+
+keymap RAltIme = &Default
+ mod Alt = LAlt !!RAlt
+ key *RAlt = $ToggleIME
+
+if(USEdefault)
+  keymap EmacsEdit
+   mod Alt = LAlt !!RAlt
+endif
+#}}}
+
+#=============================================================================
+# Application: {{{
+
+#-----------------------------------------------------------------------------
+# Chrome: {{{
+if(USEdefault)
+  keymap2 ChromeC-X : GeneralC-X
+   event prefixed = $EmacsEditMessage
+   event before-key-down = &HelpMessage
+   key   K = C-W # kill-buffer
+   key C-F = C-T # find-file
+
+  window Chrome /chrome\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(ChromeC-X)
+   endif
+   key ~L0-C-S =   F3
+   key ~L0-C-R = S-F3
+   key     A-X =   F6
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Command Prompt: {{{
+if(USEdefault)
+  keyseq $CommandPromptClose = A-Space &Sync C
+
+  window CommandPrompt /^ConsoleWindowClass$/ : Global
+   key C-S-K = $CommandPromptClose # kill-application
+   key C-A-K = $CommandPromptClose # kill-application
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# CraftLaunch: {{{
+keymap Global
+ if(HHKB)
+   mod Win -= RWin
+   mod Ctrl += !!RWin
+   key K1-*RWin = *Pause
+   key K3-*RWin = *Pause
+ endif
+ mod Ctrl += !!RCtrl
+ key *RCtrl = *Pause
+#}}}
+
+#-----------------------------------------------------------------------------
+# Firefox: {{{
+if(USEdefault)
+  keymap2 FirefoxC-X : GeneralC-X
+   event prefixed = $EmacsEditMessage
+   event before-key-down = &HelpMessage
+   key   K = C-W # kill-buffer
+   key C-F = C-T # find-file
+
+  window Firefox /firefox\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(FirefoxC-X)
+   endif
+   key ~L0-C-S =   F3
+   key ~L0-C-R = S-F3
+   key     A-X =   F6
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Janetter: {{{
+if(USEdefault)
+  keymap2 JanetterC-X : GeneralC-X
+   event prefixed = $EmacsEditMessage
+   event before-key-down = &HelpMessage
+   key K = C-W # kill-buffer
+
+  window Janetter /janetter\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(JanetterC-X)
+   endif
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Petaclone: {{{
+if(USEdefault)
+  window Petaclone /petaclone\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(GeneralC-X)
+   endif
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# PGRelief: {{{
+if(USEdefault)
+  window PGRelief /java\.exe.*:PgrJ.*/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(GeneralC-X)
+   endif
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Skype: {{{
+if(USEdefault)
+  window Skype /Skype\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(GeneralC-X)
+   endif
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Visual Basic Express: {{{
+if(USEdefault)
+  keymap2 VBExpressC-X : GeneralC-X
+   event prefixed = $EmacsEditMessage
+   event before-key-down = &HelpMessage
+   key K = A-F C # kill-buffer
+
+  window VBExpress /VBExpress\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(VBExpressC-X)
+   endif
+   key S-A-_5 = C-H # replace-dialog
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Visual C# Express: {{{
+if(USEdefault)
+  keymap2 VCSExpressC-X : GeneralC-X
+   event prefixed = $EmacsEditMessage
+   event before-key-down = &HelpMessage
+   key K = A-F C # kill-buffer
+
+  window VCSExpress /VCSExpress\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(VCSExpressC-X)
+   endif
+   key S-A-_5 = C-H # replace-dialog
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Visual C++ Express: {{{
+if(USEdefault)
+  keymap2 VCExpressC-X : GeneralC-X
+   event prefixed = $EmacsEditMessage
+   event before-key-down = &HelpMessage
+   key K = A-F C # kill-buffer
+
+  window VCExpress /VCExpress\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(VCExpressC-X)
+   endif
+   key S-A-_5 = C-H # replace-dialog
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Visual Studio: {{{
+if(USEdefault)
+  keymap2 VisualStudioC-X : GeneralC-X
+   event prefixed = $EmacsEditMessage
+   event before-key-down = &HelpMessage
+   key K = A-F C # kill-buffer
+
+  window VisualStudio /devenv\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(VisualStudioC-X)
+   endif
+   key S-A-_5 = C-H # replace-dialog
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Windows Live Messenger: {{{
+if(USEdefault)
+  keymap2 MSN_MessengerC-X : GeneralC-X
+   event prefixed = $EmacsEditMessage
+   event before-key-down = &HelpMessage
+   key K = Escape # kill-buffer
+
+  window MSN_Messenger /msnmsgr\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(MSN_MessengerC-X)
+   endif
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# xyzzy: {{{
+window XyzzyOutlineTree2 /xyzzy\.exe.*:#32770:SysTreeView32$/ : RAltIme
+
+if(USEdefault)
+  window XyzzyHH /xyzzy\.exe:HH Parent.*$/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(GeneralC-X)
+   endif
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# 秀丸エディタ: {{{
+if(USEdefault)
+  keyseq $HidemaruClose = A-F &Sync Q
+
+  keymap2 HidemaruC-X : GeneralC-X
+   event prefixed = $EmacsEditMessage
+   event before-key-down = &HelpMessage
+   key   K = $WindowClose   # kill-buffer
+   key C-C = $HidemaruClose # kill-application
+
+  window Hidemaru /hidemaru\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(HidemaruC-X)
+   endif
+   key S-A-_5 = C-R            # replace-dialog
+   key C-S-K  = $HidemaruClose # kill-application
+   key C-A-K  = $HidemaruClose # kill-application
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# 秀丸メール: {{{
+if(USEdefault)
+  window TuruKame /TuruKame\.exe/ : EmacsEdit
+   if(!ZXCV)
+     key C-X = &Prefix(GeneralC-X)
+   endif
+endif
+#}}}
+#}}}
+
+#=============================================================================
+# Game: {{{
+
+#-----------------------------------------------------------------------------
+# Drift City: {{{
+window DriftCity /driftcity\.exe/ : RAltIme
+#}}}
+
+#-----------------------------------------------------------------------------
+# Fantasy Earth Zero: {{{
+window FantasyEarthZero /FEzero_Client\.exe/ : RAltIme
+#}}}
+
+#-----------------------------------------------------------------------------
+# Ragnarok Online: {{{
+window RagnarokOnline /ragexe\.exe/ : RAltIme
+ key A-X = ESC
+#}}}
+
+#-----------------------------------------------------------------------------
+# Seal Online: {{{
+window SealOnline /SO3D\.exe/ : RAltIme
+#}}}
+
+#-----------------------------------------------------------------------------
+# TalesWeaver: {{{
+window TalesWeaver /InphaseNXD\.exe/ : RAltIme
+#}}}
+
+#-----------------------------------------------------------------------------
+# TERA: {{{
+window TERA /TERA_Invoker\.exe/ : RAltIme
+#}}}
+ 

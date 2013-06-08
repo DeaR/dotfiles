@@ -1,0 +1,5 @@
+--langmap=Asm:+.app.inc.mac.src
+--langmap=Basic:+.vb.vbs
+--langmap=Perl:+.cgi
+--langmap=JavaScript:+.jsx.jsf.jsfl
+--regex-javascript=/^[ \t]*(['"]?)([A-Za-z0-9_.]+)\1[ \t]*[:=][ \t]*function[ \t]*\(/\2/I,inner/i

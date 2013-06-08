@@ -1,0 +1,14 @@
+# -*- mode: shell-script; coding: unix -*-
+
+# @name        .vimshrc
+# @description VimShell settings
+# @namespace   http://kuonn.mydns.jp/
+# @author      DeaR
+# @timestamp   <2013-05-18 18:01:59 DeaR>
+
+alias diff='vimdiff'
+alias q='exit'
+alias cls='clear'
+alias ll='ls -alF'
+alias e='vim'
+alias l='less'

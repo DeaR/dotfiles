@@ -1,0 +1,9 @@
+#command
+;f status
+;e examine
+;n next-file
+;p prev-file
+;x index-file
+;t toggle-option t
+;q quit
+;Q quit

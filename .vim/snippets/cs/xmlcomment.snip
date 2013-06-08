@@ -1,0 +1,64 @@
+# -*- coding: unix -*-
+
+# @name        xmlcomment.snip
+# @description XML Documentation Comments
+# @namespace   http://kuonn.mydns.jp/
+# @author      DeaR
+# @timestamp   <2013-05-18 18:03:34 DeaR>
+
+snippet c
+	<c>${1:test}</c>${0}
+snippet code
+	/// <code>
+	/// ${1:content}
+	/// </code>${0}
+snippet example
+	/// <example>
+	/// ${1:description}
+	/// </example>${0}
+snippet exception
+	/// <exception cref="${1:member}">${2:description}</exception>${0}
+snippet include
+	/// <include file="${1:filename}" path="${2:tagpath}[@${3:name}="${4:id}"]">${0}
+snippet list
+	/// <list type="${1:bullet | number | table}">
+	///   <item>
+	///     <description>${2:description}</description>
+	///   </item>
+	/// </list>${0}
+snippet listheader
+	///   <listheader>
+	///     <description>${1:description}</description>
+	///   </listheader>${0}
+snippet item
+	///   <item>
+	///     <description>${1:description}</description>
+	///   </item>${0}
+snippet para
+	<para>${1:description}</para>${0}
+snippet param
+	/// <param name="${1:name}">${2:description}</param>${0}
+snippet paramref
+	<paramref name="${1:name}"/>${0}
+snippet permission
+	/// <permission cref="${1:member}">${1:description}</permission>${0}
+snippet remarks
+	/// <remarks>
+	/// ${1:description}
+	/// </remarks>${0}
+snippet returns
+	/// <returns>${1:description}</returns>${0}
+snippet see
+	<see cref="${1:member}"/>${0}
+snippet seealso
+	/// <seealso cref="${1:member}"/>${0}
+snippet summary
+	/// <summary>
+	/// ${1:description}
+	/// </summary>${0}
+snippet typeparam
+	/// <typeparam name="${1:name}">${2:description}</typeparam>${0}
+snippet typeparamref
+	/// <typeparamref name="${1:name}"/>${0}
+snippet value
+	/// <value>${1:property-description}</value>${0}

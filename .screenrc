@@ -1,0 +1,54 @@
+# -*- mode: shell-script; coding: unix -*-
+
+# @name        .screenrc
+# @description GNU Screen settings
+# @namespace   http://kuonn.mydns.jp/
+# @author      DeaR
+# @timestamp   <2013-06-03 11:37:19 DeaR>
+
+#-----------------------------------------------------------------------------
+# Option: {{{
+altscreen on
+attrcolor b ".I"
+autodetach on
+bell_msg "Bell in window %"
+defbce on
+defscrollback 10000
+escape ^Zz
+msgminwait 1
+msgwait 5
+screen 1
+shell "-${SHELL}"
+shelltitle "$ |${SHELL}"
+startup_message off
+term screen-256color
+vbell off
+#}}}
+
+#-----------------------------------------------------------------------------
+# Termcapinfo: {{{
+termcapinfo xterm* "is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l"
+termcapinfo xterm* "hs:ts=\E]0;:fs=\007:ds=\E]0;\007"
+termcapinfo xterm* "ti@:te@"
+#}}}
+
+#-----------------------------------------------------------------------------
+# Hardstatus And Caption: {{{
+caption splitonly "%{= Kw}%?%F%? %?%h%:%t #%n%?"
+hardstatus alwayslastline "%{= .c}%? %-Lw%?%40L>%{+r} %n %t %{-}%+Lw%-015=%c %d-%M-%y%{-}"
+sorendition "= Kw"
+#}}}
+
+#-----------------------------------------------------------------------------
+# Keybind: {{{
+bind ^c screen 1
+bind ^z
+bind  0 select 10
+bind  :
+bind  ; colon
+bind  R eval "source ~/.screenrc" "echo '.screenrc RELOADED!!'"
+bind  c screen 1
+bind  o focus down
+bind  z
+bind  | split -v
+#}}}

@@ -1,0 +1,35 @@
+#!/bin/sh
+# -*- mode: shell-script; coding: unix -*-
+
+# @name        .lessfilter
+# @description Filter of less
+# @namespace   http://kuonn.mydns.jp/
+# @author      DeaR
+# @timestamp   <2013-05-28 11:31:03 DeaR>
+
+highlight() {
+	if which src-hilite-lesspipe.sh > /dev/null; then
+		src-hilite-lesspipe.sh "$1"
+	elif [ -f "${HOME}/.source-highlight/src-hilite-lesspipe.sh" ]; then
+		${HOME}/.source-highlight/src-hilite-lesspipe.sh "$1"
+	elif [ -f "/usr/local/share/source-highlight/src-hilite-lesspipe.sh" ]; then
+		/usr/local/share/source-highlight/src-hilite-lesspipe.sh "$1"
+	elif [ -f "/usr/share/source-highlight/src-hilite-lesspipe.sh" ]; then
+		/usr/share/source-highlight/src-hilite-lesspipe.sh "$1"
+	elif which source-highlight > /dev/null; then
+		source-highlight --failsafe --infer-lang -f esc --style-file=esc.style -i "$1"
+	else
+		cat "$1"
+	fi
+}
+
+
+if file -Lb "$1" | grep '\btext\b' > /dev/null; then
+	if which nkf > /dev/null; then
+		highlight "$1" | nkf -w
+	else
+		highlight "$1"
+	fi
+	exit 0
+fi
+exit 1

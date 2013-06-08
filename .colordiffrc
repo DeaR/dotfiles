@@ -1,0 +1,15 @@
+# -*- mode: shell-script; coding: unix -*-
+
+# @name        .colordiffrc
+# @description Colordiff settings
+# @namespace   http://kuonn.mydns.jp/
+# @author      DeaR
+# @timestamp   <2013-05-28 11:31:03 DeaR>
+
+banner=no
+color_patches=no
+plain=off
+newtext=green
+oldtext=red
+diffstuff=cyan
+cvsstuff=white

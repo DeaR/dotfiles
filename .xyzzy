@@ -1,0 +1,20 @@
+; -*- mode: lisp -*-
+
+; @name        .xyzzy
+; @description xyzzy settings
+; @namespace   http://kuonn.mydns.jp/
+; @author      DeaR
+; @timestamp   <2013-05-28 11:31:03 DeaR>
+
+;-----------------------------------------------------------------------------
+; .xyzzy.d
+(let ((path (merge-pathnames ".xyzzy.d" (user-homedir-pathname))))
+  (pushnew path *load-path* :test #'string-equal)
+  (directory path :wild '("*.l" "*.lisp") :file-only t :recursive t :absolute t :callback
+             #'(lambda (l)
+                 (let ((lc (merge-pathnames (concat (pathname-name l) ".lc")
+                                            (directory-namestring l))))
+                   (if (and (file-exist-p lc)
+                            (not (file-newer-than-file-p l lc)))
+                       (si:*load-library lc :no-suffix t)
+                     (si:*load-library l :no-suffix t))))))

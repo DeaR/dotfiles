@@ -1,0 +1,15 @@
+# -*- mode: shell-script; coding: unix -*-
+
+# @name        .zshenv.Linux
+# @description Zsh settings
+# @namespace   http://kuonn.mydns.jp/
+# @author      DeaR
+# @timestamp   <2013-06-03 11:52:10 DeaR>
+
+#-----------------------------------------------------------------------------
+# Environment Variable: {{{
+export PATH=".:${HOME}/bin:${PATH}"
+if [ -d "/tmp" ]; then
+	export TMPDIR="/tmp"
+fi
+#}}}

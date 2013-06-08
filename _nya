@@ -1,0 +1,314 @@
+# -*- mode: NYAOS -*-
+
+# @name        _nya
+# @description NYAOS settings
+# @namespace   http://kuonn.mydns.jp/
+# @author      DeaR
+# @timestamp   <2013-06-08 00:26:44 DeaR>
+
+#-----------------------------------------------------------------------------
+# Environment Variable: {{{
+set TZ=JST-09
+set LANG=C
+set TERM=cygwin
+set NYAOS_DIR=%HOME%\_nya.d
+set LOCAL_DIR=%HOME%\.local
+set PATH+=%(nyaos.argv[0]:match("^(.+)[/\\]"))%
+
+if "`which gcc`" != "" then
+	set CC=gcc
+else if "`which cc`" != "" then
+	set CC=cc
+endif
+
+if "`which g++`" != "" then
+	set CXX=g++
+	set CCC=g++
+else if "`which c++`" != "" then
+	set CXX=c++
+	set CCC=c++
+else if "`which gcc`" != "" then
+	set CXX=gcc
+	set CCC=gcc
+else if "`which cc`" != "" then
+	set CXX=cc
+	set CCC=cc
+endif
+
+if "`which xyzzy`" != "" then
+	if "`which xyzzycli`" != "" then
+		set EDITOR=xyzzycli
+	else
+		set EDITOR=xyzzy
+	endif
+	if "`which git`" != "" then
+		set GIT_EDITOR=%EDITOR% -wait
+	endif
+	if "`which hg`" != "" then
+		set HGEDITOR=%EDITOR% -wait
+	endif
+else if "`which vim`" != "" then
+	if "`which gvim`" != "" then
+		set EDITOR=gvim
+	else
+		set EDITOR=vim
+	endif
+else if "`which emacs`" != "" then
+	if "`which emacsclient`" != "" then
+		set EDITOR=emacsclient
+	else
+		set EDITOR=emacs
+	endif
+else if "`which sublime_text`" != "" then
+	set EDITOR=sublime_text
+endif
+
+if "`which less`" != "" then
+	set PAGER=less
+else if "`which lv`" != "" then
+	set PAGER=lv
+else if "`which more`" != "" then
+	set PAGER=more
+endif
+
+if "`which less`" != "" then
+	set LESS=-r
+	set LESSCHARSET=utf-8
+	set LESSHISTFILE=%LOCAL_DIR%\.lesshst
+	if "`which lesspipe`" != "" then
+		lua_e "nyaos.putenv('LESSOPEN', '| lesspipe %s')"
+		lua_e "nyaos.putenv('LESSCLOSE', 'lesspipe %s %s')"
+	else if "`which lesspipe.sh`" != "" then
+		lua_e "nyaos.putenv('LESSOPEN', '| lesspipe.sh %s')"
+		lua_e "nyaos.putenv('LESSCLOSE', 'lesspipe.sh %s %s')"
+	endif
+endif
+if "`which lv`" != "" then
+	set LV=-Ia -Ow -c -l
+endif
+if "%(os.getenv('PAGER') and nyaos.eval('which nkf'))%" != "" then
+	if "`which git`" != "" then
+		lua_e "nyaos.putenv('GIT_PAGER', 'nkf -w | %PAGER%')"
+	endif
+	if "`which hg`" != "" then
+		lua_e "nyaos.putenv('HGPAGER', 'nkf -w | %PAGER%')"
+	endif
+endif
+
+if "`which hg`" != "" then
+	set HGENCODING=utf-8
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Option: {{{
+option +backquote
+option +glob
+option  histfilesize 100000
+option +history
+option  ls_colors fi=0:di=34;1:sy=36;1:ro=31;1:hi=33;1:ex=32;1:ec=0
+option +nullcomplete
+option  savehist %LOCAL_DIR%\_nya_history
+option  sudo sudo
+option +tilde
+#}}}
+
+#-----------------------------------------------------------------------------
+# autocd: {{{
+source %NYAOS_DIR%\auto_cd.lua
+#}}}
+
+#-----------------------------------------------------------------------------
+# Bind Key: {{{
+bindkey CTRL_Z none
+#}}}
+
+#-----------------------------------------------------------------------------
+# Prompt: {{{
+source %NYAOS_DIR%\nyaos_bash.lua
+source %NYAOS_DIR%\lastcmd_title.lua
+lua_e "function nyaos.prompt(p)
+  set_lastcmd_title('ckw[NYAOS]')
+  _z('--add', nyaos.currentdir())
+  return nyaos_bash(nyaos.currentdir())
+end
+set_lastcmd_ignore('sudo')"
+#}}}
+
+#-----------------------------------------------------------------------------
+# Completion: {{{
+source %NYAOS_DIR%\complete_by\complete_by.lua
+#}}}
+
+#-----------------------------------------------------------------------------
+# Z: {{{
+set _Z_CMD=j
+set _Z_DATA=%LOCAL_DIR%\_z
+set _Z_NO_PROMPT_COMMAND=1
+# set _Z_EXCLUDE_DIRS=C:\;D:\;E:\
+# set _Z_NO_COMPLETE=1
+# set _Z_TAB=CTRL_T;CTRL_A
+# set _Z_BACKSPACE=CTRL_H
+source %NYAOS_DIR%\z\z.lua
+#}}}
+
+#-----------------------------------------------------------------------------
+# Less Tailf: {{{
+source %NYAOS_DIR%\ltail.lua
+#}}}
+
+#-----------------------------------------------------------------------------
+# Abbreviations: {{{
+set _ABBREV_EXPAND=TAB;CTRL_I
+set _ABBREV_EXPAND_INSERT=SPACE;RETURN;CTRL_M
+set _ABBREV_NO_EXPAND=CTRL_X
+# set _ABBREV_BACKSPACE=CTRL_H
+source %NYAOS_DIR%\abbreviations\abbreviations.lua
+if %PAGER.defined% -ne 0 then
+	abbrev L "| %PAGER%"
+endif
+if "`which head`" != "" then
+	abbrev H "| head"
+endif
+if "`which ltail`" != "" then
+	abbrev T "| ltail"
+else if "`which tailf`" != "" then
+	abbrev T "| tailf"
+else if "`which tail`" != "" then
+	abbrev T "| tail"
+endif
+if "`which grep`" != "" then
+	abbrev G "| grep"
+endif
+if "`which sort`" != "" then
+	abbrev S "| sort"
+endif
+if "`which nkf`" != "" then
+	abbrev N "| nkf -s"
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Alias (Color): {{{
+alias ls ls --color
+if "`which colordiff`" != "" then
+	alias diff colordiff
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Alias (Shorty): {{{
+alias q exit
+alias clear cls
+alias ll ls -al --color
+if "`which grep`" != "" then
+	alias lld "ls -al --color | grep ""/$"""
+	alias llf "ls -al --color | grep -v ""/$"""
+	alias lle "ls -al --color | grep ""\*$"""
+	alias lls "ls -al --color | grep ""\->"""
+endif
+if %EDITOR.defined% -ne 0 then
+	alias e "%EDITOR%"
+endif
+if %PAGER.defined% -ne 0 then
+	alias l "%PAGER%"
+endif
+if "`which head`" != "" then
+	alias h head
+endif
+if "`which ltail`" != "" then
+	alias t ltail
+else if "`which tailf`" != "" then
+	alias t tailf
+else if "`which tail`" != "" then
+	alias t tail -f
+endif
+if "`which vim`" != "" then
+	if "`which gvim-dw64`" != "" then
+		alias vi gvim-dw64
+	else if "`which gvim-dw32`" != "" then
+		alias vi gvim-dw32
+	else if "`which gvim`" != "" then
+		alias vi gvim
+	else
+		alias vi vim
+	endif
+endif
+if %HGPAGER.defined% -ne 0 then
+	alias hg "hg --config pager.pager=""%HGPAGER%"""
+endif
+if "`which gmake`" != "" then
+	alias make gmake
+else if "`which mingw32-make`" != "" then
+	alias make mingw32-make
+endif
+if exist "%GIT_HOME%\bin\find.exe" then
+	alias find ""%GIT_HOME%\bin\find.exe""
+endif
+if exist "%GIT_HOME%\bin\sort.exe" then
+	alias sort ""%GIT_HOME%\bin\sort.exe""
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Global Alias: {{{
+source %NYAOS_DIR%\galias\galias.lua
+#}}}
+
+#-----------------------------------------------------------------------------
+# Suffix: {{{
+suffix htm  open
+suffix html open
+suffix msi  open
+if "`which sh`" != "" then
+	suffix sh sh
+endif
+if "`which bash`" != "" then
+	suffix bash bash
+endif
+if "`which zsh`" != "" then
+	suffix zsh zsh
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Shebang: {{{
+source %NYAOS_DIR%\shebang\shebang.lua
+if %GIT_HOME.defined% -ne 0 then
+	shebang /bin/           "%GIT_HOME%\bin\"
+	shebang /usr/bin/       "%GIT_HOME%\bin\"
+	shebang /usr/local/bin/ "%GIT_HOME%\bin\"
+endif
+if exist "%PYTHON_HOME%\python.exe" then
+	shebang /usr/bin/python       "%PYTHON_HOME%\python.exe"
+	shebang /usr/local/bin/python "%PYTHON_HOME%\python.exe"
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Other Sources: {{{
+source %NYAOS_DIR%\android_ndk.ny
+source %NYAOS_DIR%\vcvars.lua
+#}}}
+
+#-----------------------------------------------------------------------------
+# Source By ComputerName, UserName: {{{
+if exist "%NYAOS_DIR%\_nya.%COMPUTERNAME%" then
+	source %NYAOS_DIR%\_nya.%COMPUTERNAME%
+endif
+if %PROCESSOR_ARCHITEW6432.defined% -ne 0 then
+	if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%" then
+		source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%
+	endif
+else
+	if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%" then
+		source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%
+	endif
+endif
+if exist "%NYAOS_DIR%\_nya.%USERNAME%" then
+	source %NYAOS_DIR%\_nya.%USERNAME%
+endif
+if exist "%LOCAL_DIR%\_nya.local" then
+	source %LOCAL_DIR%\_nya.local
+endif
+#}}}

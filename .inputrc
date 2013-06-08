@@ -1,0 +1,10 @@
+# -*- mode: shell-script; coding: unix -*-
+
+# @name        .inputrc
+# @description Shell input settings
+# @namespace   http://kuonn.mydns.jp/
+# @author      DeaR
+# @timestamp   <2013-05-29 15:20:29 DeaR>
+
+set completion-ignore-case on
+set bell-style none
