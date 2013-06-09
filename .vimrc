@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-08 23:22:43 DeaR>
+" @timestamp   <2013-06-09 13:54:25 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -361,7 +361,7 @@ if isdirectory(expand('~/.local/bundle/neobundle.vim'))
     \ 'NeoBundleReinstall' : 'neobundle#complete_bundles'})
 
   if has('lua') && s:has_patch(703, 885)
-    NeoBundleLazy 'Shougo/neocomplete', {
+    NeoBundleLazy 'Shougo/neocomplete.vim', {
       \ 'autoload' : {
       \   'unite_sources' : ['file_include', 'neocomplete'],
       \   'insert' : 1},
@@ -370,12 +370,12 @@ if isdirectory(expand('~/.local/bundle/neobundle.vim'))
       \   'Shougo/echodoc',
       \   'hrsh7th/vim-neco-calc',
       \   'ujihisa/neco-look',
-      \   'Shougo/neosnippet']}
+      \   'Shougo/neosnippet.vim']}
     call extend(s:neocompl_vim_completefuncs, {
       \ 'NeoComplCacheCachingDictionary' : 'neocomplete#filetype_complete',
       \ 'NeoComplCacheCachingSyntax'     : 'neocomplete#filetype_complete'})
   else
-    NeoBundleLazy 'Shougo/neocomplcache', {
+    NeoBundleLazy 'Shougo/neocomplcache.vim', {
       \ 'autoload' : {
       \   'unite_sources' : ['file_include', 'neocomplcache'],
       \   'insert' : 1},
@@ -383,13 +383,13 @@ if isdirectory(expand('~/.local/bundle/neobundle.vim'))
       \   'Shougo/echodoc',
       \   'hrsh7th/vim-neco-calc',
       \   'ujihisa/neco-look',
-      \   'Shougo/neosnippet']}
+      \   'Shougo/neosnippet.vim']}
     call extend(s:neocompl_vim_completefuncs, {
       \ 'NeoComplCacheCachingDictionary' : 'neocomplcache#filetype_complete',
       \ 'NeoComplCacheCachingSyntax'     : 'neocomplcache#filetype_complete'})
   endif
 
-  NeoBundleLazy 'Shougo/neosnippet', {
+  NeoBundleLazy 'Shougo/neosnippet.vim', {
     \ 'autoload' : {
     \   'filetypes' : 'snippet',
     \   'mappings' : [
@@ -866,7 +866,7 @@ if isdirectory(expand('~/.local/bundle/neobundle.vim'))
       \ 'autoload' : {'filetypes' : 'help'}}
   endif
 
-  NeoBundleLazy 'Shougo/vimfiler', {
+  NeoBundleLazy 'Shougo/vimfiler.vim', {
     \ 'autoload' : {
     \   'commands' : [
     \     {'name' : 'VimFiler',
@@ -915,7 +915,7 @@ if isdirectory(expand('~/.local/bundle/neobundle.vim'))
     \ 'Source'             : 'vimfiler#complete',
     \ 'Write'              : 'vimfiler#complete'})
 
-  NeoBundle 'Shougo/vimproc', {
+  NeoBundle 'Shougo/vimproc.vim', {
     \ 'build' : {
     \   'windows' : join([
     \     $VCVARSALL, $PROCESSOR_ARCHITECTURE, '&',
@@ -924,7 +924,7 @@ if isdirectory(expand('~/.local/bundle/neobundle.vim'))
     \   'mac'     : 'make -f make_mac.mak',
     \   'unix'    : 'make -f make_unix.mak'}}
 
-  NeoBundleLazy 'Shougo/vimshell', {
+  NeoBundleLazy 'Shougo/vimshell.vim', {
     \ 'autoload' : {
     \   'filetypes' : 'vimshrc',
     \   'commands' : [
@@ -961,7 +961,7 @@ if isdirectory(expand('~/.local/bundle/neobundle.vim'))
     \ 'VimShellTerminal'    : 'vimshell#vimshell_execute_complete'})
 
   if has('python') || has('python3')
-    NeoBundleLazy 'Shougo/vinarise', {
+    NeoBundleLazy 'Shougo/vinarise.vim', {
       \ 'autoload' : {
       \   'commands' : [
       \     {'name' : 'Vinarise',
@@ -2639,7 +2639,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " NeoComplCache: {{{
-silent! let s:bundle = neobundle#get('neocomplcache')
+silent! let s:bundle = neobundle#get('neocomplcache.vim')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:neocomplcache_enable_at_startup            = 1
@@ -2735,7 +2735,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " NeoComplete: {{{
-silent! let s:bundle = neobundle#get('neocomplete')
+silent! let s:bundle = neobundle#get('neocomplete.vim')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#enable_at_startup            = 1
@@ -2830,7 +2830,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " NeoSnippet: {{{
-silent! let s:bundle = neobundle#get('neosnippet')
+silent! let s:bundle = neobundle#get('neosnippet.vim')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:neosnippet#snippets_directory = expand('~/.vim/snippets')
@@ -4059,7 +4059,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " VimFiler: {{{
-silent! let s:bundle = neobundle#get('vimfiler')
+silent! let s:bundle = neobundle#get('vimfiler.vim')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:vimfiler_data_directory      = expand('~/.local/.vimfiler')
@@ -4075,7 +4075,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " VimProc: {{{
-silent! let s:bundle = neobundle#get('vimproc')
+silent! let s:bundle = neobundle#get('vimproc.vim')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     if s:is_android
@@ -4088,7 +4088,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " VimShell: {{{
-silent! let s:bundle = neobundle#get('vimshell')
+silent! let s:bundle = neobundle#get('vimshell.vim')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:vimshell_temporary_directory      = expand('~/.local/.vimshell')
