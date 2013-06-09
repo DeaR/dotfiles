@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-09 13:54:25 DeaR>
+" @timestamp   <2013-06-09 13:55:10 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2627,12 +2627,6 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   command! -bar -complete=customlist,neobundle#complete_bundles -nargs=?
     \ NeoBundleGitGc
     \ :call s:neobundle_git_gc(<q-args>)
-
-  function! NeoBundle_IsEnabled(name)
-    if exists(':NeoBundle')
-      return 0
-    return s:is_bundle_enabled(neobundle#get(a:name))
-  endfunction
 endif
 unlet! s:bundle
 "}}}
