@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-09 14:38:54 DeaR>
+" @timestamp   <2013-06-10 13:44:34 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -65,8 +65,8 @@ set runtimepath+=~/.local/after
 
 " Singleton
 if has('clientserver') &&
-  \ isdirectory(expand('~/.local/bundle/vim-singleton'))
-  set runtimepath^=~/.local/bundle/vim-singleton
+  \ isdirectory(expand('~/.local/bundle/singleton'))
+  set runtimepath^=~/.local/bundle/singleton
   call singleton#enable()
 endif
 
@@ -176,14 +176,14 @@ endif
 
 "-----------------------------------------------------------------------------
 " NeoBundle: {{{
-if isdirectory(expand('~/.local/bundle/neobundle.vim'))
-  set runtimepath+=~/.local/bundle/neobundle.vim
-  call neobundle#rc(expand('~/.local/bundle'))
-
+if isdirectory(expand('~/.local/bundle/neobundle'))
+  let g:neobundle#enable_name_conversion = 1
   if s:is_android
     let g:neobundle#types#git#default_protocol = 'ssh'
     let g:neobundle#types#hg#default_protocol  = 'ssh'
   endif
+  set runtimepath+=~/.local/bundle/neobundle
+  call neobundle#rc(expand('~/.local/bundle'))
 
   NeoBundleLazy 'h1mesuke/vim-alignta', {
     \ 'autoload' : {
@@ -203,7 +203,7 @@ if isdirectory(expand('~/.local/bundle/neobundle.vim'))
     \     ['nvoi', '<Plug>(altr-forward)'], ['nvoi', '<Plug>(altr-back)']]}}
 
   NeoBundleLazy 'gist:iori-yja/1615430', {
-    \ 'name' : 'arm.vim',
+    \ 'name' : 'arm',
     \ 'autoload' : {'filetypes' : 'arm'},
     \ 'script_type' : 'syntax'}
 
@@ -266,7 +266,7 @@ if isdirectory(expand('~/.local/bundle/neobundle.vim'))
     \ 'autoload' : {'filetypes' : 'vim'}}
 
   NeoBundleLazy 'gist:mattn/5457352', {
-    \ 'name' : 'ginger.vim',
+    \ 'name' : 'ginger',
     \ 'autoload' : {'commands' : 'Ginger'},
     \ 'script_type' : 'plugin',
     \ 'depends' : 'mattn/webapi-vim'}
@@ -317,19 +317,19 @@ if isdirectory(expand('~/.local/bundle/neobundle.vim'))
   NeoBundle 'thinca/vim-localrc'
 
   NeoBundleLazy 'https://raw.github.com/januswel/dotfiles/master/vimfiles/syntax/mayu.vim', {
-    \ 'name' : 'mayu.vim',
+    \ 'name' : 'mayu',
     \ 'autoload' : {'filetypes' : 'mayu'},
     \ 'script_type' : 'syntax'}
 
   if has('unix') && !has('gui_running')
     NeoBundle 'gist:DeaR/5560785', {
-      \ 'name' : 'map-alt-keys.vim',
+      \ 'name' : 'map-alt-keys',
       \ 'script_type' : 'plugin',
       \ 'terminal' : 1}
   endif
 
   NeoBundleLazy 'gist:DeaR/5558981', {
-    \ 'name' : 'maplist.vim',
+    \ 'name' : 'maplist',
     \ 'autoload' : {
     \   'commands' : [
     \     'MapList',  'NMapList', 'VMapList', 'OMapList', 'XMapList',
@@ -2254,7 +2254,7 @@ filetype plugin indent on
 
 "-----------------------------------------------------------------------------
 " AlterCommand: {{{
-silent! let s:bundle = neobundle#get('vim-altercmd')
+silent! let s:bundle = neobundle#get('altercmd')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     call altercmd#load()
@@ -2270,7 +2270,7 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   endfunction
 
   function! s:cmdline_enter_functions[':'].AlterCommand()
-    NeoBundleSource vim-altercmd
+    NeoBundleSource altercmd
   endfunction
 endif
 unlet! s:bundle
@@ -2278,7 +2278,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Altr: {{{
-silent! let s:bundle = neobundle#get('vim-altr')
+silent! let s:bundle = neobundle#get('altr')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   nmap <F2>  <Plug>(altr-forward)
   nmap g<F2> <Plug>(altr-back)
@@ -2288,7 +2288,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " AutoDate: {{{
-silent! let s:bundle = neobundle#get('autodate.vim')
+silent! let s:bundle = neobundle#get('autodate')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:autodate_lines        = 10
@@ -2300,7 +2300,7 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   endfunction
 
   autocmd MyVimrc BufUnload,FileWritePre,BufWritePre *
-    \ NeoBundleSource autodate.vim
+    \ NeoBundleSource autodate
 endif
 unlet! s:bundle
 "}}}
@@ -2417,7 +2417,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Clever F: {{{
-silent! let s:bundle = neobundle#get('clever-f.vim')
+silent! let s:bundle = neobundle#get('clever-f')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:clever_f_not_overwrites_standard_mappings = 1
@@ -2454,7 +2454,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Fold Balloon: {{{
-silent! let s:bundle = neobundle#get('foldballoon.vim')
+silent! let s:bundle = neobundle#get('foldballoon')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   set ballooneval
   set balloonexpr=foldballoon#balloonexpr()
@@ -2475,7 +2475,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Grex: {{{
-silent! let s:bundle = neobundle#get('vim-grex')
+silent! let s:bundle = neobundle#get('grex')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   NXmap sd <Plug>(operator-grex-delete)
   NXmap sy <Plug>(operator-grex-yank)
@@ -2485,7 +2485,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " GUndo: {{{
-silent! let s:bundle = neobundle#get('gundo.vim')
+silent! let s:bundle = neobundle#get('gundo')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     if has('python3')
@@ -2537,7 +2537,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Jedi: {{{
-silent! let s:bundle = neobundle#get('jedi-vim')
+silent! let s:bundle = neobundle#get('jedi')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:jedi#auto_initialization    = 0
@@ -2554,7 +2554,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " JsComplete: {{{
-silent! let s:bundle = neobundle#get('jscomplete-vim')
+silent! let s:bundle = neobundle#get('jscomplete')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:jscomplete_use = ['dom', 'moz', 'xpcom', 'es6th']
@@ -2565,7 +2565,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Kwbdi: {{{
-silent! let s:bundle = neobundle#get('kwbdi.vim')
+silent! let s:bundle = neobundle#get('kwbdi')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   nmap ;c <Plug>Kwbd
 endif
@@ -2574,7 +2574,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " MapList: {{{
-silent! let s:bundle = neobundle#get('maplist.vim')
+silent! let s:bundle = neobundle#get('maplist')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:maplist_mode_length  = 4
@@ -2587,7 +2587,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Narrow: {{{
-silent! let s:bundle = neobundle#get('vim-narrow')
+silent! let s:bundle = neobundle#get('narrow')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   xnoremap <Leader>n :Narrow<CR>
   nnoremap <Leader>w :Widen<CR>
@@ -2597,7 +2597,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " NeoBundle: {{{
-silent! let s:bundle = neobundle#get('neobundle.vim')
+silent! let s:bundle = neobundle#get('neobundle')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:neobundle_git_gc(names)
     let names   = split(a:names)
@@ -2636,7 +2636,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " NeoComplCache: {{{
-silent! let s:bundle = neobundle#get('neocomplcache.vim')
+silent! let s:bundle = neobundle#get('neocomplcache')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:neocomplcache_enable_at_startup            = 1
@@ -2732,7 +2732,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " NeoComplete: {{{
-silent! let s:bundle = neobundle#get('neocomplete.vim')
+silent! let s:bundle = neobundle#get('neocomplete')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#enable_at_startup            = 1
@@ -2827,7 +2827,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " NeoSnippet: {{{
-silent! let s:bundle = neobundle#get('neosnippet.vim')
+silent! let s:bundle = neobundle#get('neosnippet')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:neosnippet#snippets_directory = expand('~/.vim/snippets')
@@ -2864,7 +2864,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Operator Camelize: {{{
-silent! let s:bundle = neobundle#get('operator-camelize.vim')
+silent! let s:bundle = neobundle#get('operator-camelize')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   NXmap sc <Plug>(operator-camelize)
   NXmap sC <Plug>(operator-decamelize)
@@ -2874,7 +2874,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Operator HTML escape: {{{
-silent! let s:bundle = neobundle#get('operator-html-escape.vim')
+silent! let s:bundle = neobundle#get('operator-html-escape')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   NXmap sh <Plug>(operator-html-escape)
   NXmap sH <Plug>(operator-html-unescape)
@@ -2884,7 +2884,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Operator Replace: {{{
-silent! let s:bundle = neobundle#get('vim-operator-replace')
+silent! let s:bundle = neobundle#get('operator-replace')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   NXmap ss <Plug>(operator-replace)
 endif
@@ -2893,7 +2893,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Operator Sort: {{{
-silent! let s:bundle = neobundle#get('vim-operator-sort')
+silent! let s:bundle = neobundle#get('operator-sort')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   NXmap sS <Plug>(operator-sort)
 endif
@@ -2912,7 +2912,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " PerlOmni: {{{
-silent! let s:bundle = neobundle#get('perlomni.vim')
+silent! let s:bundle = neobundle#get('perlomni')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     if has('win32') || has('win64')
@@ -2930,7 +2930,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " PHP Complete: {{{
-silent! let s:bundle = neobundle#get('phpcomplete.vim')
+silent! let s:bundle = neobundle#get('phpcomplete')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   call extend(s:neocompl_force_omni_patterns, {
     \ 'php' : '[^.[:digit:] *\t]->\|\h\w*::'})
@@ -2940,7 +2940,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Precious: {{{
-silent! let s:bundle = neobundle#get('vim-precious')
+silent! let s:bundle = neobundle#get('precious')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_precious_no_default_key_mappings = 1
@@ -2949,7 +2949,7 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   OXmap iC <Plug>(textobj-precious-i)
 
   autocmd MyVimrc FileType *
-    \ NeoBundleSource vim-precious
+    \ NeoBundleSource precious
 endif
 unlet! s:bundle
 "}}}
@@ -2994,7 +2994,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " QuickRun: {{{
-silent! let s:bundle = neobundle#get('vim-quickrun')
+silent! let s:bundle = neobundle#get('quickrun')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:quickrun_no_default_key_mappings = 1
@@ -3103,7 +3103,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Ref: {{{
-silent! let s:bundle = neobundle#get('vim-ref')
+silent! let s:bundle = neobundle#get('ref')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:ref_no_default_key_mappings = 1
@@ -3117,7 +3117,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Ruby: {{{
-silent! let s:bundle = neobundle#get('vim-ruby')
+silent! let s:bundle = neobundle#get('ruby')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   call extend(s:neocompl_force_omni_patterns, {
     \ 'ruby' : '[^.[:digit:] *\t]\.\|\h\w*::'})
@@ -3127,7 +3127,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " SaveVers: {{{
-silent! let s:bundle = neobundle#get('savevers.vim')
+silent! let s:bundle = neobundle#get('savevers')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:savevers_max          = 99
@@ -3140,14 +3140,14 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   nnoremap <F11> :<C-U>VersDiff +<CR>
 
   autocmd MyVimrc BufNewFile,BufRead *
-    \ NeoBundleSource savevers.vim
+    \ NeoBundleSource savevers
 endif
 unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
 " SmartChr: {{{
-silent! let s:bundle = neobundle#get('vim-smartchr')
+silent! let s:bundle = neobundle#get('smartchr')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:cmdwin_enter_functions['*'].SmartChr()
     silent! iunmap <buffer> =
@@ -3175,7 +3175,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " SmartWord: {{{
-silent! let s:bundle = neobundle#get('vim-smartword')
+silent! let s:bundle = neobundle#get('smartword')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   NOXmap w  <Plug>(smartword-w)
   NOXmap b  <Plug>(smartword-b)
@@ -3201,7 +3201,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Surround: {{{
-silent! let s:bundle = neobundle#get('vim-surround')
+silent! let s:bundle = neobundle#get('surround')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:surround_no_mappings = 1
@@ -3224,7 +3224,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Switch: {{{
-silent! let s:bundle = neobundle#get('switch.vim')
+silent! let s:bundle = neobundle#get('switch')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:switch_no_builtins        = 1
@@ -3327,7 +3327,7 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   endfunction
 
   function! s:switch(direction)
-    NeoBundleSource switch.vim
+    NeoBundleSource switch
 
     let definitions = []
     if !exists('g:switch_no_builtins')
@@ -3406,7 +3406,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextManipilation: {{{
-silent! let s:bundle = neobundle#get('vim-textmanip')
+silent! let s:bundle = neobundle#get('textmanip')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   NXmap <M-p> <Plug>(textmanip-duplicate-down)
   NXmap <M-P> <Plug>(textmanip-duplicate-up)
@@ -3420,7 +3420,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Between: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-between')
+silent! let s:bundle = neobundle#get('textobj-between')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_between_no_default_key_mappings = 1
@@ -3434,7 +3434,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Comment: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-comment')
+silent! let s:bundle = neobundle#get('textobj-comment')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_comment_no_default_key_mappings = 1
@@ -3448,7 +3448,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Continuous Line: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-continuous-line')
+silent! let s:bundle = neobundle#get('textobj-continuous-line')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_continuous_line_no_default_key_mappings = 1
@@ -3460,7 +3460,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj DateTime: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-datetime')
+silent! let s:bundle = neobundle#get('textobj-datetime')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_datetime_no_default_key_mappings = 1
@@ -3485,7 +3485,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Diff: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-diff')
+silent! let s:bundle = neobundle#get('textobj-diff')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_diff_no_default_key_mappings = 1
@@ -3516,7 +3516,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Entrie: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-entire')
+silent! let s:bundle = neobundle#get('textobj-entire')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_entire_no_default_key_mappings = 1
@@ -3530,7 +3530,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Fold: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-fold')
+silent! let s:bundle = neobundle#get('textobj-fold')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_fold_no_default_key_mappings = 1
@@ -3544,7 +3544,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Function: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-function')
+silent! let s:bundle = neobundle#get('textobj-function')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_function_no_default_key_mappings = 1
@@ -3555,7 +3555,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Ifdef: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-ifdef')
+silent! let s:bundle = neobundle#get('textobj-ifdef')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_ifdef_no_default_key_mappings = 1
@@ -3566,7 +3566,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj IndBlock: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-indblock')
+silent! let s:bundle = neobundle#get('textobj-indblock')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_indblock_no_default_key_mappings = 1
@@ -3582,7 +3582,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Indent: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-indent')
+silent! let s:bundle = neobundle#get('textobj-indent')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_indent_no_default_key_mappings = 1
@@ -3598,7 +3598,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj JaBraces: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-jabraces')
+silent! let s:bundle = neobundle#get('textobj-jabraces')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_jabraces_no_default_key_mappings = 1
@@ -3651,7 +3651,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj LastInserted: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-lastinserted')
+silent! let s:bundle = neobundle#get('textobj-lastinserted')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_lastinserted_no_default_key_mappings = 1
@@ -3665,7 +3665,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj LastPat: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-lastpat')
+silent! let s:bundle = neobundle#get('textobj-lastpat')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_lastpat_no_default_key_mappings = 1
@@ -3681,7 +3681,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Line: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-line')
+silent! let s:bundle = neobundle#get('textobj-line')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_line_no_default_key_mappings = 1
@@ -3695,7 +3695,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Parameter: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-parameter')
+silent! let s:bundle = neobundle#get('textobj-parameter')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_parameter_no_default_key_mappings = 1
@@ -3709,7 +3709,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj PHP: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-php')
+silent! let s:bundle = neobundle#get('textobj-php')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_php_no_default_key_mappings = 1
@@ -3720,7 +3720,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Python: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-python')
+silent! let s:bundle = neobundle#get('textobj-python')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_python_no_default_key_mappings = 1
@@ -3731,7 +3731,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj RubyBlock: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-rubyblock')
+silent! let s:bundle = neobundle#get('textobj-rubyblock')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_rubyblock_no_default_key_mappings = 1
@@ -3742,7 +3742,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Sigil: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-sigil')
+silent! let s:bundle = neobundle#get('textobj-sigil')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_sigil_no_default_key_mappings = 1
@@ -3753,7 +3753,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Space: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-space')
+silent! let s:bundle = neobundle#get('textobj-space')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_space_no_default_key_mappings = 1
@@ -3767,7 +3767,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Syntax: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-syntax')
+silent! let s:bundle = neobundle#get('textobj-syntax')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_syntax_no_default_key_mappings = 1
@@ -3781,7 +3781,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Underscore: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-underscore')
+silent! let s:bundle = neobundle#get('textobj-underscore')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_underscore_no_default_key_mappings = 1
@@ -3795,7 +3795,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TextObj Url: {{{
-silent! let s:bundle = neobundle#get('vim-textobj-url')
+silent! let s:bundle = neobundle#get('textobj-url')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_url_no_default_key_mappings = 1
@@ -3809,7 +3809,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Unite: {{{
-silent! let s:bundle = neobundle#get('unite.vim')
+silent! let s:bundle = neobundle#get('unite')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:unite_data_directory             = expand('~/.local/.unite')
@@ -4037,10 +4037,10 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " VerifyEnc: {{{
-silent! let s:bundle = neobundle#get('verifyenc-vim')
+silent! let s:bundle = neobundle#get('verifyenc')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   autocmd MyVimrc BufReadPre *
-    \ NeoBundleSource verifyenc-vim
+    \ NeoBundleSource verifyenc
 endif
 unlet! s:bundle
 "}}}
@@ -4056,7 +4056,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " VimFiler: {{{
-silent! let s:bundle = neobundle#get('vimfiler.vim')
+silent! let s:bundle = neobundle#get('vimfiler')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:vimfiler_data_directory      = expand('~/.local/.vimfiler')
@@ -4072,7 +4072,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " VimProc: {{{
-silent! let s:bundle = neobundle#get('vimproc.vim')
+silent! let s:bundle = neobundle#get('vimproc')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     if s:is_android
@@ -4085,7 +4085,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " VimShell: {{{
-silent! let s:bundle = neobundle#get('vimshell.vim')
+silent! let s:bundle = neobundle#get('vimshell')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:vimshell_temporary_directory      = expand('~/.local/.vimshell')
@@ -4139,7 +4139,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " VisualStar: {{{
-silent! let s:bundle = neobundle#get('vim-visualstar')
+silent! let s:bundle = neobundle#get('visualstar')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:visualstar_no_default_key_mappings = 1
@@ -4163,7 +4163,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " ZenCoding: {{{
-silent! let s:bundle = neobundle#get('zencoding-vim')
+silent! let s:bundle = neobundle#get('zencoding')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:user_zen_settings   = {
