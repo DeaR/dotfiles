@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-10 13:51:33 DeaR>
+" @timestamp   <2013-06-10 14:17:00 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -37,11 +37,6 @@ if !has('vim_starting')
   if filereadable($VIM . '/vimrc')
     source $VIM/vimrc
   endif
-endif
-
-" NFA engine
-if exists('&regexpengine')
-  set regexpengine=1
 endif
 
 " Encoding
