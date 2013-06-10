@@ -4,7 +4,7 @@
 " @description Unite ftplugin for Unite
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-07 22:30:44 DeaR>
+" @timestamp   <2013-06-10 22:11:28 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -14,18 +14,13 @@ function! s:check_back_space()
   return !col || getline('.')[col - 1] =~ '\s'
 endfunction
 
-inoremap <buffer><expr> <Tab>
-  \  pumvisible() ?
-  \   '<C-N>' :
-  \   <SID>check_back_space() ?
-  \     '<Tab>' :
-  \     neocomplcache#start_manual_complete()
-inoremap <buffer><expr> <S-Tab>
-  \  pumvisible() ?
-  \   '<C-P>' :
-  \   <SID>check_back_space() ?
-  \     '<S-Tab>' :
-  \     neocomplcache#start_manual_complete()
+silent! iunmap <buffer> <Tab>
+silent! iunmap <buffer> <S-Tab>
+silent! iunmap <buffer> <C-L>
+
+nmap <buffer> <C-J> <Plug>(unite_choose_action)
+imap <buffer> <C-J> <Plug>(unite_choose_action)
+imap <buffer> <M-H> <Plug>(unite_move_head)
 
 nnoremap <buffer><silent><expr> <C-S> unite#do_action('split')
 inoremap <buffer><silent><expr> <C-S> unite#do_action('split')
@@ -38,8 +33,10 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! iunmap <buffer> <Tab> |
-  \ silent! iunmap <buffer> <S-Tab> |
+  \ silent! nunmap <buffer> <C-J> |
+  \ silent! iunmap <buffer> <C-J> |
+  \ silent! iunmap <buffer> <M-H> |
+  \
   \ silent! nunmap <buffer> <C-S> |
   \ silent! iunmap <buffer> <C-S> |
   \ silent! nunmap <buffer> <C-V> |
