@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-10 14:17:00 DeaR>
+" @timestamp   <2013-06-10 15:19:28 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -173,7 +173,9 @@ endif
 " NeoBundle: {{{
 if isdirectory(expand('~/.local/bundle/neobundle'))
   let g:neobundle#enable_name_conversion = 1
-  if s:is_android
+  if has('win32') || has('win64')
+    let g:neobundle#rm_command = 'rm -rf'
+  elseif s:is_android
     let g:neobundle#types#git#default_protocol = 'ssh'
     let g:neobundle#types#hg#default_protocol  = 'ssh'
   endif
