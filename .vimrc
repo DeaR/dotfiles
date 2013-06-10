@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-10 13:44:34 DeaR>
+" @timestamp   <2013-06-10 13:51:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -570,6 +570,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'AndrewRadev/switch.vim'
 
   NeoBundleLazy 'tomtom/tcomment_vim', {
+    \ 'name' : 'tcomment',
     \ 'autoload' : {
     \   'commands' : [
     \     {'name' : 'TComment',
@@ -3378,7 +3379,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " TComment: {{{
-silent! let s:bundle = neobundle#get('tcomment_vim')
+silent! let s:bundle = neobundle#get('tcomment')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:tcommentTextObjectInlineComment = ''
