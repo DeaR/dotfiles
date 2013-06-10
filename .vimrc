@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-10 15:19:28 DeaR>
+" @timestamp   <2013-06-10 16:56:03 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4060,10 +4060,6 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
     let g:vimfiler_data_directory      = expand('~/.local/.vimfiler')
     let g:vimfiler_as_default_explorer = 1
   endfunction
-
-  if len(@%)
-    NeoBundleSource vimfiler
-  endif
 endif
 unlet! s:bundle
 "}}}
@@ -4196,6 +4192,8 @@ if exists(':NeoBundle')
 
   if !has('vim_starting')
     call neobundle#call_hook('on_source')
+  elseif len(@%)
+    NeoBundleSource vimfiler
   endif
 endif
 
