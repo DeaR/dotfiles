@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-10 16:56:03 DeaR>
+" @timestamp   <2013-06-11 02:32:48 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2246,6 +2246,18 @@ augroup MyVimrc
     \ setfiletype vbnet
 augroup END
 
+" NeoBundle
+if exists(':NeoBundle')
+  function! s:load_bundle_settings()
+    for d in split(glob('~/.vim/bundle-settings/*'), "\n")
+      if neobundle#is_installed(fnamemodify(d, ':t'))
+        let &runtimepath .= ',' . d
+      endif
+    endfor
+  endfunction
+  call s:load_bundle_settings()
+endif
+
 " Enable plugin
 filetype plugin indent on
 "}}}
@@ -4178,27 +4190,20 @@ unlet! s:bundle
 
 "=============================================================================
 " Init Last: {{{
-
-" NeoBundle
-if exists(':NeoBundle')
-  function! s:load_bundle_settings()
-    for d in split(glob('~/.vim/bundle-settings/*'), "\n")
-      if neobundle#is_installed(fnamemodify(d, ':t'))
-        let &runtimepath .= ',' . d
-      endif
-    endfor
-  endfunction
-  call s:load_bundle_settings()
-
-  if !has('vim_starting')
+if !has('vim_starting')
+  " NeoBundle
+  if exists(':NeoBundle')
     call neobundle#call_hook('on_source')
-  elseif len(@%)
-    NeoBundleSource vimfiler
+  endif
+
+  " IndentLine
+  if exists(':IndentLinesReset')
+    IndentLinesReset
   endif
 endif
 
-" IndentLine
-if !has('vim_starting') && exists(':IndentLinesReset')
-  IndentLinesReset
+" VimFiler
+if len(@%)
+  NeoBundleSource vimfiler
 endif
 "}}}
