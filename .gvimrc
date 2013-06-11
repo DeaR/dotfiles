@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-08 23:14:50 DeaR>
+" @timestamp   <2013-06-11 14:25:37 DeaR>
 
 "=============================================================================
 " Resourcing First: {{{
@@ -147,6 +147,7 @@ autocmd MyGVimrc GUIEnter,ColorScheme *
 if has('win32') || has('win64')
   set guifont=Consolas:h9:cSHIFTJIS
   set guifontwide=MeiryoKe_Console:h9:cSHIFTJIS
+  set linespace=0
   if has('printer')
     set printfont=MeiryoKe_Gothic:h12:cSHIFTJIS
   endif
