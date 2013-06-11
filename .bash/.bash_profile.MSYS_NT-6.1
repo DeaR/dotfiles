@@ -4,7 +4,7 @@
 # @description Bash settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-07 14:37:30 DeaR>
+# @timestamp   <2013-06-11 20:33:52 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -14,7 +14,13 @@ if [ -z "${TERM}" ]; then
 	export TERM="cygwin"
 fi
 
-if hash xyzzy 2> /dev/null; then
+if hash vim 2> /dev/null; then
+	if hash gvim 2> /dev/null; then
+		export EDITOR="gvim"
+	else
+		export EDITOR="vim"
+	fi
+elif hash xyzzy 2> /dev/null; then
 	if hash xyzzycli 2> /dev/null; then
 		export EDITOR="xyzzycli"
 	else
@@ -25,12 +31,6 @@ if hash xyzzy 2> /dev/null; then
 	fi
 	if hash hg 2> /dev/null; then
 		export HGEDITOR="${EDITOR} -wait"
-	fi
-elif hash vim 2> /dev/null; then
-	if hash gvim 2> /dev/null; then
-		export EDITOR="gvim"
-	else
-		export EDITOR="vim"
 	fi
 fi
 #}}}

@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-11 15:54:47 DeaR>
+" @timestamp   <2013-06-11 20:50:08 DeaR>
 
 set nocompatible
 scriptencoding utf-8

@@ -4,7 +4,7 @@
 # @description NYAOS settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-08 00:26:44 DeaR>
+# @timestamp   <2013-06-11 20:34:18 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -35,7 +35,13 @@ else if "`which cc`" != "" then
 	set CCC=cc
 endif
 
-if "`which xyzzy`" != "" then
+if "`which vim`" != "" then
+	if "`which gvim`" != "" then
+		set EDITOR=gvim
+	else
+		set EDITOR=vim
+	endif
+else if "`which xyzzy`" != "" then
 	if "`which xyzzycli`" != "" then
 		set EDITOR=xyzzycli
 	else
@@ -46,12 +52,6 @@ if "`which xyzzy`" != "" then
 	endif
 	if "`which hg`" != "" then
 		set HGEDITOR=%EDITOR% -wait
-	endif
-else if "`which vim`" != "" then
-	if "`which gvim`" != "" then
-		set EDITOR=gvim
-	else
-		set EDITOR=vim
 	endif
 else if "`which emacs`" != "" then
 	if "`which emacsclient`" != "" then
