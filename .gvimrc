@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 01:58:32 DeaR>
+" @timestamp   <2013-06-12 02:49:47 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -72,6 +72,9 @@ set guioptions+=c
 set guioptions-=a
 set guioptions-=m
 set guioptions-=T
+set guioptions-=r
+set guioptions-=l
+set guioptions-=L
 set guicursor+=i-ci:ver50-Cursor/lCursor
 
 " Disable bell
@@ -163,14 +166,9 @@ if 0 && has('directx')
 endif
 
 " Vim size max
-if has('win32') || has('win64')
-  autocmd MyGVimrc GUIEnter *
-    \ simalt ~x
-else
-  autocmd MyGVimrc GUIEnter *
-    \ winpos 0 0 |
-    \ set lines=999 columns=9999
-endif
+autocmd MyGVimrc GUIEnter *
+  \ winpos 0 0 |
+  \ set lines=999 columns=9999
 "}}}
 
 "=============================================================================
