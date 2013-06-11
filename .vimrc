@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-11 22:41:46 DeaR>
+" @timestamp   <2013-06-12 00:39:37 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -59,10 +59,19 @@ set runtimepath^=~/.local
 set runtimepath+=~/.local/after
 
 " Singleton
-if has('clientserver') &&
-  \ isdirectory(expand('~/.local/bundle/singleton'))
-  set runtimepath^=~/.local/bundle/singleton
-  call singleton#enable()
+if has('clientserver') && argc() &&
+  \ argv() !~# '--remote'
+  let s:running_vim_list = filter(
+    \ split(serverlist(), "\n"),
+    \ 'v:val !=? v:servername')
+  if !empty(s:running_vim_list)
+    silent execute '!start gvim'
+      \ '--servername' s:running_vim_list[0]
+      \ '--remote-silent' join(argv(), ' ')
+    set viminfo=
+    qa!
+  endif
+  unlet s:running_vim_list
 endif
 
 " Vimrc autocmd group
@@ -541,11 +550,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'jiangmiao/simple-javascript-indenter', {
     \ 'autoload' : {'filetypes' : 'javascript'}}
-
-  if has('clientserver')
-    NeoBundleLazy 'thinca/vim-singleton', {
-      \ 'sourced' : 1}
-  endif
 
   NeoBundleLazy 'kana/vim-smartchr'
 

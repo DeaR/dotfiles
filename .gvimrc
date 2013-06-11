@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-11 14:25:37 DeaR>
+" @timestamp   <2013-06-12 00:37:25 DeaR>
 
 "=============================================================================
 " Resourcing First: {{{
