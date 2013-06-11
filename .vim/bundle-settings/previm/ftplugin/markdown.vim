@@ -9,7 +9,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <buffer> <F5> :<C-U>MkdPreview!<CR>
+nnoremap <buffer> <F5> :<C-U>PrevimOpen<CR>
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'

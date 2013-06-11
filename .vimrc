@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 01:59:02 DeaR>
+" @timestamp   <2013-06-12 02:10:24 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -341,13 +341,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     'SMapList', 'IMapList', 'CMapList', 'LMapList']},
     \ 'script_type' : 'plugin'}
 
-  if has('python') || has('python3')
-    NeoBundleLazy 'mattn/mkdpreview-vim', {
-      \ 'autoload' : {'filetypes' : 'markdown'},
-      \ 'depends' : 'mattn/webapi-vim',
-      \ 'gui' : 1}
-  endif
-
   NeoBundle 'tomasr/molokai'
 
   NeoBundleLazy 'kana/vim-narrow', {
@@ -497,6 +490,10 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'depends' : [
     \   'Shougo/context_filetype.vim',
     \   'kana/vim-textobj-user']}
+
+  NeoBundleLazy 'kannokanno/previm', {
+    \ 'autoload' : {'filetypes' : 'markdown'},
+    \ 'depends' : 'tyru/open-browser.vim'}
 
   NeoBundleLazy 'fuenor/qfixhowm', {
     \ 'autoload' : {
