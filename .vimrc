@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 01:58:00 DeaR>
+" @timestamp   <2013-06-12 01:59:02 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1724,55 +1724,6 @@ nnoremap <F9> :<C-U>DiffOrig<CR>
 
 "=============================================================================
 " Vim Script: {{{
-
-"-----------------------------------------------------------------------------
-" Script Scope: {{{
-function! s:getscrname(expr, name)
-  redir => sn
-    silent! scriptnames
-  redir END
-  for l in split(sn, '\n')
-      let m = matchlist(l, '^\s*\(\d\+\):\s*\(.*\)$')
-      if m[2] =~? a:expr
-        return join(['<SNR>', m[1], '_', a:name], '')
-      endif
-  endfor
-endfunction
-function! s:getscrfunc(expr, funcname)
-  redir => sn
-    silent! scriptnames
-  redir END
-  for l in split(sn, '\n')
-      let m = matchlist(l, '^\s*\(\d\+\):\s*\(.*\)$')
-      if m[2] =~? a:expr
-        return function(join(['<SNR>', m[1], '_', a:funcname], ''))
-      endif
-  endfor
-endfunction
-function! s:getscrvar(expr, varname)
-  redir => sn
-    silent! scriptnames
-  redir END
-  for l in split(sn, '\n')
-      let m = matchlist(l, '^\s*\(\d\+\):\s*\(.*\)$')
-      if m[2] =~? a:expr
-        return eval(join(['<SNR>', m[1], '_', a:varname], ''))
-      endif
-  endfor
-endfunction
-function! s:setscrvar(expr, varname, val)
-  redir => sn
-    silent! scriptnames
-  redir END
-  for l in split(sn, '\n')
-      let m = matchlist(l, '^\s*\(\d\+\):\s*\(.*\)$')
-      if m[2] =~? a:expr
-        execute 'let' join(['<SNR>', m[1], '_', a:varname], '') '=' a:val
-        return
-      endif
-  endfor
-endfunction
-"}}}
 
 "-----------------------------------------------------------------------------
 " Command Line Window: {{{
