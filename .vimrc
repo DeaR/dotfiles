@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 00:39:37 DeaR>
+" @timestamp   <2013-06-12 00:45:43 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -62,14 +62,14 @@ set runtimepath+=~/.local/after
 if has('clientserver') && argc() &&
   \ argv() !~# '--remote'
   let s:running_vim_list = filter(
-    \ split(serverlist(), "\n"),
+    \ split(serverlist(), '\n'),
     \ 'v:val !=? v:servername')
   if !empty(s:running_vim_list)
     silent execute '!start gvim'
       \ '--servername' s:running_vim_list[0]
       \ '--remote-silent' join(argv(), ' ')
     set viminfo=
-    qa!
+    qall!
   endif
   unlet s:running_vim_list
 endif
@@ -1662,13 +1662,13 @@ if exists('$VCVARSALL')
     set shellcmdflag=/c
     set shellquote=
     let &shellxquote = '('
-    let &isident = join([&insident, '(,)'], ',')
+    let &isident = join([&isident, '(,)'], ',')
     try
       let env = system(join([$VCVARSALL, a:arch, '&', 'set']))
-      for s in split(env, "\n")
+      for s in split(env, '\n')
         let e = matchlist(s, '\([^=]\+\)=\(.*\)')
         if len(e) > 2
-          execute join(['let $', e[1], '=', "'", e[2], "'"], '')
+          execute join(['let $', e[1], '=', '''', e[2], ''''], '')
         endif
       endfor
     finally
@@ -1732,7 +1732,7 @@ function! s:getscrname(expr, name)
   redir => sn
     silent! scriptnames
   redir END
-  for l in split(sn, "\n")
+  for l in split(sn, '\n')
       let m = matchlist(l, '^\s*\(\d\+\):\s*\(.*\)$')
       if m[2] =~? a:expr
         return join(['<SNR>', m[1], '_', a:name], '')
@@ -1743,7 +1743,7 @@ function! s:getscrfunc(expr, funcname)
   redir => sn
     silent! scriptnames
   redir END
-  for l in split(sn, "\n")
+  for l in split(sn, '\n')
       let m = matchlist(l, '^\s*\(\d\+\):\s*\(.*\)$')
       if m[2] =~? a:expr
         return function(join(['<SNR>', m[1], '_', a:funcname], ''))
@@ -1754,7 +1754,7 @@ function! s:getscrvar(expr, varname)
   redir => sn
     silent! scriptnames
   redir END
-  for l in split(sn, "\n")
+  for l in split(sn, '\n')
       let m = matchlist(l, '^\s*\(\d\+\):\s*\(.*\)$')
       if m[2] =~? a:expr
         return eval(join(['<SNR>', m[1], '_', a:varname], ''))
@@ -1765,7 +1765,7 @@ function! s:setscrvar(expr, varname, val)
   redir => sn
     silent! scriptnames
   redir END
-  for l in split(sn, "\n")
+  for l in split(sn, '\n')
       let m = matchlist(l, '^\s*\(\d\+\):\s*\(.*\)$')
       if m[2] =~? a:expr
         execute 'let' join(['<SNR>', m[1], '_', a:varname], '') '=' a:val
@@ -2129,7 +2129,7 @@ function! s:get_highlight(hi)
   redir => hl
     silent execute 'highlight' a:hi
   redir END
-  let hl = substitute(hl, "[\r\n]", ' ', 'g')
+  let hl = substitute(hl, '[\r\n]', ' ', 'g')
   return matchstr(hl, 'xxx\zs.*$')
 endfunction
 
@@ -2247,7 +2247,7 @@ augroup END
 if exists(':NeoBundle')
   function! s:load_bundle_settings()
     let l = []
-    for d in split(glob('~/.vim/bundle-settings/*'), "\n")
+    for d in split(glob('~/.vim/bundle-settings/*'), '\n')
       if neobundle#is_installed(fnamemodify(d, ':t'))
         call add(l, d)
       endif
