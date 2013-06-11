@@ -4,7 +4,7 @@
 " @description SmartChr ftplugin for Vim
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-07 22:33:33 DeaR>
+" @timestamp   <2013-06-12 03:29:28 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -14,7 +14,7 @@ function! s:smartchr_equal()
     let ec = escape(c, '\')
     if search('\V ' . ec . '=\? \%#', 'bcn')
       return smartchr#one_of(' ' . ec . ' ', ' ' . ec . '= ', ec . '=')
-    elseif search('\V' . ec . '=\?\%#', 'bcn')
+    elseif search('\V' . ec . '\%#', 'bcn')
       return smartchr#one_of(ec, ' ' . ec . '= ', ec . '=')
     endif
   endfor
@@ -27,7 +27,7 @@ function! s:smartchr_tilda()
     let ec = escape(c, '\')
     if search('\V ' . ec . '~\? \%#', 'bcn')
       return smartchr#one_of(' ' . ec . ' ', ' ' . ec . '~ ', ec . '~')
-    elseif search('\V' . ec . '~\?\%#', 'bcn')
+    elseif search('\V' . ec . '\%#', 'bcn')
       return smartchr#one_of(ec, ' ' . ec . '~ ', ec . '~')
     endif
   endfor
@@ -40,7 +40,7 @@ function! s:smartchr_question()
     let ec = escape(c, '\')
     if search('\V ' . ec . '?\? \%#', 'bcn')
       return smartchr#one_of(' ' . ec . ' ', ' ' . ec . '? ', ec . '?')
-    elseif search('\V' . ec . '?\?\%#', 'bcn')
+    elseif search('\V' . ec . '\%#', 'bcn')
       return smartchr#one_of(ec, ' ' . ec . '? ', ec . '?')
     endif
   endfor
@@ -59,7 +59,7 @@ function! s:smartchr_sharp()
     let ec = escape(c, '\')
     if search('\V ' . ec . '#\? \%#', 'bcn')
       return smartchr#one_of(' ' . ec . ' ', ' ' . ec . '# ', ec . '#')
-    elseif search('\V' . ec . '#\?\%#', 'bcn')
+    elseif search('\V' . ec . '\%#', 'bcn')
       return smartchr#one_of(ec, ' ' . ec . '# ', ec . '#')
     endif
   endfor

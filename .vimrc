@@ -2346,7 +2346,7 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
         inoremap <buffer><expr> >
           \ search('\V ->\? \%#', 'bcn') ?
           \   smartchr#one_of(' - ', '->', ' -> ') :
-          \   search('\V->\?\%#', 'bcn') ?
+          \   search('\V-\%#', 'bcn') ?
           \     smartchr#one_of('-', '->', ' -> ') :
           \     smartchr#one_of(' > ', ' >> ', '>')
         if a:ext =~? 'cpp$'
