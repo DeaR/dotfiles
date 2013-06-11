@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-11 20:50:08 DeaR>
+" @timestamp   <2013-06-11 22:31:05 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3145,6 +3145,17 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
 
   autocmd MyVimrc BufNewFile,BufRead *
     \ NeoBundleSource savevers
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Singleton: {{{
+silent! let s:bundle = neobundle#get('singleton')
+if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+  function! s:bundle.hooks.on_source(bundle)
+    let g:singleton#opener = 'drop'
+  endfunction
 endif
 unlet! s:bundle
 "}}}
