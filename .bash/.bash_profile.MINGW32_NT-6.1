@@ -4,7 +4,7 @@
 # @description Bash settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-11 20:34:59 DeaR>
+# @timestamp   <2013-06-11 23:53:09 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -19,6 +19,12 @@ if hash vim 2> /dev/null; then
 		export EDITOR="gvim"
 	else
 		export EDITOR="vim"
+	fi
+	if hash git 2> /dev/null; then
+		export GIT_EDITOR="${EDITOR} --remote-wait-silent"
+	fi
+	if hash hg 2> /dev/null; then
+		export HGEDITOR="${EDITOR} --remote-wait-silent"
 	fi
 elif hash xyzzy 2> /dev/null; then
 	if hash xyzzycli 2> /dev/null; then

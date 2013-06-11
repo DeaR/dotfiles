@@ -4,7 +4,7 @@
 # @description NYAOS settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-11 20:34:18 DeaR>
+# @timestamp   <2013-06-11 23:53:41 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -40,6 +40,12 @@ if "`which vim`" != "" then
 		set EDITOR=gvim
 	else
 		set EDITOR=vim
+	endif
+	if "`which git`" != "" then
+		set GIT_EDITOR=%EDITOR% --remote-wait-silent
+	endif
+	if "`which hg`" != "" then
+		set HGEDITOR=%EDITOR% --remote-wait-silent
 	endif
 else if "`which xyzzy`" != "" then
 	if "`which xyzzycli`" != "" then
