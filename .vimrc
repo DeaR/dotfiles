@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-11 14:26:35 DeaR>
+" @timestamp   <2013-06-11 15:22:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2151,14 +2151,10 @@ endfunction
 
 "-----------------------------------------------------------------------------
 " Reverse Status Line Color At Insert Mode: {{{
-function! s:init_status_line_color()
-  silent! let s:hi_status_line   = s:get_highlight('StatusLine')
-  silent! let s:hi_status_line_i = s:reverse_highlight(s:hi_status_line)
-endfunction
-
-function! s:change_status_line_color(is_enter)
-  if !exists('s:hi_status_line') || !exists('s:hi_status_line_i')
-    call s:init_status_line_color()
+function! s:set_status_line_color(is_enter, force)
+  if !exists('s:hi_status_line') || !exists('s:hi_status_line_i') || a:force
+    silent! let s:hi_status_line   = s:get_highlight('StatusLine')
+    silent! let s:hi_status_line_i = s:reverse_highlight(s:hi_status_line)
   endif
 
   if exists('s:hi_status_line') && exists('s:hi_status_line_i')
@@ -2173,25 +2169,21 @@ endfunction
 
 augroup MyVimrc
   autocmd ColorScheme *
-    \ call s:init_status_line_color()
+    \ call s:set_status_line_color(mode() =~# '[iR]', 1)
   autocmd InsertEnter *
-    \ call s:change_status_line_color(1)
+    \ call s:set_status_line_color(1, 0)
   autocmd InsertLeave *
-    \ call s:change_status_line_color(0)
+    \ call s:set_status_line_color(0, 0)
 augroup END
 "}}}
 
 "-----------------------------------------------------------------------------
 " Highlight Ideographic Space: {{{
-function! s:init_ideographic_space()
-  silent! let s:hi_ideographic_space = join([
-    \ s:get_highlight('SpecialKey'),
-    \ 'term=underline cterm=underline gui=underline'])
-endfunction
-
-function! s:set_ideographic_space()
-  if !exists('s:hi_ideographic_space')
-    call s:init_ideographic_space()
+function! s:set_ideographic_space(force)
+  if !exists('s:hi_ideographic_space') || a:force
+    silent! let s:hi_ideographic_space = join([
+      \ s:get_highlight('SpecialKey'),
+      \ 'term=underline cterm=underline gui=underline'])
   endif
 
   if exists('s:hi_ideographic_space')
@@ -2202,9 +2194,9 @@ endfunction
 
 augroup MyVimrc
   autocmd ColorScheme *
-    \ call s:init_ideographic_space()
+    \ call s:set_ideographic_space(1)
   autocmd BufWinEnter *
-    \ call s:set_ideographic_space()
+    \ call s:set_ideographic_space(0)
 augroup END
 "}}}
 
@@ -2521,29 +2513,28 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
     let g:indentLine_char     = '|'
     let g:indentLine_maxLines = 10000
 
-    function! s:init_indent_line_color()
-      let hi_special_key          = s:get_highlight('SpecialKey')
-      let g:indentLine_color_term = matchstr(hi_special_key, 'ctermfg=\zs\S\+')
-      let g:indentLine_color_gui  = matchstr(hi_special_key, 'guifg=\zs\S\+')
-    endfunction
-    call s:init_indent_line_color()
-
-    augroup MyVimrc
-      autocmd ColorScheme *
-        \ call s:init_indent_line_color()
-      autocmd InsertEnter,InsertLeave *
-        \ if !exists("b:indentLine_enabled") || b:indentLine_enabled |
-        \   execute 'IndentLinesReset' |
-        \ endif
-    augroup END
+    call s:set_indent_line_color(0)
   endfunction
 
   function! s:cmdwin_enter_functions['*'].IndentLine()
     let b:indentLine_enabled = 0
   endfunction
 
-  autocmd MyVimrc FileType *
-    \ let b:indentLine_enabled = &expandtab
+  function! s:set_indent_line_color(force)
+    if !exists('g:indentLine_color_term') ||
+      \ !exists('g:indentLine_color_gui') || a:force
+      let hi_special_key          = s:get_highlight('SpecialKey')
+      let g:indentLine_color_term = matchstr(hi_special_key, 'ctermfg=\zs\S\+')
+      let g:indentLine_color_gui  = matchstr(hi_special_key, 'guifg=\zs\S\+')
+    endif
+  endfunction
+
+  augroup MyVimrc
+    autocmd ColorScheme *
+      \ call s:set_indent_line_color(1)
+    autocmd FileType *
+      \ let b:indentLine_enabled = &expandtab
+  augroup END
 endif
 unlet! s:bundle
 "}}}
@@ -4193,15 +4184,10 @@ unlet! s:bundle
 
 "=============================================================================
 " Init Last: {{{
+" Reseting
 if !has('vim_starting')
-  " NeoBundle
   if exists(':NeoBundle')
     call neobundle#call_hook('on_source')
-  endif
-
-  " IndentLine
-  if exists(':IndentLinesReset')
-    IndentLinesReset
   endif
 endif
 
