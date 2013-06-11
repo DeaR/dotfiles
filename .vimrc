@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 00:45:43 DeaR>
+" @timestamp   <2013-06-12 01:58:00 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -48,19 +48,8 @@ if has('multi_byte')
   scriptencoding utf-8
 endif
 
-" Fix runtimepath for windows
-if has('win32') || has('win64')
-  set runtimepath^=~/.vim
-  set runtimepath+=~/.vim/after
-endif
-
-" Local runtime
-set runtimepath^=~/.local
-set runtimepath+=~/.local/after
-
 " Singleton
-if has('clientserver') && argc() &&
-  \ argv() !~# '--remote'
+if has('vim_starting') && has('clientserver') && argc()
   let s:running_vim_list = filter(
     \ split(serverlist(), '\n'),
     \ 'v:val !=? v:servername')
@@ -73,6 +62,16 @@ if has('clientserver') && argc() &&
   endif
   unlet s:running_vim_list
 endif
+
+" Fix runtimepath for windows
+if has('win32') || has('win64')
+  set runtimepath^=~/.vim
+  set runtimepath+=~/.vim/after
+endif
+
+" Local runtime
+set runtimepath^=~/.local
+set runtimepath+=~/.local/after
 
 " Vimrc autocmd group
 augroup MyVimrc
@@ -4205,7 +4204,7 @@ if exists(':NeoBundle')
 endif
 
 " VimFiler
-if len(@%)
+if argc()
   NeoBundleSource vimfiler
 endif
 "}}}
