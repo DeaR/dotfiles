@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-11 15:22:39 DeaR>
+" @timestamp   <2013-06-11 15:26:49 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2877,7 +2877,7 @@ unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
-" Operator HTML escape: {{{
+" Operator HTML Escape: {{{
 silent! let s:bundle = neobundle#get('operator-html-escape')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   NXmap sh <Plug>(operator-html-escape)
