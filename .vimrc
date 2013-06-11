@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-11 22:31:05 DeaR>
+" @timestamp   <2013-06-11 22:41:46 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4195,11 +4195,9 @@ unlet! s:bundle
 
 "=============================================================================
 " Init Last: {{{
-" Reseting
-if !has('vim_starting')
-  if exists(':NeoBundle')
-    call neobundle#call_hook('on_source')
-  endif
+" NeoBundle
+if exists(':NeoBundle')
+  call neobundle#call_hook('on_source')
 endif
 
 " VimFiler
