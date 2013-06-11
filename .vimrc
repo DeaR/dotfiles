@@ -1705,7 +1705,7 @@ command!
   \ setlocal nodiff scrollbind< wrap< cursorbind<
 
 nnoremap ;d :<C-U>CdCurrent<CR>
-nnoremap <F12> :<C-U>UnDiff<CR>
+nnoremap <F12> :<C-U>Undiff<CR>
 "}}}
 
 "-----------------------------------------------------------------------------
