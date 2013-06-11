@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 02:10:24 DeaR>
+" @timestamp   <2013-06-12 03:09:05 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3917,7 +3917,7 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
     \ -buffer-name=files -no-split -auto-preview<CR>
 
   nnoremap <silent> ;b
-    \ :<C-U>Unite buffer_tab
+    \ :<C-U>Unite buffer
     \  -buffer-name=files -no-split -auto-preview<CR>
   nnoremap <silent> ;e
     \ :<C-U>Unite file_mru file file/new directory/new
