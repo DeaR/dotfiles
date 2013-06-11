@@ -6,6 +6,7 @@
 .scratch
 .zcompdump
 
+.source-highlight/
 bin/
 bin64/
 howm/
