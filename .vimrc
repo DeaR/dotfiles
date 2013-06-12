@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 19:20:38 DeaR>
+" @timestamp   <2013-06-12 19:30:08 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -62,7 +62,8 @@ if has('vim_starting') && has('clientserver') && argc()
     \ split(serverlist(), '\n'),
     \ 'v:val !=? v:servername')
   if !empty(s:running_vim_list)
-    silent execute '!start gvim'
+    silent execute '!start'
+      \ (has('gui_running') ? 'gvim' : 'vim')
       \ '--servername' s:running_vim_list[0]
       \ '--remote-silent' join(argv(), ' ')
     set viminfo=
