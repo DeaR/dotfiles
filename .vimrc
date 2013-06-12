@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 14:01:32 DeaR>
+" @timestamp   <2013-06-12 15:06:32 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1104,7 +1104,7 @@ endif
 set undofile
 set undodir^=~/.bak
 autocmd MyVimrc BufNewFile,BufRead *
-  \ if expand('%:p') =~# '\.clean$\|/\.hg/\|/\.git/\|/\.bzr/\|/\.svn/' |
+  \ if expand('%:p') =~? '\.clean$\|/\.hg/\|/\.git/\|/\.bzr/\|/\.svn/' |
   \   setlocal noundofile |
   \ endif
 
