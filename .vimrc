@@ -2158,7 +2158,8 @@ augroup END
 "-----------------------------------------------------------------------------
 " From Example: {{{
 autocmd MyVimrc BufRead *
-  \ if line("'\"") > 1 && line("'\"") <= line('$') |
+  \ if line("'\"") > 1 && line("'\"") <= line('$') &&
+  \   expand('%:p') !~? '\.clean$\|/\.hg/\|/\.git/\|/\.bzr/\|/\.svn/' |
   \   execute 'normal! g`"' |
   \ endif
 "}}}
