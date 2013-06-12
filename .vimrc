@@ -1458,8 +1458,8 @@ nnoremap <expr> <F1>
   \   ':<C-U>vertical help<Space>'
 nnoremap <expr> g<F1>
   \ &columns < 160 ?
-  \   ':<C-U>help<Space>' . expand('<cword>') :
-  \   ':<C-U>vertical help<Space>' . expand('<cword>')
+  \   ':<C-U>help ' . expand('<cword>') . '<CR>' :
+  \   ':<C-U>vertical help ' . expand('<cword>') .'<CR>'
 
 " Search
 nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
