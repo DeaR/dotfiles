@@ -4,15 +4,15 @@
 " @description SmartChr ftplugin for C++
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 03:29:28 DeaR>
+" @timestamp   <2013-06-12 14:38:23 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
 
 inoremap <buffer><expr> /
-  \ search('\V */\? \%#', 'bcn') ?
+  \ search('\V */\? \%#', 'bcnW') ?
   \   smartchr#one_of(' * ', '*/' . nr2char(6)) :
-  \   search('\V*\%#', 'bcn') ?
+  \   search('\V*\%#', 'bcnW') ?
   \     smartchr#one_of('*', '*/' . nr2char(6)) :
   \     smartchr#one_of(' / ', '// ', '/// ', '/')
 

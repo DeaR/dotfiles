@@ -4,7 +4,7 @@
 " @description SmartChr ftplugin for D
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 03:29:28 DeaR>
+" @timestamp   <2013-06-12 14:38:23 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -12,9 +12,9 @@ set cpo&vim
 function! s:smartchr_equal()
   for c in ['^^', '!<>', '<>', '!>', '!<', '>>>', '<<', '>>', '+', '-', '*', '/', '%', '^', '&', '|', '<', '>', '!', '~']
     let ec = escape(c, '\')
-    if search('\V ' . ec . '=\? \%#', 'bcn')
+    if search('\V ' . ec . '=\? \%#', 'bcnW')
       return smartchr#one_of(' ' . ec . ' ', ' ' . ec . '= ', ec . '=')
-    elseif search('\V' . ec . '\%#', 'bcn')
+    elseif search('\V' . ec . '\%#', 'bcnW')
       return smartchr#one_of(ec, ' ' . ec . '= ', ec . '=')
     endif
   endfor
@@ -25,9 +25,9 @@ inoremap <buffer><expr> = <SID>smartchr_equal()
 function! s:smartchr_greater_than()
   for c in ['!<', '<', '!']
     let ec = escape(c, '\')
-    if search('\V ' . ec . '>\? \%#', 'bcn')
+    if search('\V ' . ec . '>\? \%#', 'bcnW')
       return smartchr#one_of(' ' . ec . ' ', ' ' . ec . '> ', ec . '>')
-    elseif search('\V' . ec . '\%#', 'bcn')
+    elseif search('\V' . ec . '\%#', 'bcnW')
       return smartchr#one_of(ec, ' ' . ec . '> ', ec . '>')
     endif
   endfor
@@ -38,9 +38,9 @@ inoremap <buffer><expr> > <SID>smartchr_greater_than()
 function! s:smartchr_slash()
   for c in ['+', '*']
     let ec = escape(c, '\')
-    if search('\V ' . ec . '/\? \%#', 'bcn')
+    if search('\V ' . ec . '/\? \%#', 'bcnW')
       return smartchr#one_of(' ' . ec . ' ',  ec . '/' . nr2char(6))
-    elseif search('\V' . ec . '\%#', 'bcn')
+    elseif search('\V' . ec . '\%#', 'bcnW')
       return smartchr#one_of(ec, ec . '/' . nr2char(6))
     endif
   endfor
@@ -49,23 +49,23 @@ endfunction
 inoremap <buffer><expr> / <SID>smartchr_slash()
 
 inoremap <buffer><expr> <
-  \ search('\V !<\? \%#', 'bcn') ?
+  \ search('\V !<\? \%#', 'bcnW') ?
   \   smartchr#one_of(' ! ', ' !< ', '!<') :
-  \   search('\V!\%#', 'bcn') ?
+  \   search('\V!\%#', 'bcnW') ?
   \     smartchr#one_of('!', ' !< ', '!<') :
   \     smartchr#one_of(' < ', ' << ', '<')
 
 inoremap <buffer><expr> *
-  \ search('\V /*\? \%#', 'bcn') ?
+  \ search('\V /*\? \%#', 'bcnW') ?
   \   smartchr#one_of(' / ', '/*') :
-  \   search('\V/\%#', 'bcn') ?
+  \   search('\V/\%#', 'bcnW') ?
   \     smartchr#one_of('/', '/*') :
   \     smartchr#one_of(' * ', '*')
 
 inoremap <buffer><expr> +
-  \ search('\V /+\? \%#', 'bcn') ?
+  \ search('\V /+\? \%#', 'bcnW') ?
   \   smartchr#one_of(' / ', '/+') :
-  \   search('\V/\%#', 'bcn') ?
+  \   search('\V/\%#', 'bcnW') ?
   \     smartchr#one_of('/', '/+') :
   \     smartchr#one_of(' + ',  '++', '+')
 
