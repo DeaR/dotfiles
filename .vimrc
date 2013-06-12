@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 13:20:13 DeaR>
+" @timestamp   <2013-06-12 13:38:44 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -547,7 +547,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'jiangmiao/simple-javascript-indenter', {
     \ 'autoload' : {'filetypes' : 'javascript'}}
 
-  NeoBundleLazy 'kana/vim-smartchr'
+  " NeoBundleLazy 'kana/vim-smartchr'
 
   NeoBundleLazy 'kana/vim-smartword', {
     \ 'autoload' : {
@@ -1103,6 +1103,10 @@ endif
 " Undo persistence
 set undofile
 set undodir^=~/.bak
+autocmd MyVimrc BufNewFile,BufRead *
+  \ if expand('%:p') =~# '\.clean$\|/\.hg/\|/\.git/\|/\.bzr/\|/\.svn/' |
+  \   setlocal noundofile |
+  \ endif
 
 " ClipBoard
 set clipboard=unnamed
