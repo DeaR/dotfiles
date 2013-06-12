@@ -4,7 +4,7 @@
 # @description Bash settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-07 14:37:30 DeaR>
+# @timestamp   <2013-06-12 20:33:07 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -93,6 +93,17 @@ fi
 if hash hg 2> /dev/null; then
 	export HGENCODING="utf-8"
 fi
+
+if [ -d "/usr/local/lib/go" ]; then
+	export GOROOT="/usr/local/lib/go"
+elif [ -d "/usr/lib/go" ]; then
+	export GOROOT="/usr/lib/go"
+fi
+if [ -n "${GOROOT}" -a -d "${GOROOT}/bin" ]; then
+	export PATH="${GOROOT}/bin:${PATH}"
+fi
+export GOPATH="${HOME}/go"
+export PATH="${GOPATH}/bin:${PATH}"
 #}}}
 
 #-----------------------------------------------------------------------------
