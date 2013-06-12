@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 17:39:23 DeaR>
+" @timestamp   <2013-06-12 13:38:44 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1171,7 +1171,7 @@ set helpheight=999
 
 " Language
 if has('multi_lang')
-  silent! language C
+  silent! language time C
 endif
 
 " Conceal
