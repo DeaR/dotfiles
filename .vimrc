@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 18:28:49 DeaR>
+" @timestamp   <2013-06-12 18:45:06 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -556,12 +556,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {'filetypes' : 'javascript'}}
 
   " NeoBundleLazy 'kana/vim-smartchr'
-
-  " NeoBundleLazy 'kana/vim-smartword', {
-  "   \ 'autoload' : {
-  "   \   'mappings' : [
-  "   \     ['nvo', '<Plug>(smartword-w)'], ['nvo', '<Plug>(smartword-b)'],
-  "   \     ['nvo', '<Plug>(smartword-e)'], ['nvo', '<Plug>(smartword-ge)']]}}
 
   NeoBundleLazy 'tpope/vim-surround', {
     \ 'autoload' : {
@@ -2286,23 +2280,28 @@ unlet! s:bundle
 " CamelCaseMotion: {{{
 silent! let s:bundle = neobundle#get('camelcasemotion')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
-  NOXmap ,w  <Plug>CamelCaseMotion_w
-  NOXmap ,b  <Plug>CamelCaseMotion_b
-  NOXmap ,e  <Plug>CamelCaseMotion_e
-  NOXmap g,e <Plug>CamelCaseMotion_ge
+  NOXmap w  <Plug>CamelCaseMotion_w
+  NOXmap b  <Plug>CamelCaseMotion_b
+  NOXmap e  <Plug>CamelCaseMotion_e
+  NOXmap ge <Plug>CamelCaseMotion_ge
 
-  OXmap i,w <Plug>CamelCaseMotion_iw
-  OXmap i,b <Plug>CamelCaseMotion_ib
-  OXmap i,e <Plug>CamelCaseMotion_ie
+  OXmap i<M-w> <Plug>CamelCaseMotion_iw
+  OXmap i<M-b> <Plug>CamelCaseMotion_ib
+  OXmap i<M-e> <Plug>CamelCaseMotion_ie
 
-  inoremap <silent> <M-,><M-w>
+  inoremap <silent> <M-w>
     \ <C-O>:<C-U>call camelcasemotion#Motion('w', v:count1, 'n')<CR>
-  inoremap <silent> <M-,><M-b>
+  inoremap <silent> <M-b>
     \ <C-O>:<C-U>call camelcasemotion#Motion('b', v:count1, 'n')<CR>
-  inoremap <silent> <M-,><M-e>
+  inoremap <silent> <M-e>
     \ <C-O>:<C-U>call camelcasemotion#Motion('e', v:count1, 'n')<CR>
-  inoremap <silent> <M-,><M-g><M-e>
+  inoremap <silent> <M-g><M-e>
     \ <C-O>:<C-U>call camelcasemotion#Motion('ge', v:count1, 'n')<CR>
+else
+  inoremap <M-w>      <C-O>w
+  inoremap <M-b>      <C-O>b
+  inoremap <M-e>      <C-O>e
+  inoremap <M-g><M-e> <C-O>ge
 endif
 unlet! s:bundle
 "}}}
@@ -3155,32 +3154,6 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
 
     silent! iunmap <buffer> ,
   endfunction
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" SmartWord: {{{
-silent! let s:bundle = neobundle#get('smartword')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
-  NOXmap w  <Plug>(smartword-w)
-  NOXmap b  <Plug>(smartword-b)
-  NOXmap e  <Plug>(smartword-e)
-  NOXmap ge <Plug>(smartword-ge)
-
-  inoremap <silent> <M-w>
-    \ <C-O>:<C-U>call smartword#move('w', 'n')<CR>
-  inoremap <silent> <M-b>
-    \ <C-O>:<C-U>call smartword#move('b', 'n')<CR>
-  inoremap <silent> <M-e>
-    \ <C-O>:<C-U>call smartword#move('e', 'n')<CR>
-  inoremap <silent> <M-g><M-e>
-    \ <C-O>:<C-U>call smartword#move('ge', 'n')<CR>
-else
-  inoremap <M-w>      <C-O>w
-  inoremap <M-b>      <C-O>b
-  inoremap <M-e>      <C-O>e
-  inoremap <M-g><M-e> <C-O>ge
 endif
 unlet! s:bundle
 "}}}
