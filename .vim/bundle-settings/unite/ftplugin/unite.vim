@@ -9,6 +9,15 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+function! s:check_back_space()
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1] =~ '\s'
+endfunction
+
+silent! iunmap <buffer> <Tab>
+silent! iunmap <buffer> <S-Tab>
+silent! iunmap <buffer> <C-L>
+
 nmap <buffer> <C-J> <Plug>(unite_choose_action)
 imap <buffer> <C-J> <Plug>(unite_choose_action)
 imap <buffer> <M-H> <Plug>(unite_move_head)
