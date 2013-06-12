@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 18:20:48 DeaR>
+" @timestamp   <2013-06-12 18:28:49 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -48,6 +48,12 @@ if has('multi_byte')
     set termencoding=cp932
   endif
   scriptencoding utf-8
+endif
+
+" Language
+if has('multi_lang') && (has('win32') || has('win64'))
+  language japanese
+  language time C
 endif
 
 " Singleton
@@ -1168,12 +1174,6 @@ set fillchars=vert:\|
 
 " Help
 set helpheight=999
-
-" Language
-if has('multi_lang') && (has('win32') || has('win64'))
-  language japanese
-  language time C
-endif
 
 " Conceal
 if has('conceal')
