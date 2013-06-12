@@ -4,7 +4,7 @@
 # @description NYAOS settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-11 23:53:41 DeaR>
+# @timestamp   <2013-06-12 20:33:07 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -294,6 +294,7 @@ endif
 #-----------------------------------------------------------------------------
 # Other Sources: {{{
 source %NYAOS_DIR%\android_ndk.ny
+source %NYAOS_DIR%\golang.lua
 source %NYAOS_DIR%\vcvars.lua
 #}}}
 
