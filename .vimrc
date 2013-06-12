@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 15:06:32 DeaR>
+" @timestamp   <2013-06-12 17:39:23 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -29,8 +29,10 @@ if !has('vim_starting')
   set formatoptions&
   set helplang&
 
-  if &t_Co > 255
+  if &t_Co > 2
     syntax off
+  endif
+  if &t_Co > 255
     colorscheme default
   endif
 
@@ -549,11 +551,11 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   " NeoBundleLazy 'kana/vim-smartchr'
 
-  NeoBundleLazy 'kana/vim-smartword', {
-    \ 'autoload' : {
-    \   'mappings' : [
-    \     ['nvo', '<Plug>(smartword-w)'], ['nvo', '<Plug>(smartword-b)'],
-    \     ['nvo', '<Plug>(smartword-e)'], ['nvo', '<Plug>(smartword-ge)']]}}
+  " NeoBundleLazy 'kana/vim-smartword', {
+  "   \ 'autoload' : {
+  "   \   'mappings' : [
+  "   \     ['nvo', '<Plug>(smartword-w)'], ['nvo', '<Plug>(smartword-b)'],
+  "   \     ['nvo', '<Plug>(smartword-e)'], ['nvo', '<Plug>(smartword-ge)']]}}
 
   NeoBundleLazy 'tpope/vim-surround', {
     \ 'autoload' : {
@@ -1178,7 +1180,7 @@ if has('conceal')
   set concealcursor=nc
 endif
 
-if &t_Co > 255
+if &t_Co > 2
   " Syntax highlight
   syntax on
 
@@ -1203,8 +1205,10 @@ if &t_Co > 255
       \   setlocal nocursorcolumn |
       \ endif
   augroup END
+endif
 
-  " Colorscheme
+" Colorscheme
+if &t_Co > 255
   silent! colorscheme molokai
 endif
 "}}}
@@ -2134,25 +2138,27 @@ augroup END
 
 "-----------------------------------------------------------------------------
 " Highlight Ideographic Space: {{{
-function! s:set_ideographic_space(force)
-  if !exists('s:hi_ideographic_space') || a:force
-    silent! let s:hi_ideographic_space = join([
-      \ s:get_highlight('SpecialKey'),
-      \ 'term=underline cterm=underline gui=underline'])
-  endif
+if !has('gui_running')
+  function! s:set_ideographic_space(force)
+    if !exists('s:hi_ideographic_space') || a:force
+      silent! let s:hi_ideographic_space = join([
+        \ s:get_highlight('SpecialKey'),
+        \ 'term=underline cterm=underline gui=underline'])
+    endif
 
-  if exists('s:hi_ideographic_space')
-    execute 'highlight IdeographicSpace' s:hi_ideographic_space
-    syntax match IdeographicSpace "　" display containedin=ALL
-  endif
-endfunction
+    if exists('s:hi_ideographic_space')
+      execute 'highlight IdeographicSpace' s:hi_ideographic_space
+      syntax match IdeographicSpace "　" display containedin=ALL
+    endif
+  endfunction
 
-augroup MyVimrc
-  autocmd ColorScheme *
-    \ call s:set_ideographic_space(1)
-  autocmd BufWinEnter *
-    \ call s:set_ideographic_space(0)
-augroup END
+  augroup MyVimrc
+    autocmd ColorScheme *
+      \ call s:set_ideographic_space(1)
+    autocmd Syntax *
+      \ call s:set_ideographic_space(0)
+  augroup END
+endif
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -2468,29 +2474,37 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:indentLine_char     = '|'
     let g:indentLine_maxLines = 10000
-
-    call s:set_indent_line_color(0)
   endfunction
 
   function! s:cmdwin_enter_functions['*'].IndentLine()
     let b:indentLine_enabled = 0
   endfunction
 
-  function! s:set_indent_line_color(force)
-    if !exists('g:indentLine_color_term') ||
-      \ !exists('g:indentLine_color_gui') || a:force
-      let hi_special_key          = s:get_highlight('SpecialKey')
-      let g:indentLine_color_term = matchstr(hi_special_key, 'ctermfg=\zs\S\+')
-      let g:indentLine_color_gui  = matchstr(hi_special_key, 'guifg=\zs\S\+')
-    endif
-  endfunction
+  if !has('gui_running')
+    function! s:set_indent_line_color(force)
+      if !exists('g:indentLine_color_term') ||
+        \ !exists('g:indentLine_color_gui') || a:force
+        let hi_special_key          = s:get_highlight('SpecialKey')
+        let g:indentLine_color_term = matchstr(hi_special_key, 'ctermfg=\zs\S\+')
+        let g:indentLine_color_gui  = matchstr(hi_special_key, 'guifg=\zs\S\+')
+      endif
+    endfunction
 
-  augroup MyVimrc
-    autocmd ColorScheme *
-      \ call s:set_indent_line_color(1)
-    autocmd FileType *
-      \ let b:indentLine_enabled = &expandtab
-  augroup END
+    augroup MyVimrc
+      autocmd VimEnter *
+        \ call s:set_indent_line_color(0)
+      autocmd ColorScheme *
+        \ call s:set_indent_line_color(1)
+      autocmd FileType *
+        \ if !exists('b:indentLine_enabled') || b:indentLine_enabled != &expandtab |
+        \   execute 'IndentLinesToggle' |
+        \ endif
+      autocmd Syntax *
+        \ if !exists('b:indentLine_enabled') || b:indentLine_enabled |
+        \   execute 'IndentLinesReset' |
+        \ endif
+    augroup END
+  endif
 endif
 unlet! s:bundle
 "}}}

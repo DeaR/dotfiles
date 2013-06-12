@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 02:49:47 DeaR>
+" @timestamp   <2013-06-12 17:49:12 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -178,5 +178,78 @@ autocmd MyGVimrc GUIEnter *
 " From Example: {{{
 map  <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
+"}}}
+"}}}
+
+"=============================================================================
+" Vim Script: {{{
+
+"-----------------------------------------------------------------------------
+" Functions Of Highlight: {{{
+function! s:get_highlight(hi)
+  redir => hl
+    silent execute 'highlight' a:hi
+  redir END
+  let hl = substitute(hl, '[\r\n]', ' ', 'g')
+  return matchstr(hl, 'xxx\zs.*$')
+endfunction
+"}}}
+
+"-----------------------------------------------------------------------------
+" Highlight Ideographic Space: {{{
+function! s:set_ideographic_space(force)
+  if !exists('s:hi_ideographic_space') || a:force
+    silent! let s:hi_ideographic_space = join([
+      \ s:get_highlight('SpecialKey'),
+      \ 'term=underline cterm=underline gui=underline'])
+  endif
+
+  if exists('s:hi_ideographic_space')
+    execute 'highlight IdeographicSpace' s:hi_ideographic_space
+    syntax match IdeographicSpace "　" display containedin=ALL
+  endif
+endfunction
+
+augroup MyGVimrc
+  autocmd ColorScheme *
+    \ call s:set_ideographic_space(1)
+  autocmd Syntax *
+    \ call s:set_ideographic_space(0)
+augroup END
+"}}}
+"}}}
+
+"=============================================================================
+" Plugins: {{{
+
+"-----------------------------------------------------------------------------
+" IndentLine: {{{
+silent! let s:bundle = neobundle#get('indentLine')
+if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+  function! s:set_indent_line_color(force)
+    if !exists('g:indentLine_color_term') ||
+      \ !exists('g:indentLine_color_gui') || a:force
+      let hi_special_key          = s:get_highlight('SpecialKey')
+      let g:indentLine_color_term = matchstr(hi_special_key, 'ctermfg=\zs\S\+')
+      let g:indentLine_color_gui  = matchstr(hi_special_key, 'guifg=\zs\S\+')
+    endif
+  endfunction
+
+  augroup MyGVimrc
+    autocmd GUIEnter *
+      \ call s:set_indent_line_color(0)
+    autocmd ColorScheme *
+      \ call s:set_indent_line_color(1)
+    autocmd FileType *
+      \ if !exists('b:indentLine_enabled') || b:indentLine_enabled != &expandtab |
+      \   execute 'IndentLinesToggle' |
+      \ endif
+    autocmd Syntax *
+      \ if !exists('b:indentLine_enabled') || b:indentLine_enabled |
+      \   execute 'IndentLinesReset' |
+      \ endif
+  augroup END
+endif
+unlet! s:bundle
 "}}}
 "}}}
