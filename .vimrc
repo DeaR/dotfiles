@@ -2345,7 +2345,7 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
       silent! iunmap <buffer> >
       silent! iunmap <buffer> :
 
-      if neobundle#is_installed('vim-smartchr')
+      if neobundle#is_installed('smartchr')
         " from ~/.vim/bundle-settings/vim-smartchr/*.vim
         inoremap <buffer><expr> >
           \ search('\V ->\? \%#', 'bcn') ?
