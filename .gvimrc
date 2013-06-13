@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-13 11:57:55 DeaR>
+" @timestamp   <2013-06-13 19:42:35 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -165,10 +165,15 @@ if 0 && has('directx')
   set renderoptions=type:directx
 endif
 
-" Vim size max
-autocmd MyGVimrc GUIEnter *
-  \ winpos 0 0 |
-  \ set lines=999 columns=9999
+" Full screen
+if has('win32') || has('win64')
+  autocmd MyGVimrc GUIEnter *
+    \ simalt ~x
+else
+  autocmd MyGVimrc GUIEnter *
+    \ winpos 0 0 |
+    \ set lines=999 columns=9999
+endif
 "}}}
 
 "=============================================================================
