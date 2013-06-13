@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-13 23:54:21 DeaR>
+" @timestamp   <2013-06-14 00:35:13 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1071,7 +1071,6 @@ set history=100
 " Backup
 set backup
 set nowritebackup
-set backupcopy=yes
 set backupdir^=~/.bak
 set backupskip+=*.clean,*/.hg/*,*/.git/*,*/.svn/*
 set patchmode=.clean
