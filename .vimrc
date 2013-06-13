@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-13 18:56:47 DeaR>
+" @timestamp   <2013-06-13 20:04:46 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2886,8 +2886,6 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('qfixhowm')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
-    let g:mygrepprg                      = 'internal'
-    let g:myjpgrepprg                    = 'agrep.vim'
     let g:QFix_Height                    = 20
     let g:QFix_PreviewHeight             = 20
     let g:MyGrep_MenuBar                 = 0
@@ -2895,6 +2893,14 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
     let g:MyGrep_Resultfile              = expand('~/.local/.qfgrep.txt')
     let g:MyGrep_ExcludeReg              =
       \ '/\.drive\.r/|/\.hg/|/\.git/|/\.svn/'
+    if executable('jvgrep')
+      let g:mygrepprg   = 'jvgrep'
+    elseif executable('grep')
+      let g:mygrepprg   = 'grep'
+    else
+      let g:mygrepprg   = 'internal'
+      let g:myjpgrepprg = 'agrep.vim'
+    endif
 
     let g:howm_dir                = expand('~/howm')
     let g:howm_filename           = '%Y/%m/%Y-%m-%d-%H%M%S.howm'
