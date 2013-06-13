@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-13 20:11:23 DeaR>
+" @timestamp   <2013-06-13 23:54:21 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -492,6 +492,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {'filetypes' : 'php'}}
 
   NeoBundleLazy '2072/PHP-Indenting-for-VIm', {
+    \ 'name' : 'PHP-Indenting-for-VIm',
     \ 'autoload' : {'filetypes' : 'php'}}
 
   NeoBundleLazy 'osyo-manga/vim-precious', {
@@ -2170,7 +2171,7 @@ filetype plugin indent on
 "-----------------------------------------------------------------------------
 " AlterCommand: {{{
 silent! let s:bundle = neobundle#get('altercmd')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     call altercmd#load()
     for [key, value] in items(s:altercmd_define)
@@ -2194,7 +2195,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Altr: {{{
 silent! let s:bundle = neobundle#get('altr')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   nmap <F2>  <Plug>(altr-forward)
   nmap g<F2> <Plug>(altr-back)
 endif
@@ -2204,7 +2205,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " AutoDate: {{{
 silent! let s:bundle = neobundle#get('autodate')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:autodate_lines        = 10
     let g:autodate_format       = '%Y-%m-%d %H:%M:%S DeaR'
@@ -2220,7 +2221,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " AutoFmt: {{{
 silent! let s:bundle = neobundle#get('autofmt')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   set formatexpr=autofmt#japanese#formatexpr()
 endif
 unlet! s:bundle
@@ -2229,7 +2230,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " CamelCaseMotion: {{{
 silent! let s:bundle = neobundle#get('camelcasemotion')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   NOXmap w  <Plug>CamelCaseMotion_w
   NOXmap b  <Plug>CamelCaseMotion_b
   NOXmap e  <Plug>CamelCaseMotion_e
@@ -2259,7 +2260,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Clang Complete: {{{
 silent! let s:bundle = neobundle#get('clang_complete')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:clang_complete_auto          = 0
     let g:clang_auto_select            = 0
@@ -2335,7 +2336,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Clever F: {{{
 silent! let s:bundle = neobundle#get('clever-f')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:clever_f_not_overwrites_standard_mappings = 1
   endfunction
@@ -2351,7 +2352,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " ColumnJump: {{{
 silent! let s:bundle = neobundle#get('columnjump')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   nmap <C-K> <Plug>(columnjump-backward)zz
   nmap <C-J> <Plug>(columnjump-forward)zz
 endif
@@ -2361,7 +2362,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " EchoDoc: {{{
 silent! let s:bundle = neobundle#get('echodoc')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     call echodoc#enable()
   endfunction
@@ -2372,7 +2373,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Fold Balloon: {{{
 silent! let s:bundle = neobundle#get('foldballoon')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   set ballooneval
   set balloonexpr=foldballoon#balloonexpr()
 endif
@@ -2382,7 +2383,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Gitv: {{{
 silent! let s:bundle = neobundle#get('gitv')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     call fugitive#detect(expand('%:p'))
   endfunction
@@ -2393,7 +2394,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Grex: {{{
 silent! let s:bundle = neobundle#get('grex')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   NXmap sd <Plug>(operator-grex-delete)
   NXmap sy <Plug>(operator-grex-yank)
 endif
@@ -2403,7 +2404,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " GUndo: {{{
 silent! let s:bundle = neobundle#get('gundo')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     if has('python3')
       let g:gundo_prefer_python3 = 1
@@ -2420,7 +2421,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " IndentLine: {{{
 silent! let s:bundle = neobundle#get('indentLine')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:indentLine_char     = '|'
     let g:indentLine_maxLines = 10000
@@ -2463,7 +2464,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Jedi: {{{
 silent! let s:bundle = neobundle#get('jedi')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:jedi#auto_initialization    = 0
     let g:jedi#auto_vim_configuration = 0
@@ -2480,7 +2481,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " JsComplete: {{{
 silent! let s:bundle = neobundle#get('jscomplete')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:jscomplete_use = ['dom', 'moz', 'xpcom', 'es6th']
   endfunction
@@ -2491,7 +2492,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Kwbdi: {{{
 silent! let s:bundle = neobundle#get('kwbdi')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   nmap ;c <Plug>Kwbd
 endif
 unlet! s:bundle
@@ -2500,7 +2501,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " MapList: {{{
 silent! let s:bundle = neobundle#get('maplist')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:maplist_mode_length  = 4
     let g:maplist_key_length   = 50
@@ -2513,7 +2514,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Narrow: {{{
 silent! let s:bundle = neobundle#get('narrow')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   xnoremap <Leader>n :Narrow<CR>
   nnoremap <Leader>w :Widen<CR>
 endif
@@ -2523,7 +2524,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " NeoBundle: {{{
 silent! let s:bundle = neobundle#get('neobundle')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:neobundle_git_gc(names)
     let names   = split(a:names)
     let bundles =
@@ -2564,7 +2565,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " NeoComplCache: {{{
 silent! let s:bundle = neobundle#get('neocomplcache')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:neocomplcache_enable_at_startup            = 1
     let g:neocomplcache_enable_auto_select           = 0
@@ -2660,7 +2661,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " NeoComplete: {{{
 silent! let s:bundle = neobundle#get('neocomplete')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#enable_at_startup            = 1
     let g:neocomplete#enable_auto_select           = 0
@@ -2755,7 +2756,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " NeoSnippet: {{{
 silent! let s:bundle = neobundle#get('neosnippet')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:neosnippet#snippets_directory = expand('~/.vim/snippets')
     if !exists('g:neosnippet#disable_runtime_snippets')
@@ -2777,7 +2778,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " OmniSharp: {{{
 silent! let s:bundle = neobundle#get('Omnisharp')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:OmniSharp_typeLookupInPreview = 0
     let g:OmniSharp_timeout             = 5
@@ -2792,7 +2793,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Operator Camelize: {{{
 silent! let s:bundle = neobundle#get('operator-camelize')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   NXmap sc <Plug>(operator-camelize)
   NXmap sC <Plug>(operator-decamelize)
 endif
@@ -2802,7 +2803,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Operator HTML Escape: {{{
 silent! let s:bundle = neobundle#get('operator-html-escape')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   NXmap sh <Plug>(operator-html-escape)
   NXmap sH <Plug>(operator-html-unescape)
 endif
@@ -2812,7 +2813,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Operator Replace: {{{
 silent! let s:bundle = neobundle#get('operator-replace')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   NXmap ss <Plug>(operator-replace)
 endif
 unlet! s:bundle
@@ -2821,7 +2822,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Operator Sort: {{{
 silent! let s:bundle = neobundle#get('operator-sort')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   NXmap sS <Plug>(operator-sort)
 endif
 unlet! s:bundle
@@ -2830,7 +2831,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " ParaJump: {{{
 silent! let s:bundle = neobundle#get('parajump')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   nmap { <Plug>(parajump-backward)zz
   nmap } <Plug>(parajump-forward)zz
 endif
@@ -2840,7 +2841,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " PerlOmni: {{{
 silent! let s:bundle = neobundle#get('perlomni')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     if has('win32') || has('win64')
       let $PATH = join([substitute(a:bundle.path, '/', '\\', 'g'), '\bin;', $PATH], '')
@@ -2858,7 +2859,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " PHP Complete: {{{
 silent! let s:bundle = neobundle#get('phpcomplete')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   call extend(s:neocompl_force_omni_patterns, {
     \ 'php' : '[^.[:digit:] *\t]->\|\h\w*::'})
 endif
@@ -2868,7 +2869,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Precious: {{{
 silent! let s:bundle = neobundle#get('precious')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_precious_no_default_key_mappings = 1
     let g:precious_enable_switchers                = {
@@ -2886,7 +2887,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " QFixHowm: {{{
 silent! let s:bundle = neobundle#get('qfixhowm')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:QFix_Height                    = 20
     let g:QFix_PreviewHeight             = 20
@@ -2930,7 +2931,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " QuickRun: {{{
 silent! let s:bundle = neobundle#get('quickrun')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:quickrun_no_default_key_mappings = 1
 
@@ -3039,7 +3040,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Ref: {{{
 silent! let s:bundle = neobundle#get('ref')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:ref_no_default_key_mappings = 1
     let g:ref_cache_dir               = expand('~/local/.vim_ref_cache')
@@ -3053,7 +3054,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Ruby: {{{
 silent! let s:bundle = neobundle#get('ruby')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   call extend(s:neocompl_force_omni_patterns, {
     \ 'ruby' : '[^.[:digit:] *\t]\.\|\h\w*::'})
 endif
@@ -3063,7 +3064,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " SaveVers: {{{
 silent! let s:bundle = neobundle#get('savevers')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:savevers_max          = 99
     let g:savevers_dirs         = &backupdir
@@ -3083,7 +3084,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Singleton: {{{
 silent! let s:bundle = neobundle#get('singleton')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:singleton#opener = 'drop'
   endfunction
@@ -3094,7 +3095,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " SmartChr: {{{
 silent! let s:bundle = neobundle#get('smartchr')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:cmdwin_enter_functions['*'].SmartChr()
     silent! iunmap <buffer> =
     silent! iunmap <buffer> ~
@@ -3122,7 +3123,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Surround: {{{
 silent! let s:bundle = neobundle#get('surround')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:surround_no_mappings = 1
   endfunction
@@ -3145,7 +3146,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Switch: {{{
 silent! let s:bundle = neobundle#get('switch')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:switch_no_builtins        = 1
     let g:switch_custom_definitions = [
@@ -3299,7 +3300,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TComment: {{{
 silent! let s:bundle = neobundle#get('tcomment')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:tcommentTextObjectInlineComment = ''
   endfunction
@@ -3327,7 +3328,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextManipilation: {{{
 silent! let s:bundle = neobundle#get('textmanip')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   NXmap <M-p> <Plug>(textmanip-duplicate-down)
   NXmap <M-P> <Plug>(textmanip-duplicate-up)
   xmap  <M-j> <Plug>(textmanip-move-down)
@@ -3341,7 +3342,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Between: {{{
 silent! let s:bundle = neobundle#get('textobj-between')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_between_no_default_key_mappings = 1
   endfunction
@@ -3355,7 +3356,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Comment: {{{
 silent! let s:bundle = neobundle#get('textobj-comment')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_comment_no_default_key_mappings = 1
   endfunction
@@ -3369,7 +3370,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Continuous Line: {{{
 silent! let s:bundle = neobundle#get('textobj-continuous-line')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_continuous_line_no_default_key_mappings = 1
     let g:textobj_continuous_line_no_default_mappings     = 1
@@ -3381,7 +3382,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj DateTime: {{{
 silent! let s:bundle = neobundle#get('textobj-datetime')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_datetime_no_default_key_mappings = 1
 
@@ -3406,7 +3407,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Diff: {{{
 silent! let s:bundle = neobundle#get('textobj-diff')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_diff_no_default_key_mappings = 1
 
@@ -3437,7 +3438,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Entrie: {{{
 silent! let s:bundle = neobundle#get('textobj-entire')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_entire_no_default_key_mappings = 1
   endfunction
@@ -3451,7 +3452,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Fold: {{{
 silent! let s:bundle = neobundle#get('textobj-fold')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_fold_no_default_key_mappings = 1
   endfunction
@@ -3465,7 +3466,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Function: {{{
 silent! let s:bundle = neobundle#get('textobj-function')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_function_no_default_key_mappings = 1
   endfunction
@@ -3476,7 +3477,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Ifdef: {{{
 silent! let s:bundle = neobundle#get('textobj-ifdef')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_ifdef_no_default_key_mappings = 1
   endfunction
@@ -3487,7 +3488,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj IndBlock: {{{
 silent! let s:bundle = neobundle#get('textobj-indblock')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_indblock_no_default_key_mappings = 1
   endfunction
@@ -3503,7 +3504,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Indent: {{{
 silent! let s:bundle = neobundle#get('textobj-indent')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_indent_no_default_key_mappings = 1
   endfunction
@@ -3519,7 +3520,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj JaBraces: {{{
 silent! let s:bundle = neobundle#get('textobj-jabraces')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_jabraces_no_default_key_mappings = 1
 
@@ -3572,7 +3573,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj LastInserted: {{{
 silent! let s:bundle = neobundle#get('textobj-lastinserted')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_lastinserted_no_default_key_mappings = 1
   endfunction
@@ -3586,7 +3587,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj LastPat: {{{
 silent! let s:bundle = neobundle#get('textobj-lastpat')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_lastpat_no_default_key_mappings = 1
   endfunction
@@ -3602,7 +3603,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Line: {{{
 silent! let s:bundle = neobundle#get('textobj-line')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_line_no_default_key_mappings = 1
   endfunction
@@ -3616,7 +3617,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Parameter: {{{
 silent! let s:bundle = neobundle#get('textobj-parameter')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_parameter_no_default_key_mappings = 1
   endfunction
@@ -3630,7 +3631,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj PHP: {{{
 silent! let s:bundle = neobundle#get('textobj-php')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_php_no_default_key_mappings = 1
   endfunction
@@ -3641,7 +3642,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Python: {{{
 silent! let s:bundle = neobundle#get('textobj-python')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_python_no_default_key_mappings = 1
   endfunction
@@ -3652,7 +3653,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj RubyBlock: {{{
 silent! let s:bundle = neobundle#get('textobj-rubyblock')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_rubyblock_no_default_key_mappings = 1
   endfunction
@@ -3663,7 +3664,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Sigil: {{{
 silent! let s:bundle = neobundle#get('textobj-sigil')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_sigil_no_default_key_mappings = 1
   endfunction
@@ -3674,7 +3675,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Space: {{{
 silent! let s:bundle = neobundle#get('textobj-space')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_space_no_default_key_mappings = 1
   endfunction
@@ -3688,7 +3689,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Syntax: {{{
 silent! let s:bundle = neobundle#get('textobj-syntax')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_syntax_no_default_key_mappings = 1
   endfunction
@@ -3702,7 +3703,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Underscore: {{{
 silent! let s:bundle = neobundle#get('textobj-underscore')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_underscore_no_default_key_mappings = 1
   endfunction
@@ -3716,7 +3717,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " TextObj Url: {{{
 silent! let s:bundle = neobundle#get('textobj-url')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_url_no_default_key_mappings = 1
   endfunction
@@ -3730,7 +3731,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Unite: {{{
 silent! let s:bundle = neobundle#get('unite')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:unite_data_directory             = expand('~/.local/.unite')
     let g:unite_enable_start_insert        = 1
@@ -3944,7 +3945,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " Unite Mark: {{{
 silent! let s:bundle = neobundle#get('unite-mark')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:unite_source_mark_marks =
       \ join(s:mark_char, '') . toupper(join(s:mark_char, ''))
@@ -3956,7 +3957,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " VerifyEnc: {{{
 silent! let s:bundle = neobundle#get('verifyenc')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   autocmd MyVimrc BufReadPre *
     \ NeoBundleSource verifyenc
 endif
@@ -3966,7 +3967,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " VimFiler: {{{
 silent! let s:bundle = neobundle#get('vimdoc-ja')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   set helplang^=ja
 endif
 unlet! s:bundle
@@ -3975,7 +3976,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " VimFiler: {{{
 silent! let s:bundle = neobundle#get('vimfiler')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:vimfiler_data_directory      = expand('~/.local/.vimfiler')
     let g:vimfiler_as_default_explorer = 1
@@ -3987,7 +3988,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " VimProc: {{{
 silent! let s:bundle = neobundle#get('vimproc')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     if s:is_android
       let g:vimproc_dll_path = expand('/data/local/vimproc_unix.so')
@@ -4000,7 +4001,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " VimShell: {{{
 silent! let s:bundle = neobundle#get('vimshell')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:vimshell_temporary_directory      = expand('~/.local/.vimshell')
     let g:vimshell_vimshrc_path             = expand('~/.vim/.vimshrc')
@@ -4054,7 +4055,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " VisualStar: {{{
 silent! let s:bundle = neobundle#get('visualstar')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:visualstar_no_default_key_mappings = 1
   endfunction
@@ -4078,7 +4079,7 @@ unlet! s:bundle
 "-----------------------------------------------------------------------------
 " ZenCoding: {{{
 silent! let s:bundle = neobundle#get('zencoding')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
+if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
     let g:user_zen_settings   = {
       \ 'lang' : 'ja',
