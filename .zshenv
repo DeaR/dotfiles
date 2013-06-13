@@ -4,7 +4,7 @@
 # @description Zsh settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-12 20:33:07 DeaR>
+# @timestamp   <2013-06-13 15:02:09 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -104,8 +104,10 @@ fi
 if [ -n "${GOROOT}" -a -d "${GOROOT}/bin" ]; then
 	export PATH="${GOROOT}/bin:${PATH}"
 fi
-export GOPATH="${HOME}/go"
-export PATH="${GOPATH}/bin:${PATH}"
+if [ -z "${GOPATH}" ]; then
+	export GOPATH="${HOME}/go"
+	export PATH="${GOPATH}/bin:${PATH}"
+fi
 #}}}
 
 #-----------------------------------------------------------------------------
