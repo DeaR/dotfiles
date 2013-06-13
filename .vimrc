@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-13 17:40:23 DeaR>
+" @timestamp   <2013-06-13 17:58:19 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1871,22 +1871,22 @@ nnoremap <silent> mC :<C-U>call <SID>clear_file_marks()<CR>
 " Smart BOL, EOL: {{{
 function! s:smart_bol()
   let col = col('.')
-  execute 'normal!'
+  return
     \ col <= 1 || col > match(getline('.'), '^\s*\zs') + 1 ?
     \   '^' :
     \   '0'
 endfunction
 function! s:smart_eol()
-  execute 'normal!'
+  return
     \ col('.') < col('$') - 1 ?
     \   '$' :
     \   'g_'
 endfunction
 
-NOXnoremap <silent> H :<C-U>call <SID>smart_bol()<CR>
-NOXnoremap <silent> L :<C-U>call <SID>smart_eol()<CR>
-inoremap <silent> <M-H> <C-O>:<C-U>call <SID>smart_bol()<CR>
-inoremap <silent> <M-L> <C-O>:<C-U>call <SID>smart_eol()<CR>
+NOXnoremap <silent><expr> H <SID>smart_bol()
+NOXnoremap <silent><expr> L <SID>smart_eol()
+inoremap <silent><expr> <M-H> '<C-O>' . <SID>smart_bol()
+inoremap <silent><expr> <M-L> '<C-O>' . <SID>smart_eol()
 "}}}
 
 "-----------------------------------------------------------------------------
