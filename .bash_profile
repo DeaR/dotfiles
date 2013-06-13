@@ -102,8 +102,10 @@ fi
 if [ -n "${GOROOT}" -a -d "${GOROOT}/bin" ]; then
 	export PATH="${GOROOT}/bin:${PATH}"
 fi
-export GOPATH="${HOME}/go"
-export PATH="${GOPATH}/bin:${PATH}"
+if [ -z "${GOPATH}" ]; then
+	export GOPATH="${HOME}/go"
+	export PATH="${GOPATH}/bin:${PATH}"
+fi
 #}}}
 
 #-----------------------------------------------------------------------------

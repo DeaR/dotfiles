@@ -4,7 +4,7 @@
 # @description Bash interactive settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-07 14:37:30 DeaR>
+# @timestamp   <2013-06-13 14:51:21 DeaR>
 
 #-----------------------------------------------------------------------------
 # Alias: {{{
@@ -26,5 +26,21 @@ if hash gmake; then
 	alias make="gmake"
 elif hash mingw32-make; then
 	alias make="mingw32-make"
+fi
+#}}}
+
+#-----------------------------------------------------------------------------
+# Golang: {{{
+if hash go 2> /dev/null; then
+	function go_windows_386 {
+		GOOS="windows"
+		GOARCH="386"
+		go $@
+	}
+	function go_windows_amd64 {
+		GOOS="windows"
+		GOARCH="amd64"
+		go $@
+	}
 fi
 #}}}
