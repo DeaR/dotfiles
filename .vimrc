@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-13 16:37:52 DeaR>
+" @timestamp   <2013-06-13 16:39:10 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -221,7 +221,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {'filetypes' : 'arm'},
     \ 'script_type' : 'syntax'}
 
-  NeoBundleLazy 'autodate.vim'
+  NeoBundle 'autodate.vim'
 
   NeoBundleLazy 'vim-jp/autofmt'
 
@@ -2216,9 +2216,6 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
       \ '\c\%(@\?time[-[:space:]]*stamp\s*:\?\|',
       \ 'Last\s*\%(Changed\?\|Updated\?\|Modified\)\s*:\)\s\+[<"]\?'], '')
   endfunction
-
-  autocmd MyVimrc BufUnload,FileWritePre,BufWritePre *
-    \ NeoBundleSource autodate
 endif
 unlet! s:bundle
 "}}}
