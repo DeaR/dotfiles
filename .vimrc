@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-13 18:36:24 DeaR>
+" @timestamp   <2013-06-13 18:56:47 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -79,8 +79,8 @@ if has('win32') || has('win64')
 endif
 
 " Local runtime
-set runtimepath^=~/.local
-set runtimepath+=~/.local/after
+set runtimepath^=~/.local/.vim
+set runtimepath+=~/.local/.vim/after
 
 " Vimrc autocmd group
 augroup MyVimrc
