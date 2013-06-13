@@ -2454,13 +2454,13 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
       \ if !exists('b:indentLine_enabled') || b:indentLine_enabled != &expandtab |
       \   execute 'IndentLinesToggle' |
       \ endif
-    autocmd Syntax *
-      \ if !exists('b:indentLine_enabled') || b:indentLine_enabled |
-      \   execute 'IndentLinesReset' |
-      \ endif
   augroup END
 
   if !has('gui_running')
+    autocmd MyVimrc Syntax *
+      \ if !exists('b:indentLine_enabled') || b:indentLine_enabled |
+      \   execute 'IndentLinesReset' |
+      \ endif
   endif
 endif
 unlet! s:bundle
