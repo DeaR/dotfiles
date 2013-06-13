@@ -4,7 +4,7 @@
 # @description NYAOS settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-13 14:47:23 DeaR>
+# @timestamp   <2013-06-13 19:14:38 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -191,7 +191,7 @@ if "`which go`" != "" then
       local o = os.getenv('GOOS')
       local a = os.getenv('GOARCH')
       nyaos.putenv('GOOS', 'windows')
-      nyaos.putenv('GOARCH', '386')
+      nyaos.putenv('GOARCH', 'amd64')
       nyaos.exec('go ' .. (table.concat({...} or {}, ' ')))
       nyaos.putenv('GOOS', o)
       nyaos.putenv('GOARCH', a)
