@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 00:35:13 DeaR>
+" @timestamp   <2013-06-14 02:03:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1086,7 +1086,7 @@ endif
 
 " Undo persistence
 set undofile
-set undodir^=~/.local/.vimundo,~/.bak
+set undodir^=~/.bak
 autocmd MyVimrc BufNewFile,BufRead *
   \ if expand('%:p') =~? '\.clean$\|/\.hg/\|/\.git/\|/\.svn/' |
   \   setlocal noundofile |
