@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 19:30:08 DeaR>
+" @timestamp   <2013-06-13 11:36:03 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2046,34 +2046,6 @@ nnoremap <M-a> a<C-R>=<SID>keys_to_insert_one_character()<CR>
 nnoremap <M-A> A<C-R>=<SID>keys_to_insert_one_character()<CR>
 nnoremap <M-i> i<C-R>=<SID>keys_to_insert_one_character()<CR>
 nnoremap <M-I> I<C-R>=<SID>keys_to_insert_one_character()<CR>
-"}}}
-
-"-----------------------------------------------------------------------------
-" Windows Symlink Fix: {{{
-if has('win32') || has('win64')
-  augroup MyVimrc
-    autocmd BufWritePre,FileWritePre,FileAppendPre *
-      \ if filewritable(expand('%')) |
-      \   let b:save_ar = &l:autoread |
-      \ endif
-
-    autocmd BufWritePost,FileWritePost,FileAppendPost *
-      \ if exists('b:save_ar') |
-      \   setlocal autoread |
-      \   if s:has_vimproc() |
-      \     call vimproc#system(join(['attrib -R', expand('%:p')])) |
-      \   else |
-      \     call system(join(['attrib -R', expand('%:p')])) |
-      \   endif |
-      \ endif
-
-    autocmd BufReadPost *
-      \ if exists('b:save_ar') |
-      \   let &l:autoread = b:save_ar |
-      \   unlet b:save_ar |
-      \ endif
-  augroup END
-endif
 "}}}
 
 "-----------------------------------------------------------------------------
