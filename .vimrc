@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-13 20:04:46 DeaR>
+" @timestamp   <2013-06-13 20:11:23 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2871,6 +2871,8 @@ silent! let s:bundle = neobundle#get('precious')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_precious_no_default_key_mappings = 1
+    let g:precious_enable_switchers                = {
+      \ 'help' : {'setfiletype' : 0}}
   endfunction
 
   OXmap iC <Plug>(textobj-precious-i)
