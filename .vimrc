@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-13 17:58:19 DeaR>
+" @timestamp   <2013-06-13 18:36:24 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1264,9 +1264,6 @@ set iskeyword=a-z,A-Z,@,48-57,_
 " Grep
 if executable('jvgrep')
   set grepprg=jvgrep\ --exclude\ .drive.r
-elseif executable('ag')
-  set grepprg=ag\ --nocolor\ --nogroup\ --hidden\ --ignore-dir=.drive.r\
-    \ --ignore-dir=.hg\ --ignore-dir=.git\ -ignore-dir=.svn
 elseif executable('grep')
   set grepprg=grep\ -Hn
 else
@@ -3738,12 +3735,6 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '--exclude .drive.r'
-    elseif executable('ag')
-      let g:unite_source_grep_command       = 'ag'
-      let g:unite_source_grep_recursive_opt = ''
-      let g:unite_source_grep_default_opts  = join([
-        \ '--nocolor --nogroup --hidden --ignore-dir=.drive.r',
-        \ '--ignore-dir=.hg --ignore-dir=.git --ignore-dir=.svn'])
     endif
 
     if !exists('g:unite_source_menu_menus')
