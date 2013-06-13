@@ -2449,36 +2449,37 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
   function! s:bundle.hooks.on_source(bundle)
     let g:indentLine_char     = '|'
     let g:indentLine_maxLines = 10000
+
+    call s:set_indent_line_color(0)
   endfunction
 
   function! s:cmdwin_enter_functions['*'].IndentLine()
     let b:indentLine_enabled = 0
   endfunction
 
-  if !has('gui_running')
-    function! s:set_indent_line_color(force)
-      if !exists('g:indentLine_color_term') ||
-        \ !exists('g:indentLine_color_gui') || a:force
-        let hi_special_key          = s:get_highlight('SpecialKey')
-        let g:indentLine_color_term = matchstr(hi_special_key, 'ctermfg=\zs\S\+')
-        let g:indentLine_color_gui  = matchstr(hi_special_key, 'guifg=\zs\S\+')
-      endif
-    endfunction
+  function! s:set_indent_line_color(force)
+    if !exists('g:indentLine_color_term') ||
+      \ !exists('g:indentLine_color_gui') || a:force
+      let hi_special_key          = s:get_highlight('SpecialKey')
+      let g:indentLine_color_term = matchstr(hi_special_key, 'ctermfg=\zs\S\+')
+      let g:indentLine_color_gui  = matchstr(hi_special_key, 'guifg=\zs\S\+')
+    endif
+  endfunction
 
-    augroup MyVimrc
-      autocmd VimEnter *
-        \ call s:set_indent_line_color(0)
-      autocmd ColorScheme *
-        \ call s:set_indent_line_color(1)
-      autocmd FileType *
-        \ if !exists('b:indentLine_enabled') || b:indentLine_enabled != &expandtab |
-        \   execute 'IndentLinesToggle' |
-        \ endif
-      autocmd Syntax *
-        \ if !exists('b:indentLine_enabled') || b:indentLine_enabled |
-        \   execute 'IndentLinesReset' |
-        \ endif
-    augroup END
+  augroup MyVimrc
+    autocmd ColorScheme *
+      \ call s:set_indent_line_color(1)
+    autocmd FileType *
+      \ if !exists('b:indentLine_enabled') || b:indentLine_enabled != &expandtab |
+      \   execute 'IndentLinesToggle' |
+      \ endif
+    autocmd Syntax *
+      \ if !exists('b:indentLine_enabled') || b:indentLine_enabled |
+      \   execute 'IndentLinesReset' |
+      \ endif
+  augroup END
+
+  if !has('gui_running')
   endif
 endif
 unlet! s:bundle

@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 17:49:12 DeaR>
+" @timestamp   <2013-06-13 11:57:55 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -226,29 +226,10 @@ augroup END
 " IndentLine: {{{
 silent! let s:bundle = neobundle#get('indentLine')
 if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
-  function! s:set_indent_line_color(force)
-    if !exists('g:indentLine_color_term') ||
-      \ !exists('g:indentLine_color_gui') || a:force
-      let hi_special_key          = s:get_highlight('SpecialKey')
-      let g:indentLine_color_term = matchstr(hi_special_key, 'ctermfg=\zs\S\+')
-      let g:indentLine_color_gui  = matchstr(hi_special_key, 'guifg=\zs\S\+')
-    endif
-  endfunction
-
-  augroup MyGVimrc
-    autocmd GUIEnter *
-      \ call s:set_indent_line_color(0)
-    autocmd ColorScheme *
-      \ call s:set_indent_line_color(1)
-    autocmd FileType *
-      \ if !exists('b:indentLine_enabled') || b:indentLine_enabled != &expandtab |
-      \   execute 'IndentLinesToggle' |
-      \ endif
-    autocmd Syntax *
-      \ if !exists('b:indentLine_enabled') || b:indentLine_enabled |
-      \   execute 'IndentLinesReset' |
-      \ endif
-  augroup END
+  autocmd MyGVimrc Syntax *
+    \ if !exists('b:indentLine_enabled') || b:indentLine_enabled |
+    \   execute 'IndentLinesReset' |
+    \ endif
 endif
 unlet! s:bundle
 "}}}
