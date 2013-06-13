@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-13 12:04:26 DeaR>
+" @timestamp   <2013-06-13 16:37:52 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2538,6 +2538,12 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
       \   neobundle#config#search(names)
 
     let cwd = getcwd()
+    let System = function(
+      \ s:has_vimproc() ?
+      \   has('win32') || has('win64') ?
+      \     'vimproc#cmd#system' :
+      \     'vimproc#system' :
+      \   'system')
     try
       for bundle in bundles
         if bundle.type != 'git'
@@ -2546,11 +2552,7 @@ if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
         if isdirectory(bundle.path)
           lcd `=bundle.path`
         endif
-        if s:has_vimproc()
-          call vimproc#system('git gc')
-        else
-          call system('git gc')
-        endif
+        call call(System, ['git gc'])
       endfor
     finally
       if isdirectory(cwd)

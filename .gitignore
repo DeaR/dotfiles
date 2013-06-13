@@ -9,6 +9,7 @@
 .source-highlight/
 bin/
 bin64/
+go/
 howm/
 
 .xyzzy.d/projects.lisp
