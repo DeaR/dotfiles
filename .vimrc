@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 20:32:59 DeaR>
+" @timestamp   <2013-06-14 22:23:04 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1609,27 +1609,6 @@ if has('win32')
   command! -bar -nargs=?
     \ ShellSh
     \ call s:shell_sh(<q-args>)
-
-  function! s:shell_restore()
-    let &shell        = s:save_sh
-    let &shellslash   = s:save_ssl
-    let &shellcmdflag = s:save_shcf
-    let &shellquote   = s:save_shq
-    let &shellxquote  = s:save_sxq
-  endfunction
-  command!
-    \ ShellRestore
-    \ call s:shell_restore()
-
-  function! s:shell_backup()
-    let s:save_sh   = &shell
-    let s:save_ssl  = &shellslash
-    let s:save_shcf = &shellcmdflag
-    let s:save_shq  = &shellquote
-    let s:save_sxq  = &shellxquote
-  endfunction
-  autocmd MyVimrc VimEnter *
-    \ call s:shell_backup()
 endif
 "}}}
 
