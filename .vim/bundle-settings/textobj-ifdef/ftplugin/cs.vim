@@ -4,7 +4,7 @@
 " @description TextObj Ifdef ftplugin for C#
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-07 22:30:44 DeaR>
+" @timestamp   <2013-06-14 17:36:10 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -24,13 +24,13 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! ounmap <buffer> a# |
-  \ silent! xunmap <buffer> a# |
-  \ silent! ounmap <buffer> a3 |
-  \ silent! xunmap <buffer> a3 |
-  \ silent! ounmap <buffer> i# |
-  \ silent! xunmap <buffer> i# |
-  \ silent! ounmap <buffer> i3 |
+  \ silent! ounmap <buffer> a#|
+  \ silent! xunmap <buffer> a#|
+  \ silent! ounmap <buffer> a3|
+  \ silent! xunmap <buffer> a3|
+  \ silent! ounmap <buffer> i#|
+  \ silent! xunmap <buffer> i#|
+  \ silent! ounmap <buffer> i3|
   \ silent! xunmap <buffer> i3'
 
 let &cpo = s:save_cpo

@@ -4,7 +4,7 @@
 " @description SmartChr ftplugin for D
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-12 14:38:23 DeaR>
+" @timestamp   <2013-06-14 17:36:04 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -86,23 +86,23 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! iunmap <buffer> = |
-  \ silent! iunmap <buffer> > |
-  \ silent! iunmap <buffer> / |
+  \ silent! iunmap <buffer> =|
+  \ silent! iunmap <buffer> >|
+  \ silent! iunmap <buffer> /|
   \
-  \ silent! iunmap <buffer> < |
-  \ silent! iunmap <buffer> * |
-  \ silent! iunmap <buffer> + |
+  \ silent! iunmap <buffer> <|
+  \ silent! iunmap <buffer> *|
+  \ silent! iunmap <buffer> +|
   \
-  \ silent! iunmap <buffer> - |
-  \ silent! iunmap <buffer> % |
-  \ silent! iunmap <buffer> ~ |
-  \ silent! iunmap <buffer> : |
-  \ silent! iunmap <buffer> ? |
-  \ silent! iunmap <buffer> ^ |
-  \ silent! iunmap <buffer> & |
-  \ silent! iunmap <buffer> \| |
-  \ silent! iunmap <buffer> < |
+  \ silent! iunmap <buffer> -|
+  \ silent! iunmap <buffer> %|
+  \ silent! iunmap <buffer> ~|
+  \ silent! iunmap <buffer> :|
+  \ silent! iunmap <buffer> ?|
+  \ silent! iunmap <buffer> ^|
+  \ silent! iunmap <buffer> &|
+  \ silent! iunmap <buffer> \||
+  \ silent! iunmap <buffer> <|
   \
   \ silent! iunmap <buffer> ,'
 

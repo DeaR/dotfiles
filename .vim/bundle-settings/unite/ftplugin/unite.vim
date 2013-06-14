@@ -4,7 +4,7 @@
 " @description Unite ftplugin for Unite
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-10 22:11:28 DeaR>
+" @timestamp   <2013-06-14 17:36:12 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -33,13 +33,13 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! nunmap <buffer> <C-J> |
-  \ silent! iunmap <buffer> <C-J> |
-  \ silent! iunmap <buffer> <M-H> |
+  \ silent! nunmap <buffer> <C-J>|
+  \ silent! iunmap <buffer> <C-J>|
+  \ silent! iunmap <buffer> <M-H>|
   \
-  \ silent! nunmap <buffer> <C-S> |
-  \ silent! iunmap <buffer> <C-S> |
-  \ silent! nunmap <buffer> <C-V> |
+  \ silent! nunmap <buffer> <C-S>|
+  \ silent! iunmap <buffer> <C-S>|
+  \ silent! nunmap <buffer> <C-V>|
   \ silent! iunmap <buffer> <C-V>'
 
 let &cpo = s:save_cpo

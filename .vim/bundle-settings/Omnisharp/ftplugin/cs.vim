@@ -4,7 +4,7 @@
 " @description OmniSharp ftplugin for C#
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-07 22:30:44 DeaR>
+" @timestamp   <2013-06-14 17:36:03 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -31,20 +31,20 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! nunmap <buffer> <F5> |
-  \ silent! nunmap <buffer> <Space> |
-  \ silent! nunmap <buffer> gd |
-  \ silent! nunmap <buffer> gD |
+  \ silent! nunmap <buffer> <F5>|
+  \ silent! nunmap <buffer> <Space>|
+  \ silent! nunmap <buffer> gd|
+  \ silent! nunmap <buffer> gD|
   \
-  \ silent! nunmap <buffer> <LocalLeader>c |
-  \ silent! nunmap <buffer> <LocalLeader>g |
-  \ silent! nunmap <buffer> <LocalLeader>t |
-  \ silent! nunmap <buffer> <LocalLeader>r |
+  \ silent! nunmap <buffer> <LocalLeader>c|
+  \ silent! nunmap <buffer> <LocalLeader>g|
+  \ silent! nunmap <buffer> <LocalLeader>t|
+  \ silent! nunmap <buffer> <LocalLeader>r|
   \
-  \ silent! nunmap <buffer> <LocalLeader>a |
-  \ silent! nunmap <buffer> <LocalLeader>A |
-  \ silent! nunmap <buffer> <LocalLeader>s |
-  \ silent! nunmap <buffer> <LocalLeader>S |
+  \ silent! nunmap <buffer> <LocalLeader>a|
+  \ silent! nunmap <buffer> <LocalLeader>A|
+  \ silent! nunmap <buffer> <LocalLeader>s|
+  \ silent! nunmap <buffer> <LocalLeader>S|
   \ silent! nunmap <buffer> <LocalLeader>R'
 
 let &cpo = s:save_cpo
