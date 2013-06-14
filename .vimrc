@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 18:27:01 DeaR>
+" @timestamp   <2013-06-14 19:24:07 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2160,6 +2160,8 @@ augroup MyVimrc
     \ setfiletype cpp
   autocmd BufNewFile,BufRead *.txt,*.text
     \ setfiletype hybrid
+  autocmd BufNewFile,BufRead *.l,.xyzzy
+    \ setfiletype lisp
   autocmd BufNewFile,BufRead *.md
     \ setfiletype markdown
   autocmd BufNewFile,BufRead *.vb
