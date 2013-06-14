@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 20:10:50 DeaR>
+" @timestamp   <2013-06-14 20:18:40 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -110,28 +110,6 @@ set hlsearch
 " Command line
 set cmdheight=1
 
-" Display cursor line & column
-set cursorline
-set cursorcolumn
-
-" No cursor line & column at other window
-augroup MyGVimrc
-  autocmd BufWinEnter,WinEnter *
-    \ if !exists('b:nocursorline') || !b:nocursorline |
-    \   setlocal cursorline |
-    \ endif |
-    \ if !exists('b:nocursorcolumn') || !b:nocursorcolumn |
-    \   setlocal cursorcolumn |
-    \ endif
-  autocmd BufWinLeave,WinLeave *
-    \ if !exists('b:nocursorline') || !b:nocursorline |
-    \   setlocal nocursorline |
-    \ endif |
-    \ if !exists('b:nocursorcolumn') || !b:nocursorcolumn |
-    \   setlocal nocursorcolumn |
-    \ endif
-augroup END
-
 " Colorscheme
 silent! colorscheme molokai
 
@@ -179,43 +157,5 @@ endif
 " From Example: {{{
 map  <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
-"}}}
-"}}}
-
-"=============================================================================
-" Vim Script: {{{
-
-"-----------------------------------------------------------------------------
-" Functions Of Highlight: {{{
-function! s:get_highlight(hi)
-  redir => hl
-    silent execute 'highlight' a:hi
-  redir END
-  let hl = substitute(hl, '[\r\n]', ' ', 'g')
-  return matchstr(hl, 'xxx\zs.*$')
-endfunction
-"}}}
-
-"-----------------------------------------------------------------------------
-" Highlight Ideographic Space: {{{
-function! s:set_ideographic_space(force)
-  if !exists('s:hi_ideographic_space') || a:force
-    silent! let s:hi_ideographic_space = join([
-      \ s:get_highlight('SpecialKey'),
-      \ 'term=underline cterm=underline gui=underline'])
-  endif
-
-  if exists('s:hi_ideographic_space')
-    execute 'highlight IdeographicSpace' s:hi_ideographic_space
-    syntax match IdeographicSpace "　" display containedin=ALL
-  endif
-endfunction
-
-augroup MyGVimrc
-  autocmd ColorScheme *
-    \ call s:set_ideographic_space(1)
-  autocmd Syntax *
-    \ call s:set_ideographic_space(0)
-augroup END
 "}}}
 "}}}

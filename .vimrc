@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 20:10:11 DeaR>
+" @timestamp   <2013-06-14 20:18:25 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1164,7 +1164,7 @@ if has('conceal')
   set concealcursor=nc
 endif
 
-if &t_Co > 255
+if has('gui_running') || &t_Co > 255
   " Display cursor line & column
   set cursorline
   set cursorcolumn
@@ -1186,7 +1186,9 @@ if &t_Co > 255
       \   setlocal nocursorcolumn |
       \ endif
   augroup END
+endif
 
+if &t_Co > 255
   " Colorscheme
   silent! colorscheme molokai
 endif
@@ -2095,27 +2097,25 @@ augroup END
 
 "-----------------------------------------------------------------------------
 " Highlight Ideographic Space: {{{
-if !has('gui_running')
-  function! s:set_ideographic_space(force)
-    if !exists('s:hi_ideographic_space') || a:force
-      silent! let s:hi_ideographic_space = join([
-        \ s:get_highlight('SpecialKey'),
-        \ 'term=underline cterm=underline gui=underline'])
-    endif
+function! s:set_ideographic_space(force)
+  if !exists('s:hi_ideographic_space') || a:force
+    silent! let s:hi_ideographic_space = join([
+      \ s:get_highlight('SpecialKey'),
+      \ 'term=underline cterm=underline gui=underline'])
+  endif
 
-    if exists('s:hi_ideographic_space')
-      execute 'highlight IdeographicSpace' s:hi_ideographic_space
-      syntax match IdeographicSpace "　" display containedin=ALL
-    endif
-  endfunction
+  if exists('s:hi_ideographic_space')
+    execute 'highlight IdeographicSpace' s:hi_ideographic_space
+    syntax match IdeographicSpace "　" display containedin=ALL
+  endif
+endfunction
 
-  augroup MyVimrc
-    autocmd ColorScheme *
-      \ call s:set_ideographic_space(1)
-    autocmd Syntax *
-      \ call s:set_ideographic_space(0)
-  augroup END
-endif
+augroup MyVimrc
+  autocmd ColorScheme *
+    \ call s:set_ideographic_space(1)
+  autocmd Syntax *
+    \ call s:set_ideographic_space(0)
+augroup END
 "}}}
 
 "-----------------------------------------------------------------------------
