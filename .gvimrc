@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 20:18:40 DeaR>
+" @timestamp   <2013-06-14 20:29:15 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -14,8 +14,6 @@ if !has('vim_starting')
   set guicursor&
 
   set guioptions+=M
-
-  colorscheme default
 
   if filereadable($VIM . '/gvimrc')
     source $VIM/gvimrc

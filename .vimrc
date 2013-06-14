@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 20:18:25 DeaR>
+" @timestamp   <2013-06-14 20:32:59 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -28,10 +28,6 @@ if !has('vim_starting')
   set wildignore&
   set formatoptions&
   set helplang&
-
-  if &t_Co > 255
-    colorscheme default
-  endif
 
   if filereadable($VIM . '/vimrc')
     source $VIM/vimrc
@@ -1158,6 +1154,9 @@ set fillchars=vert:\|
 " Help
 set helpheight=999
 
+" Syntax highlight
+syntax on
+
 " Conceal
 if has('conceal')
   set conceallevel=2
@@ -2173,9 +2172,6 @@ if exists(':NeoBundle')
   endfunction
   call s:load_bundle_settings()
 endif
-
-" Syntax highlight
-syntax on
 
 " Enable plugin
 filetype plugin indent on
