@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 15:46:01 DeaR>
+" @timestamp   <2013-06-14 15:56:10 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -51,13 +51,13 @@ if has('multi_byte')
 endif
 
 " Language
-if has('multi_lang') && (has('win32') || has('win64'))
+if has('win32') && has('multi_lang')
   language japanese
   language time C
 endif
 
 " Singleton
-if has('vim_starting') && has('clientserver') && argc()
+if argc() && has('clientserver') && has('vim_starting')
   let s:running_vim_list = filter(
     \ split(serverlist(), '\n'),
     \ 'v:val !=? v:servername')
@@ -73,7 +73,7 @@ if has('vim_starting') && has('clientserver') && argc()
 endif
 
 " Fix runtimepath for windows
-if has('win32') || has('win64')
+if has('win32')
   set runtimepath^=~/.vim
   set runtimepath+=~/.vim/after
 endif
@@ -169,7 +169,7 @@ if !exists('s:neocompl_vim_completefuncs')
 endif
 
 " VCvarsall.bat
-if has('win32') || has('win64')
+if has('win32')
   let s:save_ssl = &shellslash
   set noshellslash
   if exists('$VS110COMNTOOLS')
@@ -190,7 +190,7 @@ endif
 " NeoBundle: {{{
 if isdirectory(expand('~/.local/bundle/neobundle'))
   let g:neobundle#enable_name_conversion = 1
-  if has('win32') || has('win64')
+  if has('win32')
     let g:neobundle#rm_command = 'rm -rf'
   elseif s:is_android
     let g:neobundle#types#git#default_protocol = 'ssh'
@@ -1081,7 +1081,7 @@ set suffixes+=.clean
 
 " Swap
 set swapfile
-if has('win32') || has('win64')
+if has('win32')
   set directory^=$TEMP,~/.bak
 else
   set directory^=$TMPDIR,~/.bak
@@ -1114,7 +1114,7 @@ set wildmenu
 set wildignore+=*.clean,.drive.r,.hg,.git,.svn
 
 " Shell
-if has('win32') || has('win64')
+if has('win32')
   set shell=sh
   set shellslash
 endif
@@ -1584,7 +1584,7 @@ endif
 
 "-----------------------------------------------------------------------------
 " Shell Setting: {{{
-if has('win32') || has('win64')
+if has('win32')
   function! s:shell_cmd()
     set shell&
     set shellslash&
@@ -2295,7 +2295,7 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
       let g:clang_use_library = 1
     endif
 
-    if has('win32') || has('win64')
+    if has('win32')
       let $PATH = join([substitute(a:bundle.path, '/', '\\', 'g'), '\bin;', $PATH], '')
     else
       let $PATH = join([a:bundle.path, '/bin:', $PATH], '')
@@ -2559,7 +2559,7 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
     let cwd = getcwd()
     let System = function(
       \ s:has_vimproc() ?
-      \   has('win32') || has('win64') ?
+      \   has('win32') ?
       \     'vimproc#cmd#system' :
       \     'vimproc#system' :
       \   'system')
@@ -2867,7 +2867,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('perlomni')
 if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   function! s:bundle.hooks.on_source(bundle)
-    if has('win32') || has('win64')
+    if has('win32')
       let $PATH = join([substitute(a:bundle.path, '/', '\\', 'g'), '\bin;', $PATH], '')
     else
       let $PATH = join([a:bundle.path, '/bin:', $PATH], '')
@@ -4037,7 +4037,7 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
     let g:vimshell_right_prompt             =
       \ 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
 
-    if has('win32') || has('win64')
+    if has('win32')
       if filereadable('C:/Apps/ckw/ckw.exe')
         let g:vimshell_use_terminal_command = 'C:/Apps/ckw/ckw.exe -e'
       endif
