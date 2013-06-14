@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 15:56:10 DeaR>
+" @timestamp   <2013-06-14 17:39:27 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -293,7 +293,14 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'depends' : 'tpope/vim-fugitive'}
 
   NeoBundleLazy 'jnwhiteh/vim-golang', {
-    \ 'autoload' : {'filetypes' : 'go'}}
+    \ 'autoload' : {
+    \   'filetypes' : 'go',
+    \   'commands' : [
+    \     {'name' : 'Godoc',
+    \      'complete' : 'customlist,go#complete#Package'}],
+    \   'mappings' : [['n', '<Plug>(godoc-keyword)']]}}
+  call extend(s:neocompl_vim_completefuncs, {
+    \ 'Godoc' : 'go#complete#Package'})
 
   NeoBundleLazy 'kana/vim-grex', {
     \ 'autoload' : {
@@ -1423,6 +1430,9 @@ nnoremap <M-r> g+
 nnoremap ;w :<C-U>update<CR>
 nnoremap ;W :<C-U>wall<CR>
 
+" Delete all buffer
+nnoremap ;C :<C-U>confirm 1,$bdelete<CR>
+
 " Start Visual-mode with the same area
 onoremap gv :<C-U>normal! gv<CR>
 
@@ -2518,6 +2528,8 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
     silent execute "normal \<Plug>Kwbd"
   endfunction
   nnoremap ;c :<C-U>call <SID>kwbd()<CR>
+else
+  nnoremap ;c :<C-U>confirm bdelete<CR>
 endif
 unlet! s:bundle
 "}}}
