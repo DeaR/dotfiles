@@ -4,7 +4,7 @@
 " @description SmartChr ftplugin for Zimbu
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 19:04:18 DeaR>
+" @timestamp   <2013-06-14 19:06:04 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -41,6 +41,7 @@ inoremap <buffer><expr> \| smartchr#one_of(' \| ', ' \|\| ', '\|')
 inoremap <buffer><expr> <  smartchr#one_of(' < ',  ' << ',   '<')
 inoremap <buffer><expr> >  smartchr#one_of(' > ',  ' >> ',   '>')
 
+inoremap <buffer><expr> ;  smartchr#one_of('; ',   ';')
 inoremap <buffer><expr> ,  smartchr#one_of(', ',   ',')
 
 inoremap <buffer><expr> .  smartchr#one_of('.',    ' .. ')
@@ -67,6 +68,7 @@ let b:undo_ftplugin .= '
   \ silent! iunmap <buffer> <|
   \ silent! iunmap <buffer> >|
   \
+  \ silent! iunmap <buffer> ;|
   \ silent! iunmap <buffer> ,'
 
 let &cpo = s:save_cpo
