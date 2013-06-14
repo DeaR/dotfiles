@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 14:59:41 DeaR>
+" @timestamp   <2013-06-14 15:18:50 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -304,7 +304,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'depends' : 'kana/vim-operator-user'}
 
   if has('python') || has('python3')
-    NeoBundleLazy 'bitbucket:sjl/gundo.vim', {
+    NeoBundleLazy 'sjl/gundo.vim', {
       \ 'autoload' : {
       \   'commands' : [
       \     'GundoToggle', 'GundoShow', 'GundoHide', 'GundoRenderGraph']}}
