@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 11:52:01 DeaR>
+" @timestamp   <2013-06-14 14:59:41 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1684,6 +1684,9 @@ endif
 command!
   \ CdCurrent
   \ cd %:p:h
+command!
+  \ LcdCurrent
+  \ lcd %:p:h
 command! -nargs=1 -complete=file
   \ Diff
   \ vertical diffsplit <args>
@@ -1691,7 +1694,8 @@ command!
   \ Undiff
   \ setlocal nodiff scrollbind< wrap< cursorbind<
 
-nnoremap ;d :<C-U>CdCurrent<CR>
+nnoremap ;D :<C-U>CdCurrent<CR>
+nnoremap ;d :<C-U>LcdCurrent<CR>
 nnoremap <F12> :<C-U>Undiff<CR>
 "}}}
 
@@ -2495,7 +2499,25 @@ unlet! s:bundle
 " Kwbdi: {{{
 silent! let s:bundle = neobundle#get('kwbdi')
 if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
-  nmap ;c <Plug>Kwbd
+  function! s:kwbd()
+    if v:lang =~? '^ja'
+      let msg = join(['変更を "', expand('%:t'), '" に保存しますか?'], '')
+      let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
+    else
+      let msg = join(['Save changes to "', expand('%:t'), '"?'], '')
+      let choices = "&Yes\n&No\n&Cancel"
+    endif
+    if &modified
+      let ret = confirm(msg, choices, 1, 'Question')
+      if ret == 1
+        write
+      elseif ret == 3
+        return
+      endif
+    endif
+    silent execute "normal \<Plug>Kwbd"
+  endfunction
+  nnoremap ;c :<C-U>call <SID>kwbd()<CR>
 endif
 unlet! s:bundle
 "}}}
