@@ -1,10 +1,10 @@
 " -*- mode: vimrc; coding: unix -*-
 
 " @name        zimbu.vim
-" @description SmartChr ftplugin for Go
+" @description SmartChr ftplugin for Zimbu
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 19:00:43 DeaR>
+" @timestamp   <2013-06-14 19:04:18 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
