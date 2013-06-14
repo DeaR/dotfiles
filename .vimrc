@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 15:18:50 DeaR>
+" @timestamp   <2013-06-14 15:46:01 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -779,7 +779,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'zaiste/tmux.vim', {
     \ 'autoload' : {'filetypes' : 'tmux'}}
 
-  NeoBundle 'Shougo/unite.vim', 'ver.5.1'
+  NeoBundle 'Shougo/unite.vim'
   call extend(s:neocompl_vim_completefuncs, {
     \ 'Unite'                   : 'unite#complete_source',
     \ 'UniteWithCurrentDir'     : 'unite#complete_source',
