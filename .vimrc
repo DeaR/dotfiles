@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 17:45:15 DeaR>
+" @timestamp   <2013-06-14 18:27:01 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1452,7 +1452,7 @@ nnoremap <expr> <F1>
 nnoremap <expr> g<F1>
   \ &columns < 160 ?
   \   ':<C-U>help ' . expand('<cword>') . '<CR>' :
-  \   ':<C-U>vertical help ' . expand('<cword>') .'<CR>'
+  \   ':<C-U>vertical help ' . expand('<cword>') . '<CR>'
 
 " Search
 nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
