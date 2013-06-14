@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 02:03:39 DeaR>
+" @timestamp   <2013-06-14 11:52:01 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -291,6 +291,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'gregsexton/gitv', {
     \ 'autoload' : {'commands' : 'Gitv'},
     \ 'depends' : 'tpope/vim-fugitive'}
+
+  NeoBundleLazy 'jnwhiteh/vim-golang', {
+    \ 'autoload' : {'filetypes' : 'go'}}
 
   NeoBundleLazy 'kana/vim-grex', {
     \ 'autoload' : {
