@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-13 19:42:35 DeaR>
+" @timestamp   <2013-06-14 19:44:50 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -15,7 +15,6 @@ if !has('vim_starting')
 
   set guioptions+=M
 
-  syntax off
   colorscheme default
 
   if filereadable($VIM . '/gvimrc')
@@ -110,9 +109,6 @@ set hlsearch
 " Display: {{{
 " Command line
 set cmdheight=1
-
-" Syntax highlight
-syntax on
 
 " Display cursor line & column
 set cursorline

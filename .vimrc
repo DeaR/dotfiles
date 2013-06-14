@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 19:24:07 DeaR>
+" @timestamp   <2013-06-14 19:48:31 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -29,9 +29,6 @@ if !has('vim_starting')
   set formatoptions&
   set helplang&
 
-  if &t_Co > 2
-    syntax off
-  endif
   if &t_Co > 255
     colorscheme default
   endif
@@ -1167,9 +1164,9 @@ if has('conceal')
   set concealcursor=nc
 endif
 
-if &t_Co > 2
-  " Syntax highlight
-  syntax on
+if &t_Co > 255
+  " Colorscheme
+  silent! colorscheme molokai
 
   " Display cursor line & column
   set cursorline
@@ -1192,11 +1189,6 @@ if &t_Co > 2
       \   setlocal nocursorcolumn |
       \ endif
   augroup END
-endif
-
-" Colorscheme
-if &t_Co > 255
-  silent! colorscheme molokai
 endif
 "}}}
 
@@ -2181,6 +2173,9 @@ if exists(':NeoBundle')
   endfunction
   call s:load_bundle_settings()
 endif
+
+" Syntax highlight
+syntax on
 
 " Enable plugin
 filetype plugin indent on
