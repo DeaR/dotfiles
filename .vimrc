@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 17:39:27 DeaR>
+" @timestamp   <2013-06-14 17:45:15 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2520,7 +2520,7 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
     if &modified
       let ret = confirm(msg, choices, 1, 'Question')
       if ret == 1
-        write
+        silent write
       elseif ret == 3
         return
       endif
