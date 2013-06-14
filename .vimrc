@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 19:48:31 DeaR>
+" @timestamp   <2013-06-14 20:10:11 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1165,9 +1165,6 @@ if has('conceal')
 endif
 
 if &t_Co > 255
-  " Colorscheme
-  silent! colorscheme molokai
-
   " Display cursor line & column
   set cursorline
   set cursorcolumn
@@ -1189,6 +1186,9 @@ if &t_Co > 255
       \   setlocal nocursorcolumn |
       \ endif
   augroup END
+
+  " Colorscheme
+  silent! colorscheme molokai
 endif
 "}}}
 
@@ -2462,14 +2462,11 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
       \ if !exists('b:indentLine_enabled') || b:indentLine_enabled != &expandtab |
       \   execute 'IndentLinesToggle' |
       \ endif
-  augroup END
-
-  if !has('gui_running')
-    autocmd MyVimrc Syntax *
+    autocmd Syntax *
       \ if !exists('b:indentLine_enabled') || b:indentLine_enabled |
       \   execute 'IndentLinesReset' |
       \ endif
-  endif
+  augroup END
 endif
 unlet! s:bundle
 "}}}

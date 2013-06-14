@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 19:44:50 DeaR>
+" @timestamp   <2013-06-14 20:10:50 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -143,7 +143,7 @@ autocmd MyGVimrc GUIEnter,ColorScheme *
   \ highlight CursorIM guifg=#000000 guibg=#6495ed
 
 " Font
-if has('win32') || has('win64')
+if has('win32')
   set guifont=Consolas:h9:cSHIFTJIS
   set guifontwide=MeiryoKe_Console:h9:cSHIFTJIS
   set linespace=0
@@ -162,7 +162,7 @@ if 0 && has('directx')
 endif
 
 " Full screen
-if has('win32') || has('win64')
+if has('win32')
   autocmd MyGVimrc GUIEnter *
     \ simalt ~x
 else
@@ -217,21 +217,5 @@ augroup MyGVimrc
   autocmd Syntax *
     \ call s:set_ideographic_space(0)
 augroup END
-"}}}
-"}}}
-
-"=============================================================================
-" Plugins: {{{
-
-"-----------------------------------------------------------------------------
-" IndentLine: {{{
-silent! let s:bundle = neobundle#get('indentLine')
-if exists('s:bundle') && isdirectory(get(s:bundle, 'path', ''))
-  autocmd MyGVimrc Syntax *
-    \ if !exists('b:indentLine_enabled') || b:indentLine_enabled |
-    \   execute 'IndentLinesReset' |
-    \ endif
-endif
-unlet! s:bundle
 "}}}
 "}}}
