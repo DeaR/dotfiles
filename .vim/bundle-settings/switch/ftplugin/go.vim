@@ -1,10 +1,10 @@
 " -*- mode: vimrc; coding: unix -*-
 
-" @name        Go.vim
+" @name        go.vim
 " @description Switch ftplugin for Go
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 16:55:12 DeaR>
+" @timestamp   <2013-06-14 18:54:38 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
