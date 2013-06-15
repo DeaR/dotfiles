@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 00:25:42 DeaR>
+" @timestamp   <2013-06-16 00:54:09 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2133,7 +2133,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ for [key, value] in items(s:altercmd_define) |
       \   execute 'IAlterCommand <buffer>' key value |
       \ endfor
-
     autocmd User CmdlineEnter
       \ NeoBundleSource altercmd
   augroup END
