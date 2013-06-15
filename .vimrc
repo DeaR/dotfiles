@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 00:54:09 DeaR>
+" @timestamp   <2013-06-16 03:30:13 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1689,7 +1689,6 @@ nnoremap <F9> :<C-U>DiffOrig<CR>
 " Command Line Window: {{{
 function! s:cmdwin_enter()
   nnoremap <buffer><silent> q :<C-U>quit<CR>
-
   let s:save_bs = &backspace
   set backspace=
   startinsert!
@@ -1697,18 +1696,21 @@ endfunction
 function! s:cmdwin_leave()
   let &backspace = s:save_bs
 endfunction
-
-function! s:cmdline_enter(mode)
-  execute "doautocmd <nomodeline> User CmdlineEnter"
-  return a:mode
-endfunction
-
 augroup MyVimrc
   autocmd CmdwinEnter *
     \ call <SID>cmdwin_enter()
   autocmd CmdwinLeave *
     \ call <SID>cmdwin_leave()
 augroup END
+
+function! s:cmdline_enter(mode)
+  if s:has_patch(703, 438)
+    doautocmd <nomodeline> User CmdlineEnter
+  else
+    doautocmd User CmdlineEnter
+  endif
+  return a:mode
+endfunction
 
 if s:cmdwin_enable
   NXnoremap : q:
@@ -3285,6 +3287,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       inoremap <C-_>n       <C-O>q:TCommentAs <C-R>=&ft<CR><Space>
       noremap  <C-_>s       q:TCommentAs <C-R>=&ft<CR>_
       inoremap <C-_>s       <C-O>q:TCommentAs <C-R>=&ft<CR>_
+
       noremap  <Leader>_<Space> q:TComment<Space>
       noremap  <Leader>_a       q:TCommentAs<Space>
       noremap  <Leader>_n       q:TCommentAs <C-R>=&ft<CR><Space>
@@ -3592,8 +3595,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_parameter_no_default_key_mappings = 1
   endfunction
 
-  OXmap a,, <Plug>(textobj-parameter-a)
-  OXmap i,, <Plug>(textobj-parameter-i)
+  OXmap a, <Plug>(textobj-parameter-a)
+  OXmap i, <Plug>(textobj-parameter-i)
 endif
 unlet! s:bundle
 "}}}
