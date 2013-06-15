@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 22:23:04 DeaR>
+" @timestamp   <2013-06-16 00:24:18 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -121,23 +121,6 @@ let g:maplocalleader = '|'
 
 " Command line window
 let s:cmdwin_enable = 1
-
-" Commnad line
-if !exists('s:cmdwin_enter_functions')
-  let s:cmdwin_enter_functions = {
-    \ '*' : {}, ':' : {}, '/' : {}, '?' : {},
-    \ '>' : {}, '@' : {}, '-' : {}, '=' : {}}
-endif
-if !exists('s:cmdwin_leave_functions')
-  let s:cmdwin_leave_functions = {
-    \ '*' : {}, ':' : {}, '/' : {}, '?' : {},
-    \ '>' : {}, '@' : {}, '-' : {}, '=' : {}}
-endif
-if !exists('s:cmdline_enter_functions')
-  let s:cmdline_enter_functions = {
-    \ '*' : {}, ':' : {}, '/' : {}, '?' : {}}
-    " '>' : {}, '@' : {}, '-' : {},
-endif
 
 " AlterCommand
 if !exists('s:altercmd_define')
@@ -1306,6 +1289,7 @@ set softtabstop=4
 set noexpandtab
 set autoindent
 set smartindent
+set copyindent
 set cinoptions=:0,l1,g0,(0,U1,Ws,j1,J1,)20
 
 " Indent By FileType
@@ -1454,8 +1438,10 @@ xnoremap <C-N> :global//print<CR>
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 augroup MyVimrc
-  autocmd CmdwinEnter / inoremap <buffer> / \/
-  autocmd CmdwinEnter ? inoremap <buffer> ? \?
+  autocmd CmdwinEnter /
+    \ inoremap <buffer> / \/
+  autocmd CmdwinEnter ?
+    \ inoremap <buffer> ? \?
 augroup END
 
 " Search Split Window
@@ -1697,56 +1683,27 @@ nnoremap <F9> :<C-U>DiffOrig<CR>
 
 "-----------------------------------------------------------------------------
 " Command Line Window: {{{
-function! s:cmdwin_enter(mode)
+function! s:cmdwin_enter()
   nnoremap <buffer><silent> q :<C-U>quit<CR>
-
-  for key in keys(s:cmdwin_enter_functions['*'])
-    call s:cmdwin_enter_functions['*'][key]()
-  endfor
-  for key in keys(s:cmdwin_enter_functions[a:mode])
-    call s:cmdwin_enter_functions[a:mode][key]()
-  endfor
 
   let s:save_bs = &backspace
   set backspace=
   startinsert!
 endfunction
-function! s:cmdwin_leave(mode)
-  for key in keys(s:cmdwin_leave_functions['*'])
-    call s:cmdwin_leave_functions['*'][key]()
-  endfor
-  for key in keys(s:cmdwin_leave_functions[a:mode])
-    call s:cmdwin_leave_functions[a:mode][key]()
-  endfor
-
+function! s:cmdwin_leave()
   let &backspace = s:save_bs
 endfunction
-function! s:cmdline_enter(mode)
-  for key in keys(s:cmdline_enter_functions['*'])
-    call s:cmdline_enter_functions['*'][key]()
-  endfor
-  for key in keys(s:cmdline_enter_functions[a:mode])
-    call s:cmdline_enter_functions[a:mode][key]()
-  endfor
 
+function! s:cmdline_enter(mode)
+  execute "doautocmd <nomodeline> User CmdlineEnter"
   return a:mode
 endfunction
 
 augroup MyVimrc
-  autocmd CmdwinEnter : call s:cmdwin_enter(':')
-  autocmd CmdwinLeave : call s:cmdwin_leave(':')
-  autocmd CmdwinEnter / call s:cmdwin_enter('/')
-  autocmd CmdwinLeave / call s:cmdwin_leave('/')
-  autocmd CmdwinEnter ? call s:cmdwin_enter('?')
-  autocmd CmdwinLeave ? call s:cmdwin_leave('?')
-  autocmd CmdwinEnter > call s:cmdwin_enter('>')
-  autocmd CmdwinLeave > call s:cmdwin_leave('>')
-  autocmd CmdwinEnter @ call s:cmdwin_enter('@')
-  autocmd CmdwinLeave @ call s:cmdwin_leave('@')
-  autocmd CmdwinEnter - call s:cmdwin_enter('-')
-  autocmd CmdwinLeave - call s:cmdwin_leave('-')
-  autocmd CmdwinEnter = call s:cmdwin_enter('=')
-  autocmd CmdwinLeave = call s:cmdwin_leave('=')
+  autocmd CmdwinEnter *
+    \ call <SID>cmdwin_enter()
+  autocmd CmdwinLeave *
+    \ call <SID>cmdwin_leave()
 augroup END
 
 if s:cmdwin_enable
@@ -2167,15 +2124,15 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
     endfor
   endfunction
 
-  function! s:cmdwin_enter_functions[':'].AlterCommand()
-    for [key, value] in items(s:altercmd_define)
-      execute 'IAlterCommand <buffer>' key value
-    endfor
-  endfunction
+  augroup MyVimrc
+    autocmd CmdwinEnter *
+      \ for [key, value] in items(s:altercmd_define) |
+      \   execute 'IAlterCommand <buffer>' key value |
+      \ endfor
 
-  function! s:cmdline_enter_functions[':'].AlterCommand()
-    NeoBundleSource altercmd
-  endfunction
+    autocmd User CmdlineEnter
+      \ NeoBundleSource altercmd
+  augroup END
 endif
 unlet! s:bundle
 "}}}
@@ -2417,10 +2374,6 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
     call s:set_indent_line_color(0)
   endfunction
 
-  function! s:cmdwin_enter_functions['*'].IndentLine()
-    let b:indentLine_enabled = 0
-  endfunction
-
   function! s:set_indent_line_color(force)
     if !exists('g:indentLine_color_term') ||
       \ !exists('g:indentLine_color_gui') || a:force
@@ -2431,6 +2384,8 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
   endfunction
 
   augroup MyVimrc
+    autocmd CmdwinEnter *
+      \ let b:indentLine_enabled = 0
     autocmd ColorScheme *
       \ call s:set_indent_line_color(1)
     autocmd FileType *
@@ -2624,7 +2579,7 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
     call neocomplcache#initialize()
   endfunction
 
-  function! s:cmdwin_enter_functions['*'].NeoComplCache()
+  function! s:cmdwin_enter_NeoComplCache()
     let b:neocomplcache_sources_list = []
 
     inoremap <buffer><expr> <CR> neocomplcache#close_popup() . '<CR>'
@@ -2643,12 +2598,14 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
       \   '<Esc>:quit<CR>' :
       \   neocomplcache#smart_close_popup() . '<BS>'
 
-    NeoBundleSource neocomplcache
+    call neocomplcache#initialize()
   endfunction
-
-  function! s:cmdwin_enter_functions[':'].NeoComplCache()
-    let b:neocomplcache_sources_list = ['vim_complete']
-  endfunction
+  augroup MyVimrc
+    autocmd CmdwinEnter *
+      \ call <SID>cmdwin_enter_NeoComplCache()
+    autocmd CmdwinEnter :
+      \ let b:neocomplcache_sources_list = ['vim_complete']
+  augroup END
 
   function! s:check_back_space()
     let col = col('.') - 1
@@ -2719,7 +2676,7 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
     call neocomplete#initialize()
   endfunction
 
-  function! s:cmdwin_enter_functions['*'].NeoComplete()
+  function! s:cmdwin_enter_NeoComplete()
     let b:neocomplete_sources = []
 
     inoremap <buffer><expr> <CR> neocomplete#close_popup() . '<CR>'
@@ -2738,12 +2695,15 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
       \   '<Esc>:quit<CR>' :
       \   neocomplete#smart_close_popup() . '<BS>'
 
-    NeoBundleSource neocomplete
-  endfunction
 
-  function! s:cmdwin_enter_functions[':'].NeoComplete()
-    let b:neocomplete_sources = ['vim']
+    call neocomplete#initialize()
   endfunction
+  augroup MyVimrc
+    autocmd CmdwinEnter *
+      \ call <SID>cmdwin_enter_NeoComplete()
+    autocmd CmdwinEnter :
+      \ let b:neocomplete_sources = ['vim']
+  augroup END
 
   function! s:check_back_space()
     let col = col('.') - 1
@@ -3101,7 +3061,7 @@ unlet! s:bundle
 " SmartChr: {{{
 silent! let s:bundle = neobundle#get('smartchr')
 if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
-  function! s:cmdwin_enter_functions['*'].SmartChr()
+  function! s:cmdwin_enter_SmartChr()
     silent! iunmap <buffer> =
     silent! iunmap <buffer> ~
     silent! iunmap <buffer> ?
@@ -3121,6 +3081,8 @@ if exists('s:bundle') && !empty(s:bundle) && !s:bundle.disabled
 
     silent! iunmap <buffer> ,
   endfunction
+  autocmd MyVimrc CmdwinEnter *
+    \ call <SID>cmdwin_enter_SmartChr()
 endif
 unlet! s:bundle
 "}}}
