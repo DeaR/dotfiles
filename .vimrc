@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 00:24:18 DeaR>
+" @timestamp   <2013-06-16 00:25:42 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1402,6 +1402,10 @@ nnoremap Y y$
 " Undo branch
 nnoremap <M-u> g-
 nnoremap <M-r> g+
+
+" New line
+nnoremap <M-o> o<Esc>k
+nnoremap <M-O> O<Esc>j
 
 " Write File
 nnoremap ;w :<C-U>update<CR>
