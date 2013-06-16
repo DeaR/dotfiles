@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 21:46:36 DeaR>
+" @timestamp   <2013-06-16 22:09:53 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2123,8 +2123,7 @@ autocmd MyVimrc BufRead *
 " AlterCommand: {{{
 silent! let s:bundle = neobundle#get('altercmd')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    call altercmd#load()
+  function! s:bundle.hooks.on_post_source(bundle)
     for [key, value] in items(s:altercmd_define)
       execute 'CAlterCommand' key value
     endfor
