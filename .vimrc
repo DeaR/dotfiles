@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 21:23:52 DeaR>
+" @timestamp   <2013-06-16 21:46:36 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1153,92 +1153,6 @@ if has('conceal')
   set conceallevel=2
   set concealcursor=nc
 endif
-
-" Cursor line & column
-if has('gui_running') || &t_Co > 255
-  set cursorline
-  set cursorcolumn
-
-  " No cursor line & column at other window
-  augroup MyVimrc
-    autocmd BufWinEnter,WinEnter *
-      \ if !exists('b:nocursorline') || !b:nocursorline |
-      \   setlocal cursorline |
-      \ endif |
-      \ if !exists('b:nocursorcolumn') || !b:nocursorcolumn |
-      \   setlocal cursorcolumn |
-      \ endif
-    autocmd BufWinLeave,WinLeave *
-      \ if !exists('b:nocursorline') || !b:nocursorline |
-      \   setlocal nocursorline |
-      \ endif |
-      \ if !exists('b:nocursorcolumn') || !b:nocursorcolumn |
-      \   setlocal nocursorcolumn |
-      \ endif
-  augroup END
-endif
-
-" Syntax highlight
-syntax on
-
-" Colorscheme
-if &t_Co > 255
-  silent! colorscheme molokai
-endif
-"}}}
-
-"-----------------------------------------------------------------------------
-" File Encodings: {{{
-if has('multi_byte')
-  let s:enc_jisx0213 = has('iconv') &&
-    \ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
-
-  let &fileencodings = join([
-    \ (s:enc_jisx0213 ? 'iso-2022-jp-3' : 'iso-2022-jp'),
-    \ 'cp932',
-    \ (s:enc_jisx0213 ? 'euc-jisx0213,euc-jp' : 'euc-jp'),
-    \ 'ucs-bom'], ',')
-  if has('guess_encode')
-    set fileencodings^=guess
-  endif
-
-  let s:last_enc = &encoding
-  augroup MyVimrc
-    autocmd EncodingChanged *
-      \ if s:last_enc !=# &encoding |
-      \   let &runtimepath = iconv(&runtimepath, s:last_enc, &encoding) |
-      \   let s:last_enc = &encoding |
-      \ endif
-    autocmd BufReadPost *
-      \ if &modifiable && !search('[^\x00-\x7F]', 'cnw') |
-      \   setlocal fileencoding= |
-      \ endif
-  augroup END
-endif
-"}}}
-
-"-----------------------------------------------------------------------------
-" Status Line: {{{
-set statusline=%<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=
-
-" Display encoding & format
-if has('multi_byte') && has('iconv')
-  function! g:Char2Hex()
-    let c = matchstr(getline('.'), '.', col('.') - 1)
-    let c = iconv(c, &encoding, &fileencoding)
-    return s:byte2hex(s:char2byte(c))
-  endfunction
-  function! s:char2byte(str)
-    return map(range(len(a:str)), 'char2nr(a:str[v:val])')
-  endfunction
-  function! s:byte2hex(bytes)
-    return join(map(copy(a:bytes), 'printf("%02X", v:val)'), '')
-  endfunction
-
-  set statusline+=\ [0x%{g:Char2Hex()}]
-endif
-
-set statusline+=\ (%v,%l)/%L%8P
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -1327,6 +1241,60 @@ let g:xml_syntax_folding  = 1
 "}}}
 
 "-----------------------------------------------------------------------------
+" Status Line: {{{
+set statusline=%<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=
+
+" Display encoding & format
+if has('multi_byte') && has('iconv')
+  function! g:Char2Hex()
+    let c = matchstr(getline('.'), '.', col('.') - 1)
+    let c = iconv(c, &encoding, &fileencoding)
+    return s:byte2hex(s:char2byte(c))
+  endfunction
+  function! s:char2byte(str)
+    return map(range(len(a:str)), 'char2nr(a:str[v:val])')
+  endfunction
+  function! s:byte2hex(bytes)
+    return join(map(copy(a:bytes), 'printf("%02X", v:val)'), '')
+  endfunction
+
+  set statusline+=\ [0x%{g:Char2Hex()}]
+endif
+
+set statusline+=\ (%v,%l)/%L%8P
+"}}}
+
+"-----------------------------------------------------------------------------
+" File Encodings: {{{
+if has('multi_byte')
+  let s:enc_jisx0213 = has('iconv') &&
+    \ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+
+  let &fileencodings = join([
+    \ (s:enc_jisx0213 ? 'iso-2022-jp-3' : 'iso-2022-jp'),
+    \ 'cp932',
+    \ (s:enc_jisx0213 ? 'euc-jisx0213,euc-jp' : 'euc-jp'),
+    \ 'ucs-bom'], ',')
+  if has('guess_encode')
+    set fileencodings^=guess
+  endif
+
+  let s:last_enc = &encoding
+  augroup MyVimrc
+    autocmd EncodingChanged *
+      \ if s:last_enc !=# &encoding |
+      \   let &runtimepath = iconv(&runtimepath, s:last_enc, &encoding) |
+      \   let s:last_enc = &encoding |
+      \ endif
+    autocmd BufReadPost *
+      \ if &modifiable && !search('[^\x00-\x7F]', 'cnw') |
+      \   setlocal fileencoding= |
+      \ endif
+  augroup END
+endif
+"}}}
+
+"-----------------------------------------------------------------------------
 " Plugins: {{{
 " Assembler
 let g:asmsyntax = 'masm'
@@ -1357,6 +1325,41 @@ augroup END
 
 " Enable plugin
 filetype plugin indent on
+"}}}
+
+"-----------------------------------------------------------------------------
+" Colors: {{{
+" Cursor line & column
+if has('gui_running') || &t_Co > 255
+  set cursorline
+  set cursorcolumn
+
+  " No cursor line & column at other window
+  augroup MyVimrc
+    autocmd BufWinEnter,WinEnter *
+      \ if !exists('b:nocursorline') || !b:nocursorline |
+      \   setlocal cursorline |
+      \ endif |
+      \ if !exists('b:nocursorcolumn') || !b:nocursorcolumn |
+      \   setlocal cursorcolumn |
+      \ endif
+    autocmd BufWinLeave,WinLeave *
+      \ if !exists('b:nocursorline') || !b:nocursorline |
+      \   setlocal nocursorline |
+      \ endif |
+      \ if !exists('b:nocursorcolumn') || !b:nocursorcolumn |
+      \   setlocal nocursorcolumn |
+      \ endif
+  augroup END
+endif
+
+" Syntax highlight
+syntax on
+
+" Colorscheme
+if &t_Co > 255
+  silent! colorscheme molokai
+endif
 "}}}
 "}}}
 

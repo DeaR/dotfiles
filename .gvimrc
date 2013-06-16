@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 21:22:56 DeaR>
+" @timestamp   <2013-06-16 21:43:39 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -90,11 +90,6 @@ endif
 if has('kaoriya')
   set ambiwidth=auto
 endif
-
-" Mouse
-set mouse=a
-set nomousefocus
-set nomousehide
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -107,16 +102,6 @@ set hlsearch
 " Display: {{{
 " Command line
 set cmdheight=1
-
-" Colorscheme
-silent! colorscheme molokai
-
-" Cursor color
-autocmd MyGVimrc GUIEnter,ColorScheme *
-  \ highlight clear Cursor |
-  \ highlight clear CursorIM |
-  \ highlight Cursor   guifg=#000000 guibg=#eedd82 |
-  \ highlight CursorIM guifg=#000000 guibg=#6495ed
 
 " Font
 if has('win32')
@@ -146,6 +131,19 @@ else
     \ winpos 0 0 |
     \ set lines=999 columns=9999
 endif
+"}}}
+
+"-----------------------------------------------------------------------------
+" Colors: {{{
+" Colorscheme
+silent! colorscheme molokai
+
+" Cursor color
+autocmd MyGVimrc GUIEnter,ColorScheme *
+  \ highlight clear Cursor |
+  \ highlight clear CursorIM |
+  \ highlight Cursor   guifg=#000000 guibg=#eedd82 |
+  \ highlight CursorIM guifg=#000000 guibg=#6495ed
 "}}}
 "}}}
 
