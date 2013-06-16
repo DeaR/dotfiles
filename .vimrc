@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 01:45:20 DeaR>
+" @timestamp   <2013-06-17 01:48:31 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -773,7 +773,25 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'zaiste/tmux.vim', {
     \ 'autoload' : {'filetypes' : 'tmux'}}
 
-  NeoBundle 'Shougo/unite.vim'
+  NeoBundleLazy 'Shougo/unite.vim', {
+    \ 'autoload' : {
+    \   'commands' : [
+    \     {'name' : 'Unite',
+    \      'complete' : 'customlist,unite#complete_source'},
+    \     {'name' : 'UniteWithCurrentDir',
+    \      'complete' : 'customlist,unite#complete_source'},
+    \     {'name' : 'UniteWithBufferDir',
+    \      'complete' : 'customlist,unite#complete_source'},
+    \     {'name' : 'UniteWithCursorWord',
+    \      'complete' : 'customlist,unite#complete_source'},
+    \     {'name' : 'UniteWithInput',
+    \      'complete' : 'customlist,unite#complete_source'},
+    \     {'name' : 'UniteWithInputDirectory',
+    \      'complete' : 'customlist,unite#complete_source'},
+    \     {'name' : 'UniteResume',
+    \      'complete' : 'customlist,unite#complete_buffer_name'},
+    \     {'name' : 'UniteBookmarkAdd',
+    \      'complete' : 'file'}]}} 
   call extend(s:neocompl_vim_completefuncs, {
     \ 'Unite'                   : 'unite#complete_source',
     \ 'UniteWithCurrentDir'     : 'unite#complete_source',
