@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 15:29:44 DeaR>
+" @timestamp   <2013-06-16 15:42:58 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -254,6 +254,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'thinca/vim-ft-vim_fold', {
     \ 'autoload' : {'filetypes' : 'vim'}}
+
+  NeoBundleLazy 'tpope/vim-fugitive', {
+    \ 'augroup' : 'fugitive'}
 
   NeoBundleLazy 'gist:mattn/5457352', {
     \ 'name' : 'ginger',
@@ -2326,17 +2329,6 @@ silent! let s:bundle = neobundle#get('foldballoon')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   set ballooneval
   set balloonexpr=foldballoon#balloonexpr()
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" Gitv: {{{
-silent! let s:bundle = neobundle#get('gitv')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    call fugitive#detect(expand('%:p'))
-  endfunction
 endif
 unlet! s:bundle
 "}}}
