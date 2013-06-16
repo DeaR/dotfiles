@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 03:30:13 DeaR>
+" @timestamp   <2013-06-16 15:29:44 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3880,9 +3880,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   xnoremap <silent> <C-P>
     \ d:<C-U>Unite register history/yank
     \ -buffer-name=register -multi-line<CR>
-  inoremap <silent> <C-P>
-    \ <C-O>:<C-U>UniteWithCursorWord register history/yank
-    \ -buffer-name=register -multi-line<CR>
+  inoremap <silent><expr> <C-P>
+    \ unite#start_complete(['register', 'history/yank'], {
+    \   'buffer_name': 'register',
+    \   'is_multi_line' : 1,
+    \   'direction' : 'leftabove'})
 
   nnoremap <silent> ;u/
     \ :<C-U>call <SID>unite_search_forward()<CR>
