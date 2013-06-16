@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 01:48:31 DeaR>
+" @timestamp   <2013-06-17 01:59:07 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2630,8 +2630,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ col('.') == 1 ?
       \   '<Esc>:quit<CR>' :
       \   neocomplcache#smart_close_popup() . '<BS>'
-
-    call neocomplcache#initialize()
   endfunction
   augroup MyVimrc
     autocmd CmdwinEnter *
@@ -2727,9 +2725,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ col('.') == 1 ?
       \   '<Esc>:quit<CR>' :
       \   neocomplete#smart_close_popup() . '<BS>'
-
-
-    call neocomplete#initialize()
   endfunction
   augroup MyVimrc
     autocmd CmdwinEnter *
