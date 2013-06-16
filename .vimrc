@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 22:09:53 DeaR>
+" @timestamp   <2013-06-17 01:45:20 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2130,7 +2130,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   augroup MyVimrc
-    autocmd CmdwinEnter *
+    autocmd CmdwinEnter :
       \ for [key, value] in items(s:altercmd_define) |
       \   execute 'IAlterCommand <buffer>' key value |
       \ endfor
