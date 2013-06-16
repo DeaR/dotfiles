@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 20:29:15 DeaR>
+" @timestamp   <2013-06-16 20:33:40 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -109,6 +109,7 @@ set hlsearch
 set cmdheight=1
 
 " Colorscheme
+set background=dark
 silent! colorscheme molokai
 
 " Cursor color

@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 17:16:07 DeaR>
+" @timestamp   <2013-06-16 20:33:42 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1148,9 +1148,6 @@ set fillchars=vert:\|
 " Help
 set helpheight=999
 
-" Syntax highlight
-syntax on
-
 " Conceal
 if has('conceal')
   set conceallevel=2
@@ -1183,6 +1180,7 @@ endif
 
 if &t_Co > 255
   " Colorscheme
+  set background=dark
   silent! colorscheme molokai
 endif
 "}}}
@@ -2128,6 +2126,9 @@ endif
 
 " Enable plugin
 filetype plugin indent on
+
+" Syntax highlight
+syntax on
 "}}}
 
 "-----------------------------------------------------------------------------
