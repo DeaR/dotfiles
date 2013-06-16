@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 20:33:42 DeaR>
+" @timestamp   <2013-06-16 21:23:52 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1154,8 +1154,8 @@ if has('conceal')
   set concealcursor=nc
 endif
 
+" Cursor line & column
 if has('gui_running') || &t_Co > 255
-  " Display cursor line & column
   set cursorline
   set cursorcolumn
 
@@ -1178,9 +1178,11 @@ if has('gui_running') || &t_Co > 255
   augroup END
 endif
 
+" Syntax highlight
+syntax on
+
+" Colorscheme
 if &t_Co > 255
-  " Colorscheme
-  set background=dark
   silent! colorscheme molokai
 endif
 "}}}
@@ -1322,6 +1324,39 @@ let g:sh_fold_enabled     = 1
 let g:vbnet_no_code_folds = 1
 let g:vimsyn_folding      = 'af'
 let g:xml_syntax_folding  = 1
+"}}}
+
+"-----------------------------------------------------------------------------
+" Plugins: {{{
+" Assembler
+let g:asmsyntax = 'masm'
+" let g:asmsyntax = 'arm'
+" let g:asmsyntax = 'z80'
+
+" Shell Script
+let g:is_bash = 1
+
+" Unnecessary plugin
+let g:loaded_getscriptPlugin = 1
+let g:loaded_netrwPlugin     = 1
+let g:loaded_vimballPlugin   = 1
+
+" FileType Detect
+augroup MyVimrc
+  autocmd BufNewFile,BufRead *.c
+    \ setfiletype cpp
+  autocmd BufNewFile,BufRead *.txt,*.text
+    \ setfiletype hybrid
+  autocmd BufNewFile,BufRead *.l,.xyzzy
+    \ setfiletype lisp
+  autocmd BufNewFile,BufRead *.md
+    \ setfiletype markdown
+  autocmd BufNewFile,BufRead *.vb
+    \ setfiletype vbnet
+augroup END
+
+" Enable plugin
+filetype plugin indent on
 "}}}
 "}}}
 
@@ -1826,7 +1861,7 @@ nnoremap <silent> mC :<C-U>call <SID>clear_file_marks()<CR>
 "}}}
 
 "-----------------------------------------------------------------------------
-" Smart BOL, EOL: {{{
+" Smart BOL: {{{
 function! s:smart_bol()
   let col = col('.')
   return
@@ -2080,56 +2115,6 @@ autocmd MyVimrc BufRead *
 
 "=============================================================================
 " Plugins: {{{
-
-"-----------------------------------------------------------------------------
-" Built In Plugins: {{{
-" Assembler
-let g:asmsyntax = 'masm'
-" let g:asmsyntax = 'arm'
-" let g:asmsyntax = 'z80'
-
-" Shell Script
-let g:is_bash = 1
-
-" Unnecessary plugin
-let g:loaded_getscriptPlugin = 1
-let g:loaded_netrwPlugin     = 1
-let g:loaded_vimballPlugin   = 1
-
-" FileType Detect
-augroup MyVimrc
-  autocmd BufNewFile,BufRead *.c
-    \ setfiletype cpp
-  autocmd BufNewFile,BufRead *.txt,*.text
-    \ setfiletype hybrid
-  autocmd BufNewFile,BufRead *.l,.xyzzy
-    \ setfiletype lisp
-  autocmd BufNewFile,BufRead *.md
-    \ setfiletype markdown
-  autocmd BufNewFile,BufRead *.vb
-    \ setfiletype vbnet
-augroup END
-
-" NeoBundle
-if exists(':NeoBundle')
-  function! s:load_bundle_settings()
-    let l = []
-    for d in split(glob('~/.vim/bundle-settings/*'), '\n')
-      if neobundle#is_installed(fnamemodify(d, ':t'))
-        call add(l, d)
-      endif
-    endfor
-    let &runtimepath .= ',' . join(l, ',')
-  endfunction
-  call s:load_bundle_settings()
-endif
-
-" Enable plugin
-filetype plugin indent on
-
-" Syntax highlight
-syntax on
-"}}}
 
 "-----------------------------------------------------------------------------
 " AlterCommand: {{{
@@ -2535,6 +2520,17 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   command! -bar -complete=customlist,neobundle#complete_bundles -nargs=?
     \ NeoBundleGitGc
     \ :call s:neobundle_git_gc(<q-args>)
+
+  function! s:load_bundle_settings()
+    let l = []
+    for d in split(glob('~/.vim/bundle-settings/*'), '\n')
+      if neobundle#is_installed(fnamemodify(d, ':t'))
+        call add(l, d)
+      endif
+    endfor
+    let &runtimepath .= ',' . join(l, ',')
+  endfunction
+  call s:load_bundle_settings()
 endif
 unlet! s:bundle
 "}}}
