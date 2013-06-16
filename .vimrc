@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 15:42:58 DeaR>
+" @timestamp   <2013-06-16 17:16:07 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -256,7 +256,15 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {'filetypes' : 'vim'}}
 
   NeoBundleLazy 'tpope/vim-fugitive', {
-    \ 'augroup' : 'fugitive'}
+    \ 'autoload' : {
+    \   'commands' : [
+    \     'Git',     'Gcd',     'Glcd',     'Gstatus',
+    \     'Gcommit', 'Ggrep',   'Glgrep',   'Glog',
+    \     'Gllog',   'Ge',      'Gedit',    'Gpedit',
+    \     'Gsplit',  'Gvsplit', 'Gtabedit', 'Gread',
+    \     'Gwrite',  'Gw',      'Gwq',      'Gdiff',
+    \     'Gvdiff',  'Gsdiff',  'Gbrowse']}}
+
 
   NeoBundleLazy 'gist:mattn/5457352', {
     \ 'name' : 'ginger',
@@ -2329,6 +2337,17 @@ silent! let s:bundle = neobundle#get('foldballoon')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   set ballooneval
   set balloonexpr=foldballoon#balloonexpr()
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Fugitive: {{{
+silent! let s:bundle = neobundle#get('fugitive')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_post_source(bundle)
+    call fugitive#detect(expand('%:p'))
+  endfunction
 endif
 unlet! s:bundle
 "}}}
