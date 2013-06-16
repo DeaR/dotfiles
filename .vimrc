@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 01:59:07 DeaR>
+" @timestamp   <2013-06-17 02:06:27 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -92,7 +92,7 @@ endfunction
 " Check Vim version
 function! s:has_patch(version, patch)
   return (v:version > a:version) || (v:version == a:version &&
-    \  has(type(a:patch) == type(0) ? ('patch' . a:patch) : a:patch))
+    \ has(type(a:patch) == type(0) ? ('patch' . a:patch) : a:patch))
 endfunction
 
 " Check vimproc
@@ -3867,7 +3867,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nnoremap <silent> ;b
     \ :<C-U>Unite buffer
-    \  -buffer-name=files -no-split -auto-preview<CR>
+    \ -buffer-name=files -no-split -auto-preview<CR>
   nnoremap <silent> ;e
     \ :<C-U>Unite file_mru file file/new directory/new
     \ -buffer-name=files -no-split<CR>
