@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 16:10:33 DeaR>
+" @timestamp   <2013-06-17 17:29:50 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -14,7 +14,17 @@ scriptencoding utf-8
 " Reseting
 if !has('vim_starting')
   if exists(':NeoBundle')
-    call neobundle#config#init()
+    function! s:neobundle_reset()
+      let s:sourced_bundles = filter(
+        \ neobundle#config#get_neobundles(),
+        \ 'v:val.sourced && v:val.rtp != "" && v:val.lazy')
+      for bundle in s:sourced_bundles
+        call neobundle#config#rm_bundle(bundle.path)
+      endfor
+
+      call neobundle#config#init()
+    endfunction
+    call s:neobundle_reset()
   endif
 
   set runtimepath&
@@ -4179,10 +4189,16 @@ unlet! s:bundle
 "}}}
 
 "=============================================================================
+
 " Init Last: {{{
 " NeoBundle
 if exists(':NeoBundle')
   call neobundle#call_hook('on_source')
+
+  if !has('vim_starting')
+    call neobundle#source(map(s:sourced_bundles, 'v:val.name'))
+    unlet s:sourced_bundles
+  endif
 endif
 
 " VimFiler
