@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 19:44:23 DeaR>
+" @timestamp   <2013-06-17 19:53:50 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4194,11 +4194,8 @@ if exists(':NeoBundle')
       call neobundle#config#source_bundles(sourced)
     endfunction
     call s:neobundle_resource()
+  elseif argc()
+    NeoBundleSource vimfiler
   endif
-endif
-
-" VimFiler
-if argc() && has('vim_starting')
-  NeoBundleSource vimfiler
 endif
 "}}}
