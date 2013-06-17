@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 14:45:23 DeaR>
+" @timestamp   <2013-06-17 15:00:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2939,13 +2939,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:quickrun_no_default_key_mappings = 1
 
-    let s:hook = {
+    let hook = {
       \ 'name' : 'vcvarsall',
       \ 'kind' : 'hook',
       \ 'config' : {
       \   'enable' : 0,
       \   'bat' : ''}}
-    function! s:hook.on_module_loaded(session, context)
+    function! hook.on_module_loaded(session, context)
       if type(a:session.config.exec) == type([])
         let a:session.config.exec[0] = join([
           \ self.config.bat,
@@ -2960,8 +2960,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
           \ a:session.config.exec])
       endif
     endfunction
-    call quickrun#module#register(s:hook, 1)
-    unlet s:hook
+    call quickrun#module#register(hook, 1)
 
     if !exists('g:quickrun_config')
       let g:quickrun_config = {}
