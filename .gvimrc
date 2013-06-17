@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 21:43:39 DeaR>
+" @timestamp   <2013-06-17 16:10:33 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -24,15 +24,6 @@ endif
 augroup MyGVimrc
   autocmd!
 augroup END
-
-" Anywhere SID
-function! s:SID_PREFIX(...)
-  if !exists('s:_sid_prefix')
-    let s:_sid_prefix =
-      \ matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
-  endif
-  return s:_sid_prefix . join(a:000, '')
-endfunction
 
 " Check Vim version
 function! s:has_patch(version, patch)

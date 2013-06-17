@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 15:00:33 DeaR>
+" @timestamp   <2013-06-17 16:10:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -79,15 +79,6 @@ set runtimepath+=~/.local/.vim/after
 augroup MyVimrc
   autocmd!
 augroup END
-
-" Anywhere SID
-function! s:SID_PREFIX(...)
-  if !exists('s:_sid_prefix')
-    let s:_sid_prefix =
-      \ matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
-  endif
-  return s:_sid_prefix . join(a:000, '')
-endfunction
 
 " Check Vim version
 function! s:has_patch(version, patch)
