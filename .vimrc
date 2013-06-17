@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 17:29:50 DeaR>
+" @timestamp   <2013-06-17 19:44:23 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -13,20 +13,6 @@ scriptencoding utf-8
 " Init First: {{{
 " Reseting
 if !has('vim_starting')
-  if exists(':NeoBundle')
-    function! s:neobundle_reset()
-      let s:sourced_bundles = filter(
-        \ neobundle#config#get_neobundles(),
-        \ 'v:val.sourced && v:val.rtp != "" && v:val.lazy')
-      for bundle in s:sourced_bundles
-        call neobundle#config#rm_bundle(bundle.path)
-      endfor
-
-      call neobundle#config#init()
-    endfunction
-    call s:neobundle_reset()
-  endif
-
   set runtimepath&
   set shortmess&
   set viminfo&
@@ -4189,20 +4175,30 @@ unlet! s:bundle
 "}}}
 
 "=============================================================================
-
 " Init Last: {{{
 " NeoBundle
 if exists(':NeoBundle')
   call neobundle#call_hook('on_source')
 
+  " Re-source lazy bundles
   if !has('vim_starting')
-    call neobundle#source(map(s:sourced_bundles, 'v:val.name'))
-    unlet s:sourced_bundles
+    function! s:neobundle_resource()
+      let sourced = filter(
+        \ neobundle#config#get_neobundles(),
+        \ join([
+        \   'v:val.lazy && v:val.rtp != "" &&',
+        \   'neobundle#config#is_sourced(v:val.name)']))
+      for bundle in sourced
+        let bundle.sourced = 0
+      endfor
+      call neobundle#config#source_bundles(sourced)
+    endfunction
+    call s:neobundle_resource()
   endif
 endif
 
 " VimFiler
-if argc()
+if argc() && has('vim_starting')
   NeoBundleSource vimfiler
 endif
 "}}}
