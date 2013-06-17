@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 19:53:50 DeaR>
+" @timestamp   <2013-06-17 19:59:40 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4180,8 +4180,8 @@ unlet! s:bundle
 if exists(':NeoBundle')
   call neobundle#call_hook('on_source')
 
-  " Re-source lazy bundles
   if !has('vim_starting')
+    " Re-source lazy bundles
     function! s:neobundle_resource()
       let sourced = filter(
         \ neobundle#config#get_neobundles(),
