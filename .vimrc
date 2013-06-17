@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 14:40:32 DeaR>
+" @timestamp   <2013-06-17 14:45:23 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3869,12 +3869,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <silent> ;us
     \ :<C-U>Unite source
     \ -buffer-name=help -no-split -start-insert<CR>
-  nnoremap <silent> ;u<F1>
-    \ :<C-U>Unite help
-    \ -buffer-name=help -no-split -start-insert<CR>
-  nnoremap <silent> ;ug<F1>
-    \ :<C-U>UniteWithCursorWord help
-    \ -buffer-name=help -no-split -no-start-insert<CR>
 
   nnoremap <silent> ;uw
     \ :<C-U>Unite window
@@ -3882,9 +3876,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <silent> ;uT
     \ :<C-U>Unite tab
     \ -buffer-name=files -no-split<CR>
-  nnoremap <silent> ;ut
-    \ :<C-U>UniteWithCursorWord tag tag/include
-    \ -buffer-name=files -no-split -auto-preview<CR>
 
   nnoremap <silent> ;b
     \ :<C-U>Unite buffer
@@ -3892,18 +3883,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <silent> ;e
     \ :<C-U>Unite file_mru file file/new directory/new
     \ -buffer-name=files -no-split<CR>
-
   nnoremap <silent> ;j
     \ :<C-U>Unite jump change
     \ -buffer-name=files -no-split -auto-preview -multi-line -no-start-insert<CR>
-  nnoremap <silent> ;o
-    \ :<C-U>Unite outline
-    \ -buffer-name=files -no-split -auto-preview -multi-line -no-start-insert<CR>
-
-  nnoremap <silent> ml
-    \ :<C-U>Unite mark bookmark
-    \ -buffer-name=files -no-split -auto-preview -multi-line -no-start-insert<CR>
-  nnoremap mu :<C-U>UniteBookmarkAdd<CR>
 
   if &grepprg == 'internal'
     nnoremap <silent> ;g
@@ -3947,6 +3929,37 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   call extend(s:altercmd_define, {
     \ 'u[nite]' : 'Unite'})
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Unite Help: {{{
+silent! let s:bundle = neobundle#get('unite-help')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  nnoremap <silent> ;u<F1>
+    \ :<C-U>Unite help
+    \ -buffer-name=help -no-split -start-insert<CR>
+  nnoremap <silent> ;ug<F1>
+    \ :<C-U>UniteWithCursorWord help
+    \ -buffer-name=help -no-split -no-start-insert<CR>
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Unite Mark: {{{
+silent! let s:bundle = neobundle#get('unite-mark')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:unite_source_mark_marks =
+      \ join(s:mark_char, '') . toupper(join(s:mark_char, ''))
+  endfunction
+
+  nnoremap <silent> ml
+    \ :<C-U>Unite mark bookmark
+    \ -buffer-name=files -no-split -auto-preview -multi-line -no-start-insert<CR>
+  nnoremap mu :<C-U>UniteBookmarkAdd<CR>
 else
   function! s:marks()
     let char = join(s:mark_char, '')
@@ -3962,13 +3975,34 @@ unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
-" Unite Mark: {{{
-silent! let s:bundle = neobundle#get('unite-mark')
+" Unite Outline: {{{
+silent! let s:bundle = neobundle#get('unite-outline')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:unite_source_mark_marks =
-      \ join(s:mark_char, '') . toupper(join(s:mark_char, ''))
-  endfunction
+  nnoremap <silent> ;o
+    \ :<C-U>Unite outline
+    \ -buffer-name=files -no-split -auto-preview -multi-line -no-start-insert<CR>
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Unite QuickRun Config: {{{
+silent! let s:bundle = neobundle#get('unite-quickrun_config')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  nnoremap <silent> ;u<F5>
+    \ :<C-U>Unite quickrun_config
+    \ -buffer-name=files -start-insert<CR>
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Unite Tag: {{{
+silent! let s:bundle = neobundle#get('unite-tag')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  nnoremap <silent> ;ut
+    \ :<C-U>UniteWithCursorWord tag tag/include
+    \ -buffer-name=files -no-split -auto-preview<CR>
 endif
 unlet! s:bundle
 "}}}
