@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 02:06:27 DeaR>
+" @timestamp   <2013-06-17 14:40:32 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -984,6 +984,17 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \   'mappings' : [
     \     ['v', '<Plug>(visualstar-*)'], ['v', '<Plug>(visualstar-g*)'],
     \     ['v', '<Plug>(visualstar-#)'], ['v', '<Plug>(visualstar-g#)']]}}
+
+  NeoBundleLazy 'osyo-manga/vim-watchdogs', {
+    \ 'autoload' : {
+    \   'filetypes' : [
+    \     'c', 'cpp', 'coffee', 'd', 'haskell', 'javascript', 'lua', 'perl',
+    \     'php', 'python', 'ruby', 'sass', 'scss', 'scala', 'sh', 'zsh'],
+    \   'commands' : [
+    \     'WatchdogsRun', 'WatchdogsRunSilent', 'WatchdogsRunSweep']},
+    \ 'depends' : [
+    \   'osyo-manga/shabadou.vim',
+    \   'thinca/vim-quickrun']}
 
   NeoBundleLazy 'mattn/zencoding-vim', {
     \ 'autoload' : {
@@ -4070,6 +4081,44 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 else
   NOXnoremap g/ *
   NOXnoremap g? #
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" WatchDogs: {{{
+silent! let s:bundle = neobundle#get('watchdogs')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:watchdogs_check_BufWritePost_enable = 1
+
+    if !exists('g:quickrun_config')
+      let g:quickrun_config = {}
+    endif
+
+    if exists('$VCVARSALL')
+      call extend(g:quickrun_config, {
+        \ 'c/watchdogs_checker' : {
+        \   'type' : 'watchdogs_checker/msvc'},
+        \ 'cpp/watchdogs_checker' : {
+        \   'type' : 'watchdogs_checker/msvc'},
+        \ 'watchdogs_checker/msvc' : {
+        \   'hook/vcvarsall/enable' : 1,
+        \   'hook/vcvarsall/bat' : $VCVARSALL}})
+    else
+      call extend(g:quickrun_config, {
+        \ 'c/watchdogs_checker' : {
+        \   'type' :
+        \     executable('gcc')   ? 'watchdogs_checker/gcc' :
+        \     executable('clang') ? 'watchdogs_checker/clang' : ''},
+        \ 'cpp/watchdogs_checker' : {
+        \   'type' :
+        \     executable('clang++') ? 'watchdogs_checker/clang++' :
+        \     executable('g++')     ? 'watchdogs_checker/g++' : ''}})
+    endif
+
+    call watchdogs#setup(g:quickrun_config)
+  endfunction
 endif
 unlet! s:bundle
 "}}}
