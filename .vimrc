@@ -3029,6 +3029,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   'hook/sweep/files' : ['%s:p:r.exe'],
         \   'hook/vcvarsall/enable' : 1,
         \   'hook/vcvarsall/bat' : $VCVARSALL}})
+    else
+      call extend(g:quickrun_config, {
+        \ 'c' : {
+        \   'type' :
+        \     executable('gcc')   ? 'c/gcc' :
+        \     executable('clang') ? 'c/clang' : ''},
+        \ 'cpp' : {
+        \   'type' :
+        \     executable('clang++') ? 'cpp/clang++' :
+        \     executable('g++')     ? 'cpp/g++' : ''}})
     endif
   endfunction
 
