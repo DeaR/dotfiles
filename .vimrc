@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 19:48:09 DeaR>
+" @timestamp   <2013-06-18 19:52:26 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -137,15 +137,15 @@ endif
 "-----------------------------------------------------------------------------
 " NeoBundle: {{{
 if isdirectory(expand('~/.local/bundle/neobundle'))
-  let g:neobundle#enable_name_conversion = 1
-  let g:neobundle#enable_tail_path       = 1
+  set runtimepath+=~/.local/bundle/neobundle
   if has('win32')
     let g:neobundle#rm_command = 'rm -rf'
   elseif s:is_android
     let g:neobundle#types#git#default_protocol = 'ssh'
     let g:neobundle#types#hg#default_protocol  = 'ssh'
   endif
-  set runtimepath+=~/.local/bundle/neobundle
+  let g:neobundle#enable_name_conversion = 1
+  let g:neobundle#enable_tail_path       = 1
   call neobundle#rc(expand('~/.local/bundle'))
 
   NeoBundleLazy 'h1mesuke/vim-alignta', {
