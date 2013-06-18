@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 16:50:45 DeaR>
+" @timestamp   <2013-06-18 17:07:55 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3064,6 +3064,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:reanimate_save_dir = '~/.local/reanimate'
   endfunction
+
+  nnoremap <silent> ;ur :<C-U>Unite reanimate
+    \ -buffer-name=files -no-split<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -3885,7 +3888,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nnoremap <silent> ;us
     \ :<C-U>Unite source
-    \ -buffer-name=help -no-split -start-insert<CR>
+    \ -buffer-name=help -no-split<CR>
 
   nnoremap <silent> ;uw
     \ :<C-U>Unite window
@@ -3942,7 +3945,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <silent> ;ug?
     \ :<C-U>call <SID>unite_search_cword_backward()<CR>
   nnoremap <silent> ;un
-    \ :<C-U>UniteResume search -no-start-insert<CR>
+    \ :<C-U>UniteResume search -start-insert<CR>
 
   call extend(s:altercmd_define, {
     \ 'u[nite]' : 'Unite'})
@@ -3997,7 +4000,7 @@ silent! let s:bundle = neobundle#get('unite-outline')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <silent> ;o
     \ :<C-U>Unite outline
-    \ -buffer-name=files -no-split -auto-preview -multi-line -no-start-insert<CR>
+    \ -buffer-name=files -no-split -auto-preview -multi-line<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -4008,7 +4011,7 @@ silent! let s:bundle = neobundle#get('unite-quickrun_config')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <silent> ;u<F5>
     \ :<C-U>Unite quickrun_config
-    \ -buffer-name=files -start-insert<CR>
+    \ -buffer-name=files<CR>
 endif
 unlet! s:bundle
 "}}}
