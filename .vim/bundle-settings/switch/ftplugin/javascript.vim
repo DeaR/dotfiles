@@ -4,7 +4,7 @@
 " @description Switch ftplugin for JavaScript
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-08 20:16:53 DeaR>
+" @timestamp   <2013-06-18 20:32:08 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -13,14 +13,6 @@ function! s:init_definitions()
   let cst = {}
   let inc = {}
   let dec = {}
-
-  for l in [
-    \ ['==', '!='],
-    \ ['&&', '\|\|']]
-    for i in range(len(l))
-      call extend(cst, {'\C' . l[i] : get(l, i + 1, l[0])})
-    endfor
-  endfor
 
   for l in [
     \ ['==', '!='],
@@ -51,14 +43,6 @@ endif
 if !exists('b:switch_increment_definitions')
   let b:switch_increment_definitions = []
 endif
-if !exists('b:switch_decrement_definitions')
-  let b:switch_decrement_definitions = []
-endif
-
-if !exists('b:switch_increment_definitions')
-  let b:switch_increment_definitions = []
-endif
-
 if !exists('b:switch_decrement_definitions')
   let b:switch_decrement_definitions = []
 endif

@@ -4,7 +4,7 @@
 " @description Switch ftplugin for Vim
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-08 20:16:53 DeaR>
+" @timestamp   <2013-06-18 20:44:32 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -46,14 +46,6 @@ endif
 if !exists('b:switch_increment_definitions')
   let b:switch_increment_definitions = []
 endif
-if !exists('b:switch_decrement_definitions')
-  let b:switch_decrement_definitions = []
-endif
-
-if !exists('b:switch_increment_definitions')
-  let b:switch_increment_definitions = []
-endif
-
 if !exists('b:switch_decrement_definitions')
   let b:switch_decrement_definitions = []
 endif
