@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 16:14:00 DeaR>
+" @timestamp   <2013-06-18 16:50:45 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -520,6 +520,14 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'depends' : 'osyo-manga/shabadou.vim'}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'QuickRun' : 'quickrun#complete'})
+
+  NeoBundleLazy 'osyo-manga/vim-reanimate', {
+    \ 'autoload' : {
+    \   'commands' : [
+    \     'ReanimateSave', 'ReanimateSaveInput', 'ReanimateSaveCursorHold',
+    \     'ReanimateLoad', 'ReanimateLoadInput', 'ReanimateLoadLatest',
+    \     'ReanimateSwitch', 'ReanimateUnload', 'ReanimateEditVimrcLocal'],
+    \   'unite_sources' : 'reanimate'}}
 
   NeoBundleLazy 'thinca/vim-ref', {
     \ 'autoload' : {
@@ -3045,6 +3053,17 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ quickrun#is_running() ?
     \   quickrun#sweep_sessions() :
     \   '<C-C>'
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Reanimate: {{{
+silent! let s:bundle = neobundle#get('reanimate')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:reanimate_save_dir = '~/.local/reanimate'
+  endfunction
 endif
 unlet! s:bundle
 "}}}
