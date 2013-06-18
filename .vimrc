@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 18:09:51 DeaR>
+" @timestamp   <2013-06-18 19:13:25 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -814,10 +814,12 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {'unite_sources' : 'remotefile'}}
 
   NeoBundleLazy 'Shougo/unite-ssh', {
-    \ 'autoload' : {'unite_sources' : 'ssh'}}
+    \ 'autoload' : {'unite_sources' : 'ssh'},
+    \ 'depends' : 'Shougo/vimfiler.vim'}
 
   NeoBundleLazy 'Shougo/unite-sudo', {
-    \ 'autoload' : {'unite_sources' : 'sudo'}}
+    \ 'autoload' : {'unite_sources' : 'sudo'},
+    \ 'depends' : 'Shougo/vimfiler.vim'}
 
   NeoBundleLazy 'tsukkee/unite-tag', {
     \ 'autoload' : {'unite_sources' : 'tag'}}
