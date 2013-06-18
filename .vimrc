@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 23:13:55 DeaR>
+" @timestamp   <2013-06-19 00:49:10 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -480,6 +480,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'fuenor/qfixhowm', {
     \ 'autoload' : {
+    \   'filetypes' : 'qf',
     \   'commands' : [
     \     'Grep',  'Grepadd',  'RGrep',  'RGrepadd',
     \     'EGrep', 'EGrepadd', 'REGrep', 'REGrepadd',
