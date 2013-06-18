@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 19:13:25 DeaR>
+" @timestamp   <2013-06-18 19:48:09 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1309,11 +1309,6 @@ let g:asmsyntax = 'masm'
 
 " Shell Script
 let g:is_bash = 1
-
-" Unnecessary plugin
-let g:loaded_getscriptPlugin = 1
-let g:loaded_netrwPlugin     = 1
-let g:loaded_vimballPlugin   = 1
 
 " FileType Detect
 augroup MyVimrc
