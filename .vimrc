@@ -4,40 +4,13 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 17:16:32 DeaR>
+" @timestamp   <2013-06-18 18:09:51 DeaR>
 
 set nocompatible
 scriptencoding utf-8
 
 "=============================================================================
 " Init First: {{{
-" Reseting
-if !has('vim_starting')
-  if exists(':NeoBundle')
-    let s:sourced_bundle = filter(
-      \ neobundle#config#get_neobundles(),
-      \ join([
-      \   'v:val.lazy && v:val.rtp != "" &&',
-      \   'neobundle#config#is_sourced(v:val.name)']))
-  endif
-
-  set runtimepath&
-  set shortmess&
-  set viminfo&
-  set backupdir&
-  set backupskip&
-  set suffixes&
-  set undodir&
-  set directory&
-  set wildignore&
-  set formatoptions&
-  set helplang&
-
-  if filereadable($VIM . '/vimrc')
-    source $VIM/vimrc
-  endif
-endif
-
 " Encoding
 if has('multi_byte')
   set encoding=utf-8
@@ -69,8 +42,12 @@ if argc() && has('clientserver') && has('vim_starting')
   unlet s:running_vim_list
 endif
 
-" Fix runtimepath for windows
 if has('win32')
+  " Shell
+  set shell=sh
+  set shellslash
+
+  " Fix runtimepath for windows
   set runtimepath^=~/.vim
   set runtimepath+=~/.vim/after
 endif
@@ -140,7 +117,7 @@ if !exists('s:neocompl_vim_completefuncs')
 endif
 
 " VCvarsall.bat
-if has('win32')
+if has('win32') && !exists('$VCVARSALL')
   let s:save_ssl = &shellslash
   set noshellslash
   if exists('$VS110COMNTOOLS')
@@ -161,6 +138,7 @@ endif
 " NeoBundle: {{{
 if isdirectory(expand('~/.local/bundle/neobundle'))
   let g:neobundle#enable_name_conversion = 1
+  let g:neobundle#enable_tail_path       = 1
   if has('win32')
     let g:neobundle#rm_command = 'rm -rf'
   elseif s:is_android
@@ -1138,12 +1116,6 @@ set ambiwidth=double
 " Wild menu
 set wildmenu
 set wildignore+=*.clean,.drive.r,.hg,.git,.svn
-
-" Shell
-if has('win32')
-  set shell=sh
-  set shellslash
-endif
 
 " Mouse
 set mouse=a
@@ -4217,22 +4189,7 @@ unlet! s:bundle
 if exists(':NeoBundle')
   call neobundle#call_hook('on_source')
 
-  if !has('vim_starting')
-    function! s:neobundle_lazy_resource()
-      redir => sn
-      silent! scriptnames
-      redir END
-      for l in split(sn, '\n')
-        let m = matchlist(l, '^\s*\(\d\+\):\s*\(.*\)$')
-        if m[2] =~? 'autoload[/\\]neobundle[/\\]config\.vim$'
-          return call(
-            \ join(['<SNR>', m[1], '_rtp_add_bundles'], ''),
-            \ [s:sourced_bundle])
-        endif
-      endfor
-    endfunction
-    call s:neobundle_lazy_resource()
-  elseif argc()
+  if argc() && has('vim_starting')
     NeoBundleSource vimfiler
   endif
 endif
