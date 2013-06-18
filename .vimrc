@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-19 00:49:10 DeaR>
+" @timestamp   <2013-06-19 00:57:00 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2533,13 +2533,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ :call s:neobundle_git_gc(<q-args>)
 
   function! s:load_bundle_settings()
-    let l = []
     for d in split(glob('~/.vim/bundle-settings/*'), '\n')
       if neobundle#is_installed(fnamemodify(d, ':t'))
-        call add(l, d)
+        execute 'set runtimepath+=' . d
       endif
     endfor
-    let &runtimepath .= ',' . join(l, ',')
   endfunction
   call s:load_bundle_settings()
 endif
