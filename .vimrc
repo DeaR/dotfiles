@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 17:07:55 DeaR>
+" @timestamp   <2013-06-18 17:16:32 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3065,8 +3065,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:reanimate_save_dir = '~/.local/reanimate'
   endfunction
 
-  nnoremap <silent> ;ur :<C-U>Unite reanimate
-    \ -buffer-name=files -no-split<CR>
+  nnoremap <silent> ;ur  <Nop>
+  nnoremap <silent> ;url :<C-U>Unite reanimate
+    \ -buffer-name=files -no-split -default-action=reanimate_load<CR>
+  nnoremap <silent> ;urs :<C-U>Unite reanimate
+    \ -buffer-name=files -no-split -default-action=reanimate_save<CR>
 endif
 unlet! s:bundle
 "}}}
