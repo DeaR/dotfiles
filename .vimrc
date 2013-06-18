@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 15:17:06 DeaR>
+" @timestamp   <2013-06-18 16:14:00 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1497,6 +1497,10 @@ inoremap <C-W> <C-G>u<C-W>
 inoremap <C-U> <C-G>u<C-U>
 
 " Help
+inoremap <expr> <F1>
+  \ &columns < 160 ?
+  \   '<C-O>:<C-U>help<Space>' :
+  \   '<C-O>:<C-U>vertical help<Space>'
 nnoremap <expr> <F1>
   \ &columns < 160 ?
   \   ':<C-U>help<Space>' :
