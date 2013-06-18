@@ -4,40 +4,13 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 14:05:00 DeaR>
+" @timestamp   <2013-06-18 14:51:57 DeaR>
 
 set nocompatible
 scriptencoding utf-8
 
 "=============================================================================
 " Init First: {{{
-" Reseting
-if !has('vim_starting')
-  if exists(':NeoBundle')
-    let s:sourced_bundle = filter(
-      \ neobundle#config#get_neobundles(),
-      \ join([
-      \   'v:val.lazy && v:val.rtp != "" &&',
-      \   'neobundle#config#is_sourced(v:val.name)']))
-  endif
-
-  set runtimepath&
-  set shortmess&
-  set viminfo&
-  set backupdir&
-  set backupskip&
-  set suffixes&
-  set undodir&
-  set directory&
-  set wildignore&
-  set formatoptions&
-  set helplang&
-
-  if filereadable($VIM . '/vimrc')
-    source $VIM/vimrc
-  endif
-endif
-
 " Encoding
 if has('multi_byte')
   set encoding=utf-8
@@ -4188,10 +4161,7 @@ unlet! s:bundle
 if exists(':NeoBundle')
   call neobundle#call_hook('on_source')
 
-  if !has('vim_starting')
-    call neobundle#config#source_bundles(s:sourced_bundle)
-    unlet s:sourced_bundle
-  elseif argc()
+  if argc() && has('vim_starting')
     NeoBundleSource vimfiler
   endif
 endif

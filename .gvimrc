@@ -4,22 +4,10 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-17 16:10:33 DeaR>
+" @timestamp   <2013-06-18 14:52:09 DeaR>
 
 "=============================================================================
 " Init First: {{{
-" Reseting
-if !has('vim_starting')
-  set guioptions&
-  set guicursor&
-
-  set guioptions+=M
-
-  if filereadable($VIM . '/gvimrc')
-    source $VIM/gvimrc
-  endif
-endif
-
 " GVimrc autocmd group
 augroup MyGVimrc
   autocmd!
