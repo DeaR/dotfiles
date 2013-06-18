@@ -4142,6 +4142,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \ 'cpp/watchdogs_checker' : {
         \   'type' : 'watchdogs_checker/msvc'},
         \ 'watchdogs_checker/msvc' : {
+        \   'hook/output_encode/encoding' : 'cp932',
         \   'hook/vcvarsall/enable' : 1,
         \   'hook/vcvarsall/bat' : $VCVARSALL}})
     else
