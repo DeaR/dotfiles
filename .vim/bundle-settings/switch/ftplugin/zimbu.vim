@@ -4,7 +4,7 @@
 " @description Switch ftplugin for Zimbu
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 18:53:51 DeaR>
+" @timestamp   <2013-06-19 01:53:18 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -76,13 +76,13 @@ endif
 let b:undo_ftplugin .= '
   \ call filter(b:switch_custom_definitions, "
   \   !exists(\"b:zimbu_switch_custom_definitions\") ||
-  \   v:val != b:zimbu_switch_custom_definitions") |
+  \   v:val isnot b:zimbu_switch_custom_definitions") |
   \ call filter(b:switch_increment_definitions, "
   \   !exists(\"b:zimbu_switch_increment_definitions\") ||
-  \   v:val != b:zimbu_switch_increment_definitions") |
+  \   v:val isnot b:zimbu_switch_increment_definitions") |
   \ call filter(b:switch_decrement_definitions, "
   \   !exists(\"b:zimbu_switch_decrement_definitions\") ||
-  \   v:val != b:zimbu_switch_decrement_definitions")'
+  \   v:val isnot b:zimbu_switch_decrement_definitions")'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

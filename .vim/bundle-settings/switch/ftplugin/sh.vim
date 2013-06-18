@@ -4,7 +4,7 @@
 " @description Switch ftplugin for SH
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 20:23:33 DeaR>
+" @timestamp   <2013-06-19 01:53:17 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -64,13 +64,13 @@ endif
 let b:undo_ftplugin .= '
   \ call filter(b:switch_custom_definitions, "
   \   !exists(\"b:sh_switch_custom_definitions\") ||
-  \   v:val != b:sh_switch_custom_definitions") |
+  \   v:val isnot b:sh_switch_custom_definitions") |
   \ call filter(b:switch_increment_definitions, "
   \   !exists(\"b:sh_switch_increment_definitions\") ||
-  \   v:val != b:sh_switch_increment_definitions") |
+  \   v:val isnot b:sh_switch_increment_definitions") |
   \ call filter(b:switch_decrement_definitions, "
   \   !exists(\"b:sh_switch_decrement_definitions\") ||
-  \   v:val != b:sh_switch_decrement_definitions")'
+  \   v:val isnot b:sh_switch_decrement_definitions")'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

@@ -4,7 +4,7 @@
 " @description Switch ftplugin for WSH
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 20:23:33 DeaR>
+" @timestamp   <2013-06-19 02:09:22 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -23,8 +23,8 @@ function! s:init_definitions()
   endfor
 
   call extend(cst, {
-    \ '\C[+-*/\\^&<>]\@<!=' : '<>',
-    \ '\C<>'                : '='})
+    \ '\C[+-\*/\\^&<>]\@<!=' : '<>',
+    \ '\C<>'                 : '='})
 
   let b:wsh_switch_custom_definitions    = cst
   let b:wsh_switch_increment_definitions = inc
@@ -58,13 +58,13 @@ endif
 let b:undo_ftplugin .= '
   \ call filter(b:switch_custom_definitions, "
   \   !exists(\"b:wsh_switch_custom_definitions\") ||
-  \   v:val != b:wsh_switch_custom_definitions") |
+  \   v:val isnot b:wsh_switch_custom_definitions") |
   \ call filter(b:switch_increment_definitions, "
   \   !exists(\"b:wsh_switch_increment_definitions\") ||
-  \   v:val != b:wsh_switch_increment_definitions") |
+  \   v:val isnot b:wsh_switch_increment_definitions") |
   \ call filter(b:switch_decrement_definitions, "
   \   !exists(\"b:wsh_switch_decrement_definitions\") ||
-  \   v:val != b:wsh_switch_decrement_definitions")'
+  \   v:val isnot b:wsh_switch_decrement_definitions")'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

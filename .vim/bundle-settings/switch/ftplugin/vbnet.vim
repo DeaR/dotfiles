@@ -4,7 +4,7 @@
 " @description Switch ftplugin for VB.NET
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 20:23:33 DeaR>
+" @timestamp   <2013-06-19 02:09:06 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -36,8 +36,8 @@ function! s:init_definitions()
   endfor
 
   call extend(cst, {
-    \ '\C[+-*/\\^&<>]\@<!=' : '<>',
-    \ '\C<>'                : '='})
+    \ '\C[+-\*/\\^&<>]\@<!=' : '<>',
+    \ '\C<>'                 : '='})
 
   let b:vbnet_switch_custom_definitions    = cst
   let b:vbnet_switch_increment_definitions = inc
