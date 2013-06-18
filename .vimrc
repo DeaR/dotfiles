@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 19:52:26 DeaR>
+" @timestamp   <2013-06-18 23:13:55 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -276,6 +276,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \   'commands' : [
       \     'GundoToggle', 'GundoShow', 'GundoHide', 'GundoRenderGraph']}}
   endif
+
+  NeoBundleLazy 'cohama/vim-hier', {
+    \ 'autoload' : {'filetypes' : 'qf'}}
 
   NeoBundleLazy 'HybridText', {
     \ 'autoload' : {'filetypes' : 'hybrid'}}
