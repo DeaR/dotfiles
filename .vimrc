@@ -364,8 +364,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \   'Shougo/context_filetype.vim',
       \   'Shougo/echodoc',
       \   'hrsh7th/vim-neco-calc',
-      \   'ujihisa/neco-look',
-      \   'Shougo/neosnippet.vim']}
+      \   'ujihisa/neco-look']}
     call extend(s:neocompl_vim_completefuncs, {
       \ 'NeoCompleteDictionaryMakeCache' : 'neocomplete#filetype_complete',
       \ 'NeoCompleteSyntaxMakeCache'     : 'neocomplete#filetype_complete'})
