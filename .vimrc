@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-19 16:25:52 DeaR>
+" @timestamp   <2013-06-19 16:31:24 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -343,6 +343,21 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   if has('lua') && s:has_patch(703, 885)
     NeoBundleLazy 'Shougo/neocomplete.vim', {
       \ 'autoload' : {
+      \   'commands' : [
+      \     'NeoCompleteEnable', 'NeoCompleteDisable',
+      \     'NeoCompleteLock',   'NeoCompleteUnlock',
+      \     'NeoCompleteToggle', 'NeoCompleteClean',
+      \     {'name' : 'NeoCompleteSetFileType',
+      \      'complete' : 'filetype'},
+      \     {'name' : 'NeoCompleteBufferMakeCache',
+      \      'complete' : 'file'},
+      \     {'name' : 'NeoCompleteDictionaryMakeCache',
+      \      'compelte' : 'customlist,neocomplete#filetype_complete'},
+      \     {'name' : 'NeoCompleteIncludeMakeCache',
+      \      'complete' : 'buffer'},
+      \     {'name' : 'NeoCompleteSyntaxMakeCache',
+      \      'complete' : 'customlist,neocomplete#filetype_complete'},
+      \     'NeoCompleteTagMakeCache'],
       \   'unite_sources' : ['file_include', 'neocomplete'],
       \   'insert' : 1},
       \ 'depends' : [
