@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-19 16:31:24 DeaR>
+" @timestamp   <2013-06-19 16:40:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -372,6 +372,30 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   else
     NeoBundleLazy 'Shougo/neocomplcache.vim', {
       \ 'autoload' : {
+      \   'commands' : [
+      \     'NeoComplCacheEnable',     'NeoComplCacheDisable',
+      \     'NeoComplCacheLock',       'NeoComplCacheUnlock',
+      \     'NeoComplCacheLockSource', 'NeoComplCacheUnlockSource',
+      \     'NeoComplCacheToggle',     'NeoComplCacheClean',
+      \     {'name' : 'NeoComplCacheSetFileType',
+      \      'complete' : 'filetype'},
+      \     {'name' : 'NeoComplCacheCachingBuffer',
+      \      'complete' : 'file'},
+      \     {'name' : 'NeoComplCachePrintSource',
+      \      'complete' : 'buffer'},
+      \     {'name' : 'NeoComplCacheOutputKeyword',
+      \      'complete' : 'buffer'},
+      \     {'name' : 'NeoComplCacheDisableCaching',
+      \      'complete' : 'buffer'},
+      \     {'name' : 'NeoComplCacheEnableCaching',
+      \      'complete' : 'buffer'},
+      \     {'name' : 'NeoComplCacheCachingDictionary',
+      \      'complete' : 'customlist,neocomplcache#filetype_complete'},
+      \     {'name' : 'NeoComplCacheCachingInclude',
+      \      'complete' : 'buffer'},
+      \     {'name' : 'NeoComplCacheCachingSyntax',
+      \      'complete' : 'customlist,neocomplcache#filetype_complete'},
+      \     'NeoComplCacheCachingTags'],
       \   'unite_sources' : ['file_include', 'neocomplcache'],
       \   'insert' : 1},
       \ 'depends' : [
