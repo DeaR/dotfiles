@@ -4,15 +4,15 @@
 " @description Switch ftplugin for ZSH
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-19 01:53:18 DeaR>
+" @timestamp   <2013-06-19 15:44:33 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! s:init_definitions()
-  let cst = {}
-  let inc = {}
-  let dec = {}
+function! s:init_switch_definitions()
+  let s:cst = {}
+  let s:inc = {}
+  let s:dec = {}
 
   for l in [
     \ ['-eq', '-ne'],
@@ -24,22 +24,16 @@ function! s:init_definitions()
     \ ['-r', '-w', '-x'],
     \ ['-a', '-o']]
     for i in range(len(l))
-      call extend(cst, {'\C' . l[i] : get(l, i + 1, l[0])})
+      call extend(s:cst, {'\C' . l[i] : get(l, i + 1, l[0])})
     endfor
   endfor
 
-  call extend(cst, {
+  call extend(s:cst, {
     \ '\C!\@<!=' : '!=',
     \ '\C!='     : '='})
-
-  let b:zsh_switch_custom_definitions    = cst
-  let b:zsh_switch_increment_definitions = inc
-  let b:zsh_switch_decrement_definitions = dec
 endfunction
-if !exists('b:zsh_switch_custom_definitions') ||
-  \ !exists('b:zsh_switch_increment_definitions') ||
-  \ !exists('b:zsh_switch_decrement_definitions')
-  call s:init_definitions()
+if !exists('s:cst') || !exists('s:inc') || !exists('s:dec')
+  call s:init_switch_definitions()
 endif
 
 if !exists('b:switch_custom_definitions')
@@ -52,9 +46,28 @@ if !exists('b:switch_decrement_definitions')
   let b:switch_decrement_definitions = []
 endif
 
-call add(b:switch_custom_definitions,    b:zsh_switch_custom_definitions)
-call add(b:switch_increment_definitions, b:zsh_switch_increment_definitions)
-call add(b:switch_decrement_definitions, b:zsh_switch_decrement_definitions)
+call add(b:switch_custom_definitions,    s:cst)
+call add(b:switch_increment_definitions, s:inc)
+call add(b:switch_decrement_definitions, s:dec)
+
+function! s:SID_PREFIX()
+  return matchstr(expand('<sfile>'), '\zs<SNR>\d\+_\zeSID_PREFIX$')
+endfunction
+
+function! s:remove_switch_definitions()
+  if exists('s:cst')
+    call filter(b:switch_custom_definitions,
+      \ 'v:val isnot s:cst')
+  endif
+  if exists('s:inc')
+    call filter(b:switch_increment_definitions,
+      \ 'v:val isnot s:inc')
+  endif
+  if exists('s:dec')
+    call filter(b:switch_decrement_definitions,
+      \ 'v:val isnot s:dec')
+  endif
+endfunction
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
@@ -62,15 +75,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ call filter(b:switch_custom_definitions, "
-  \   !exists(\"b:zsh_switch_custom_definitions\") ||
-  \   v:val isnot b:zsh_switch_custom_definitions") |
-  \ call filter(b:switch_increment_definitions, "
-  \   !exists(\"b:zsh_switch_increment_definitions\") ||
-  \   v:val isnot b:zsh_switch_increment_definitions") |
-  \ call filter(b:switch_decrement_definitions, "
-  \   !exists(\"b:zsh_switch_decrement_definitions\") ||
-  \   v:val isnot b:zsh_switch_decrement_definitions")'
+  \ call call("' . s:SID_PREFIX() . 'remove_switch_definitions", [])'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
