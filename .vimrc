@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-19 17:00:15 DeaR>
+" @timestamp   <2013-06-19 19:20:25 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1029,11 +1029,11 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'mattn/zencoding-vim', {
     \ 'autoload' : {
-    \   'commands' : 'Zen',
     \   'filetypes' : [
     \     'css', 'css.drupal', 'haml', 'html', 'html.django_template',
     \     'htmldjango', 'less', 'mustache', 'sass', 'scss', 'slim',
     \     'xhtml', 'xml', 'xsl', 'xslt'],
+    \   'commands' : 'Zen',
     \   'mappings' : [['nvi', '<C-Y>']]}}
 endif
 "}}}
