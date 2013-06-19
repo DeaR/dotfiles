@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-19 16:10:40 DeaR>
+" @timestamp   <2013-06-19 16:25:52 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -372,6 +372,13 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'Shougo/neosnippet.vim', {
     \ 'autoload' : {
     \   'filetypes' : 'snippet',
+    \   'commands' : [
+    \     {'name' : 'NeoSnippetEdit',
+    \      'complete' : 'customlist,neosnippet#edit_complete'},
+    \     {'name' : 'NeoSnippetMakeCache',
+    \      'compelte' : 'customlist,neosnippet#filetype_complete'},
+    \     {'name' : 'NeoSnippetSource',
+    \      'complete' : 'file'}],
     \   'mappings' : [
     \     ['v', '<Plug>(neosnippet_expand_or_jump)'],
     \     ['v', '<Plug>(neosnippet_jump_or_expand)'],
@@ -386,11 +393,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \   'Shougo/context_filetype.vim',
     \   'Shougo/echodoc']}
   call extend(s:neocompl_vim_completefuncs, {
-    \ 'NeoSnippetEdit'                   : 'neosnippet#edit_complete',
-    \ 'NeoSnippetMakeCache'              : 'neosnippet#filetype_complete',
-    \ 'NeoComplCacheCachingSnippets'     : 'neosnippet#filetype_complete',
-    \ 'NeoComplCacheEditSnippets'        : 'neosnippet#filetype_complete',
-    \ 'NeoComplCacheEditRuntimeSnippets' : 'neosnippet#filetype_complete'})
+    \ 'NeoSnippetEdit'      : 'neosnippet#edit_complete',
+    \ 'NeoSnippetMakeCache' : 'neosnippet#filetype_complete'})
 
   NeoBundleLazy 'Shougo/vim-nyaos', {
     \ 'autoload' : {'filetypes' : 'nyaos'}}
