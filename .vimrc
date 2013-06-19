@@ -424,10 +424,13 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     ['v', '<Plug>(neosnippet_expand)'],
     \     ['v', '<Plug>(neosnippet_jump)'],
     \     ['x', '<Plug>(neosnippet_get_selected_text)'],
-    \     ['x', '<Plug>(neosnippet_expand_target)']],
+    \     ['x', '<Plug>(neosnippet_expand_target)'],
+    \     ['x', '<Plug>(neosnippet_start_unite_snippet_target)'],
+    \     ['x', '<Plug>(neosnippet_register_oneshot_snippet)']],
     \   'unite_sources' : [
     \     'snippet', 'snippet/target',
-    \     'neosnippet/user', 'neosnippet/runtime']},
+    \     'neosnippet/user', 'neosnippet/runtime'],
+    \   'insert' : 1},
     \ 'depends' : [
     \   'Shougo/context_filetype.vim',
     \   'Shougo/echodoc']}
