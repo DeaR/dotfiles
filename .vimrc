@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-20 23:01:32 DeaR>
+" @timestamp   <2013-06-20 23:38:53 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4190,39 +4190,56 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXmap <SID>(visualstar-g*) <Plug>(visualstar-g*)
   NXmap <SID>(visualstar-g#) <Plug>(visualstar-g#)
 
-  NXmap <script><expr> <C-W>*
+  xnoremap <script><expr> <C-W>*
     \ &columns < 160 ?
     \   '<C-W>sgv<SID>(visualstar-*)' :
     \   '<C-W>vgv<SID>(visualstar-*)'
-  NXmap <script><expr> <C-W>#
+  xnoremap <script><expr> <C-W>#
     \ &columns < 160 ?
     \   '<C-W>sgv<SID>(visualstar-#)' :
     \   '<C-W>vgv<SID>(visualstar-#)'
-  NXmap <script><expr> <C-W>g*
+  xnoremap <script><expr> <C-W>g*
     \ &columns < 160 ?
     \   '<C-W>sgv<SID>(visualstar-g*)' :
     \   '<C-W>vgv<SID>(visualstar-g*)'
-  NXmap <script><expr> <C-W>g#
+  xnoremap <script><expr> <C-W>g#
     \ &columns < 160 ?
     \   '<C-W>sgv<SID>(visualstar-g#)' :
     \   '<C-W>vgv<SID>(visualstar-g#)'
+
+  nnoremap <expr> <C-W>*
+    \ &columns < 160 ?
+    \   '<C-W>s*' :
+    \   '<C-W>v*'
+  nnoremap <expr> <C-W>#
+    \ &columns < 160 ?
+    \   '<C-W>s#' :
+    \   '<C-W>v#'
+  nnoremap <expr> <C-W>g*
+    \ &columns < 160 ?
+    \   '<C-W>sg*' :
+    \   '<C-W>vg*'
+  nnoremap <expr> <C-W>g#
+    \ &columns < 160 ?
+    \   '<C-W>sg#' :
+    \   '<C-W>vg#'
 else
   NXnoremap <expr> <C-W>*
     \ &columns < 160 ?
-    \   '<C-W>sgv*' :
-    \   '<C-W>vgv*'
+    \   '<C-W>s*' :
+    \   '<C-W>v*'
   NXnoremap <expr> <C-W>#
     \ &columns < 160 ?
-    \   '<C-W>sgv#' :
-    \   '<C-W>vgv#'
+    \   '<C-W>s#' :
+    \   '<C-W>v#'
   NXnoremap <expr> <C-W>g*
     \ &columns < 160 ?
-    \   '<C-W>sgvg*' :
-    \   '<C-W>vgvg*'
+    \   '<C-W>sg*' :
+    \   '<C-W>vg*'
   NXnoremap <expr> <C-W>g#
     \ &columns < 160 ?
-    \   '<C-W>sgvg#' :
-    \   '<C-W>vgvg#'
+    \   '<C-W>sg#' :
+    \   '<C-W>vg#'
 endif
 unlet! s:bundle
 "}}}
