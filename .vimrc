@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-20 15:08:47 DeaR>
+" @timestamp   <2013-06-20 17:25:49 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1808,13 +1808,11 @@ augroup MyVimrc
     \ call <SID>cmdwin_leave()
 augroup END
 
-function! s:cmdline_enter(mode)
-  if s:has_patch(703, 438)
-    doautocmd <nomodeline> User CmdlineEnter
-  else
-    doautocmd User CmdlineEnter
-  endif
-  return a:mode
+function! s:cmdline_enter(type)
+  execute 'doautocmd'
+    \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
+    \ 'User CmdlineEnter'
+  return a:type
 endfunction
 
 if s:cmdwin_enable
