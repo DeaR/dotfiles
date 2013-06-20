@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-20 17:25:49 DeaR>
+" @timestamp   <2013-06-20 19:51:47 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1018,8 +1018,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'thinca/vim-visualstar', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['v', '<Plug>(visualstar-*)'], ['v', '<Plug>(visualstar-g*)'],
-    \     ['v', '<Plug>(visualstar-#)'], ['v', '<Plug>(visualstar-g#)']]}}
+    \     '<Plug>(visualstar-*)', '<Plug>(visualstar-g*)',
+    \     '<Plug>(visualstar-#)', '<Plug>(visualstar-g#)']}}
 
   NeoBundleLazy 'osyo-manga/vim-watchdogs', {
     \ 'autoload' : {
@@ -1526,6 +1526,16 @@ OXnoremap g[ :<C-U>normal g[<CR>
 inoremap <C-W> <C-G>u<C-W>
 inoremap <C-U> <C-G>u<C-U>
 
+" Auto escape at Command-mode
+cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
+augroup MyVimrc
+  autocmd CmdwinEnter /
+    \ inoremap <buffer> / \/
+  autocmd CmdwinEnter ?
+    \ inoremap <buffer> ? \?
+augroup END
+
 " Help
 inoremap <expr> <F1>
   \ &columns < 160 ?
@@ -1541,32 +1551,51 @@ nnoremap <expr> g<F1>
   \   ':<C-U>vertical help ' . expand('<cword>') . '<CR>'
 
 " Search
-nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
+NXmap g/ *
+NXmap g? #
 nnoremap <C-N> :<C-U>global//print<CR>
 xnoremap <C-N> :global//print<CR>
-cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
-cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
-augroup MyVimrc
-  autocmd CmdwinEnter /
-    \ inoremap <buffer> / \/
-  autocmd CmdwinEnter ?
-    \ inoremap <buffer> ? \?
-augroup END
+nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
 
 " Search Split Window
 if s:cmdwin_enable
-  nnoremap <C-W>/  <C-W>sq/
-  nnoremap <C-W>?  <C-W>sq?
+  NXnoremap <expr> <C-W>/
+    \ &columns < 160 ?
+    \   '<C-W>sq/' :
+    \   '<C-W>vq/'
+  NXnoremap <expr> <C-W>?
+    \ &columns < 160 ?
+    \   '<C-W>sq?' :
+    \   '<C-W>vq?'
 else
-  nnoremap <C-W>/  <C-W>s/
-  nnoremap <C-W>?  <C-W>s?
+  NXnoremap <expr> <C-W>/
+    \ &columns < 160 ?
+    \   '<C-W>s/' :
+    \   '<C-W>v/'
+  NXnoremap <expr> <C-W>?
+    \ &columns < 160 ?
+    \   '<C-W>s?' :
+    \   '<C-W>v?'
 endif
-nnoremap <C-W>*  <C-W>s*
-nnoremap <C-W>#  <C-W>s#
-nnoremap <C-W>g/ <C-W>s*
-nnoremap <C-W>g? <C-W>s#
-nnoremap <C-W>g* <C-W>sg*
-nnoremap <C-W>g# <C-W>sg#
+NXnoremap <expr> <C-W>*
+  \ &columns < 160 ?
+  \   '<C-W>s*' :
+  \   '<C-W>v*'
+NXnoremap <expr> <C-W>#
+  \ &columns < 160 ?
+  \   '<C-W>s#' :
+  \   '<C-W>v#'
+NXnoremap <expr> <C-W>g*
+  \ &columns < 160 ?
+  \   '<C-W>sg*' :
+  \   '<C-W>vg*'
+NXnoremap <expr> <C-W>g#
+  \ &columns < 160 ?
+  \   '<C-W>sg#' :
+  \   '<C-W>vg#'
+
+NXmap <C-W>g/ <C-W>*
+NXmap <C-W>g? <C-W>#
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -4154,18 +4183,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:visualstar_no_default_key_mappings = 1
   endfunction
 
-  NOXmap *  <Plug>(visualstar-*)
-  NOXmap #  <Plug>(visualstar-#)
-  NOXmap g/ <Plug>(visualstar-*)
-  NOXmap g? <Plug>(visualstar-#)
-  NOXmap g* <Plug>(visualstar-g*)
-  NOXmap g# <Plug>(visualstar-g#)
+  NXmap *  <Plug>(visualstar-*)
+  NXmap #  <Plug>(visualstar-#)
+  NXmap g* <Plug>(visualstar-g*)
+  NXmap g# <Plug>(visualstar-g#)
 
   vmap <S-LeftMouse>  <Plug>(visualstar-*)
   vmap g<S-LeftMouse> <Plug>(visualstar-g*)
-else
-  NOXnoremap g/ *
-  NOXnoremap g? #
 endif
 unlet! s:bundle
 "}}}
