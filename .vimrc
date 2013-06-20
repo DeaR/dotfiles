@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-20 11:17:55 DeaR>
+" @timestamp   <2013-06-20 12:03:07 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2793,7 +2793,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
     let g:neosnippet#disable_runtime_snippets._ = 1
 
-    imap <C-J> <Plug>(neosnippet_expand_or_jump)'
+    imap <C-J> <Plug>(neosnippet_expand_or_jump)
   endfunction
 
   smap <C-J> <Plug>(neosnippet_expand_or_jump)
