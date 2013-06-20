@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-20 19:51:47 DeaR>
+" @timestamp   <2013-06-20 23:01:32 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1577,23 +1577,6 @@ else
     \   '<C-W>s?' :
     \   '<C-W>v?'
 endif
-NXnoremap <expr> <C-W>*
-  \ &columns < 160 ?
-  \   '<C-W>s*' :
-  \   '<C-W>v*'
-NXnoremap <expr> <C-W>#
-  \ &columns < 160 ?
-  \   '<C-W>s#' :
-  \   '<C-W>v#'
-NXnoremap <expr> <C-W>g*
-  \ &columns < 160 ?
-  \   '<C-W>sg*' :
-  \   '<C-W>vg*'
-NXnoremap <expr> <C-W>g#
-  \ &columns < 160 ?
-  \   '<C-W>sg#' :
-  \   '<C-W>vg#'
-
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
 "}}}
@@ -4190,6 +4173,45 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   vmap <S-LeftMouse>  <Plug>(visualstar-*)
   vmap g<S-LeftMouse> <Plug>(visualstar-g*)
+
+  NXmap <SID>(visualstar-*)  <Plug>(visualstar-*)
+  NXmap <SID>(visualstar-#)  <Plug>(visualstar-#)
+  NXmap <SID>(visualstar-g*) <Plug>(visualstar-g*)
+  NXmap <SID>(visualstar-g#) <Plug>(visualstar-g#)
+
+  NXmap <script><expr> <C-W>*
+    \ &columns < 160 ?
+    \   '<C-W>sgv<SID>(visualstar-*)' :
+    \   '<C-W>vgv<SID>(visualstar-*)'
+  NXmap <script><expr> <C-W>#
+    \ &columns < 160 ?
+    \   '<C-W>sgv<SID>(visualstar-#)' :
+    \   '<C-W>vgv<SID>(visualstar-#)'
+  NXmap <script><expr> <C-W>g*
+    \ &columns < 160 ?
+    \   '<C-W>sgv<SID>(visualstar-g*)' :
+    \   '<C-W>vgv<SID>(visualstar-g*)'
+  NXmap <script><expr> <C-W>g#
+    \ &columns < 160 ?
+    \   '<C-W>sgv<SID>(visualstar-g#)' :
+    \   '<C-W>vgv<SID>(visualstar-g#)'
+else
+  NXnoremap <expr> <C-W>*
+    \ &columns < 160 ?
+    \   '<C-W>sgv*' :
+    \   '<C-W>vgv*'
+  NXnoremap <expr> <C-W>#
+    \ &columns < 160 ?
+    \   '<C-W>sgv#' :
+    \   '<C-W>vgv#'
+  NXnoremap <expr> <C-W>g*
+    \ &columns < 160 ?
+    \   '<C-W>sgvg*' :
+    \   '<C-W>vgvg*'
+  NXnoremap <expr> <C-W>g#
+    \ &columns < 160 ?
+    \   '<C-W>sgvg#' :
+    \   '<C-W>vgvg#'
 endif
 unlet! s:bundle
 "}}}
