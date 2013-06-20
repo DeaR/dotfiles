@@ -2257,14 +2257,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   OXmap i<M-b> <Plug>CamelCaseMotion_ib
   OXmap i<M-e> <Plug>CamelCaseMotion_ie
 
-  inoremap <silent> <M-w>
-    \ <C-O>:<C-U>call camelcasemotion#Motion('w', v:count1, 'n')<CR>
-  inoremap <silent> <M-b>
-    \ <C-O>:<C-U>call camelcasemotion#Motion('b', v:count1, 'n')<CR>
-  inoremap <silent> <M-e>
-    \ <C-O>:<C-U>call camelcasemotion#Motion('e', v:count1, 'n')<CR>
-  inoremap <silent> <M-g><M-e>
-    \ <C-O>:<C-U>call camelcasemotion#Motion('ge', v:count1, 'n')<CR>
+  nmap <SID>CamelCaseMotion_w  <Plug>CamelCaseMotion_w
+  nmap <SID>CamelCaseMotion_b  <Plug>CamelCaseMotion_b
+  nmap <SID>CamelCaseMotion_e  <Plug>CamelCaseMotion_e
+  nmap <SID>CamelCaseMotion_ge <Plug>CamelCaseMotion_ge
+
+  inoremap <script> <M-w>      <C-O><SID>CamelCaseMotion_w
+  inoremap <script> <M-b>      <C-O><SID>CamelCaseMotion_b
+  inoremap <script> <M-e>      <C-O><SID>CamelCaseMotion_e
+  inoremap <script> <M-g><M-e> <C-O><SID>CamelCaseMotion_ge
 else
   inoremap <M-w>      <C-O>w
   inoremap <M-b>      <C-O>b
