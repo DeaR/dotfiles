@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-20 12:03:07 DeaR>
+" @timestamp   <2013-06-20 15:08:47 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -35,7 +35,9 @@ if argc() && has('clientserver') && has('vim_starting')
     silent execute '!start'
       \ (has('gui_running') ? 'gvim' : 'vim')
       \ '--servername' s:running_vim_list[0]
-      \ '--remote-silent' join(argv(), ' ')
+      \ '--remote-silent'
+      \ '+"lcd' getcwd() '"'
+      \ join(argv(), ' ')
     set viminfo=
     qall!
   endif
@@ -2085,7 +2087,7 @@ nnoremap <M-I> I<C-R>=<SID>keys_to_insert_one_character()<CR>
 " Functions Of Highlight: {{{
 function! s:get_highlight(hi)
   redir => hl
-    silent execute 'highlight' a:hi
+  silent execute 'highlight' a:hi
   redir END
   let hl = substitute(hl, '[\r\n]', ' ', 'g')
   return matchstr(hl, 'xxx\zs.*$')
