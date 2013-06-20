@@ -2363,6 +2363,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NOXmap F <Plug>(clever-f-F)
   NOXmap t <Plug>(clever-f-t)
   NOXmap T <Plug>(clever-f-T)
+
+  nmap <SID>(clever-f-f) <Plug>(clever-f-f)
+  nmap <SID>(clever-f-F) <Plug>(clever-f-F)
+  nmap <SID>(clever-f-t) <Plug>(clever-f-t)
+  nmap <SID>(clever-f-T) <Plug>(clever-f-T)
+
+  inoremap <script> <M-f> <C-O><SID>(clever-f-f)
+  inoremap <script> <M-F> <C-O><SID>(clever-f-F)
+  inoremap <script> <M-t> <C-O><SID>(clever-f-t)
+  inoremap <script> <M-T> <C-O><SID>(clever-f-T)
 endif
 unlet! s:bundle
 "}}}
