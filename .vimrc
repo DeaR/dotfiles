@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-21 16:55:05 DeaR>
+" @timestamp   <2013-06-21 17:44:21 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2547,6 +2547,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:jscomplete_use = ['dom', 'moz', 'xpcom', 'es6th']
   endfunction
+
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'javascript' : '[^.[:digit:] *\t]\.'})
 endif
 unlet! s:bundle
 "}}}
