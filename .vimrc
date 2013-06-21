@@ -832,9 +832,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'UniteWithInputDirectory' : 'unite#complete_source',
     \ 'UniteResume'             : 'unite#complete_buffer_name'})
 
-  NeoBundleLazy 'osyo-manga/unite-quickrun_config', {
-    \ 'autoload' : {'unite_sources' : 'quickrun_config'},
-    \ 'depends' : 'thinca/vim-quickrun'}
+  NeoBundleLazy 'Shougo/unite-build', {
+    \ 'autoload' : {'unite_sources' : 'build'}}
 
   NeoBundleLazy 'osyo-manga/unite-filetype', {
     \ 'autoload' : {'unite_sources' : 'filetype'}}
@@ -862,6 +861,10 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'osyo-manga/unite-quickfix', {
     \ 'autoload' : {'unite_sources' : 'quickfix'}}
+
+  NeoBundleLazy 'osyo-manga/unite-quickrun_config', {
+    \ 'autoload' : {'unite_sources' : 'quickrun_config'},
+    \ 'depends' : 'thinca/vim-quickrun'}
 
   NeoBundleLazy 'mattn/unite-remotefile', {
     \ 'autoload' : {'unite_sources' : 'remotefile'}}
