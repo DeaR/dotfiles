@@ -372,7 +372,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \ 'NeoCompleteDictionaryMakeCache' : 'neocomplete#filetype_complete',
       \ 'NeoCompleteSyntaxMakeCache'     : 'neocomplete#filetype_complete'})
   else
-    NeoBundleLazy 'Shougo/neocomplcache.vim', {
+    " NeoBundleLazy 'Shougo/neocomplcache.vim', {
+    NeoBundle 'Shougo/neocomplcache.vim', {
       \ 'autoload' : {
       \   'commands' : [
       \     'NeoComplCacheEnable',     'NeoComplCacheDisable',
