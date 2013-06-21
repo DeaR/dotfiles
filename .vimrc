@@ -2706,7 +2706,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '<C-P>' :
       \   neocomplcache#start_manual_complete()
 
-    call neocomplcache#initialize()
+    " call neocomplcache#initialize()
   endfunction
 
   function! s:cmdwin_enter_NeoComplCache()
