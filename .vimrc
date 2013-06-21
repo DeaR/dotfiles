@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-22 03:28:57 DeaR>
+" @timestamp   <2013-06-22 03:38:52 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -759,6 +759,10 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'bps/vim-textobj-python', {
     \ 'autoload' : {'filetypes' : 'python'},
+    \ 'depends' : 'kana/vim-textobj-user'}
+
+  NeoBundleLazy 'rhysd/vim-textobj-ruby', {
+    \ 'autoload' : {'filetypes' : 'ruby'},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'vimtaku/vim-textobj-sigil', {
@@ -3755,6 +3759,18 @@ silent! let s:bundle = neobundle#get('textobj-python')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_python_no_default_key_mappings = 1
+  endfunction
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" TextObj Ruby: {{{
+silent! let s:bundle = neobundle#get('textobj-ruby')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:textobj_ruby_no_default_key_mappings = 1
+    let g:textobj_ruby_more_mappings           = 1
   endfunction
 endif
 unlet! s:bundle
