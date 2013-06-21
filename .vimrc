@@ -189,7 +189,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     ['nvo', '<Plug>CamelCaseMotion_ge'],
     \     ['vo',  '<Plug>CamelCaseMotion_iw'],
     \     ['vo',  '<Plug>CamelCaseMotion_ib'],
-    \     ['vo',  '<Plug>CamelCaseMotion_ie']]}}
+    \     ['vo',  '<Plug>CamelCaseMotion_ie']],
+    \   'insert' : 1}}
 
   if has('python') && executable('clang')
     NeoBundleLazy 'Rip-Rip/clang_complete', {
