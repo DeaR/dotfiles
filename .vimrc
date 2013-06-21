@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-21 16:35:03 DeaR>
+" @timestamp   <2013-06-21 16:39:20 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -200,8 +200,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo', '<Plug>(clever-f-f)'], ['nvo', '<Plug>(clever-f-F)'],
-    \     ['nvo', '<Plug>(clever-f-t)'], ['nvo', '<Plug>(clever-f-T)']],
-    \   'insert' : 1}}
+    \     ['nvo', '<Plug>(clever-f-t)'], ['nvo', '<Plug>(clever-f-T)']]}}
 
   NeoBundleLazy 'deris/columnjump', {
     \ 'autoload' : {
@@ -2396,15 +2395,20 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:clever_f_not_overwrites_standard_mappings = 1
   endfunction
 
+  function! s:i_clever_f(key)
+    NeoBundleSource clever-f
+    return "\<Plug>(clever-f-" . a:key . ")"
+  endfunction
+
   NOXmap f <Plug>(clever-f-f)
   NOXmap F <Plug>(clever-f-F)
   NOXmap t <Plug>(clever-f-t)
   NOXmap T <Plug>(clever-f-T)
 
-  nmap <SID>(clever-f-f) <Plug>(clever-f-f)
-  nmap <SID>(clever-f-F) <Plug>(clever-f-F)
-  nmap <SID>(clever-f-t) <Plug>(clever-f-t)
-  nmap <SID>(clever-f-T) <Plug>(clever-f-T)
+  nmap <expr> <SID>(clever-f-f) <SID>i_clever_f('f')
+  nmap <expr> <SID>(clever-f-F) <SID>i_clever_f('F')
+  nmap <expr> <SID>(clever-f-t) <SID>i_clever_f('t')
+  nmap <expr> <SID>(clever-f-T) <SID>i_clever_f('T')
 
   inoremap <script> <M-f> <C-O><SID>(clever-f-f)
   inoremap <script> <M-F> <C-O><SID>(clever-f-F)
