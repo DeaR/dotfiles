@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-21 15:42:46 DeaR>
+" @timestamp   <2013-06-21 16:35:03 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -189,8 +189,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     ['nvo', '<Plug>CamelCaseMotion_ge'],
     \     ['vo',  '<Plug>CamelCaseMotion_iw'],
     \     ['vo',  '<Plug>CamelCaseMotion_ib'],
-    \     ['vo',  '<Plug>CamelCaseMotion_ie']],
-    \   'insert' : 1}}
+    \     ['vo',  '<Plug>CamelCaseMotion_ie']]}}
 
   if has('python') && executable('clang')
     NeoBundleLazy 'Rip-Rip/clang_complete', {
@@ -2286,6 +2285,11 @@ unlet! s:bundle
 " CamelCaseMotion: {{{
 silent! let s:bundle = neobundle#get('camelcasemotion')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:i_camelcasemotion(key)
+    NeoBundleSource camelcasemotion
+    return "\<Plug>CamelCaseMotion_" . a:key
+  endfunction
+
   NOXmap w  <Plug>CamelCaseMotion_w
   NOXmap b  <Plug>CamelCaseMotion_b
   NOXmap e  <Plug>CamelCaseMotion_e
@@ -2295,10 +2299,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   OXmap i<M-b> <Plug>CamelCaseMotion_ib
   OXmap i<M-e> <Plug>CamelCaseMotion_ie
 
-  nmap <SID>CamelCaseMotion_w  <Plug>CamelCaseMotion_w
-  nmap <SID>CamelCaseMotion_b  <Plug>CamelCaseMotion_b
-  nmap <SID>CamelCaseMotion_e  <Plug>CamelCaseMotion_e
-  nmap <SID>CamelCaseMotion_ge <Plug>CamelCaseMotion_ge
+  nmap <expr> <SID>CamelCaseMotion_w  <SID>i_camelcasemotion('w')
+  nmap <expr> <SID>CamelCaseMotion_b  <SID>i_camelcasemotion('b')
+  nmap <expr> <SID>CamelCaseMotion_e  <SID>i_camelcasemotion('e')
+  nmap <expr> <SID>CamelCaseMotion_ge <SID>i_camelcasemotion('ge')
 
   inoremap <script> <M-w>      <C-O><SID>CamelCaseMotion_w
   inoremap <script> <M-b>      <C-O><SID>CamelCaseMotion_b
