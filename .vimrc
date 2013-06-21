@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-21 20:13:34 DeaR>
+" @timestamp   <2013-06-21 20:27:08 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -343,7 +343,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'NeoBundleReinstall' : 'neobundle#complete_bundles'})
 
   if has('lua') && s:has_patch(703, 885)
-    NeoBundleLazy 'Shougo/neocomplete.vim', {
+    " NeoBundleLazy 'Shougo/neocomplete.vim', {
+    NeoBundle 'Shougo/neocomplete.vim', {
       \ 'autoload' : {
       \   'commands' : [
       \     'NeoCompleteEnable', 'NeoCompleteDisable',
