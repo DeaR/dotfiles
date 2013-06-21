@@ -2753,8 +2753,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplete#enable_at_startup            = 1
     let g:neocomplete#enable_auto_select           = 0
     let g:neocomplete#enable_auto_delimiter        = 1
-    let g:neocomplete#min_keyword_length           = 1
-    let g:neocomplete#syntax#min_keyword_length    = 1
     let g:neocomplete#force_overwrite_completefunc = 1
     let g:neocomplete#data_directory               =
       \ expand('~/.local/.neocomplete')
