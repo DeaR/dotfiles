@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-22 03:38:52 DeaR>
+" @timestamp   <2013-06-22 03:42:34 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -867,6 +867,11 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'mattn/unite-remotefile', {
     \ 'autoload' : {'unite_sources' : 'remotefile'}}
+
+  if has('ruby')
+    NeoBundleLazy 'rhysd/unite-ruby-require.vim', {
+      \ 'autoload' : {'unite_sources' : 'ruby/require'}}
+  endif
 
   NeoBundleLazy 'Shougo/unite-ssh', {
     \ 'autoload' : {'unite_sources' : 'ssh'},
