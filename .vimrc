@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-20 23:38:53 DeaR>
+" @timestamp   <2013-06-21 13:30:13 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1476,6 +1476,10 @@ noremap! <M-h> <Left>
 noremap! <M-l> <Right>
 
 " Insert-mode
+inoremap <M-w>      <C-O>w
+inoremap <M-b>      <C-O>b
+inoremap <M-e>      <C-O>e
+inoremap <M-g><M-e> <C-O>ge
 inoremap <M-W>      <C-O>W
 inoremap <M-B>      <C-O>B
 inoremap <M-E>      <C-O>E
@@ -1501,8 +1505,9 @@ nnoremap <BS> X
 nnoremap Y y$
 
 " Undo branch
-nnoremap <M-u> g-
-nnoremap <M-r> g+
+nnoremap <M-u>     g-
+nnoremap <M-r>     g+
+nnoremap <Leader>u :<C-U>undolist<CR>
 
 " New line
 nnoremap <M-o> o<Esc>k
@@ -1513,6 +1518,7 @@ nnoremap ;w :<C-U>update<CR>
 nnoremap ;W :<C-U>wall<CR>
 
 " Delete all buffer
+nnoremap ;c :<C-U>confirm bdelete<CR>
 nnoremap ;C :<C-U>confirm 1,$bdelete<CR>
 
 " Start Visual-mode with the same area
@@ -1577,6 +1583,23 @@ else
     \   '<C-W>s?' :
     \   '<C-W>v?'
 endif
+NXnoremap <expr> <C-W>*
+  \ &columns < 160 ?
+  \   '<C-W>s*' :
+  \   '<C-W>v*'
+NXnoremap <expr> <C-W>#
+  \ &columns < 160 ?
+  \   '<C-W>s#' :
+  \   '<C-W>v#'
+NXnoremap <expr> <C-W>g*
+  \ &columns < 160 ?
+  \   '<C-W>sg*' :
+  \   '<C-W>vg*'
+NXnoremap <expr> <C-W>g#
+  \ &columns < 160 ?
+  \   '<C-W>sg#' :
+  \   '<C-W>vg#'
+
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
 "}}}
@@ -1918,6 +1941,15 @@ function! s:clear_file_marks()
   wviminfo!
 endfunction
 
+function! s:marks()
+  let char = join(s:mark_char, '')
+  let cmd = join([
+    \ 'marks',
+    \ char . toupper(char)])
+  echo "\r:" . cmd
+  execute cmd
+endfunction
+
 augroup MyVimrc
   autocmd BufRead *
     \ call s:init_mark()
@@ -1929,6 +1961,7 @@ nnoremap <silent> mm :<C-U>call <SID>auto_mark()<CR>
 nnoremap <silent> mc :<C-U>call <SID>clear_marks()<CR>
 nnoremap <silent> mM :<C-U>call <SID>auto_file_mark()<CR>
 nnoremap <silent> mC :<C-U>call <SID>clear_file_marks()<CR>
+nnoremap          ml :<C-U>call <SID>marks()<CR>
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -2266,11 +2299,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   inoremap <script> <M-b>      <C-O><SID>CamelCaseMotion_b
   inoremap <script> <M-e>      <C-O><SID>CamelCaseMotion_e
   inoremap <script> <M-g><M-e> <C-O><SID>CamelCaseMotion_ge
-else
-  inoremap <M-w>      <C-O>w
-  inoremap <M-b>      <C-O>b
-  inoremap <M-e>      <C-O>e
-  inoremap <M-g><M-e> <C-O>ge
 endif
 unlet! s:bundle
 "}}}
@@ -2440,8 +2468,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   nnoremap <Leader>u :<C-U>GundoToggle<CR>
-else
-  nnoremap <Leader>u :<C-U>undolist<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -2535,8 +2561,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     silent execute "normal \<Plug>Kwbd"
   endfunction
   nnoremap ;c :<C-U>call <SID>kwbd()<CR>
-else
-  nnoremap ;c :<C-U>confirm bdelete<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -2821,8 +2845,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   smap <C-J> <Plug>(neosnippet_expand_or_jump)
   xmap <C-J> <Plug>(neosnippet_expand_target)
-else
-  inoremap <SID>(Tab) <Tab>
 endif
 unlet! s:bundle
 "}}}
@@ -4024,16 +4046,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ :<C-U>Unite mark bookmark
     \ -buffer-name=files -no-split -auto-preview -multi-line -no-start-insert<CR>
   nnoremap mu :<C-U>UniteBookmarkAdd<CR>
-else
-  function! s:marks()
-    let char = join(s:mark_char, '')
-    let cmd = join([
-      \ 'marks',
-      \ char . toupper(char)])
-    echo "\r:" . cmd
-    execute cmd
-  endfunction
-  nnoremap ml :<C-U>call <SID>marks()<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -4206,40 +4218,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ &columns < 160 ?
     \   '<C-W>sgv<SID>(visualstar-g#)' :
     \   '<C-W>vgv<SID>(visualstar-g#)'
-
-  nnoremap <expr> <C-W>*
-    \ &columns < 160 ?
-    \   '<C-W>s*' :
-    \   '<C-W>v*'
-  nnoremap <expr> <C-W>#
-    \ &columns < 160 ?
-    \   '<C-W>s#' :
-    \   '<C-W>v#'
-  nnoremap <expr> <C-W>g*
-    \ &columns < 160 ?
-    \   '<C-W>sg*' :
-    \   '<C-W>vg*'
-  nnoremap <expr> <C-W>g#
-    \ &columns < 160 ?
-    \   '<C-W>sg#' :
-    \   '<C-W>vg#'
-else
-  NXnoremap <expr> <C-W>*
-    \ &columns < 160 ?
-    \   '<C-W>s*' :
-    \   '<C-W>v*'
-  NXnoremap <expr> <C-W>#
-    \ &columns < 160 ?
-    \   '<C-W>s#' :
-    \   '<C-W>v#'
-  NXnoremap <expr> <C-W>g*
-    \ &columns < 160 ?
-    \   '<C-W>sg*' :
-    \   '<C-W>vg*'
-  NXnoremap <expr> <C-W>g#
-    \ &columns < 160 ?
-    \   '<C-W>sg#' :
-    \   '<C-W>vg#'
 endif
 unlet! s:bundle
 "}}}
