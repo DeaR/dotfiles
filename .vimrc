@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-21 13:30:13 DeaR>
+" @timestamp   <2013-06-21 15:42:46 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -201,7 +201,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo', '<Plug>(clever-f-f)'], ['nvo', '<Plug>(clever-f-F)'],
-    \     ['nvo', '<Plug>(clever-f-t)'], ['nvo', '<Plug>(clever-f-T)']]}}
+    \     ['nvo', '<Plug>(clever-f-t)'], ['nvo', '<Plug>(clever-f-T)']],
+    \   'insert' : 1}}
 
   NeoBundleLazy 'deris/columnjump', {
     \ 'autoload' : {
