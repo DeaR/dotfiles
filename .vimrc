@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-21 17:44:21 DeaR>
+" @timestamp   <2013-06-21 20:13:34 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2772,7 +2772,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ s:neocompl_vim_completefuncs
 
     call neocomplete#custom#source(
-      \ '_', 'matchers',  ['matcher_head'])
+      \ '_', 'matchers', ['matcher_head'])
     call neocomplete#custom#source(
       \ 'syntax_complete', 'rank',  9)
     call neocomplete#custom#source(
@@ -2799,7 +2799,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '<C-P>' :
       \   neocomplete#start_manual_complete()
 
-    call neocomplete#initialize()
+    " call neocomplete#initialize()
   endfunction
 
   function! s:cmdwin_enter_NeoComplete()
