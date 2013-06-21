@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-21 20:27:08 DeaR>
+" @timestamp   <2013-06-22 03:25:59 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -329,9 +329,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'kana/vim-narrow', {
     \ 'autoload' : {'commands' : ['Narrow', 'Widen']}}
-
-  NeoBundleLazy 'violetyk/neco-php', {
-    \ 'autoload' : {'filetypes' : 'php'}}
 
   NeoBundleFetch 'Shougo/neobundle.vim'
   call extend(s:neocompl_vim_completefuncs, {
