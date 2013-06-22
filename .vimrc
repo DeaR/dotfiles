@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-23 02:35:21 DeaR>
+" @timestamp   <2013-06-23 03:18:02 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -576,7 +576,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {'commands' : 'Scouter'}}
 
   NeoBundleLazy 'kana/vim-scratch', {
-    \ 'autoload' : {'commands' : ['ScratchOpen', 'ScratchClose']}}
+    \ 'autoload' : {
+    \   'commands' : 'ScratchOpen',
+    \   'mappings' : [['nvo', '<Plug>(scratch-open)']]}}
 
   NeoBundleLazy 'jiangmiao/simple-javascript-indenter', {
     \ 'autoload' : {'filetypes' : 'javascript'}}
@@ -818,8 +820,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \      'complete' : 'customlist,unite#complete_source'},
     \     {'name' : 'UniteWithInputDirectory',
     \      'complete' : 'customlist,unite#complete_source'},
-    \     {'name' : 'UniteResume',
-    \      'complete' : 'customlist,unite#complete_buffer_name'},
     \     {'name' : 'UniteBookmarkAdd',
     \      'complete' : 'file'}]}} 
   call extend(s:neocompl_vim_completefuncs, {
@@ -909,9 +909,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'rbtnn/vimconsole.vim', {
     \ 'autoload' : {
     \   'commands' : [
-    \     'VimConsoleLog',   'VimConsoleWarn',  'VimConsoleError',
-    \     'VimConsoleOpen',  'VimConsoleClose', 'VimConsoleToggle',
-    \     'VimConsoleClear', 'VimConsoleRedraw']},
+    \     'VimConsoleLog', 'VimConsoleWarn', 'VimConsoleError',
+    \     'VimConsoleOpen', 'VimConsoleToggle']},
     \ 'depends' : 'thinca/vim-prettyprint'}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'VimConsoleLog'   : 'expression',
@@ -3217,6 +3216,17 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   autocmd MyVimrc BufNewFile,BufRead *
     \ NeoBundleSource savevers
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Scratch: {{{
+silent! let s:bundle = neobundle#get('scratch')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:scratch_buffer_name = expand('~/.vim/.scratch')
+  endfunction
 endif
 unlet! s:bundle
 "}}}
