@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-23 01:24:50 DeaR>
+" @timestamp   <2013-06-23 02:14:26 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1613,20 +1613,20 @@ else
 endif
 NXnoremap <expr> <C-W>*
   \ &columns < 160 ?
-  \   '<C-W>s*' :
-  \   '<C-W>v*'
+  \   '<C-W>s*zz' :
+  \   '<C-W>v*zz'
 NXnoremap <expr> <C-W>#
   \ &columns < 160 ?
-  \   '<C-W>s#' :
-  \   '<C-W>v#'
+  \   '<C-W>s#zz' :
+  \   '<C-W>v#zz'
 NXnoremap <expr> <C-W>g*
   \ &columns < 160 ?
-  \   '<C-W>sg*' :
-  \   '<C-W>vg*'
+  \   '<C-W>sg*zz' :
+  \   '<C-W>vg*zz'
 NXnoremap <expr> <C-W>g#
   \ &columns < 160 ?
-  \   '<C-W>sg#' :
-  \   '<C-W>vg#'
+  \   '<C-W>sg#zz' :
+  \   '<C-W>vg#zz'
 
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
