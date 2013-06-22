@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-23 00:32:25 DeaR>
+" @timestamp   <2013-06-23 00:46:08 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1545,6 +1545,9 @@ nnoremap  <Tab> <Tab>zz
 nnoremap  <C-O> <C-O>zz
 NXnoremap *     *zz
 NXnoremap #     #zz
+
+" Back jump
+nmap <S-Tab> <C-O>
 
 " Start Visual-mode with the same area
 onoremap gv :<C-U>normal! gv<CR>
