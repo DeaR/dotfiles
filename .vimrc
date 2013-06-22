@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-23 03:18:02 DeaR>
+" @timestamp   <2013-06-23 03:29:37 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -306,8 +306,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   if has('unix') && !has('gui_running')
     NeoBundle 'gist:DeaR/5560785', {
       \ 'name' : 'map-alt-keys',
-      \ 'script_type' : 'plugin',
-      \ 'terminal' : 1}
+      \ 'script_type' : 'plugin'}
   endif
 
   NeoBundleLazy 'gist:DeaR/5558981', {
@@ -865,8 +864,10 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {'unite_sources' : 'quickrun_config'},
     \ 'depends' : 'thinca/vim-quickrun'}
 
-  NeoBundleLazy 'mattn/unite-remotefile', {
-    \ 'autoload' : {'unite_sources' : 'remotefile'}}
+  if has('clientserver')
+    NeoBundleLazy 'mattn/unite-remotefile', {
+      \ 'autoload' : {'unite_sources' : 'remotefile'}}
+  endif
 
   if has('ruby')
     NeoBundleLazy 'rhysd/unite-ruby-require.vim', {
