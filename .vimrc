@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-23 00:46:08 DeaR>
+" @timestamp   <2013-06-23 01:24:50 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3942,11 +3942,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
-  function! s:unite_search_expr()
-    return line('$') > 10000 ? 1 : 0
-  endfunction
   function! s:unite_search_forward()
-    if s:unite_search_expr()
+    if line('$') > 10000
       Unite line/fast
         \ -buffer-name=search -no-split -start-insert
     else
@@ -3955,7 +3952,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
   function! s:unite_search_backward()
-    if s:unite_search_expr()
+    if line('$') > 10000
       Unite line/fast:backward
         \ -buffer-name=search -no-split -start-insert
     else
@@ -3964,7 +3961,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
   function! s:unite_search_cword_forward()
-    if s:unite_search_expr()
+    if line('$') > 10000
       UniteWithCursorWord line/fast
         \ -buffer-name=search -no-split -start-insert
     else
@@ -3973,7 +3970,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
   function! s:unite_search_cword_backward()
-    if s:unite_search_expr()
+    if line('$') > 10000
       UniteWithCursorWord line/fast:backward
         \ -buffer-name=search -no-split -start-insert
     else
