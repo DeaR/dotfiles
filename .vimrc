@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-22 17:55:53 DeaR>
+" @timestamp   <2013-06-22 18:00:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3220,6 +3220,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nnoremap <F7>  :<C-U>VersDiff -<CR>
   nnoremap g<F7> :<C-U>VersDiff +<CR>
+  nnoremap g<F8> :<C-U>VersDiff -c<CR>
 
   autocmd MyVimrc BufNewFile,BufRead *
     \ NeoBundleSource savevers
