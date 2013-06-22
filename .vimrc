@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-22 21:38:31 DeaR>
+" @timestamp   <2013-06-23 00:32:25 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1540,6 +1540,12 @@ nnoremap ;W :<C-U>wall<CR>
 nnoremap ;c :<C-U>confirm bdelete<CR>
 nnoremap ;C :<C-U>confirm 1,$bdelete<CR>
 
+" Auto recenter
+nnoremap  <Tab> <Tab>zz
+nnoremap  <C-O> <C-O>zz
+NXnoremap *     *zz
+NXnoremap #     #zz
+
 " Start Visual-mode with the same area
 onoremap gv :<C-U>normal! gv<CR>
 
@@ -2121,8 +2127,8 @@ function! s:search_forward_p()
   return exists('v:searchforward') ? v:searchforward : 1
 endfunction
 
-NXnoremap <expr> n <SID>search_forward_p() ? 'nzv' : 'Nzv'
-NXnoremap <expr> N <SID>search_forward_p() ? 'Nzv' : 'nzv'
+NXnoremap <expr> n <SID>search_forward_p() ? 'nzvzz' : 'Nzvzz'
+NXnoremap <expr> N <SID>search_forward_p() ? 'Nzvzz' : 'nzvzz'
 onoremap  <expr> n <SID>search_forward_p() ? 'n' : 'N'
 onoremap  <expr> N <SID>search_forward_p() ? 'N' : 'n'
 "}}}
@@ -2326,10 +2332,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   OXmap i<M-b> <Plug>CamelCaseMotion_ib
   OXmap i<M-e> <Plug>CamelCaseMotion_ie
 
-  nmap <expr> <SID>CamelCaseMotion_w  <SID>i_camelcasemotion('w')
-  nmap <expr> <SID>CamelCaseMotion_b  <SID>i_camelcasemotion('b')
-  nmap <expr> <SID>CamelCaseMotion_e  <SID>i_camelcasemotion('e')
-  nmap <expr> <SID>CamelCaseMotion_ge <SID>i_camelcasemotion('ge')
+  nmap <expr> <SID>CamelCaseMotion_w  <SID>camelcasemotion('w')
+  nmap <expr> <SID>CamelCaseMotion_b  <SID>camelcasemotion('b')
+  nmap <expr> <SID>CamelCaseMotion_e  <SID>camelcasemotion('e')
+  nmap <expr> <SID>CamelCaseMotion_ge <SID>camelcasemotion('ge')
 
   inoremap <script> <M-w>      <C-O><SID>CamelCaseMotion_w
   inoremap <script> <M-b>      <C-O><SID>CamelCaseMotion_b
@@ -2423,7 +2429,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:clever_f_not_overwrites_standard_mappings = 1
   endfunction
 
-  function! s:i_clever_f(key)
+  function! s:clever_f(key)
     NeoBundleSource clever-f
     return "\<Plug>(clever-f-" . a:key . ")"
   endfunction
@@ -2433,10 +2439,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NOXmap t <Plug>(clever-f-t)
   NOXmap T <Plug>(clever-f-T)
 
-  nmap <expr> <SID>(clever-f-f) <SID>i_clever_f('f')
-  nmap <expr> <SID>(clever-f-F) <SID>i_clever_f('F')
-  nmap <expr> <SID>(clever-f-t) <SID>i_clever_f('t')
-  nmap <expr> <SID>(clever-f-T) <SID>i_clever_f('T')
+  nmap <expr> <SID>(clever-f-f) <SID>clever_f('f')
+  nmap <expr> <SID>(clever-f-F) <SID>clever_f('F')
+  nmap <expr> <SID>(clever-f-t) <SID>clever_f('t')
+  nmap <expr> <SID>(clever-f-T) <SID>clever_f('T')
 
   inoremap <script> <M-f> <C-O><SID>(clever-f-f)
   inoremap <script> <M-F> <C-O><SID>(clever-f-F)
@@ -4225,35 +4231,35 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:visualstar_no_default_key_mappings = 1
   endfunction
 
-  NXmap *  <Plug>(visualstar-*)
-  NXmap #  <Plug>(visualstar-#)
-  NXmap g* <Plug>(visualstar-g*)
-  NXmap g# <Plug>(visualstar-g#)
-
-  vmap <S-LeftMouse>  <Plug>(visualstar-*)
-  vmap g<S-LeftMouse> <Plug>(visualstar-g*)
-
   NXmap <SID>(visualstar-*)  <Plug>(visualstar-*)
   NXmap <SID>(visualstar-#)  <Plug>(visualstar-#)
   NXmap <SID>(visualstar-g*) <Plug>(visualstar-g*)
   NXmap <SID>(visualstar-g#) <Plug>(visualstar-g#)
 
+  NXnoremap <script> *  <SID>(visualstar-*)zz
+  NXnoremap <script> #  <SID>(visualstar-#)zz
+  NXnoremap <script> g* <SID>(visualstar-g*)zz
+  NXnoremap <script> g# <SID>(visualstar-g#)zz
+
+  xnoremap <script> <S-LeftMouse>  <SID>(visualstar-*)zz
+  xnoremap <script> g<S-LeftMouse> <SID>(visualstar-g*)zz
+
   xnoremap <script><expr> <C-W>*
     \ &columns < 160 ?
-    \   '<C-W>sgv<SID>(visualstar-*)' :
-    \   '<C-W>vgv<SID>(visualstar-*)'
+    \   '<C-W>sgv<SID>(visualstar-*)zz' :
+    \   '<C-W>vgv<SID>(visualstar-*)zz'
   xnoremap <script><expr> <C-W>#
     \ &columns < 160 ?
-    \   '<C-W>sgv<SID>(visualstar-#)' :
-    \   '<C-W>vgv<SID>(visualstar-#)'
+    \   '<C-W>sgv<SID>(visualstar-#)zz' :
+    \   '<C-W>vgv<SID>(visualstar-#)zz'
   xnoremap <script><expr> <C-W>g*
     \ &columns < 160 ?
-    \   '<C-W>sgv<SID>(visualstar-g*)' :
-    \   '<C-W>vgv<SID>(visualstar-g*)'
+    \   '<C-W>sgv<SID>(visualstar-g*)zz' :
+    \   '<C-W>vgv<SID>(visualstar-g*)zz'
   xnoremap <script><expr> <C-W>g#
     \ &columns < 160 ?
-    \   '<C-W>sgv<SID>(visualstar-g#)' :
-    \   '<C-W>vgv<SID>(visualstar-g#)'
+    \   '<C-W>sgv<SID>(visualstar-g#)zz' :
+    \   '<C-W>vgv<SID>(visualstar-g#)zz'
 endif
 unlet! s:bundle
 "}}}
