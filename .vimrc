@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-22 17:30:10 DeaR>
+" @timestamp   <2013-06-22 17:55:53 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1833,7 +1833,7 @@ command!
 
 nnoremap ;D :<C-U>CdCurrent<CR>
 nnoremap ;d :<C-U>LcdCurrent<CR>
-nnoremap <F12> :<C-U>Undiff<CR>
+nnoremap <F8> :<C-U>Undiff<CR>
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -1843,7 +1843,7 @@ command!
   \ vertical new | setlocal buftype=nofile |
   \ read # | 0d_ | diffthis | wincmd p | diffthis
 
-nnoremap <F9> :<C-U>DiffOrig<CR>
+nnoremap <F6> :<C-U>DiffOrig<CR>
 "}}}
 "}}}
 
@@ -2131,6 +2131,18 @@ NXnoremap <expr> n <SID>search_forward_p() ? 'nzv' : 'Nzv'
 NXnoremap <expr> N <SID>search_forward_p() ? 'Nzv' : 'nzv'
 onoremap  <expr> n <SID>search_forward_p() ? 'n' : 'N'
 onoremap  <expr> N <SID>search_forward_p() ? 'N' : 'n'
+"}}}
+
+"-----------------------------------------------------------------------------
+" Line Number: {{{
+function! s:toggle_line_number_style()
+  set relativenumber!
+  if !&number && !&relativenumber
+    set number
+  endif
+endfunction
+
+nnoremap <F12> :<C-U>call <SID>toggle_line_number_style()<CR>
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -3206,8 +3218,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:versdiff_no_resize    = 1
   endfunction
 
-  nnoremap <F10> :<C-U>VersDiff -<CR>
-  nnoremap <F11> :<C-U>VersDiff +<CR>
+  nnoremap <F7>  :<C-U>VersDiff -<CR>
+  nnoremap g<F7> :<C-U>VersDiff +<CR>
 
   autocmd MyVimrc BufNewFile,BufRead *
     \ NeoBundleSource savevers
