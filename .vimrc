@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-23 04:00:59 DeaR>
+" @timestamp   <2013-06-23 04:09:34 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3230,7 +3230,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('scratch')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:scratch_buffer_name = expand('~/.vim/.scratch')
+    let g:scratch_buffer_name = '[scratch]'
   endfunction
 endif
 unlet! s:bundle
