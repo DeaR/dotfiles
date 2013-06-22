@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-22 18:42:06 DeaR>
+" @timestamp   <2013-06-22 18:43:44 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -801,6 +801,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'zaiste/tmux.vim', {
     \ 'autoload' : {'filetypes' : 'tmux'}}
+
+  NeoBundleLazy 'mbbill/undotree', {
+    \ 'autoload' : {'commands' : 'UndotreeToggle'}}
 
   NeoBundleLazy 'Shougo/unite.vim', {
     \ 'autoload' : {
@@ -3853,6 +3856,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   OXmap au <Plug>(textobj-url-a)
   OXmap iu <Plug>(textobj-url-i)
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" UndoTree: {{{
+silent! let s:bundle = neobundle#get('undotree')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  nnoremap <Leader>u :<C-U>UndotreeToggle<CR>
 endif
 unlet! s:bundle
 "}}}
