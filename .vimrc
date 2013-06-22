@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-23 03:29:37 DeaR>
+" @timestamp   <2013-06-23 04:00:59 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1517,6 +1517,18 @@ NOXnoremap mk [`
 
 "-----------------------------------------------------------------------------
 " Useful: {{{
+" Semi-colon shortcut
+nnoremap ;w    :<C-U>update<CR>
+nnoremap ;W    :<C-U>wall<CR>
+nnoremap ;c    :<C-U>confirm bdelete<CR>
+nnoremap ;C    :<C-U>confirm 1,$bdelete<CR>
+nnoremap ;e    :<C-U>edit<Space>
+nnoremap ;j    :<C-U>jumps<CR>
+nnoremap ;b    :<C-U>buffer<Space>
+nnoremap ;t    :<C-U>tabm<Space>
+nnoremap ;g    :<C-U>grep<Space>
+nnoremap <C-P> :<C-U>registers<CR>
+
 " BackSpace
 nnoremap <BS> X
 
@@ -1531,14 +1543,6 @@ nnoremap <Leader>u :<C-U>undolist<CR>
 " New line
 nnoremap <M-o> o<Esc>k
 nnoremap <M-O> O<Esc>j
-
-" Write File
-nnoremap ;w :<C-U>update<CR>
-nnoremap ;W :<C-U>wall<CR>
-
-" Delete all buffer
-nnoremap ;c :<C-U>confirm bdelete<CR>
-nnoremap ;C :<C-U>confirm 1,$bdelete<CR>
 
 " Auto recenter
 nnoremap  <Tab> <Tab>zz
@@ -4014,22 +4018,18 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ :<C-U>Unite source
     \ -buffer-name=help -no-split<CR>
 
-  nnoremap <silent> ;uw
-    \ :<C-U>Unite window
-    \ -buffer-name=files -no-split<CR>
-  nnoremap <silent> ;uT
-    \ :<C-U>Unite tab
-    \ -buffer-name=files -no-split<CR>
-
-  nnoremap <silent> ;b
-    \ :<C-U>Unite buffer
-    \ -buffer-name=files -no-split -auto-preview<CR>
   nnoremap <silent> ;e
     \ :<C-U>Unite file_mru file file/new directory/new
     \ -buffer-name=files -no-split<CR>
   nnoremap <silent> ;j
     \ :<C-U>Unite jump change
     \ -buffer-name=files -no-split -auto-preview -multi-line -no-start-insert<CR>
+  nnoremap <silent> ;b
+    \ :<C-U>Unite buffer
+    \ -buffer-name=files -no-split -auto-preview<CR>
+  nnoremap <silent> ;t
+    \ :<C-U>Unite tab
+    \ -buffer-name=files -no-split<CR>
 
   if &grepprg == 'internal'
     nnoremap <silent> ;g
