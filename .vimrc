@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-23 02:14:26 DeaR>
+" @timestamp   <2013-06-23 02:31:43 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1866,9 +1866,9 @@ function! s:cmdwin_leave()
 endfunction
 augroup MyVimrc
   autocmd CmdwinEnter *
-    \ call <SID>cmdwin_enter()
+    \ call s:cmdwin_enter()
   autocmd CmdwinLeave *
-    \ call <SID>cmdwin_leave()
+    \ call s:cmdwin_leave()
 augroup END
 
 function! s:cmdline_enter(type)
@@ -2270,11 +2270,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endfor
   endfunction
 
+  function! s:cmdwin_enter_altercmd()
+    for [key, value] in items(s:altercmd_define)
+      execute 'IAlterCommand <buffer>' key value
+    endfor
+  endfunction
+
+
   augroup MyVimrc
     autocmd CmdwinEnter :
-      \ for [key, value] in items(s:altercmd_define) |
-      \   execute 'IAlterCommand <buffer>' key value |
-      \ endfor
+      \ call s:cmdwin_enter_altercmd()
     autocmd User CmdlineEnter
       \ NeoBundleSource altercmd
   augroup END
@@ -2731,7 +2736,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     " call neocomplcache#initialize()
   endfunction
 
-  function! s:cmdwin_enter_NeoComplCache()
+  function! s:cmdwin_enter_neocomplcache()
     let b:neocomplcache_sources_list = []
 
     inoremap <buffer><expr> <CR> neocomplcache#close_popup() . '<CR>'
@@ -2752,7 +2757,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
   augroup MyVimrc
     autocmd CmdwinEnter *
-      \ call <SID>cmdwin_enter_NeoComplCache()
+      \ call s:cmdwin_enter_neocomplcache()
     autocmd CmdwinEnter :
       \ let b:neocomplcache_sources_list = ['vim_complete']
   augroup END
@@ -2824,7 +2829,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     " call neocomplete#initialize()
   endfunction
 
-  function! s:cmdwin_enter_NeoComplete()
+  function! s:cmdwin_enter_neocomplete()
     let b:neocomplete_sources = []
 
     inoremap <buffer><expr> <CR> neocomplete#close_popup() . '<CR>'
@@ -2845,7 +2850,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
   augroup MyVimrc
     autocmd CmdwinEnter *
-      \ call <SID>cmdwin_enter_NeoComplete()
+      \ call s:cmdwin_enter_neocomplete()
     autocmd CmdwinEnter :
       \ let b:neocomplete_sources = ['vim']
   augroup END
@@ -3231,7 +3236,7 @@ unlet! s:bundle
 " SmartChr: {{{
 silent! let s:bundle = neobundle#get('smartchr')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:cmdwin_enter_SmartChr()
+  function! s:cmdwin_enter_smartchr()
     silent! iunmap <buffer> =
     silent! iunmap <buffer> ~
     silent! iunmap <buffer> ?
@@ -3252,7 +3257,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     silent! iunmap <buffer> ,
   endfunction
   autocmd MyVimrc CmdwinEnter *
-    \ call <SID>cmdwin_enter_SmartChr()
+    \ call s:cmdwin_enter_smartchr()
 endif
 unlet! s:bundle
 "}}}
