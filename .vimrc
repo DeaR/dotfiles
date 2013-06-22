@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-22 18:00:33 DeaR>
+" @timestamp   <2013-06-22 18:42:06 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -271,13 +271,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     ['nvo', '<Plug>(operator-grex-delete)'],
     \     ['nvo', '<Plug>(operator-grex-yank)']]},
     \ 'depends' : 'kana/vim-operator-user'}
-
-  if has('python') || has('python3')
-    NeoBundleLazy 'sjl/gundo.vim', {
-      \ 'autoload' : {
-      \   'commands' : [
-      \     'GundoToggle', 'GundoShow', 'GundoHide', 'GundoRenderGraph']}}
-  endif
 
   NeoBundleLazy 'cohama/vim-hier', {
     \ 'autoload' : {'filetypes' : 'qf'}}
@@ -2500,21 +2493,6 @@ silent! let s:bundle = neobundle#get('grex')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXmap sd <Plug>(operator-grex-delete)
   NXmap sy <Plug>(operator-grex-yank)
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" GUndo: {{{
-silent! let s:bundle = neobundle#get('gundo')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    if has('python3')
-      let g:gundo_prefer_python3 = 1
-    endif
-  endfunction
-
-  nnoremap <Leader>u :<C-U>GundoToggle<CR>
 endif
 unlet! s:bundle
 "}}}
