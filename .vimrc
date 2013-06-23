@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-23 04:09:34 DeaR>
+" @timestamp   <2013-06-23 21:18:56 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2330,7 +2330,7 @@ unlet! s:bundle
 " CamelCaseMotion: {{{
 silent! let s:bundle = neobundle#get('camelcasemotion')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:i_camelcasemotion(key)
+  function! s:camelcasemotion(key)
     NeoBundleSource camelcasemotion
     return "\<Plug>CamelCaseMotion_" . a:key
   endfunction
