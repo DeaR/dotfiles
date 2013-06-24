@@ -2759,6 +2759,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplete#enable_at_startup            = 1
     let g:neocomplete#enable_auto_select           = 0
     let g:neocomplete#enable_auto_delimiter        = 1
+    let g:neocomplete#enable_insert_char_pre       = 1
     let g:neocomplete#force_overwrite_completefunc = 1
     let g:neocomplete#data_directory               =
       \ expand('~/.local/.neocomplete')
@@ -2801,8 +2802,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ pumvisible() ?
       \   '<C-P>' :
       \   neocomplete#start_manual_complete()
-
-    " call neocomplete#initialize()
   endfunction
 
   function! s:cmdwin_enter_neocomplete()
