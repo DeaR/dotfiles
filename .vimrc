@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-24 23:58:05 DeaR>
+" @timestamp   <2013-06-25 00:04:41 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1742,11 +1742,11 @@ endif
 if has('win32')
   function! s:get_shell()
     return {
-      \ 'shell'        : shell,
-      \ 'shellslash'   : shellslash,
-      \ 'shellcmdflag' : shellcmdflag,
-      \ 'shellquote'   : shellquote,
-      \ 'shellxquote'  : shellxquote}
+      \ 'shell'        : &shell,
+      \ 'shellslash'   : &shellslash,
+      \ 'shellcmdflag' : &shellcmdflag,
+      \ 'shellquote'   : &shellquote,
+      \ 'shellxquote'  : &shellxquote}
   endfunction
   function s:set_shell(value)
     let &shell        = a:value.shell
