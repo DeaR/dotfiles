@@ -2414,9 +2414,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:clever_f_not_overwrites_standard_mappings = 1
   endfunction
 
-  function! s:clever_f(key)
+  function! s:clever_f(motion)
     NeoBundleSource clever-f
-    return "\<Plug>(clever-f-" . a:key . ")"
+    return "\<Plug>(clever-f-" . a:motion . ")"
   endfunction
 
   NOXmap f <Plug>(clever-f-f)
