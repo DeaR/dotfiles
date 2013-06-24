@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-24 17:18:32 DeaR>
+" @timestamp   <2013-06-24 18:09:45 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -808,23 +808,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'mbbill/undotree', {
     \ 'autoload' : {'commands' : 'UndotreeToggle'}}
 
-  NeoBundleLazy 'Shougo/unite.vim', {
-    \ 'autoload' : {
-    \   'commands' : [
-    \     {'name' : 'Unite',
-    \      'complete' : 'customlist,unite#complete_source'},
-    \     {'name' : 'UniteWithCurrentDir',
-    \      'complete' : 'customlist,unite#complete_source'},
-    \     {'name' : 'UniteWithBufferDir',
-    \      'complete' : 'customlist,unite#complete_source'},
-    \     {'name' : 'UniteWithCursorWord',
-    \      'complete' : 'customlist,unite#complete_source'},
-    \     {'name' : 'UniteWithInput',
-    \      'complete' : 'customlist,unite#complete_source'},
-    \     {'name' : 'UniteWithInputDirectory',
-    \      'complete' : 'customlist,unite#complete_source'},
-    \     {'name' : 'UniteBookmarkAdd',
-    \      'complete' : 'file'}]}} 
+  NeoBundle 'Shougo/unite.vim'
   call extend(s:neocompl_vim_completefuncs, {
     \ 'Unite'                   : 'unite#complete_source',
     \ 'UniteWithCurrentDir'     : 'unite#complete_source',
