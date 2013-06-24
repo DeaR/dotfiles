@@ -792,6 +792,16 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'kana/vim-textobj-user', {
     \ 'autoload' : {'function_prefix' : 'textobj'}}
 
+  NeoBundleLazy 'h1mesuke/textobj-wiw', {
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['nvo', '<Plug>(textobj-wiw-n)'],
+    \     ['nvo', '<Plug>(textobj-wiw-p)'],
+    \     ['nvo', '<Plug>(textobj-wiw-N)'],
+    \     ['nvo', '<Plug>(textobj-wiw-P)'],
+    \     ['vo',  '<Plug>(textobj-wiw-a)'],
+    \     ['vo',  '<Plug>(textobj-wiw-i)']]}}
+
   NeoBundleLazy 'zaiste/tmux.vim', {
     \ 'autoload' : {'filetypes' : 'tmux'}}
 
@@ -3846,6 +3856,40 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   OXmap au <Plug>(textobj-url-a)
   OXmap iu <Plug>(textobj-url-i)
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" TextObj Word In Word: {{{
+silent! let s:bundle = neobundle#get('textobj-wiw')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:textobj_wiw_no_default_key_mappings = 1
+  endfunction
+
+  function! s:textobj-wiw(motion)
+    NeoBundleSource textobj-wiw
+    return "\<Plug>(textobj-wiw-_" . a:motion . ")"
+  endfunction
+
+  NOXmap w  <Plug>(textobj-wiw-n)
+  NOXmap b  <Plug>(textobj-wiw-p)
+  NOXmap e  <Plug>(textobj-wiw-N)
+  NOXmap ge <Plug>(textobj-wiw-P)
+
+  OXmap aw <Plug>(textobj-wiw-a)
+  OXmap iw <Plug>(textobj-wiw-i)
+
+  nmap <expr> <SID>(textobj-wiw-n) <SID>textobj-wiw('n')
+  nmap <expr> <SID>(textobj-wiw-p) <SID>textobj-wiw('p')
+  nmap <expr> <SID>(textobj-wiw-N) <SID>textobj-wiw('N')
+  nmap <expr> <SID>(textobj-wiw-P) <SID>textobj-wiw('P')
+
+  inoremap <script> <M-w>      <C-O><SID>(textobj-wiw-n)
+  inoremap <script> <M-b>      <C-O><SID>(textobj-wiw-p)
+  inoremap <script> <M-e>      <C-O><SID>(textobj-wiw-N)
+  inoremap <script> <M-g><M-e> <C-O><SID>(textobj-wiw-P)
 endif
 unlet! s:bundle
 "}}}
