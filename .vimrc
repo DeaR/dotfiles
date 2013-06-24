@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-24 16:42:58 DeaR>
+" @timestamp   <2013-06-24 17:18:32 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2666,6 +2666,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplcache_enable_at_startup            = 1
     let g:neocomplcache_enable_auto_select           = 0
     let g:neocomplcache_enable_auto_delimiter        = 1
+    let g:neocomplcache_enable_insert_char_pre       = 1
     let g:neocomplcache_enable_camel_case_completion = 0
     let g:neocomplcache_enable_underbar_completion   = 0
     let g:neocomplcache_enable_fuzzy_completion      = 0
@@ -2709,8 +2710,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ pumvisible() ?
       \   '<C-P>' :
       \   neocomplcache#start_manual_complete()
-
-    " call neocomplcache#initialize()
   endfunction
 
   function! s:cmdwin_enter_neocomplcache()
