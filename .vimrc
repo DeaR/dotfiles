@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-24 18:09:45 DeaR>
+" @timestamp   <2013-06-24 23:58:05 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -504,7 +504,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \   'kana/vim-textobj-user']}
 
   NeoBundleLazy 'thinca/vim-prettyprint', {
-    \ 'autoload' : {'commands' : ['PrettyPrint', 'PP']}}
+    \ 'autoload' : {
+    \   'commands' : ['PrettyPrint', 'PP'],
+    \   'functions': ['PrettyPrint', 'PP']}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'PrettyPrint' : 'expression',
     \ 'PP'          : 'expression'})
@@ -1658,13 +1660,13 @@ inoremap <C-T> <C-V><Tab>
 
 "-----------------------------------------------------------------------------
 " Change File Format Option: {{{
-command!
+command! -bar
   \ FfUnix
   \ setlocal modified fileformat=unix
-command!
+command! -bar
   \ FfDos
   \ setlocal modified fileformat=dos
-command!
+command! -bar
   \ FfMac
   \ setlocal modified fileformat=mac
 "}}}
@@ -1672,30 +1674,30 @@ command!
 "-----------------------------------------------------------------------------
 " Change File Encoding Option: {{{
 if has('multi_byte')
-  command!
+  command! -bar
     \ FencUtf8
     \ setlocal modified fileencoding=utf-8
-  command!
+  command! -bar
     \ FencUtf16le
     \ setlocal modified fileencoding=utf-16le
-  command!
+  command! -bar
     \ FencUtf16
     \ setlocal modified fileencoding=utf-16
-  command!
+  command! -bar
     \ FencCp932
     \ setlocal modified fileencoding=cp932
-  command!
+  command! -bar
     \ FencEucjp
     \ setlocal modified fileencoding=euc-jp
   if s:enc_jisx0213
-    command!
+    command! -bar
       \ FencEucJisx0213
       \ setlocal modified fileencoding=euc-jisx0213
-    command!
+    command! -bar
       \ FencIso2022jp
       \ setlocal modified fileencoding=iso-2022-jp-3
   else
-    command!
+    command! -bar
       \ FencIso2022jp
       \ setlocal modified fileencoding=iso-2022-jp
   endif
@@ -1738,27 +1740,39 @@ endif
 "-----------------------------------------------------------------------------
 " Shell Setting: {{{
 if has('win32')
-  function! s:shell_cmd()
-    set shell&
-    set shellslash&
-    set shellcmdflag=/c
-    set shellquote=
-    let &shellxquote = '('
+  function! s:get_shell()
+    return {
+      \ 'shell'        : shell,
+      \ 'shellslash'   : shellslash,
+      \ 'shellcmdflag' : shellcmdflag,
+      \ 'shellquote'   : shellquote,
+      \ 'shellxquote'  : shellxquote}
   endfunction
-  command!
-    \ ShellCmd
-    \ call s:shell_cmd()
+  function s:set_shell(value)
+    let &shell        = a:value.shell
+    let &shellslash   = a:value.shellslash
+    let &shellcmdflag = a:value.shellcmdflag
+    let &shellquote   = a:value.shellquote
+    let &shellxquote  = a:value.shellxquote
+  endfunction
 
-  function! s:shell_sh(shell)
-    let &shell = len(a:shell) ? a:shell : 'sh'
-    set shellslash
-    set shellcmdflag=-c
-    set shellquote=
-    set shellxquote="
-  endfunction
+  command! -bar
+    \ ShellCmd
+    \ call s:set_shell({
+    \   'shell'        : 'cmd',
+    \   'shellslash'   : 0,
+    \   'shellcmdflag' : '/c',
+    \   'shellquote'   : '',
+    \   'shellxquote'  : '('})
+
   command! -bar -nargs=?
     \ ShellSh
-    \ call s:shell_sh(<q-args>)
+    \ call s:set_shell({
+    \   'shell'        : len(<q-args>) ? <q-args> : 'sh',
+    \   'shellslash'   : 1,
+    \   'shellcmdflag' : '-c',
+    \   'shellquote'   : '',
+    \   'shellxquote'  : '"'})
 endif
 "}}}
 
@@ -1766,18 +1780,11 @@ endif
 " VC Vars: {{{
 if exists('$VCVARSALL')
   function! s:vcvarsall(arch)
-    let save_sh   = &shell
-    let save_ssl  = &shellslash
-    let save_shcf = &shellcmdflag
-    let save_shq  = &shellquote
-    let save_sxq  = &shellxquote
-    let save_isi  = &isident
-    set shell&
-    set shellslash&
-    set shellcmdflag=/c
-    set shellquote=
-    let &shellxquote = '('
-    let &isident = join([&isident, '(,)'], ',')
+    let save_shell = s:get_shell()
+    let save_isi   = &isident
+    ShellCmd
+    set isident+=(
+    set isident+=)
     try
       let env = system(join([$VCVARSALL, a:arch, '&', 'set']))
       for s in split(env, '\n')
@@ -1787,21 +1794,17 @@ if exists('$VCVARSALL')
         endif
       endfor
     finally
-      let &shell        = save_sh
-      let &shellslash   = save_ssl
-      let &shellcmdflag = save_shcf
-      let &shellquote   = save_shq
-      let &shellxquote  = save_sxq
-      let &isident      = save_isi
+      call s:set_shell(save_shell)
+      let &isident = save_isi
     endtry
   endfunction
 
-  command!
+  command! -bar
     \ VCVars32
     \ call s:vcvarsall('x86')
 
   if exists('$PROGRAMFILES(x86)')
-    command!
+    command! -bar
       \ VCVars64
       \ call s:vcvarsall(
       \   exists('PROCESSOR_ARCHITEW6432') ?
@@ -1813,16 +1816,16 @@ endif
 
 "-----------------------------------------------------------------------------
 " From CmdEx: {{{
-command!
+command! -bar
   \ CdCurrent
   \ cd %:p:h
-command!
+command! -bar
   \ LcdCurrent
   \ lcd %:p:h
-command! -nargs=1 -complete=file
+command! -bar -nargs=1 -complete=file
   \ Diff
   \ vertical diffsplit <args>
-command!
+command! -bar
   \ Undiff
   \ setlocal nodiff scrollbind< wrap< cursorbind<
 
@@ -1833,7 +1836,7 @@ nnoremap <F8> :<C-U>Undiff<CR>
 
 "-----------------------------------------------------------------------------
 " From Example: {{{
-command!
+command! -bar
   \ DiffOrig
   \ vertical new | setlocal buftype=nofile |
   \ read # | 0d_ | diffthis | wincmd p | diffthis
