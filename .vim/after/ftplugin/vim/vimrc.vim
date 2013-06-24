@@ -1,19 +1,19 @@
 " -*- mode: vimrc; coding: unix -*-
 
-" @name        vim.vim
-" @description QuickRun ftplugins for Vim
+" @name        vimrc.vim
+" @description QuickRun ftplugins for vimrc
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-16 21:08:41 DeaR>
+" @timestamp   <2013-06-25 02:32:12 DeaR>
 
-if expand('%:t') !~? '^\.\?g\?vimrc$'
+if expand('%:t') !~? '^\.\?g\?vimrc'
   finish
 endif
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <buffer> <F5> :<C-U>source % \| setlocal ft=vim<CR>
+nnoremap <buffer> <F5> :<C-U>source % \| edit %<CR>
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
