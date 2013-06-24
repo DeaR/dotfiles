@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-24 14:28:04 DeaR>
+" @timestamp   <2013-06-24 14:33:22 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2506,7 +2506,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('fugitive')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_post_source(bundle)
-    call fugitive#detect(expand('%:p'))
+    call fugitive#detect(expand('%') == '' ? getcwd() : expand('%:p'))
   endfunction
 endif
 unlet! s:bundle
