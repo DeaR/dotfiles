@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-24 13:47:05 DeaR>
+" @timestamp   <2013-06-24 14:28:04 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -215,7 +215,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     ['nvo', '<Plug>(columnjump-backward)']]}}
 
   NeoBundleLazy 'vim-jp/cpp-vim', {
-    \ 'autoload' : {'filetypes' : 'cpp'}}
+    \ 'autoload' : {'filetypes' : ['c', 'cpp']}}
 
   NeoBundleLazy 'JesseKPhillips/d.vim', {
     \ 'autoload' : {'filetypes' : 'd'}}
