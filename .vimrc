@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-25 00:04:41 DeaR>
+" @timestamp   <2013-06-25 02:07:15 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2550,6 +2550,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('kwbdi')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:kwbd()
+    NeoBundleSource kwbdi
     if v:lang =~? '^ja'
       let msg = join(['変更を "', expand('%:t'), '" に保存しますか?'], '')
       let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
