@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-24 16:25:33 DeaR>
+" @timestamp   <2013-06-24 16:42:58 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3870,7 +3870,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   function! s:textobj_wiw(motion)
     NeoBundleSource textobj-wiw
-    return "\<Plug>(textobj-wiw-_" . a:motion . ")"
+    return "\<Plug>(textobj-wiw-" . a:motion . ")"
   endfunction
 
   NOXmap w  <Plug>(textobj-wiw-n)
