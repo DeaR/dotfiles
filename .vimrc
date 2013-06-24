@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-25 02:07:15 DeaR>
+" @timestamp   <2013-06-25 02:13:59 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -808,7 +808,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {'filetypes' : 'tmux'}}
 
   NeoBundleLazy 'mbbill/undotree', {
-    \ 'autoload' : {'commands' : 'UndotreeToggle'}}
+    \ 'autoload' : {
+    \   'commands' : 'UndotreeToggle',
+    \   'functions' : 'UndotreeToggle'}}
 
   NeoBundle 'Shougo/unite.vim'
   call extend(s:neocompl_vim_completefuncs, {
@@ -1748,7 +1750,7 @@ if has('win32')
       \ 'shellquote'   : &shellquote,
       \ 'shellxquote'  : &shellxquote}
   endfunction
-  function s:set_shell(value)
+  function! s:set_shell(value)
     let &shell        = a:value.shell
     let &shellslash   = a:value.shellslash
     let &shellcmdflag = a:value.shellcmdflag
@@ -3884,6 +3886,10 @@ unlet! s:bundle
 " UndoTree: {{{
 silent! let s:bundle = neobundle#get('undotree')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:undotree_SetFocusWhenToggle = 1
+  endfunction
+
   nnoremap <Leader>u :<C-U>UndotreeToggle<CR>
 endif
 unlet! s:bundle
