@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-24 14:33:22 DeaR>
+" @timestamp   <2013-06-24 16:21:57 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -184,18 +184,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'mattn/benchvimrc-vim', {
     \ 'autoload' : {'commands' : 'BenchVimrc'}}
-
-  " NeoBundleLazy 'camelcasemotion', {
-  NeoBundleLazy 'DeaR/camelcasemotion', {
-    \ 'autoload' : {
-    \   'mappings' : [
-    \     ['nvo', '<Plug>CamelCaseMotion_w'],
-    \     ['nvo', '<Plug>CamelCaseMotion_b'],
-    \     ['nvo', '<Plug>CamelCaseMotion_e'],
-    \     ['nvo', '<Plug>CamelCaseMotion_ge'],
-    \     ['vo',  '<Plug>CamelCaseMotion_iw'],
-    \     ['vo',  '<Plug>CamelCaseMotion_ib'],
-    \     ['vo',  '<Plug>CamelCaseMotion_ie']]}}
 
   if has('python') && executable('clang')
     NeoBundleLazy 'Rip-Rip/clang_complete', {
@@ -2328,37 +2316,6 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('autofmt')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   set formatexpr=autofmt#japanese#formatexpr()
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" CamelCaseMotion: {{{
-silent! let s:bundle = neobundle#get('camelcasemotion')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:camelcasemotion(key)
-    NeoBundleSource camelcasemotion
-    return "\<Plug>CamelCaseMotion_" . a:key
-  endfunction
-
-  NOXmap w  <Plug>CamelCaseMotion_w
-  NOXmap b  <Plug>CamelCaseMotion_b
-  NOXmap e  <Plug>CamelCaseMotion_e
-  NOXmap ge <Plug>CamelCaseMotion_ge
-
-  OXmap i<M-w> <Plug>CamelCaseMotion_iw
-  OXmap i<M-b> <Plug>CamelCaseMotion_ib
-  OXmap i<M-e> <Plug>CamelCaseMotion_ie
-
-  nmap <expr> <SID>CamelCaseMotion_w  <SID>camelcasemotion('w')
-  nmap <expr> <SID>CamelCaseMotion_b  <SID>camelcasemotion('b')
-  nmap <expr> <SID>CamelCaseMotion_e  <SID>camelcasemotion('e')
-  nmap <expr> <SID>CamelCaseMotion_ge <SID>camelcasemotion('ge')
-
-  inoremap <script> <M-w>      <C-O><SID>CamelCaseMotion_w
-  inoremap <script> <M-b>      <C-O><SID>CamelCaseMotion_b
-  inoremap <script> <M-e>      <C-O><SID>CamelCaseMotion_e
-  inoremap <script> <M-g><M-e> <C-O><SID>CamelCaseMotion_ge
 endif
 unlet! s:bundle
 "}}}
