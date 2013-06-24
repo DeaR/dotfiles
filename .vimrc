@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-23 21:18:56 DeaR>
+" @timestamp   <2013-06-24 13:47:05 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -32,13 +32,19 @@ if argc() && has('clientserver') && has('vim_starting')
     \ split(serverlist(), '\n'),
     \ 'v:val !=? v:servername')
   if !empty(s:running_vim_list)
-    silent execute '!start'
-      \ (has('gui_running') ? 'gvim' : 'vim')
-      \ '--servername' s:running_vim_list[0]
-      \ '--remote-silent'
-      \ '+"lcd' getcwd() '"'
-      \ join(argv(), ' ')
+    let s:cmd = join([
+      \ shellescape(join([
+      \   $VIM, has('gui_running') ? 'gvim' : 'vim'], '/')),
+      \ '--servername', s:running_vim_list[0],
+      \ '--remote-silent',
+      \ '+"lcd', getcwd(), '"',
+      \ join(argv())])
     set viminfo=
+    if has('win32')
+      silent execute '!start' s:cmd
+    else
+      silent call system(join([s:cmd, '&']))
+    endif
     qall!
   endif
   unlet s:running_vim_list
