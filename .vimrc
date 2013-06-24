@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-24 16:21:57 DeaR>
+" @timestamp   <2013-06-24 16:25:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3868,7 +3868,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_wiw_no_default_key_mappings = 1
   endfunction
 
-  function! s:textobj-wiw(motion)
+  function! s:textobj_wiw(motion)
     NeoBundleSource textobj-wiw
     return "\<Plug>(textobj-wiw-_" . a:motion . ")"
   endfunction
@@ -3881,10 +3881,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   OXmap aw <Plug>(textobj-wiw-a)
   OXmap iw <Plug>(textobj-wiw-i)
 
-  nmap <expr> <SID>(textobj-wiw-n) <SID>textobj-wiw('n')
-  nmap <expr> <SID>(textobj-wiw-p) <SID>textobj-wiw('p')
-  nmap <expr> <SID>(textobj-wiw-N) <SID>textobj-wiw('N')
-  nmap <expr> <SID>(textobj-wiw-P) <SID>textobj-wiw('P')
+  nmap <expr> <SID>(textobj-wiw-n) <SID>textobj_wiw('n')
+  nmap <expr> <SID>(textobj-wiw-p) <SID>textobj_wiw('p')
+  nmap <expr> <SID>(textobj-wiw-N) <SID>textobj_wiw('N')
+  nmap <expr> <SID>(textobj-wiw-P) <SID>textobj_wiw('P')
 
   inoremap <script> <M-w>      <C-O><SID>(textobj-wiw-n)
   inoremap <script> <M-b>      <C-O><SID>(textobj-wiw-p)
