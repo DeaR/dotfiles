@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-25 19:50:33 DeaR>
+" @timestamp   <2013-06-25 22:04:23 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -524,6 +524,11 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     'OpenQFixWin', 'CloseQFixWin', 'ToggleQFixWin', 'MoveToQFixWin'],
     \   'mappings' : [['nv', 'g,']]},
     \   'explorer' : 1}
+
+  NeoBundleLazy 'dannyob/quickfixstatus', {
+    \ 'autoload' : {
+    \   'filetypes' : 'qf',
+    \   'commands' : ['QuickfixStatusEnable', 'QuickfixStatusDisable']}}
 
   NeoBundleLazy 'thinca/vim-quickrun', {
     \ 'autoload' : {
