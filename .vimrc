@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-25 22:04:23 DeaR>
+" @timestamp   <2013-06-25 22:10:05 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -263,7 +263,10 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'cohama/vim-hier', {
-    \ 'autoload' : {'filetypes' : 'qf'}}
+    \ 'autoload' : {
+    \   'filetypes' : 'qf',
+    \   'commands' : [
+    \     'HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
 
   NeoBundleLazy 'HybridText', {
     \ 'autoload' : {'filetypes' : 'hybrid'}}
@@ -528,7 +531,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'dannyob/quickfixstatus', {
     \ 'autoload' : {
     \   'filetypes' : 'qf',
-    \   'commands' : ['QuickfixStatusEnable', 'QuickfixStatusDisable']}}
+    \   'commands' : [
+    \     'QuickfixStatusEnable', 'QuickfixStatusDisable']}}
 
   NeoBundleLazy 'thinca/vim-quickrun', {
     \ 'autoload' : {
