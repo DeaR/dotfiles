@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-25 02:13:59 DeaR>
+" @timestamp   <2013-06-25 17:38:54 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -207,10 +207,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'JesseKPhillips/d.vim', {
     \ 'autoload' : {'filetypes' : 'd'}}
-
-  if has('balloon_eval')
-    NeoBundleLazy 'tyru/foldballoon.vim'
- endif
 
   NeoBundleLazy 'thinca/vim-ft-diff_fold', {
     \ 'autoload' : {'filetypes' : 'diff'}}
@@ -2443,16 +2439,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     call echodoc#enable()
   endfunction
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" Fold Balloon: {{{
-silent! let s:bundle = neobundle#get('foldballoon')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  set ballooneval
-  set balloonexpr=foldballoon#balloonexpr()
 endif
 unlet! s:bundle
 "}}}
