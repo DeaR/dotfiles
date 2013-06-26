@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-26 16:42:47 DeaR>
+" @timestamp   <2013-06-26 18:16:19 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2172,6 +2172,13 @@ nnoremap <M-a> a<C-R>=<SID>keys_to_insert_one_character()<CR>
 nnoremap <M-A> A<C-R>=<SID>keys_to_insert_one_character()<CR>
 nnoremap <M-i> i<C-R>=<SID>keys_to_insert_one_character()<CR>
 nnoremap <M-I> I<C-R>=<SID>keys_to_insert_one_character()<CR>
+"}}}
+
+"-----------------------------------------------------------------------------
+" No Insert Comment Leader: {{
+autocmd MyVimrc FileType *
+  \ setlocal formatoptions-=r |
+  \ setlocal formatoptions-=o
 "}}}
 
 "-----------------------------------------------------------------------------
