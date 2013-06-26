@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-25 22:10:05 DeaR>
+" @timestamp   <2013-06-26 13:43:36 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -207,6 +207,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'JesseKPhillips/d.vim', {
     \ 'autoload' : {'filetypes' : 'd'}}
+
+  NeoBundleLazy 'thinca/vim-ft-clojure', {
+    \ 'autoload' : {'filetypes' : 'clojure'}}
 
   NeoBundleLazy 'thinca/vim-ft-diff_fold', {
     \ 'autoload' : {'filetypes' : 'diff'}}
