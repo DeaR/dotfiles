@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-26 18:16:19 DeaR>
+" @timestamp   <2013-06-26 23:56:42 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1251,7 +1251,7 @@ set iskeyword=a-z,A-Z,@,48-57,_
 
 " Grep
 if executable('jvgrep')
-  set grepprg=jvgrep\ --exclude\ .drive.r
+  set grepprg=jvgrep\ -n\ --exclude\ .drive.r
 elseif executable('grep')
   set grepprg=grep\ -Hn
 else
@@ -3918,7 +3918,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     if executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
-      let g:unite_source_grep_default_opts  = '--exclude .drive.r'
+      let g:unite_source_grep_default_opts  = '-n --exclude .drive.r'
     endif
 
     if !exists('g:unite_source_menu_menus')
