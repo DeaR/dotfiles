@@ -4,7 +4,7 @@
 # @description NYAOS settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-13 19:14:38 DeaR>
+# @timestamp   <2013-06-27 20:13:15 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -16,93 +16,93 @@ set LOCAL_DIR=%HOME%\.local
 set PATH+=%(nyaos.argv[0]:match("^(.+)[/\\]"))%
 
 if "`which gcc`" != "" then
-	set CC=gcc
+  set CC=gcc
 else if "`which cc`" != "" then
-	set CC=cc
+  set CC=cc
 endif
 
 if "`which g++`" != "" then
-	set CXX=g++
-	set CCC=g++
+  set CXX=g++
+  set CCC=g++
 else if "`which c++`" != "" then
-	set CXX=c++
-	set CCC=c++
+  set CXX=c++
+  set CCC=c++
 else if "`which gcc`" != "" then
-	set CXX=gcc
-	set CCC=gcc
+  set CXX=gcc
+  set CCC=gcc
 else if "`which cc`" != "" then
-	set CXX=cc
-	set CCC=cc
+  set CXX=cc
+  set CCC=cc
 endif
 
 if "`which vim`" != "" then
-	if "`which gvim`" != "" then
-		set EDITOR=gvim
-	else
-		set EDITOR=vim
-	endif
-	if "`which git`" != "" then
-		set GIT_EDITOR=%EDITOR% --remote-wait-silent
-	endif
-	if "`which hg`" != "" then
-		set HGEDITOR=%EDITOR% --remote-wait-silent
-	endif
+  if "`which gvim`" != "" then
+    set EDITOR=gvim
+  else
+    set EDITOR=vim
+  endif
+  if "`which git`" != "" then
+    set GIT_EDITOR=%EDITOR% --remote-wait-silent
+  endif
+  if "`which hg`" != "" then
+    set HGEDITOR=%EDITOR% --remote-wait-silent
+  endif
 else if "`which xyzzy`" != "" then
-	if "`which xyzzycli`" != "" then
-		set EDITOR=xyzzycli
-	else
-		set EDITOR=xyzzy
-	endif
-	if "`which git`" != "" then
-		set GIT_EDITOR=%EDITOR% -wait
-	endif
-	if "`which hg`" != "" then
-		set HGEDITOR=%EDITOR% -wait
-	endif
+  if "`which xyzzycli`" != "" then
+    set EDITOR=xyzzycli
+  else
+    set EDITOR=xyzzy
+  endif
+  if "`which git`" != "" then
+    set GIT_EDITOR=%EDITOR% -wait
+  endif
+  if "`which hg`" != "" then
+    set HGEDITOR=%EDITOR% -wait
+  endif
 else if "`which emacs`" != "" then
-	if "`which emacsclient`" != "" then
-		set EDITOR=emacsclient
-	else
-		set EDITOR=emacs
-	endif
+  if "`which emacsclient`" != "" then
+    set EDITOR=emacsclient
+  else
+    set EDITOR=emacs
+  endif
 else if "`which sublime_text`" != "" then
-	set EDITOR=sublime_text
+  set EDITOR=sublime_text
 endif
 
 if "`which less`" != "" then
-	set PAGER=less
+  set PAGER=less
 else if "`which lv`" != "" then
-	set PAGER=lv
+  set PAGER=lv
 else if "`which more`" != "" then
-	set PAGER=more
+  set PAGER=more
 endif
 
 if "`which less`" != "" then
-	set LESS=-r
-	set LESSCHARSET=utf-8
-	set LESSHISTFILE=%LOCAL_DIR%\.lesshst
-	if "`which lesspipe`" != "" then
-		lua_e "nyaos.putenv('LESSOPEN', '| lesspipe %s')"
-		lua_e "nyaos.putenv('LESSCLOSE', 'lesspipe %s %s')"
-	else if "`which lesspipe.sh`" != "" then
-		lua_e "nyaos.putenv('LESSOPEN', '| lesspipe.sh %s')"
-		lua_e "nyaos.putenv('LESSCLOSE', 'lesspipe.sh %s %s')"
-	endif
+  set LESS=-r
+  set LESSCHARSET=utf-8
+  set LESSHISTFILE=%LOCAL_DIR%\.lesshst
+  if "`which lesspipe`" != "" then
+    lua_e "nyaos.putenv('LESSOPEN', '| lesspipe %s')"
+    lua_e "nyaos.putenv('LESSCLOSE', 'lesspipe %s %s')"
+  else if "`which lesspipe.sh`" != "" then
+    lua_e "nyaos.putenv('LESSOPEN', '| lesspipe.sh %s')"
+    lua_e "nyaos.putenv('LESSCLOSE', 'lesspipe.sh %s %s')"
+  endif
 endif
 if "`which lv`" != "" then
-	set LV=-Ia -Ow -c -l
+  set LV=-Ia -Ow -c -l
 endif
 if "%(os.getenv('PAGER') and nyaos.eval('which nkf'))%" != "" then
-	if "`which git`" != "" then
-		lua_e "nyaos.putenv('GIT_PAGER', 'nkf -w | %PAGER%')"
-	endif
-	if "`which hg`" != "" then
-		lua_e "nyaos.putenv('HGPAGER', 'nkf -w | %PAGER%')"
-	endif
+  if "`which git`" != "" then
+    lua_e "nyaos.putenv('GIT_PAGER', 'nkf -w | %PAGER%')"
+  endif
+  if "`which hg`" != "" then
+    lua_e "nyaos.putenv('HGPAGER', 'nkf -w | %PAGER%')"
+  endif
 endif
 
 if "`which hg`" != "" then
-	set HGENCODING=utf-8
+  set HGENCODING=utf-8
 endif
 #}}}
 
@@ -161,7 +161,7 @@ source %NYAOS_DIR%\z\z.lua
 #-----------------------------------------------------------------------------
 # Less Tailf: {{{
 if "`which less`" != "" then
-	lua_e "
+  lua_e "
     function nyaos.command.ltail(...)
       local o = os.getenv('LESSOPEN')
       local c = os.getenv('LESSCLOSE')
@@ -177,7 +177,7 @@ endif
 #-----------------------------------------------------------------------------
 # Golang: {{{
 if "`which go`" != "" then
-	lua_e "
+  lua_e "
     function nyaos.command.go_windows_386(...)
       local o = os.getenv('GOOS')
       local a = os.getenv('GOARCH')
@@ -207,26 +207,26 @@ set _ABBREV_NO_EXPAND=CTRL_X
 # set _ABBREV_BACKSPACE=CTRL_H
 source %NYAOS_DIR%\abbreviations\abbreviations.lua
 if %PAGER.defined% -ne 0 then
-	abbrev L "| %PAGER%"
+  abbrev L "| %PAGER%"
 endif
 if "`which head`" != "" then
-	abbrev H "| head"
+  abbrev H "| head"
 endif
 if "`which ltail`" != "" then
-	abbrev T "| ltail"
+  abbrev T "| ltail"
 else if "`which tailf`" != "" then
-	abbrev T "| tailf"
+  abbrev T "| tailf"
 else if "`which tail`" != "" then
-	abbrev T "| tail"
+  abbrev T "| tail"
 endif
 if "`which grep`" != "" then
-	abbrev G "| grep"
+  abbrev G "| grep"
 endif
 if "`which sort`" != "" then
-	abbrev S "| sort"
+  abbrev S "| sort"
 endif
 if "`which nkf`" != "" then
-	abbrev N "| nkf -s"
+  abbrev N "| nkf -s"
 endif
 #}}}
 
@@ -234,7 +234,7 @@ endif
 # Alias (Color): {{{
 alias ls ls --color
 if "`which colordiff`" != "" then
-	alias diff colordiff
+  alias diff colordiff
 endif
 #}}}
 
@@ -244,51 +244,51 @@ alias q exit
 alias clear cls
 alias ll ls -al --color
 if "`which grep`" != "" then
-	alias lld "ls -al --color | grep ""/$"""
-	alias llf "ls -al --color | grep -v ""/$"""
-	alias lle "ls -al --color | grep ""\*$"""
-	alias lls "ls -al --color | grep ""\->"""
+  alias lld "ls -al --color | grep ""/$"""
+  alias llf "ls -al --color | grep -v ""/$"""
+  alias lle "ls -al --color | grep ""\*$"""
+  alias lls "ls -al --color | grep ""\->"""
 endif
 if %EDITOR.defined% -ne 0 then
-	alias e "%EDITOR%"
+  alias e "%EDITOR%"
 endif
 if %PAGER.defined% -ne 0 then
-	alias l "%PAGER%"
+  alias l "%PAGER%"
 endif
 if "`which head`" != "" then
-	alias h head
+  alias h head
 endif
 if "`which ltail`" != "" then
-	alias t ltail
+  alias t ltail
 else if "`which tailf`" != "" then
-	alias t tailf
+  alias t tailf
 else if "`which tail`" != "" then
-	alias t tail -f
+  alias t tail -f
 endif
 if "`which vim`" != "" then
-	if "`which gvim-dw64`" != "" then
-		alias vi gvim-dw64
-	else if "`which gvim-dw32`" != "" then
-		alias vi gvim-dw32
-	else if "`which gvim`" != "" then
-		alias vi gvim
-	else
-		alias vi vim
-	endif
+  if "`which gvim-dw64`" != "" then
+    alias vi gvim-dw64
+  else if "`which gvim-dw32`" != "" then
+    alias vi gvim-dw32
+  else if "`which gvim`" != "" then
+    alias vi gvim
+  else
+    alias vi vim
+  endif
 endif
 if %HGPAGER.defined% -ne 0 then
-	alias hg "hg --config pager.pager=""%HGPAGER%"""
+  alias hg "hg --config pager.pager=""%HGPAGER%"""
 endif
 if "`which gmake`" != "" then
-	alias make gmake
+  alias make gmake
 else if "`which mingw32-make`" != "" then
-	alias make mingw32-make
+  alias make mingw32-make
 endif
 if exist "%GIT_HOME%\bin\find.exe" then
-	alias find ""%GIT_HOME%\bin\find.exe""
+  alias find ""%GIT_HOME%\bin\find.exe""
 endif
 if exist "%GIT_HOME%\bin\sort.exe" then
-	alias sort ""%GIT_HOME%\bin\sort.exe""
+  alias sort ""%GIT_HOME%\bin\sort.exe""
 endif
 #}}}
 
@@ -303,13 +303,13 @@ suffix htm  open
 suffix html open
 suffix msi  open
 if "`which sh`" != "" then
-	suffix sh sh
+  suffix sh sh
 endif
 if "`which bash`" != "" then
-	suffix bash bash
+  suffix bash bash
 endif
 if "`which zsh`" != "" then
-	suffix zsh zsh
+  suffix zsh zsh
 endif
 #}}}
 
@@ -317,13 +317,13 @@ endif
 # Shebang: {{{
 source %NYAOS_DIR%\shebang\shebang.lua
 if %GIT_HOME.defined% -ne 0 then
-	shebang /bin/           "%GIT_HOME%\bin\"
-	shebang /usr/bin/       "%GIT_HOME%\bin\"
-	shebang /usr/local/bin/ "%GIT_HOME%\bin\"
+  shebang /bin/           "%GIT_HOME%\bin\"
+  shebang /usr/bin/       "%GIT_HOME%\bin\"
+  shebang /usr/local/bin/ "%GIT_HOME%\bin\"
 endif
 if exist "%PYTHON_HOME%\python.exe" then
-	shebang /usr/bin/python       "%PYTHON_HOME%\python.exe"
-	shebang /usr/local/bin/python "%PYTHON_HOME%\python.exe"
+  shebang /usr/bin/python       "%PYTHON_HOME%\python.exe"
+  shebang /usr/local/bin/python "%PYTHON_HOME%\python.exe"
 endif
 #}}}
 
@@ -336,21 +336,21 @@ source %NYAOS_DIR%\vcvars.lua
 #-----------------------------------------------------------------------------
 # Source By ComputerName, UserName: {{{
 if exist "%NYAOS_DIR%\_nya.%COMPUTERNAME%" then
-	source %NYAOS_DIR%\_nya.%COMPUTERNAME%
+  source %NYAOS_DIR%\_nya.%COMPUTERNAME%
 endif
 if %PROCESSOR_ARCHITEW6432.defined% -ne 0 then
-	if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%" then
-		source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%
-	endif
+  if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%" then
+    source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%
+  endif
 else
-	if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%" then
-		source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%
-	endif
+  if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%" then
+    source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%
+  endif
 endif
 if exist "%NYAOS_DIR%\_nya.%USERNAME%" then
-	source %NYAOS_DIR%\_nya.%USERNAME%
+  source %NYAOS_DIR%\_nya.%USERNAME%
 endif
 if exist "%LOCAL_DIR%\_nya.local" then
-	source %LOCAL_DIR%\_nya.local
+  source %LOCAL_DIR%\_nya.local
 endif
 #}}}
