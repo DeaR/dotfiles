@@ -4,7 +4,7 @@
 " @description Close mapping for Fixed-buffer
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-05-30 12:39:34 DeaR>
+" @timestamp   <2013-06-27 20:36:46 DeaR>
 
 if exists('g:loaded_map_close')
   finish
@@ -21,6 +21,7 @@ function! s:smart_close()
 endfunction
 
 augroup Map_Close
+  autocmd!
   autocmd FileType *
     \ if (&readonly || !&modifiable) && !hasmapto('q', 'n') |
     \   nnoremap <buffer><silent> q :<C-U>call <SID>smart_close()<CR>|
