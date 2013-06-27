@@ -4,12 +4,12 @@
 " @description Close mapping for Fixed-buffer
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-28 01:53:10 DeaR>
+" @timestamp   <2013-06-28 02:04:28 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <buffer><silent> q :<C-U>cclose<CR>
+nnoremap <buffer> q :<C-U>cclose<CR>
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'

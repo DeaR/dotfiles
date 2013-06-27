@@ -4,7 +4,7 @@
 " @description Close mapping for Fixed-buffer
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-06 00:32:18 DeaR>
+" @timestamp   <2013-06-28 02:04:54 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -14,7 +14,7 @@ function! s:smart_close()
     close
   endif
 endfunction
-nnoremap <buffer><silent> q :<C-U>call <SID>smart_close()<CR>
+nnoremap <buffer> q :<C-U>call <SID>smart_close()<CR>
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
