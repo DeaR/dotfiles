@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-27 19:57:24 DeaR>
+" @timestamp   <2013-06-27 20:29:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3912,8 +3912,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_enable_start_insert        = 1
     let g:unite_winheight                  = 25
     let g:unite_source_history_yank_enable = 1
-    let g:unite_source_grep_max_candidates = 200
     let g:unite_cursor_line_highlight      = 'CursorLine'
+    let g:unite_source_grep_max_candidates = 1000
+    let g:unite_source_grep_encoding       = 'utf-8'
 
     if executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
