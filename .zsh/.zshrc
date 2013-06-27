@@ -4,7 +4,7 @@
 # @description Zsh interactive settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-07 14:37:30 DeaR>
+# @timestamp   <2013-06-27 20:14:43 DeaR>
 
 #-----------------------------------------------------------------------------
 # Option: {{{
@@ -38,11 +38,11 @@ setopt share_history
 #-----------------------------------------------------------------------------
 # Emacs Like Keybind: {{{
 bindkey -e
-bindkey "^?"	backward-delete-char
-bindkey "^H"	backward-delete-char
-bindkey "^[[3~"	delete-char
-bindkey "^[[1~"	beginning-of-line
-bindkey "^[[4~"	end-of-line
+bindkey "^?"     backward-delete-char
+bindkey "^H"     backward-delete-char
+bindkey "^[[3~"  delete-char
+bindkey "^[[1~"  beginning-of-line
+bindkey "^[[4~"  end-of-line
 #}}}
 
 #-----------------------------------------------------------------------------
@@ -88,11 +88,11 @@ zstyle ":vcs_info:git:*" actionformats "(%s)-[%b|%a]%c%u"
 zstyle ":vcs_info:(hg|svn):*" branchformat "%b:r%r"
 zstyle ":vcs_info:hg:*" hgrevformat "%r"
 function _update_vcs_info_msg() {
-	psvar=()
-	LANG=en_US.UTF-8 vcs_info
-	if [ -n "${vcs_info_msg_0_}" ]; then
-		psvar[1]="${vcs_info_msg_0_}"
-	fi
+  psvar=()
+  LANG=en_US.UTF-8 vcs_info
+  if [ -n "${vcs_info_msg_0_}" ]; then
+    psvar[1]="${vcs_info_msg_0_}"
+  fi
 }
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd _update_vcs_info_msg
@@ -103,24 +103,24 @@ add-zsh-hook precmd _update_vcs_info_msg
 _Z_CMD="j"
 _Z_DATA="${LOCAL_DIR}/.z"
 if [ -f "${LOCAL_DIR}/z/z.sh" ]; then
-	source "${LOCAL_DIR}/z/z.sh"
+  source "${LOCAL_DIR}/z/z.sh"
 elif [ -f "${ZDOTDIR}/z/z.sh" ]; then
-	source "${ZDOTDIR}/z/z.sh"
+  source "${ZDOTDIR}/z/z.sh"
 elif [ -f "${HOME}/z/z.sh" ]; then
-	source "${HOME}/z/z.sh"
+  source "${HOME}/z/z.sh"
 elif [ -f "${HOME}/.bash/z/z.sh" ]; then
-	source "${HOME}/.bash/z/z.sh"
+  source "${HOME}/.bash/z/z.sh"
 fi
 #}}}
 
 #-----------------------------------------------------------------------------
 # Less Tailf: {{{
 if hash less 2> /dev/null; then
-	function ltail {
-		LESSOPEN=
-		LESSCLOSE=
-		less +F $@
-	}
+  function ltail {
+    LESSOPEN=
+    LESSCLOSE=
+    less +F $@
+  }
 fi
 #}}}
 
@@ -128,29 +128,29 @@ fi
 # Abbreviations: {{{
 typeset -A abbreviations
 magic-abbrev-expand () {
-	local MATCH
-	LBUFFER=${LBUFFER%%(#m)[-_a-zA-Z0-9^]#}
-	LBUFFER+=${abbreviations[$MATCH]:-$MATCH}
+  local MATCH
+  LBUFFER=${LBUFFER%%(#m)[-_a-zA-Z0-9^]#}
+  LBUFFER+=${abbreviations[$MATCH]:-$MATCH}
 }
 magic-abbrev-expand-and-insert () {
-	magic-abbrev-expand
-	zle self-insert
+  magic-abbrev-expand
+  zle self-insert
 }
 magic-abbrev-expand-and-insert-complete () {
-	magic-abbrev-expand
-	zle self-insert
-	zle expand-or-complete
+  magic-abbrev-expand
+  zle self-insert
+  zle expand-or-complete
 }
 magic-abbrev-expand-and-accept () {
-	magic-abbrev-expand
-	zle accept-line
+  magic-abbrev-expand
+  zle accept-line
 }
 magic-abbrev-expand-and-normal-complete () {
-	magic-abbrev-expand
-	zle expand-or-complete
+  magic-abbrev-expand
+  zle expand-or-complete
 }
 no-magic-abbrev-expand () {
-	LBUFFER+=" "
+  LBUFFER+=" "
 }
 zle -N magic-abbrev-expand
 zle -N magic-space
@@ -159,31 +159,31 @@ zle -N magic-abbrev-expand-and-insert-complete
 zle -N magic-abbrev-expand-and-accept
 zle -N magic-abbrev-expand-and-normal-complete
 zle -N no-magic-abbrev-expand
-bindkey " "		magic-abbrev-expand-and-insert
-bindkey "."		magic-abbrev-expand-and-insert
-bindkey "\r"	magic-abbrev-expand-and-accept
-bindkey "^i"	magic-abbrev-expand-and-normal-complete
-bindkey "^x"	no-magic-abbrev-expand
-bindkey "^j"	accept-line
+bindkey " "   magic-abbrev-expand-and-insert
+bindkey "."   magic-abbrev-expand-and-insert
+bindkey "\r"  magic-abbrev-expand-and-accept
+bindkey "^i"  magic-abbrev-expand-and-normal-complete
+bindkey "^x"  no-magic-abbrev-expand
+bindkey "^j"  accept-line
 if [ -n "${PAGER}" ]; then
-	abbreviations+=("L" "| ${PAGER}")
+  abbreviations+=("L" "| ${PAGER}")
 fi
 if hash head 2> /dev/null; then
-	abbreviations+=("H" "| head")
+  abbreviations+=("H" "| head")
 fi
 if hash ltail 2> /dev/null; then
-	abbreviations+=("T" "| ltail")
+  abbreviations+=("T" "| ltail")
 elif hash tail 2> /dev/null; then
-	abbreviations+=("T" "| tail")
+  abbreviations+=("T" "| tail")
 fi
 if hash grep 2> /dev/null; then
-	abbreviations+=("G" "| grep")
+  abbreviations+=("G" "| grep")
 fi
 if hash sort 2> /dev/null; then
-	abbreviations+=("S" "| sort")
+  abbreviations+=("S" "| sort")
 fi
 if hash nkf 2> /dev/null; then
-	abbreviations+=("N" "| nkf -w")
+  abbreviations+=("N" "| nkf -w")
 fi
 #}}}
 
@@ -191,10 +191,10 @@ fi
 # Alias (Color): {{{
 alias ls="ls --color --show-control-chars"
 if hash grep 2> /dev/null; then
-	alias grep="grep --color"
+  alias grep="grep --color"
 fi
 if hash colordiff 2> /dev/null; then
-	alias diff="colordiff"
+  alias diff="colordiff"
 fi
 #}}}
 
@@ -204,39 +204,39 @@ alias q="exit"
 alias cls="clear"
 alias ll="ls -alF"
 if hash grep 2> /dev/null; then
-	alias lld="ll | grep --color=never '/$'"
-	alias llf="ll | grep --color=never -v '/$'"
-	alias lle="ll | grep --color=never '\*$'"
-	alias lls="ll | grep --color=never '\->'"
+  alias lld="ll | grep --color=never '/$'"
+  alias llf="ll | grep --color=never -v '/$'"
+  alias lle="ll | grep --color=never '\*$'"
+  alias lls="ll | grep --color=never '\->'"
 fi
 if [ -n "${EDITOR}" ]; then
-	alias e="${EDITOR}"
+  alias e="${EDITOR}"
 fi
 if [ -n "${PAGER}" ]; then
-	alias l="${PAGER}"
+  alias l="${PAGER}"
 fi
 if hash head 2> /dev/null; then
-	alias h="head"
+  alias h="head"
 fi
 if hash ltail 2> /dev/null; then
-	alias t="ltail"
+  alias t="ltail"
 elif hash tailf 2> /dev/null; then
-	alias t="tailf"
+  alias t="tailf"
 elif hash tail 2> /dev/null; then
-	alias t="tail -f"
+  alias t="tail -f"
 fi
 if hash vim 2> /dev/null; then
-	if hash gvim 2> /dev/null; then
-		alias vi="gvim"
-	else
-		alias vi="vim"
-	fi
+  if hash gvim 2> /dev/null; then
+    alias vi="gvim"
+  else
+    alias vi="vim"
+  fi
 fi
 if hash sublime_text 2> /dev/null; then
-	alias subl="sublime_text"
+  alias subl="sublime_text"
 fi
 if [ -n "${HGPAGER}" ]; then
-	alias hg="hg --config pager.pager=\"${HGPAGER}\""
+  alias hg="hg --config pager.pager=\"${HGPAGER}\""
 fi
 #}}}
 
@@ -249,83 +249,83 @@ fi
 alias -s sh="sh"
 alias -s zsh="zsh"
 if hash bash 2> /dev/null; then
-	alias -s bash="bash"
+  alias -s bash="bash"
 fi
 if hash perl 2> /dev/null; then
-	alias -s pl="perl"
+  alias -s pl="perl"
 fi
 if hash python 2> /dev/null; then
-	alias -s py="python"
+  alias -s py="python"
 fi
 if hash ruby 2> /dev/null; then
-	alias -s rb="ruby"
+  alias -s rb="ruby"
 fi
 if hash java 2> /dev/null; then
-	alias -s jar="java -jar"
+  alias -s jar="java -jar"
 fi
 if hash lua 2> /dev/null; then
-	alias -s lua="lua"
+  alias -s lua="lua"
 fi
 if hash awk 2> /dev/null; then
-	alias -s awk="awk -f"
+  alias -s awk="awk -f"
 fi
 #}}}
 
 #-----------------------------------------------------------------------------
 # Source By Platform, Host, User: {{{
 if hash uname 2> /dev/null; then
-	if [ -n "$(uname)" -a -f "${ZDOTDIR}/.bashrc.$(uname)" ]; then
-		source "${ZDOTDIR}/.zshrc.$(uname)"
-	fi
-	if [ -n "$(uname -m)" -a -f "${ZDOTDIR}/.zshrc.$(uname -m)" ]; then
-		source "${ZDOTDIR}/.zshrc.$(uname -m)"
-	fi
-	if [ -n "$(uname -n)" -a -f "${ZDOTDIR}/.zshrc.$(uname -n)" ]; then
-		source "${ZDOTDIR}/.zshrc.$(uname -n)"
-	fi
+  if [ -n "$(uname)" -a -f "${ZDOTDIR}/.bashrc.$(uname)" ]; then
+    source "${ZDOTDIR}/.zshrc.$(uname)"
+  fi
+  if [ -n "$(uname -m)" -a -f "${ZDOTDIR}/.zshrc.$(uname -m)" ]; then
+    source "${ZDOTDIR}/.zshrc.$(uname -m)"
+  fi
+  if [ -n "$(uname -n)" -a -f "${ZDOTDIR}/.zshrc.$(uname -n)" ]; then
+    source "${ZDOTDIR}/.zshrc.$(uname -n)"
+  fi
 fi
 if [ -n "${USER}" -a -f "${ZDOTDIR}/.zshrc.${USER}" ]; then
-	source "${ZDOTDIR}/.zshrc.${USER}"
+  source "${ZDOTDIR}/.zshrc.${USER}"
 fi
 if [ -f "${LOCAL_DIR}/.zshrc.local" ]; then
-	source "${LOCAL_DIR}/.zshrc.local"
+  source "${LOCAL_DIR}/.zshrc.local"
 fi
 #}}}
 
 #-----------------------------------------------------------------------------
 # Stty: {{{
 if hash stty 2> /dev/null; then
-	stty start undef
-	stty stop undef
+  stty start undef
+  stty stop undef
 fi
 #}}}
 
 #-----------------------------------------------------------------------------
 # Terminal Multiplexer: {{{
 if [ -z "${TMUX}" -a -z "${STY}" ]; then
-	if hash tmux 2> /dev/null; then
-		if tmux ls >& /dev/null; then
-			tmux a
-		else
-			tmux
-		fi
-		exit
-	elif hash screen 2> /dev/null; then
-		screen -rx || screen -D -RR
-		exit
-	fi
+  if hash tmux 2> /dev/null; then
+    if tmux ls >& /dev/null; then
+      tmux a
+    else
+      tmux
+    fi
+    exit
+  elif hash screen 2> /dev/null; then
+    screen -rx || screen -D -RR
+    exit
+  fi
 else
-	function _update_title() {
-		emulate -L zsh
-		local -a cmd
-		cmd=(${(z)2})
-		if [ "$cmd[1]" = "sudo" ]; then
-			echo -n "\ek$cmd[2]:t\e\\"
-		else
-			echo -n "\ek$cmd[1]:t\e\\"
-		fi
-	}
-	autoload -Uz add-zsh-hook
-	add-zsh-hook preexec _update_title
+  function _update_title() {
+    emulate -L zsh
+    local -a cmd
+    cmd=(${(z)2})
+    if [ "$cmd[1]" = "sudo" ]; then
+      echo -n "\ek$cmd[2]:t\e\\"
+    else
+      echo -n "\ek$cmd[1]:t\e\\"
+    fi
+  }
+  autoload -Uz add-zsh-hook
+  add-zsh-hook preexec _update_title
 fi
 #}}}
