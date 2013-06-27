@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-27 12:05:37 DeaR>
+" @timestamp   <2013-06-27 13:31:15 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4030,10 +4030,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ -buffer-name=files -no-split<CR>
   nnoremap <silent> ;j
     \ :<C-U>Unite jump change
-    \ -buffer-name=files -no-split -auto-preview -multi-line -no-start-insert<CR>
+    \ -buffer-name=files -no-split -multi-line -no-start-insert<CR>
   nnoremap <silent> ;b
     \ :<C-U>Unite buffer
-    \ -buffer-name=files -no-split -auto-preview<CR>
+    \ -buffer-name=files -no-split<CR>
   nnoremap <silent> ;t
     \ :<C-U>Unite tab
     \ -buffer-name=files -no-split<CR>
@@ -4109,7 +4109,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nnoremap <silent> ml
     \ :<C-U>Unite mark bookmark
-    \ -buffer-name=files -no-split -auto-preview -multi-line -no-start-insert<CR>
+    \ -buffer-name=files -no-split -multi-line -no-start-insert<CR>
   nnoremap mu :<C-U>UniteBookmarkAdd<CR>
 endif
 unlet! s:bundle
@@ -4143,7 +4143,7 @@ silent! let s:bundle = neobundle#get('unite-tag')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <silent> ;ut
     \ :<C-U>UniteWithCursorWord tag tag/include
-    \ -buffer-name=files -no-split -auto-preview<CR>
+    \ -buffer-name=files -no-split<CR>
 endif
 unlet! s:bundle
 "}}}
