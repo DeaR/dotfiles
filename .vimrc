@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-27 13:31:15 DeaR>
+" @timestamp   <2013-06-27 19:57:24 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1285,10 +1285,9 @@ set fileformat=unix
 set fileformats=unix,dos,mac
 
 " Indent
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
-set noexpandtab
+set shiftwidth=2
+set softtabstop=2
+set expandtab
 set autoindent
 set smartindent
 set copyindent
@@ -1380,6 +1379,16 @@ let g:asmsyntax = 'masm'
 
 " Shell Script
 let g:is_bash = 1
+
+" Runtimepath by bundle
+function! s:load_bundle_settings()
+  for d in split(glob('~/.vim/bundle-settings/*'), '\n')
+    if neobundle#is_installed(fnamemodify(d, ':t'))
+      execute 'set runtimepath+=' . d
+    endif
+  endfor
+endfunction
+call s:load_bundle_settings()
 
 " FileType Detect
 augroup MyVimrc
@@ -2643,15 +2652,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   command! -bar -complete=customlist,neobundle#complete_bundles -nargs=?
     \ NeoBundleGitGc
     \ :call s:neobundle_git_gc(<q-args>)
-
-  function! s:load_bundle_settings()
-    for d in split(glob('~/.vim/bundle-settings/*'), '\n')
-      if neobundle#is_installed(fnamemodify(d, ':t'))
-        execute 'set runtimepath+=' . d
-      endif
-    endfor
-  endfunction
-  call s:load_bundle_settings()
 endif
 unlet! s:bundle
 "}}}
