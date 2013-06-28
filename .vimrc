@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-28 16:23:29 DeaR>
+" @timestamp   <2013-06-28 16:24:04 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3093,8 +3093,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call extend(g:quickrun_config, {
       \ 'c' : {
       \   'type' :
-      \     executable('gcc')    ? 'c/gcc' :
       \     executable('clang')  ? 'c/clang' :
+      \     executable('gcc')    ? 'c/gcc' :
       \     exists('$VCVARSALL') ? 'c/vc' :
       \     executable('cl')     ? 'c/vc' : ''},
       \ 'cpp' : {
