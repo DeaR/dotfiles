@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-28 15:56:37 DeaR>
+" @timestamp   <2013-06-28 16:16:54 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3045,8 +3045,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     if exists('$VCVARSALL')
       call extend(g:quickrun_config, {
-        \ 'c' : {
-        \   'type' : 'c/vc'},
         \ 'c/vc' : {
         \   'command' : 'cl',
         \   'exec' : [
@@ -3058,8 +3056,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   'hook/vcvarsall/enable' : 1,
         \   'hook/vcvarsall/bat' : $VCVARSALL},
         \
-        \ 'cpp' : {
-        \   'type' : 'cpp/vc'},
         \ 'cpp/vc' : {
         \   'command' : 'cl',
         \   'exec' : [
@@ -3071,8 +3067,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   'hook/vcvarsall/enable' : 1,
         \   'hook/vcvarsall/bat' : $VCVARSALL},
         \
-        \ 'cs' : {
-        \   'type' : 'cs/csc'},
         \ 'cs/csc' : {
         \   'command' : 'csc',
         \   'exec' : [
@@ -3084,8 +3078,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   'hook/vcvarsall/enable' : 1,
         \   'hook/vcvarsall/bat' : $VCVARSALL},
         \
-        \ 'vbnet' : {
-        \   'type' : 'vbnet/vbc'},
         \ 'vbnet/vbc' : {
         \   'command' : 'vbc',
         \   'exec' : [
@@ -3096,17 +3088,31 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   'hook/sweep/files' : ['%s:p:r.exe'],
         \   'hook/vcvarsall/enable' : 1,
         \   'hook/vcvarsall/bat' : $VCVARSALL}})
-    else
-      call extend(g:quickrun_config, {
-        \ 'c' : {
-        \   'type' :
-        \     executable('gcc')   ? 'c/gcc' :
-        \     executable('clang') ? 'c/clang' : ''},
-        \ 'cpp' : {
-        \   'type' :
-        \     executable('clang++') ? 'cpp/clang++' :
-        \     executable('g++')     ? 'cpp/g++' : ''}})
     endif
+
+    call extend(g:quickrun_config, {
+      \ 'c' : {
+      \   'type' :
+      \     executable('gcc')    ? 'c/gcc' :
+      \     executable('clang')  ? 'c/clang' :
+      \     exists('$VCVARSALL') ? 'c/vc' :
+      \     executable('cl')     ? 'c/vc' : ''},
+      \ 'cpp' : {
+      \   'type' :
+      \     executable('clang++') ? 'cpp/clang++' :
+      \     executable('g++')     ? 'cpp/g++' :
+      \     exists('$VCVARSALL')  ? 'cpp/vc' :
+      \     executable('cl')      ? 'cpp/vc' : ''},
+      \ 'cs' : {
+      \   'type' :
+      \     exists('$VCVARSALL')  ? 'cs/csc' :
+      \     executable('csc')     ? 'cs/csc' :
+      \     executable('dmcs')    ? 'cs/dmcs' :
+      \     executable('smcs')    ? 'cs/smcs' :
+      \     executable('gmcs')    ? 'cs/gmcs' :
+      \     executable('mcs')     ? 'cs/mcs' : ''},
+      \ 'vbnet' : {
+      \   'type' : 'vbnet/vbc'}})
   endfunction
 
   nmap <silent> <F5> <Plug>(quickrun)
