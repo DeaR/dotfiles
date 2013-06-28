@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-27 20:50:43 DeaR>
+" @timestamp   <2013-06-28 15:56:37 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1390,20 +1390,6 @@ function! s:load_bundle_settings()
 endfunction
 call s:load_bundle_settings()
 
-" FileType Detect
-augroup MyVimrc
-  autocmd BufNewFile,BufRead *.c
-    \ setfiletype cpp
-  autocmd BufNewFile,BufRead *.txt,*.text
-    \ setfiletype hybrid
-  autocmd BufNewFile,BufRead *.l,.xyzzy
-    \ setfiletype lisp
-  autocmd BufNewFile,BufRead *.md
-    \ setfiletype markdown
-  autocmd BufNewFile,BufRead *.vb
-    \ setfiletype vbnet
-augroup END
-
 " Enable plugin
 filetype plugin indent on
 "}}}
@@ -2664,7 +2650,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplcache_enable_at_startup            = 1
     let g:neocomplcache_enable_auto_select           = 0
     let g:neocomplcache_enable_auto_delimiter        = 1
-    let g:neocomplcache_enable_insert_char_pre       = 1
+    " let g:neocomplcache_enable_insert_char_pre       = 1
     let g:neocomplcache_enable_camel_case_completion = 0
     let g:neocomplcache_enable_underbar_completion   = 0
     let g:neocomplcache_enable_fuzzy_completion      = 0
@@ -2757,7 +2743,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplete#enable_at_startup            = 1
     let g:neocomplete#enable_auto_select           = 0
     let g:neocomplete#enable_auto_delimiter        = 1
-    let g:neocomplete#enable_insert_char_pre       = 1
+    " let g:neocomplete#enable_insert_char_pre       = 1
     let g:neocomplete#force_overwrite_completefunc = 1
     let g:neocomplete#data_directory               =
       \ expand('~/.local/.neocomplete')

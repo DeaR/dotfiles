@@ -4,6 +4,7 @@
 " @description Filetype detects for Z80
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-05-29 18:31:04 DeaR>
+" @timestamp   <2013-06-28 15:50:52 DeaR>
 
-autocmd BufNewFile,BufRead *.z80 setfiletype z80
+autocmd BufNewFile,BufRead *.z80
+  \ setfiletype z80
