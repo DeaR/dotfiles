@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-28 16:24:04 DeaR>
+" @timestamp   <2013-06-28 16:25:46 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -516,19 +516,19 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {'filetypes' : 'markdown'},
     \ 'depends' : 'tyru/open-browser.vim'}
 
-  NeoBundleLazy 'fuenor/qfixhowm', {
-    \ 'autoload' : {
-    \   'filetypes' : 'qf',
-    \   'commands' : [
-    \     'Grep',  'Grepadd',  'RGrep',  'RGrepadd',
-    \     'EGrep', 'EGrepadd', 'REGrep', 'REGrepadd',
-    \     'FGrep', 'FGrepadd', 'RFGrep', 'RFGrepadd',
-    \     'BGrep', 'BGrepadd', 'VGrep',  'VGrepadd',
-    \     'Vimgrep', 'Vimgrepadd', 'ToggleLocationListMode',
-    \     'MyGrepWriteResult', 'MyGrepReadResult', 'FList',
-    \     'OpenQFixWin', 'CloseQFixWin', 'ToggleQFixWin', 'MoveToQFixWin'],
-    \   'mappings' : [['nv', 'g,']]},
-    \   'explorer' : 1}
+  " NeoBundleLazy 'fuenor/qfixhowm', {
+  "   \ 'autoload' : {
+  "   \   'filetypes' : 'qf',
+  "   \   'commands' : [
+  "   \     'Grep',  'Grepadd',  'RGrep',  'RGrepadd',
+  "   \     'EGrep', 'EGrepadd', 'REGrep', 'REGrepadd',
+  "   \     'FGrep', 'FGrepadd', 'RFGrep', 'RFGrepadd',
+  "   \     'BGrep', 'BGrepadd', 'VGrep',  'VGrepadd',
+  "   \     'Vimgrep', 'Vimgrepadd', 'ToggleLocationListMode',
+  "   \     'MyGrepWriteResult', 'MyGrepReadResult', 'FList',
+  "   \     'OpenQFixWin', 'CloseQFixWin', 'ToggleQFixWin', 'MoveToQFixWin'],
+  "   \   'mappings' : [['nv', 'g,']]},
+  "   \   'explorer' : 1}
 
   NeoBundleLazy 'dannyob/quickfixstatus', {
     \ 'autoload' : {
@@ -852,9 +852,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'Shougo/unite-outline', {
     \ 'autoload' : {'unite_sources' : 'outline'}}
 
-  NeoBundleLazy 'osyo-manga/unite-qfixhowm', {
-    \ 'autoload' : {'unite_sources' : 'qfixhowm'},
-    \ 'depends' : 'fuenor/qfixhowm'}
+  " NeoBundleLazy 'osyo-manga/unite-qfixhowm', {
+  "   \ 'autoload' : {'unite_sources' : 'qfixhowm'},
+  "   \ 'depends' : 'fuenor/qfixhowm'}
 
   NeoBundleLazy 'osyo-manga/unite-quickfix', {
     \ 'autoload' : {'unite_sources' : 'quickfix'}}
