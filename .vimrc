@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-28 16:18:22 DeaR>
+" @timestamp   <2013-06-28 16:23:29 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4310,8 +4310,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call extend(g:quickrun_config, {
       \ 'c/watchdogs_checker' : {
       \   'type' :
-      \     executable('gcc')    ? 'watchdogs_checker/gcc' :
       \     executable('clang')  ? 'watchdogs_checker/clang' :
+      \     executable('gcc')    ? 'watchdogs_checker/gcc' :
       \     exists('$VCVARSALL') ? 'watchdogs_checker/msvc' :
       \     executable('cl')     ? 'watchdogs_checker/msvc' : ''},
       \ 'cpp/watchdogs_checker' : {
