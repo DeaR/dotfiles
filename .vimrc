@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-28 16:16:54 DeaR>
+" @timestamp   <2013-06-28 16:18:22 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4305,17 +4305,21 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   'hook/output_encode/encoding' : 'cp932',
         \   'hook/vcvarsall/enable' : 1,
         \   'hook/vcvarsall/bat' : $VCVARSALL}})
-    else
-      call extend(g:quickrun_config, {
-        \ 'c/watchdogs_checker' : {
-        \   'type' :
-        \     executable('gcc')   ? 'watchdogs_checker/gcc' :
-        \     executable('clang') ? 'watchdogs_checker/clang' : ''},
-        \ 'cpp/watchdogs_checker' : {
-        \   'type' :
-        \     executable('clang++') ? 'watchdogs_checker/clang++' :
-        \     executable('g++')     ? 'watchdogs_checker/g++' : ''}})
     endif
+
+    call extend(g:quickrun_config, {
+      \ 'c/watchdogs_checker' : {
+      \   'type' :
+      \     executable('gcc')    ? 'watchdogs_checker/gcc' :
+      \     executable('clang')  ? 'watchdogs_checker/clang' :
+      \     exists('$VCVARSALL') ? 'watchdogs_checker/msvc' :
+      \     executable('cl')     ? 'watchdogs_checker/msvc' : ''},
+      \ 'cpp/watchdogs_checker' : {
+      \   'type' :
+      \     executable('clang++') ? 'watchdogs_checker/clang++' :
+      \     executable('g++')     ? 'watchdogs_checker/g++' :
+      \     exists('$VCVARSALL')  ? 'watchdogs_checker/msvc' :
+      \     executable('cl')      ? 'watchdogs_checker/msvc' : ''}})
 
     call watchdogs#setup(g:quickrun_config)
   endfunction
