@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-28 16:25:46 DeaR>
+" @timestamp   <2013-06-28 19:07:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -37,6 +37,7 @@ if argc() && has('clientserver') && has('vim_starting')
       \   $VIM, has('gui_running') ? 'gvim' : 'vim'], '/')),
       \ '--servername', s:running_vim_list[0],
       \ '--remote-silent',
+      \ '+"silent\! call localrc\#load(g:localrc_filename)"',
       \ join(argv())])
     set viminfo=
     if has('win32')
