@@ -4,28 +4,13 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-28 19:07:39 DeaR>
+" @timestamp   <2013-06-28 22:40:20 DeaR>
 
 set nocompatible
 scriptencoding utf-8
 
 "=============================================================================
 " Init First: {{{
-" Encoding
-if has('multi_byte')
-  set encoding=utf-8
-  if &term == 'win32' && !has('gui_running')
-    set termencoding=cp932
-  endif
-  scriptencoding utf-8
-endif
-
-" Language
-if has('win32') && has('multi_lang')
-  language japanese
-  language time C
-endif
-
 " Singleton
 if argc() && has('clientserver') && has('vim_starting')
   let s:running_vim_list = filter(
@@ -48,6 +33,21 @@ if argc() && has('clientserver') && has('vim_starting')
     qall!
   endif
   unlet s:running_vim_list
+endif
+
+" Encoding
+if has('multi_byte')
+  set encoding=utf-8
+  if &term == 'win32' && !has('gui_running')
+    set termencoding=cp932
+  endif
+  scriptencoding utf-8
+endif
+
+" Language
+if has('win32') && has('multi_lang')
+  language japanese
+  language time C
 endif
 
 if has('win32')
@@ -2156,7 +2156,7 @@ nnoremap <F12> :<C-U>call <SID>toggle_line_number_style()<CR>
 " Insert One Character: {{{
 function! s:keys_to_insert_one_character()
   echohl ModeMsg
-  if v:lang =~? '^ja'
+  if v:lang =~? '^ja' && has('multi_lang')
     echo '-- 挿入 (1文字) --'
   else
     echo '-- INSERT (one char) --'
@@ -2237,25 +2237,27 @@ augroup END
 
 "-----------------------------------------------------------------------------
 " Highlight Ideographic Space: {{{
-function! s:set_ideographic_space(force)
-  if !exists('s:hi_ideographic_space') || a:force
-    silent! let s:hi_ideographic_space = join([
-      \ s:get_highlight('SpecialKey'),
-      \ 'term=underline cterm=underline gui=underline'])
-  endif
+if has('multi_byte')
+  function! s:set_ideographic_space(force)
+    if !exists('s:hi_ideographic_space') || a:force
+      silent! let s:hi_ideographic_space = join([
+        \ s:get_highlight('SpecialKey'),
+        \ 'term=underline cterm=underline gui=underline'])
+    endif
 
-  if exists('s:hi_ideographic_space')
-    execute 'highlight IdeographicSpace' s:hi_ideographic_space
-    syntax match IdeographicSpace "　" display containedin=ALL
-  endif
-endfunction
+    if exists('s:hi_ideographic_space')
+      execute 'highlight IdeographicSpace' s:hi_ideographic_space
+      syntax match IdeographicSpace "　" display containedin=ALL
+    endif
+  endfunction
 
-augroup MyVimrc
-  autocmd ColorScheme *
-    \ call s:set_ideographic_space(1)
-  autocmd Syntax *
-    \ call s:set_ideographic_space(0)
-augroup END
+  augroup MyVimrc
+    autocmd ColorScheme *
+      \ call s:set_ideographic_space(1)
+    autocmd Syntax *
+      \ call s:set_ideographic_space(0)
+  augroup END
+endif
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -2557,7 +2559,7 @@ silent! let s:bundle = neobundle#get('kwbdi')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:kwbd()
     NeoBundleSource kwbdi
-    if v:lang =~? '^ja'
+    if v:lang =~? '^ja' && has('multi_lang')
       let msg = join(['変更を "', expand('%:t'), '" に保存しますか?'], '')
       let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
     else
