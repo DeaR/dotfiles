@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-29 16:44:14 DeaR>
+" @timestamp   <2013-06-29 23:34:36 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -746,6 +746,13 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \   'mappings' : [
     \     ['vo', '<Plug>(textobj-line-a)'],
     \     ['vo', '<Plug>(textobj-line-i)']]},
+    \ 'depends' : 'kana/vim-textobj-user'}
+
+  NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo', '<Plug>(textobj-multiblock-a)'],
+    \     ['vo', '<Plug>(textobj-multiblock-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'sgur/vim-textobj-parameter', {
@@ -3732,6 +3739,20 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   OXmap al <Plug>(textobj-line-a)
   OXmap il <Plug>(textobj-line-i)
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" TextObj MultiBlock: {{{
+silent! let s:bundle = neobundle#get('textobj-multiblock')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:textobj_multiblock_no_default_key_mappings = 1
+  endfunction
+
+  OXmap ab <Plug>(textobj-multiblock-a)
+  OXmap ib <Plug>(textobj-multiblock-i)
 endif
 unlet! s:bundle
 "}}}
