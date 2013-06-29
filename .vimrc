@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-29 23:34:36 DeaR>
+" @timestamp   <2013-06-29 23:37:55 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2178,7 +2178,18 @@ nnoremap <M-I> I<C-R>=<SID>keys_to_insert_one_character()<CR>
 "}}}
 
 "-----------------------------------------------------------------------------
-" No Insert Comment Leader: {{
+" Auto MkDir: {{{
+function! s:auto_mkdir(directory)
+  if !isdirectory(a:directory)
+    call mkdir(a:directory, 'p')
+  endif
+endfunction
+autocmd MyVimrc BufWritePre *
+  \ call s:auto_mkdir(expand('<afile>:p:h'))
+"}}}
+
+"-----------------------------------------------------------------------------
+" No Insert Comment Leader: {{{
 autocmd MyVimrc FileType *
   \ setlocal formatoptions-=r |
   \ setlocal formatoptions-=o
