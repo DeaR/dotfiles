@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-02 15:44:20 DeaR>
+" @timestamp   <2013-07-02 16:38:02 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1413,19 +1413,19 @@ if has('gui_running') || &t_Co > 255
   " No cursor line & column at other window
   augroup MyVimrc
     autocmd BufWinEnter,WinEnter *
-      \ if !exists('b:nocursorline') || !b:nocursorline |
+      \ if exists('b:nocursorline') && b:nocursorline |
+      \   setlocal nocursorline |
+      \ else |
       \   setlocal cursorline |
       \ endif |
-      \ if !exists('b:nocursorcolumn') || !b:nocursorcolumn |
+      \ if exists('b:nocursorcolumn') && b:nocursorcolumn |
+      \   setlocal nocursorcolumn |
+      \ else |
       \   setlocal cursorcolumn |
       \ endif
     autocmd BufWinLeave,WinLeave *
-      \ if !exists('b:nocursorline') || !b:nocursorline |
-      \   setlocal nocursorline |
-      \ endif |
-      \ if !exists('b:nocursorcolumn') || !b:nocursorcolumn |
-      \   setlocal nocursorcolumn |
-      \ endif
+      \ setlocal nocursorline |
+      \ setlocal nocursorcolumn
   augroup END
 endif
 
