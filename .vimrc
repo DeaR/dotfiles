@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-02 17:56:07 DeaR>
+" @timestamp   <2013-07-02 18:01:11 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1872,7 +1872,7 @@ nnoremap <F6> :<C-U>DiffOrig<CR>
 function! s:cmdwin_enter()
   nnoremap <buffer><silent> q :<C-U>quit<CR>
   let s:save_bs = &backspace
-  set backspace=
+  set backspace=start
   startinsert!
 endfunction
 function! s:cmdwin_leave()
