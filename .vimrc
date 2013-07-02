@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-02 18:25:10 DeaR>
+" @timestamp   <2013-07-02 19:44:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1327,26 +1327,16 @@ let g:xml_syntax_folding  = 1
 
 "-----------------------------------------------------------------------------
 " Status Line: {{{
-set statusline=%<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=
-
-" Display encoding & format
-if has('multi_byte') && has('iconv')
-  function! g:Char2Hex()
-    let c = matchstr(getline('.'), '.', col('.') - 1)
-    let c = iconv(c, &encoding, &fileencoding)
-    return s:byte2hex(s:char2byte(c))
-  endfunction
-  function! s:char2byte(str)
-    return map(range(len(a:str)), 'char2nr(a:str[v:val])')
-  endfunction
-  function! s:byte2hex(bytes)
-    return join(map(copy(a:bytes), 'printf("%02X", v:val)'), '')
-  endfunction
-
-  set statusline+=\ [0x%{g:Char2Hex()}]
+set statusline=%<%f\ %m%r[
+if has('multi_byte')
+  set statusline+=%{(&fenc!=''?&fenc:&enc).':'}
 endif
+set statusline+=%{&ff}]%y%=
 
-set statusline+=\ (%v,%l)/%L%8P
+if has('multi_byte')
+  set statusline+=\ [U+%04B]
+endif
+set statusline+=\ (%v,%l)/%L\ %4P
 "}}}
 
 "-----------------------------------------------------------------------------
