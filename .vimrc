@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-02 16:38:02 DeaR>
+" @timestamp   <2013-07-02 17:56:07 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4374,13 +4374,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <expr> <SID>(visual-substitute-do)
     \ <SID>visual_substitute_text()
   xnoremap <script> s*
-    \ :<C-U>call <SID>visual_substitute("1,", 0)<CR><SID>(visual-substitute-do)
+    \ :<C-U>call <SID>visual_substitute('1,', 0)<CR><SID>(visual-substitute-do)
   xnoremap <script> s#
-    \ :<C-U>call <SID>visual_substitute("$,", 0)<CR><SID>(visual-substitute-do)
+    \ :<C-U>call <SID>visual_substitute('$,', 0)<CR><SID>(visual-substitute-do)
   xnoremap <script> sg*
-    \ :<C-U>call <SID>visual_substitute("1,", 1)<CR><SID>(visual-substitute-do)
+    \ :<C-U>call <SID>visual_substitute('1,', 1)<CR><SID>(visual-substitute-do)
   xnoremap <script> sg#
-    \ :<C-U>call <SID>visual_substitute("$,", 1)<CR><SID>(visual-substitute-do)
+    \ :<C-U>call <SID>visual_substitute('$,', 1)<CR><SID>(visual-substitute-do)
 
   xmap sg/  s*
   xmap sg?  s#
