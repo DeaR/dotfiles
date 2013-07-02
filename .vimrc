@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-02 19:44:39 DeaR>
+" @timestamp   <2013-07-02 23:01:50 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1334,9 +1334,10 @@ endif
 set statusline+=%{&ff}]%y%=
 
 if has('multi_byte')
-  set statusline+=\ [U+%04B]
+  set statusline+=\ [U+%04B]\ (%v,%l)/%L\ %4P
+else
+  set statusline+=\ (%v,%l)/%L\ %3P
 endif
-set statusline+=\ (%v,%l)/%L\ %4P
 "}}}
 
 "-----------------------------------------------------------------------------
