@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-01 11:58:49 DeaR>
+" @timestamp   <2013-07-02 13:53:03 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2119,6 +2119,7 @@ else
     \ ':<C-U>windo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
 endif
 
+xmap s?   s/
 nmap sg?  s#
 nmap sg/  s*
 nmap sag/ sa*
