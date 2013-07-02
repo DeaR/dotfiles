@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-02 13:53:03 DeaR>
+" @timestamp   <2013-07-02 15:44:20 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1041,7 +1041,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \ 'VinariseScript2Hex' : 'vinarise#complete'})
   endif
 
-  NeoBundleLazy 'thinca/vim-visualstar', {
+  " NeoBundleLazy 'thinca/vim-visualstar', {
+  NeoBundleLazy 'DeaR/vim-visualstar', {
     \ 'autoload' : {
     \   'mappings' : [
     \     '<Plug>(visualstar-*)', '<Plug>(visualstar-g*)',
@@ -1555,6 +1556,8 @@ nnoremap  <Tab> <Tab>zz
 nnoremap  <C-O> <C-O>zz
 NXnoremap *     *zz
 NXnoremap #     #zz
+NXnoremap g*    g*zz
+NXnoremap g#    g#zz
 
 " Back jump
 nmap <S-Tab> <C-O>
@@ -4314,15 +4317,39 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:visualstar_no_default_key_mappings = 1
   endfunction
 
-  NXmap <SID>(visualstar-*)  <Plug>(visualstar-*)
-  NXmap <SID>(visualstar-#)  <Plug>(visualstar-#)
-  NXmap <SID>(visualstar-g*) <Plug>(visualstar-g*)
-  NXmap <SID>(visualstar-g#) <Plug>(visualstar-g#)
+  function! s:visual_substitute(range, g)
+    let text = visualstar#get_text()
 
-  NXnoremap <script> *  <SID>(visualstar-*)zz
-  NXnoremap <script> #  <SID>(visualstar-#)zz
-  NXnoremap <script> g* <SID>(visualstar-g*)zz
-  NXnoremap <script> g# <SID>(visualstar-g#)zz
+    let [pre, post] = ['', '']
+    if !a:g
+      let pre  = visualstar#get_prefix(text)
+      let post = visualstar#get_suffix(text)
+    endif
+
+    let text = substitute(escape(text, '\/'), "\n", '\\n', 'g')
+
+    let s:visual_substitute_cmd = join([
+      \ (s:cmdwin_enable? 'q:' : ':'),
+      \ a:range,
+      \ 's/\V',
+      \ pre, text, post,
+      \ '//gc', "\<Left>\<Left>\<Left>"], '')
+  endfunction
+
+  let s:visual_substitute_cmd = ''
+  function! s:visual_substitute_cmd()
+    return s:visual_substitute_cmd
+  endfunction
+
+  xmap <SID>(visualstar-*)  <Plug>(visualstar-*)
+  xmap <SID>(visualstar-#)  <Plug>(visualstar-#)
+  xmap <SID>(visualstar-g*) <Plug>(visualstar-g*)
+  xmap <SID>(visualstar-g#) <Plug>(visualstar-g#)
+
+  xnoremap <script> *  <SID>(visualstar-*)zz
+  xnoremap <script> #  <SID>(visualstar-#)zz
+  xnoremap <script> g* <SID>(visualstar-g*)zz
+  xnoremap <script> g# <SID>(visualstar-g#)zz
 
   xnoremap <script> <S-LeftMouse>  <SID>(visualstar-*)zz
   xnoremap <script> g<S-LeftMouse> <SID>(visualstar-g*)zz
@@ -4343,6 +4370,20 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ &columns < 160 ?
     \   '<C-W>sgv<SID>(visualstar-g#)zz' :
     \   '<C-W>vgv<SID>(visualstar-g#)zz'
+
+  nnoremap <expr> <SID>(visual-substitute-do)
+    \ <SID>visual_substitute_text()
+  xnoremap <script> s*
+    \ :<C-U>call <SID>visual_substitute("1,", 0)<CR><SID>(visual-substitute-do)
+  xnoremap <script> s#
+    \ :<C-U>call <SID>visual_substitute("$,", 0)<CR><SID>(visual-substitute-do)
+  xnoremap <script> sg*
+    \ :<C-U>call <SID>visual_substitute("1,", 1)<CR><SID>(visual-substitute-do)
+  xnoremap <script> sg#
+    \ :<C-U>call <SID>visual_substitute("$,", 1)<CR><SID>(visual-substitute-do)
+
+  xmap sg/  s*
+  xmap sg?  s#
 endif
 unlet! s:bundle
 "}}}
