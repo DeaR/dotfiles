@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-02 23:01:50 DeaR>
+" @timestamp   <2013-07-03 03:08:35 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4323,8 +4323,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     let s:visual_substitute_cmd = join([
       \ (s:cmdwin_enable? 'q:' : ':'),
-      \ a:range,
-      \ 's/\V',
+      \ "\<C-U>", a:range, 's/\V',
       \ pre, text, post,
       \ '//gc', "\<Left>\<Left>\<Left>"], '')
   endfunction
@@ -4365,7 +4364,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \   '<C-W>vgv<SID>(visualstar-g#)zz'
 
   nnoremap <expr> <SID>(visual-substitute-do)
-    \ <SID>visual_substitute_text()
+    \ <SID>visual_substitute_cmd()
   xnoremap <script> s*
     \ :<C-U>call <SID>visual_substitute('1,', 0)<CR><SID>(visual-substitute-do)
   xnoremap <script> s#
