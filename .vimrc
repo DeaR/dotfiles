@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 16:33:26 DeaR>
+" @timestamp   <2013-07-05 16:37:57 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -496,8 +496,10 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     ['nvo', '<Plug>(parajump-forward)'],
     \     ['nvo', '<Plug>(parajump-backward)']]}}
 
-  NeoBundleLazy 'c9s/perlomni.vim', {
-    \ 'autoload' : {'filetypes' : 'perl'}}
+  if executable('perl')
+    NeoBundleLazy 'c9s/perlomni.vim', {
+      \ 'autoload' : {'filetypes' : 'perl'}}
+  endif
 
   NeoBundleLazy 'shawncplus/phpcomplete.vim', {
     \ 'autoload' : {'filetypes' : 'php'}}
@@ -885,8 +887,10 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \ 'autoload' : {'unite_sources' : 'remotefile'}}
   endif
 
-  NeoBundleLazy 'rhysd/unite-ruby-require.vim', {
-    \ 'autoload' : {'unite_sources' : 'ruby/require'}}
+  if executable('ruby')
+    NeoBundleLazy 'rhysd/unite-ruby-require.vim', {
+      \ 'autoload' : {'unite_sources' : 'ruby/require'}}
+  endif
 
   NeoBundleLazy 'Shougo/unite-ssh', {
     \ 'autoload' : {'unite_sources' : 'ssh'},
