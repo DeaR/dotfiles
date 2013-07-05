@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 19:47:44 DeaR>
+" @timestamp   <2013-07-05 19:59:57 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1400,14 +1400,16 @@ let g:asmsyntax = 'masm'
 let g:is_bash = 1
 
 " Runtimepath by bundle
-function! s:load_bundle_settings()
-  for d in split(glob('~/.vim/bundle-settings/*'), '\n')
-    if neobundle#is_installed(fnamemodify(d, ':t'))
-      execute 'set runtimepath+=' . d
-    endif
-  endfor
-endfunction
-call s:load_bundle_settings()
+if exists(':NeoBundle')
+  function! s:load_bundle_settings()
+    for d in split(glob('~/.vim/bundle-settings/*'), '\n')
+      if neobundle#is_installed(fnamemodify(d, ':t'))
+        execute 'set runtimepath+=' . d
+      endif
+    endfor
+  endfunction
+  call s:load_bundle_settings()
+endif
 
 " Enable plugin
 filetype plugin indent on
