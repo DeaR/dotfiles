@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 17:09:00 DeaR>
+" @timestamp   <2013-07-05 17:10:50 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3237,8 +3237,10 @@ unlet! s:bundle
 " Ruby: {{{
 silent! let s:bundle = neobundle#get('ruby')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'ruby' : '[^.[:digit:] *\t]\.\|\h\w*::'})
+  if has('ruby')
+    call extend(s:neocompl_force_omni_patterns, {
+      \ 'ruby' : '[^.[:digit:] *\t]\.\|\h\w*::'})
+  endif
 endif
 unlet! s:bundle
 "}}}
