@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 19:16:16 DeaR>
+" @timestamp   <2013-07-05 19:21:10 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2816,9 +2816,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   neocomplcache#start_manual_complete()
 
     if neobundle#is_installed('smartinput')
-      inoremap <expr> <CR>
-        \ (neocomplcache#close_popup() .
-        \  eval(smartinput#sid() . '_trigger_or_fallback("\<CR>", "\<CR>")'))
       inoremap <buffer><silent><expr> <C-H>
         \ col('.') == 1 ?
         \   '<Esc>:quit<CR>' :
@@ -2830,8 +2827,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   (neocomplcache#smart_close_popup() .
         \    eval(smartinput#sid() . '_trigger_or_fallback("\<BS>", "\<BS>")'))
     else
-      inoremap <buffer><expr> <CR>
-        \ neocomplcache#close_popup() . '<CR>'
       inoremap <buffer><silent><expr> <C-H>
         \ col('.') == 1 ?
         \   '<Esc>:quit<CR>' :
