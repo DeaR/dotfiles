@@ -4,7 +4,7 @@
 # @description Bash settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-27 20:13:16 DeaR>
+# @timestamp   <2013-07-05 14:07:21 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -110,16 +110,11 @@ fi
 
 #-----------------------------------------------------------------------------
 # Source By Platform, Host, User: {{{
-if hash uname 2> /dev/null; then
-  if [ -n "$(uname)" -a -f "${BASH_DIR}/.bash_profile.$(uname)" ]; then
-    source "${BASH_DIR}/.bash_profile.$(uname)"
-  fi
-  if [ -n "$(uname -m)" -a -f "${BASH_DIR}/.bash_profile.$(uname -m)" ]; then
-    source "${BASH_DIR}/.bash_profile.$(uname -m)"
-  fi
-  if [ -n "$(uname -n)" -a -f "${BASH_DIR}/.bash_profile.$(uname -n)" ]; then
-    source "${BASH_DIR}/.bash_profile.$(uname -n)"
-  fi
+if hash uname 2> /dev/null && [ -n "$(uname)" -a -f "${BASH_DIR}/.bash_profile.$(uname)" ]; then
+  source "${BASH_DIR}/.bash_profile.$(uname)"
+fi
+if [ -n "${HOSTNAME}" -a -f "${BASH_DIR}/.bash_profile.${HOSTNAME}" ]; then
+  source "${BASH_DIR}/.bash_profile.${HOSTNAME}"
 fi
 if [ -n "${USER}" -a -f "${BASH_DIR}/.bash_profile.${USER}" ]; then
   source "${BASH_DIR}/.bash_profile.${USER}"

@@ -4,7 +4,7 @@
 # @description Bash interactive settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-27 20:13:18 DeaR>
+# @timestamp   <2013-07-05 14:09:32 DeaR>
 
 #-----------------------------------------------------------------------------
 # If not running interactively, don't do anything: {{{
@@ -153,16 +153,11 @@ fi
 
 #-----------------------------------------------------------------------------
 # Source By Platform, Host, User: {{{
-if hash uname 2> /dev/null; then
-  if [ -n "$(uname)" -a -f "${BASH_DIR}/.bashrc.$(uname)" ]; then
-    source "${BASH_DIR}/.bashrc.$(uname)"
-  fi
-  if [ -n "$(uname -m)" -a -f "${BASH_DIR}/.bashrc.$(uname -m)" ]; then
-    source "${BASH_DIR}/.bashrc.$(uname -m)"
-  fi
-  if [ -n "$(uname -n)" -a -f "${BASH_DIR}/.bashrc.$(uname -n)" ]; then
-    source "${BASH_DIR}/.bashrc.$(uname -n)"
-  fi
+if hash uname 2> /dev/null && [ -n "$(uname)" -a -f "${BASH_DIR}/.bashrc.$(uname)" ]; then
+  source "${BASH_DIR}/.bashrc.$(uname)"
+fi
+if [ -n "${HOSTNAME}" -a -f "${BASH_DIR}/.bashrc.${HOSTNAME}" ]; then
+  source "${BASH_DIR}/.bashrc.${HOSTNAME}"
 fi
 if [ -n "${USER}" -a -f "${BASH_DIR}/.bashrc.${USER}" ]; then
   source "${BASH_DIR}/.bashrc.${USER}"
