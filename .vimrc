@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 16:49:58 DeaR>
+" @timestamp   <2013-07-05 17:09:00 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -301,7 +301,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundle 'thinca/vim-localrc'
 
   NeoBundleLazy 'xolox/vim-lua-ftplugin', {
-    \ 'autoload' : {'filetypes' : 'lua'}}
+    \ 'autoload' : {'filetypes' : 'lua'},
+    \ 'depends' : 'xolox/vim-misc'}
 
   NeoBundleLazy 'https://raw.github.com/januswel/dotfiles/master/vimfiles/syntax/mayu.vim', {
     \ 'name' : 'mayu',
@@ -2636,8 +2637,21 @@ unlet! s:bundle
 " Lua FtPlugin: {{{
 silent! let s:bundle = neobundle#get('lua-ftplugin')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'lua' : '[^.[:digit:] *\t]\.\|\h\w*:'})
+  function! s:bundle.hooks.on_source(bundle)
+    if has('lua') || executable('lua')
+      let g:lua_complete_omni = 1
+    endif
+    if has('win64')
+      let g:lua_compiler_name = expand('~/bin64/luac52.exe')
+    elseif has('win32')
+      let g:lua_compiler_name = expand('~/bin/luac52.exe')
+    endif
+  endfunction
+
+  if has('lua') || executable('lua')
+    call extend(s:neocompl_force_omni_patterns, {
+      \ 'lua' : '[^.[:digit:] *\t]\.\|\h\w*:'})
+  endif
 endif
 unlet! s:bundle
 "}}}
