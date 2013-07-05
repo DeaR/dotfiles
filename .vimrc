@@ -496,10 +496,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     ['nvo', '<Plug>(parajump-forward)'],
     \     ['nvo', '<Plug>(parajump-backward)']]}}
 
-  if has('perl')
-    NeoBundleLazy 'c9s/perlomni.vim', {
-      \ 'autoload' : {'filetypes' : 'perl'}}
-  endif
+  NeoBundleLazy 'c9s/perlomni.vim', {
+    \ 'autoload' : {'filetypes' : 'perl'}}
 
   NeoBundleLazy 'shawncplus/phpcomplete.vim', {
     \ 'autoload' : {'filetypes' : 'php'}}
@@ -579,10 +577,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   call extend(s:neocompl_vim_completefuncs, {
     \ 'Ref' : 'ref#complete'})
 
-  if has('ruby')
-    NeoBundleLazy 'vim-ruby/vim-ruby', {
-      \ 'autoload' : {'filetypes' : ['eruby', 'ruby']}}
-  endif
+  NeoBundleLazy 'vim-ruby/vim-ruby', {
+    \ 'autoload' : {'filetypes' : ['eruby', 'ruby']}}
 
   " NeoBundleLazy 'savevers.vim', {
   NeoBundleLazy 'DeaR/savevers.vim', {
@@ -889,10 +885,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \ 'autoload' : {'unite_sources' : 'remotefile'}}
   endif
 
-  if has('ruby')
-    NeoBundleLazy 'rhysd/unite-ruby-require.vim', {
-      \ 'autoload' : {'unite_sources' : 'ruby/require'}}
-  endif
+  NeoBundleLazy 'rhysd/unite-ruby-require.vim', {
+    \ 'autoload' : {'unite_sources' : 'ruby/require'}}
 
   NeoBundleLazy 'Shougo/unite-ssh', {
     \ 'autoload' : {'unite_sources' : 'ssh'},
