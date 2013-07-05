@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 17:26:21 DeaR>
+" @timestamp   <2013-07-05 17:54:42 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -602,6 +602,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {'filetypes' : 'javascript'}}
 
   " NeoBundleLazy 'kana/vim-smartchr'
+
+  " NeoBundleLazy 'kana/vim-smartinput', {
+  "   \ 'autoload' : {'insert' : 1}}
 
   NeoBundleLazy 'tpope/vim-surround', {
     \ 'autoload' : {
