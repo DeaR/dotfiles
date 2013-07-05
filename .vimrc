@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 14:52:44 DeaR>
+" @timestamp   <2013-07-05 16:15:38 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -288,6 +288,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'teramako/jscomplete-vim', {
     \ 'autoload' : {'filetypes' : 'javascript'}}
+
+  NeoBundleLazy 'elzr/vim-json', {
+    \ 'autoload' : {'filetypes' : 'json'}}
 
   NeoBundleLazy 'kwbdi.vim', {
     \ 'autoload' : {'mappings' : [['nvo', '<Plug>Kwbd']]}}
