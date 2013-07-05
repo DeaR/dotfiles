@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 18:44:52 DeaR>
+" @timestamp   <2013-07-05 19:09:35 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2784,11 +2784,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   neocomplcache#close_popup() :
         \   eval(smartinput#sid() . '_trigger_or_fallback("\<CR>", "\<CR>")')
       inoremap <expr> <C-H>
-        \ neocomplcache#smart_close_popup() .
-        \ eval(smartinput#sid() . '_trigger_or_fallback("\<C-H>", "\<C-H>")')
+        \ (neocomplcache#smart_close_popup() .
+        \  eval(smartinput#sid() . '_trigger_or_fallback("\<C-H>", "\<C-H>")'))
       inoremap <expr> <BS>
-        \ neocomplcache#smart_close_popup() .
-        \ eval(smartinput#sid() . '_trigger_or_fallback("\<BS>", "\<BS>")')
+        \ (neocomplcache#smart_close_popup() .
+        \  eval(smartinput#sid() . '_trigger_or_fallback("\<BS>", "\<BS>")'))
     else
       inoremap <expr> <CR>
         \ pumvisible() ?
@@ -2817,29 +2817,29 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     if neobundle#is_installed('smartinput')
       inoremap <expr> <CR>
-        \ neocomplcache#close_popup() .
-        \ eval(smartinput#sid() . '_trigger_or_fallback("\<CR>", "\<CR>")')
+        \ (neocomplcache#close_popup() .
+        \  eval(smartinput#sid() . '_trigger_or_fallback("\<CR>", "\<CR>")'))
       inoremap <buffer><silent><expr> <C-H>
         \ col('.') == 1 ?
         \   '<Esc>:quit<CR>' :
-        \   neocomplcache#smart_close_popup() .
-        \   eval(smartinput#sid() . '_trigger_or_fallback("\<C-H>", "\<C-H>")')
+        \   (neocomplcache#smart_close_popup() .
+        \    eval(smartinput#sid() . '_trigger_or_fallback("\<C-H>", "\<C-H>")'))
       inoremap <buffer><silent><expr> <BS>
         \ col('.') == 1 ?
         \   '<Esc>:quit<CR>' :
-        \   neocomplcache#smart_close_popup() .
-        \   eval(smartinput#sid() . '_trigger_or_fallback("\<BS>", "\<BS>")')
+        \   (neocomplcache#smart_close_popup() .
+        \    eval(smartinput#sid() . '_trigger_or_fallback("\<BS>", "\<BS>")'))
     else
       inoremap <buffer><expr> <CR>
         \ neocomplcache#close_popup() . '<CR>'
       inoremap <buffer><silent><expr> <C-H>
         \ col('.') == 1 ?
         \   '<Esc>:quit<CR>' :
-        \   neocomplcache#smart_close_popup() . '<C-H>'
+        \   (neocomplcache#smart_close_popup() . '<C-H>')
       inoremap <buffer><silent><expr> <BS>
         \ col('.') == 1 ?
         \   '<Esc>:quit<CR>' :
-        \   neocomplcache#smart_close_popup() . '<BS>'
+        \   (neocomplcache#smart_close_popup() . '<BS>')
     endif
   endfunction
   augroup MyVimrc
