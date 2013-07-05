@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 18:41:43 DeaR>
+" @timestamp   <2013-07-05 18:44:52 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2893,8 +2893,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call neocomplete#custom#source(
       \ 'snippets_complete', 'rank', 80)
 
-    inoremap <expr> <BS>  neocomplete#smart_close_popup() . '<BS>'
-    inoremap <expr> <C-G> neocomplete#undo_completion()
+    inoremap <expr> <C-G>
+      \ neocomplete#undo_completion()
     inoremap <expr> <C-C>
       \ pumvisible() ?
       \   neocomplete#cancel_popup() :
@@ -2913,12 +2913,33 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ pumvisible() ?
       \   '<C-P>' :
       \   neocomplete#start_manual_complete()
+
+    if neobundle#is_installed('smartinput')
+      inoremap <expr> <CR>
+        \ pumvisible() ?
+        \   neocomplete#close_popup() :
+        \   eval(smartinput#sid() . '_trigger_or_fallback("\<CR>", "\<CR>")')
+      inoremap <expr> <C-H>
+        \ neocomplete#smart_close_popup() .
+        \ eval(smartinput#sid() . '_trigger_or_fallback("\<C-H>", "\<C-H>")')
+      inoremap <expr> <BS>
+        \ neocomplete#smart_close_popup() .
+        \ eval(smartinput#sid() . '_trigger_or_fallback("\<BS>", "\<BS>")')
+    else
+      inoremap <expr> <CR>
+        \ pumvisible() ?
+        \   neocomplete#close_popup() :
+        \   '<CR>'
+      inoremap <expr> <C-H>
+        \ neocomplete#smart_close_popup() . '<C-H>'
+      inoremap <expr> <BS>
+        \ neocomplete#smart_close_popup() . '<BS>'
+    endif
   endfunction
 
   function! s:cmdwin_enter_neocomplete()
     let b:neocomplete_sources = []
 
-    inoremap <buffer><expr> <CR> neocomplete#close_popup() . '<CR>'
     inoremap <buffer><expr> <Tab>
       \ pumvisible() ?
       \   '<C-N>' :
@@ -2929,10 +2950,33 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ pumvisible() ?
       \   '<C-P>' :
       \   neocomplete#start_manual_complete()
-    inoremap <buffer><silent><expr> <BS>
-      \ col('.') == 1 ?
-      \   '<Esc>:quit<CR>' :
-      \   neocomplete#smart_close_popup() . '<BS>'
+
+    if neobundle#is_installed('smartinput')
+      inoremap <expr> <CR>
+        \ neocomplete#close_popup() .
+        \ eval(smartinput#sid() . '_trigger_or_fallback("\<CR>", "\<CR>")')
+      inoremap <buffer><silent><expr> <C-H>
+        \ col('.') == 1 ?
+        \   '<Esc>:quit<CR>' :
+        \   neocomplete#smart_close_popup() .
+        \   eval(smartinput#sid() . '_trigger_or_fallback("\<C-H>", "\<C-H>")')
+      inoremap <buffer><silent><expr> <BS>
+        \ col('.') == 1 ?
+        \   '<Esc>:quit<CR>' :
+        \   neocomplete#smart_close_popup() .
+        \   eval(smartinput#sid() . '_trigger_or_fallback("\<BS>", "\<BS>")')
+    else
+      inoremap <buffer><expr> <CR>
+        \ neocomplete#close_popup() . '<CR>'
+      inoremap <buffer><silent><expr> <C-H>
+        \ col('.') == 1 ?
+        \   '<Esc>:quit<CR>' :
+        \   neocomplete#smart_close_popup() . '<C-H>'
+      inoremap <buffer><silent><expr> <BS>
+        \ col('.') == 1 ?
+        \   '<Esc>:quit<CR>' :
+        \   neocomplete#smart_close_popup() . '<BS>'
+    endif
   endfunction
   augroup MyVimrc
     autocmd CmdwinEnter *
