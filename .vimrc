@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 17:14:04 DeaR>
+" @timestamp   <2013-07-05 17:26:21 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -302,6 +302,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   if has('lua') || executable('lua')
     NeoBundleLazy 'xolox/vim-lua-ftplugin', {
+      \ 'name' : 'lua',
       \ 'autoload' : {'filetypes' : 'lua'},
       \ 'depends' : 'xolox/vim-misc'}
   endif
@@ -508,7 +509,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {'filetypes' : 'php'}}
 
   NeoBundleLazy '2072/PHP-Indenting-for-VIm', {
-    \ 'name' : 'PHP-Indenting-for-VIm',
+    \ 'name' : 'PHP-Indenting',
     \ 'autoload' : {'filetypes' : 'php'}}
 
   NeoBundleLazy 'osyo-manga/vim-precious', {
@@ -1070,6 +1071,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'depends' : [
     \   'osyo-manga/shabadou.vim',
     \   'thinca/vim-quickrun']}
+
+  NeoBundleLazy 'xolox/vim-misc', {
+    \ 'name' : 'xolox-misc'}
 
   NeoBundleLazy 'mattn/zencoding-vim', {
     \ 'autoload' : {
@@ -2637,7 +2641,7 @@ unlet! s:bundle
 
 "-----------------------------------------------------------------------------
 " Lua FtPlugin: {{{
-silent! let s:bundle = neobundle#get('lua-ftplugin')
+silent! let s:bundle = neobundle#get('lua')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:lua_complete_omni = 1
