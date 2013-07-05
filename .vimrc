@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 19:46:56 DeaR>
+" @timestamp   <2013-07-05 19:47:44 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4213,6 +4213,12 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap ;t
     \ :<C-U>Unite tab
     \ -buffer-name=files -no-split<CR>
+  nnoremap ;<M-d>
+    \ :<C-U>Unite directory_mru directory directory/new
+    \ -buffer-name=files -no-split -default-action=lcd<CR>
+  nnoremap ;<M-D>
+    \ :<C-U>Unite directory_mru directory directory/new
+    \ -buffer-name=files -no-split -default-action=cd<CR>
 
   if &grepprg == 'internal'
     nnoremap ;g
