@@ -4,12 +4,12 @@
 " @description Close mapping for QuickFix
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-28 01:56:09 DeaR>
+" @timestamp   <2013-07-05 14:45:11 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <buffer><silent> q :<C-U>CloseQFixWin<CR>
+nnoremap <buffer> q :<C-U>CloseQFixWin<CR>
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'

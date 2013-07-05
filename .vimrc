@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-03 20:25:55 DeaR>
+" @timestamp   <2013-07-05 14:52:44 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1516,15 +1516,15 @@ NOXnoremap mk [`
 "-----------------------------------------------------------------------------
 " Useful: {{{
 " Semi-colon shortcut
-nnoremap ;w    :<C-U>update<CR>
-nnoremap ;W    :<C-U>wall<CR>
-nnoremap ;c    :<C-U>confirm bdelete<CR>
-nnoremap ;C    :<C-U>confirm 1,$bdelete<CR>
-nnoremap ;e    :<C-U>edit<Space>
-nnoremap ;j    :<C-U>jumps<CR>
-nnoremap ;b    :<C-U>buffer<Space>
-nnoremap ;t    :<C-U>tabm<Space>
-nnoremap ;g    :<C-U>grep<Space>
+nnoremap ;w :<C-U>update<CR>
+nnoremap ;W :<C-U>wall<CR>
+nnoremap ;c :<C-U>confirm bdelete<CR>
+nnoremap ;C :<C-U>confirm 1,$bdelete<CR>
+nnoremap ;e :<C-U>edit<Space>
+nnoremap ;j :<C-U>jumps<CR>
+nnoremap ;b :<C-U>buffer<Space>
+nnoremap ;t :<C-U>tabm<Space>
+nnoremap ;g :<C-U>grep<Space>
 
 " Paste
 NXnoremap <C-P> :<C-U>registers<CR>
@@ -1994,11 +1994,11 @@ augroup MyVimrc
     \ call s:init_file_mark()
 augroup END
 
-nnoremap <silent> mm :<C-U>call <SID>auto_mark()<CR>
-nnoremap <silent> mc :<C-U>call <SID>clear_marks()<CR>
-nnoremap <silent> mM :<C-U>call <SID>auto_file_mark()<CR>
-nnoremap <silent> mC :<C-U>call <SID>clear_file_marks()<CR>
-nnoremap          ml :<C-U>call <SID>marks()<CR>
+nnoremap mm :<C-U>call <SID>auto_mark()<CR>
+nnoremap mc :<C-U>call <SID>clear_marks()<CR>
+nnoremap mM :<C-U>call <SID>auto_file_mark()<CR>
+nnoremap mC :<C-U>call <SID>clear_file_marks()<CR>
+nnoremap ml :<C-U>call <SID>marks()<CR>
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -3041,10 +3041,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
-  nnoremap <silent> <C-W>, :<C-U>ToggleQFixWin<CR>
-  nnoremap <silent> <C-W>. :<C-U>MoveToQFixWin<CR>
-  nnoremap <silent> <C-W>0 :<C-U>ToggleLocationListMode<CR>
-  " nnoremap <silent> <C-W>/ :<C-U>ToggleLocationListMode<CR>
+  nnoremap <C-W>, :<C-U>ToggleQFixWin<CR>
+  nnoremap <C-W>. :<C-U>MoveToQFixWin<CR>
+  nnoremap <C-W>0 :<C-U>ToggleLocationListMode<CR>
+  " nnoremap <C-W>/ :<C-U>ToggleLocationListMode<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -3164,8 +3164,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   'type' : 'vbnet/vbc'}})
   endfunction
 
-  nmap <silent> <F5> <Plug>(quickrun)
-  nnoremap <expr><silent> <C-C>
+  nmap <F5> <Plug>(quickrun)
+  nnoremap <expr> <C-C>
     \ quickrun#is_running() ?
     \   quickrun#sweep_sessions() :
     \   '<C-C>'
@@ -3181,10 +3181,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:reanimate_save_dir = '~/.local/reanimate'
   endfunction
 
-  nnoremap <silent> ;ur  <Nop>
-  nnoremap <silent> ;url :<C-U>Unite reanimate
+  nnoremap ;ur  <Nop>
+  nnoremap ;url :<C-U>Unite reanimate
     \ -buffer-name=files -no-split -default-action=reanimate_load<CR>
-  nnoremap <silent> ;urs :<C-U>Unite reanimate
+  nnoremap ;urs :<C-U>Unite reanimate
     \ -buffer-name=files -no-split -default-action=reanimate_save<CR>
 endif
 unlet! s:bundle
@@ -3199,7 +3199,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:ref_cache_dir               = expand('~/local/.vim_ref_cache')
   endfunction
 
-  NXmap <silent> K <Plug>(ref-keyword)
+  NXmap K <Plug>(ref-keyword)
 endif
 unlet! s:bundle
 "}}}
@@ -3455,8 +3455,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
-  nnoremap <silent> <C-A> :<C-U>call <SID>switch('+')<CR>
-  nnoremap <silent> <C-X> :<C-U>call <SID>switch('-')<CR>
+  nnoremap <C-A> :<C-U>call <SID>switch('+')<CR>
+  nnoremap <C-X> :<C-U>call <SID>switch('-')<CR>
 
   autocmd MyVimrc VimEnter,BufNewFile,BufRead *
     \ let b:switch_no_builtins = 1
@@ -4074,68 +4074,68 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     nnoremap ;uu :<C-U>Unite<Space>
   endif
 
-  nnoremap <silent> ;um :<C-U>Unite menu<CR>
-  nnoremap <silent> ;u<CR> :<C-U>Unite menu:set_ff<CR>
+  nnoremap ;um :<C-U>Unite menu<CR>
+  nnoremap ;u<CR> :<C-U>Unite menu:set_ff<CR>
   if has('multi_byte')
-    nnoremap <silent> ;ue :<C-U>Unite menu:edit_enc<CR>
-    nnoremap <silent> ;uf :<C-U>Unite menu:set_fenc<CR>
+    nnoremap ;ue :<C-U>Unite menu:edit_enc<CR>
+    nnoremap ;uf :<C-U>Unite menu:set_fenc<CR>
   endif
 
-  nnoremap <silent> ;us
+  nnoremap ;us
     \ :<C-U>Unite source
     \ -buffer-name=help -no-split<CR>
 
-  nnoremap <silent> ;e
+  nnoremap ;e
     \ :<C-U>Unite file_mru file file/new directory/new
     \ -buffer-name=files -no-split<CR>
-  nnoremap <silent> ;j
+  nnoremap ;j
     \ :<C-U>Unite jump change
     \ -buffer-name=files -no-split -multi-line -no-start-insert<CR>
-  nnoremap <silent> ;b
+  nnoremap ;b
     \ :<C-U>Unite buffer
     \ -buffer-name=files -no-split<CR>
-  nnoremap <silent> ;t
+  nnoremap ;t
     \ :<C-U>Unite tab
     \ -buffer-name=files -no-split<CR>
 
   if &grepprg == 'internal'
-    nnoremap <silent> ;g
+    nnoremap ;g
       \ :<C-U>Unite vimgrep
       \ -buffer-name=grep -no-split -multi-line<CR>
   else
-    nnoremap <silent> ;g
+    nnoremap ;g
       \ :<C-U>Unite grep
       \ -buffer-name=grep -no-split -multi-line<CR>
   endif
-  nnoremap <silent> ;G
+  nnoremap ;G
     \ :<C-U>UniteResume grep
     \ -no-split -multi-line -no-start-insert<CR>
 
-  nnoremap <silent> <C-P>
+  nnoremap <C-P>
     \ :<C-U>Unite register history/yank
     \ -buffer-name=register -multi-line<CR>
-  xnoremap <silent> <C-P>
+  xnoremap <C-P>
     \ d:<C-U>Unite register history/yank
     \ -buffer-name=register -multi-line<CR>
-  inoremap <silent><expr> <C-P>
+  inoremap <expr> <C-P>
     \ unite#start_complete(['register', 'history/yank'], {
     \   'buffer_name': 'register',
     \   'is_multi_line' : 1,
     \   'direction' : 'leftabove'})
 
-  nnoremap <silent> ;u/
+  nnoremap ;u/
     \ :<C-U>call <SID>unite_search_forward()<CR>
-  nnoremap <silent> ;u?
+  nnoremap ;u?
     \ :<C-U>call <SID>unite_search_backward()<CR>
-  nnoremap <silent> ;u*
+  nnoremap ;u*
     \ :<C-U>call <SID>unite_search_cword_forward()<CR>
-  nnoremap <silent> ;u#
+  nnoremap ;u#
     \ :<C-U>call <SID>unite_search_cword_backward()<CR>
-  nnoremap <silent> ;ug/
+  nnoremap ;ug/
     \ :<C-U>call <SID>unite_search_cword_forward()<CR>
-  nnoremap <silent> ;ug?
+  nnoremap ;ug?
     \ :<C-U>call <SID>unite_search_cword_backward()<CR>
-  nnoremap <silent> ;un
+  nnoremap ;un
     \ :<C-U>UniteResume search -start-insert<CR>
 
   call extend(s:altercmd_define, {
@@ -4148,10 +4148,10 @@ unlet! s:bundle
 " Unite Help: {{{
 silent! let s:bundle = neobundle#get('unite-help')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nnoremap <silent> ;u<F1>
+  nnoremap ;u<F1>
     \ :<C-U>Unite help
     \ -buffer-name=help -no-split -start-insert<CR>
-  nnoremap <silent> ;ug<F1>
+  nnoremap ;ug<F1>
     \ :<C-U>UniteWithCursorWord help
     \ -buffer-name=help -no-split -no-start-insert<CR>
 endif
@@ -4167,7 +4167,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ join(s:mark_char, '') . toupper(join(s:mark_char, ''))
   endfunction
 
-  nnoremap <silent> ml
+  nnoremap ml
     \ :<C-U>Unite mark bookmark
     \ -buffer-name=files -no-split -multi-line -no-start-insert<CR>
   nnoremap mu :<C-U>UniteBookmarkAdd<CR>
@@ -4179,7 +4179,7 @@ unlet! s:bundle
 " Unite Outline: {{{
 silent! let s:bundle = neobundle#get('unite-outline')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nnoremap <silent> ;o
+  nnoremap ;o
     \ :<C-U>Unite outline
     \ -buffer-name=files -no-split -auto-preview -multi-line<CR>
 endif
@@ -4190,7 +4190,7 @@ unlet! s:bundle
 " Unite QuickRun Config: {{{
 silent! let s:bundle = neobundle#get('unite-quickrun_config')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nnoremap <silent> ;u<F5>
+  nnoremap ;u<F5>
     \ :<C-U>Unite quickrun_config
     \ -buffer-name=files<CR>
 endif
@@ -4201,7 +4201,7 @@ unlet! s:bundle
 " Unite Tag: {{{
 silent! let s:bundle = neobundle#get('unite-tag')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nnoremap <silent> ;ut
+  nnoremap ;ut
     \ :<C-U>UniteWithCursorWord tag tag/include
     \ -buffer-name=files -no-split<CR>
 endif
