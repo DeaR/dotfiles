@@ -4,7 +4,7 @@
 # @description NYAOS settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-27 20:13:15 DeaR>
+# @timestamp   <2013-07-05 14:13:53 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -335,9 +335,6 @@ source %NYAOS_DIR%\vcvars.lua
 
 #-----------------------------------------------------------------------------
 # Source By ComputerName, UserName: {{{
-if exist "%NYAOS_DIR%\_nya.%COMPUTERNAME%" then
-  source %NYAOS_DIR%\_nya.%COMPUTERNAME%
-endif
 if %PROCESSOR_ARCHITEW6432.defined% -ne 0 then
   if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%" then
     source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%
@@ -346,6 +343,9 @@ else
   if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%" then
     source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%
   endif
+endif
+if exist "%NYAOS_DIR%\_nya.%COMPUTERNAME%" then
+  source %NYAOS_DIR%\_nya.%COMPUTERNAME%
 endif
 if exist "%NYAOS_DIR%\_nya.%USERNAME%" then
   source %NYAOS_DIR%\_nya.%USERNAME%
