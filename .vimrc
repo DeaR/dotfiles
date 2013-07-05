@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 16:41:23 DeaR>
+" @timestamp   <2013-07-05 16:49:58 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2628,6 +2628,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     silent execute "normal \<Plug>Kwbd"
   endfunction
   nnoremap ;c :<C-U>call <SID>kwbd()<CR>
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Lua FtPlugin: {{{
+silent! let s:bundle = neobundle#get('lua-ftplugin')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'lua' : '[^.[:digit:] *\t]\.\|\h\w*:'})
 endif
 unlet! s:bundle
 "}}}
