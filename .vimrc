@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 19:13:16 DeaR>
+" @timestamp   <2013-07-05 19:15:44 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2784,11 +2784,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   neocomplcache#close_popup() :
         \   eval(smartinput#sid() . '_trigger_or_fallback("\<CR>", "\<CR>")')
       inoremap <expr> <C-H>
-        \ (neocomplcache#smart_close_popup() .
-        \  eval(smartinput#sid() . '_trigger_or_fallback("\<C-H>", "\<C-H>")'))
+        \ neocomplcache#smart_close_popup() .
+        \ eval(smartinput#sid() . '_trigger_or_fallback("\<C-H>", "\<C-H>")')
       inoremap <expr> <BS>
-        \ (neocomplcache#smart_close_popup() .
-        \  eval(smartinput#sid() . '_trigger_or_fallback("\<BS>", "\<BS>")'))
+        \ neocomplcache#smart_close_popup() .
+        \ eval(smartinput#sid() . '_trigger_or_fallback("\<BS>", "\<BS>")')
     else
       inoremap <expr> <CR>
         \ pumvisible() ?
