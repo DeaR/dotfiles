@@ -4,7 +4,7 @@
 # @description Zsh settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-27 20:13:12 DeaR>
+# @timestamp   <2013-07-05 14:08:59 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -112,16 +112,11 @@ fi
 
 #-----------------------------------------------------------------------------
 # Source By Platform, Host, User: {{{
-if hash uname 2> /dev/null; then
-  if [ -n "$(uname)" -a -f "${ZDOTDIR}/.zshenv.$(uname)" ]; then
-    source "${ZDOTDIR}/.zshenv.$(uname)"
-  fi
-  if [ -n "$(uname -m)" -a -f "${ZDOTDIR}/.zshenv.$(uname -m)" ]; then
-    source "${ZDOTDIR}/.zshenv.$(uname -m)"
-  fi
-  if [ -n "$(uname -n)" -a -f "${ZDOTDIR}/.zshenv.$(uname -n)" ]; then
-    source "${ZDOTDIR}/.zshenv.$(uname -n)"
-  fi
+if hash uname 2> /dev/null && [ -n "$(uname)" -a -f "${ZDOTDIR}/.zshenv.$(uname)" ]; then
+  source "${ZDOTDIR}/.zshenv.$(uname)"
+fi
+if [ -n "${HOSTNAME}" -a -f "${ZDOTDIR}/.zshenv.${HOSTNAME}" ]; then
+  source "${ZDOTDIR}/.zshenv.${HOSTNAME}"
 fi
 if [ -n "${USER}" -a -f "${ZDOTDIR}/.zshenv.${USER}" ]; then
   source "${ZDOTDIR}/.zshenv.${USER}"
