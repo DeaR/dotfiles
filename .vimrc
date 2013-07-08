@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 14:42:12 DeaR>
+" @timestamp   <2013-07-08 15:15:41 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2034,19 +2034,19 @@ if s:cmdwin_enable
   xnoremap <expr> s/
     \ 'q:s//gc<Left><Left><Left>'
 
-  nnoremap <expr> s?
-    \ 'q:<C-U>1,s//gc<Left><Left><Left>'
-  nnoremap <expr> s#
-    \ 'q:<C-U>1,s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
-  nnoremap <expr> sg#
-    \ 'q:<C-U>1,s/' . expand('<cword>') . '//gc<Left><Left><Left>'
-
   nnoremap <expr> s/
     \ 'q:<C-U>,$s//gc<Left><Left><Left>'
   nnoremap <expr> s*
     \ 'q:<C-U>,$s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
   nnoremap <expr> sg*
     \ 'q:<C-U>,$s/' . expand('<cword>') . '//gc<Left><Left><Left>'
+
+  nnoremap <expr> s?
+    \ 'q:<C-U>1,s//gc<Left><Left><Left>'
+  nnoremap <expr> s#
+    \ 'q:<C-U>1,s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
+  nnoremap <expr> sg#
+    \ 'q:<C-U>1,s/' . expand('<cword>') . '//gc<Left><Left><Left>'
 
   nnoremap <expr> sa/
     \ 'q:<C-U>argdo %s//gce<Left><Left><Left><Left>'
@@ -2079,19 +2079,19 @@ else
   xnoremap <expr> s/
     \ ':s//gc<Left><Left><Left>'
 
-  nnoremap <expr> s?
-    \ ':<C-U>1,s//gc<Left><Left><Left>'
-  nnoremap <expr> s#
-    \ ':<C-U>1,s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
-  nnoremap <expr> sg#
-    \ ':<C-U>1,s/' . expand('<cword>') . '//gc<Left><Left><Left>'
-
   nnoremap <expr> s/
     \ ':<C-U>,$s//gc<Left><Left><Left>'
   nnoremap <expr> s*
     \ ':<C-U>,$s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
   nnoremap <expr> sg*
     \ ':<C-U>,$s/' . expand('<cword>') . '//gc<Left><Left><Left>'
+
+  nnoremap <expr> s?
+    \ ':<C-U>1,s//gc<Left><Left><Left>'
+  nnoremap <expr> s#
+    \ ':<C-U>1,s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
+  nnoremap <expr> sg#
+    \ ':<C-U>1,s/' . expand('<cword>') . '//gc<Left><Left><Left>'
 
   nnoremap <expr> sa/
     \ ':<C-U>argdo %s//gce<Left><Left><Left><Left>'
@@ -2122,7 +2122,6 @@ else
     \ ':<C-U>windo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
 endif
 
-xmap s?   s/
 nmap sg?  s#
 nmap sg/  s*
 nmap sag/ sa*
@@ -2131,8 +2130,8 @@ nmap stg/ st*
 nmap swg/ sw*
 
 xnoremap sn  :s gc<CR>
-nnoremap sN  :<C-U>1,s gc<CR>
 nnoremap sn  :<C-U>,$s gc<CR>
+nnoremap sN  :<C-U>1,s gc<CR>
 nnoremap san :<C-U>argdo %s gce<CR>
 nnoremap sbn :<C-U>bufdo %s gce<CR>
 nnoremap stn :<C-U>tabdo %s gce<CR>
