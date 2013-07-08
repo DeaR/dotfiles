@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 17:43:43 DeaR>
+" @timestamp   <2013-07-08 18:08:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2671,6 +2671,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     silent execute "normal \<Plug>Kwbd"
   endfunction
   nnoremap ;c :<C-U>call <SID>kwbd()<CR>
+  map <SID>Kwbd <Plug>Kwbd
 endif
 unlet! s:bundle
 "}}}
