@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 18:09:56 DeaR>
+" @timestamp   <2013-07-08 18:31:04 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3190,6 +3190,21 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     if has('multi_byte')
       let g:howm_fileencoding = 'cp932'
     endif
+  endfunction
+
+  function! s:bundle.hooks.on_post_source(bundle)
+    sunmap g,B
+    sunmap g,E
+    sunmap g,F
+    sunmap g,V
+    sunmap g,b
+    sunmap g,e
+    sunmap g,f
+    sunmap g,v
+    sunmap g,rE
+    sunmap g,rF
+    sunmap g,re
+    sunmap g,rf
   endfunction
 
   nnoremap <C-W>, :<C-U>ToggleQFixWin<CR>
