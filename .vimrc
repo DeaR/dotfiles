@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-09 02:11:53 DeaR>
+" @timestamp   <2013-07-09 02:30:37 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1327,6 +1327,13 @@ set virtualedit=block
 " Cursor can move to bol & eol
 set whichwrap=b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
+augroup MyVimrc
+  autocmd CmdwinEnter *
+    \ let s:save_bs = &backspace |
+    \ set backspace=start
+  autocmd CmdwinLeave *
+    \ let &backspace = s:save_bs
+augroup END
 
 " Ctags
 set showfulltag
@@ -1913,21 +1920,9 @@ nnoremap <F6> :<C-U>DiffOrig<CR>
 
 "-----------------------------------------------------------------------------
 " Command Line Window: {{{
-function! s:cmdwin_enter()
-  nnoremap <buffer><silent> q :<C-U>quit<CR>
-  let s:save_bs = &backspace
-  set backspace=start
-  startinsert!
-endfunction
-function! s:cmdwin_leave()
-  let &backspace = s:save_bs
-endfunction
-augroup MyVimrc
-  autocmd CmdwinEnter *
-    \ call s:cmdwin_enter()
-  autocmd CmdwinLeave *
-    \ call s:cmdwin_leave()
-augroup END
+autocmd MyVimrc CmdwinEnter *
+  \ startinsert! |
+  \ nnoremap <buffer><silent> q :<C-U>quit<CR>
 
 function! s:cmdline_enter(type)
   execute 'doautocmd'
@@ -2387,7 +2382,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       execute 'IAlterCommand <buffer>' key value
     endfor
   endfunction
-
 
   augroup MyVimrc
     autocmd CmdwinEnter :
