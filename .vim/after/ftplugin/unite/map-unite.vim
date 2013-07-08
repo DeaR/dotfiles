@@ -1,10 +1,10 @@
 " -*- mode: vimrc; coding: unix -*-
 
-" @name        unite.vim
-" @description Unite ftplugin for Unite
+" @name        map-unite.vim
+" @description Mapping for Unite
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-28 20:03:48 DeaR>
+" @timestamp   <2013-07-08 19:18:57 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
