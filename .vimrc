@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 11:50:40 DeaR>
+" @timestamp   <2013-07-08 12:10:06 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2193,13 +2193,24 @@ nnoremap <M-I> I<C-R>=<SID>keys_to_insert_one_character()<CR>
 
 "-----------------------------------------------------------------------------
 " Auto MkDir: {{{
-function! s:auto_mkdir(directory)
-  if !isdirectory(a:directory)
-    call mkdir(a:directory, 'p')
+function! s:auto_mkdir(dir, force)
+  if v:lang =~? '^ja' && has('multi_lang')
+    let msg = join(['"', a:dir, '" は存在しません。作成しますか?'], '')
+    let choices = "はい(&Y)\nいいえ(&N)"
+  else
+    let msg = join(['"', a:dir, '" does not exist. Create?'], '')
+    let choices = "&Yes\n&No"
+  endif
+  if !isdirectory(a:dir) &&
+    \ (a:force || confirm(msg, choices, 1, 'Question') == 1)
+    call mkdir(
+      \ has('iconv') ?
+      \   iconv(a:dir, &encoding, &termencoding) :
+      \   a:dir, 'p')
   endif
 endfunction
 autocmd MyVimrc BufWritePre *
-  \ call s:auto_mkdir(expand('<afile>:p:h'))
+  \ call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
 "}}}
 
 "-----------------------------------------------------------------------------
