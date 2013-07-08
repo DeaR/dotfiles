@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 17:43:14 DeaR>
+" @timestamp   <2013-07-08 17:43:43 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -752,7 +752,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-jabraces', {
-    \ 'autoload' : {'mappings' : [['vo', 'aj', 'ij']]},
+    \ 'autoload' : {'mappings' : [['ox', 'aj', 'ij']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'rhysd/vim-textobj-lastinserted', {
