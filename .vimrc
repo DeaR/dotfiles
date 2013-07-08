@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 18:55:57 DeaR>
+" @timestamp   <2013-07-08 19:00:24 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2942,9 +2942,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     if neobundle#is_installed('smartinput')
       inoremap <expr> <CR>
-        \ pumvisible() ?
-        \   neocomplete#close_popup() :
-        \   eval(smartinput#sid() . '_trigger_or_fallback("\<CR>", "\<CR>")')
+        \ neocomplete#smart_close_popup() .
+        \ eval(smartinput#sid() . '_trigger_or_fallback("\<CR>", "\<CR>")')
       inoremap <expr> <C-H>
         \ neocomplete#smart_close_popup() .
         \ eval(smartinput#sid() . '_trigger_or_fallback("\<C-H>", "\<C-H>")')
@@ -2953,9 +2952,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \ eval(smartinput#sid() . '_trigger_or_fallback("\<BS>", "\<BS>")')
     else
       inoremap <expr> <CR>
-        \ pumvisible() ?
-        \   neocomplete#close_popup() :
-        \   '<CR>'
+        \ neocomplete#smart_close_popup() . '<CR>'
       inoremap <expr> <C-H>
         \ neocomplete#smart_close_popup() . '<C-H>'
       inoremap <expr> <BS>
