@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 17:39:32 DeaR>
+" @timestamp   <2013-07-08 17:43:14 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3026,7 +3026,8 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('neosnippet')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:neosnippet#snippets_directory = expand('~/.vim/snippets')
+    let g:neosnippet#snippets_directory           = expand('~/.vim/snippets')
+    let g:neosnippet#disable_select_mode_mappings = 0
 
     let g:neosnippet#disable_runtime_snippets =
       \ get(g:, 'neosnippet#disable_runtime_snippets', {})
