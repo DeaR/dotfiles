@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 19:00:24 DeaR>
+" @timestamp   <2013-07-08 19:41:16 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1682,6 +1682,9 @@ NXmap <C-W>g? <C-W>#
 
 "-----------------------------------------------------------------------------
 " Subrogation: {{{
+" To Column
+NOXnoremap g\| \|
+
 " Rot13
 NXnoremap <C-G>?  g?
 nnoremap  <C-G>?? g??
