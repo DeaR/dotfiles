@@ -4,7 +4,7 @@
 ; @description xyzzy settings
 ; @namespace   http://kuonn.mydns.jp/
 ; @author      DeaR
-; @timestamp   <2013-05-24 13:51:07 DeaR>
+; @timestamp   <2013-07-08 14:44:04 DeaR>
 
 ;-----------------------------------------------------------------------------
 ; abbrev
@@ -15,7 +15,7 @@
 ;-----------------------------------------------------------------------------
 ; auto-time-stamp
 (require "auto-time-stamp")
-(setf *time-stamp-start* (compile-regexp "\\(Last[ \t]*\\(Changed?\\|Updated?\\|Modified\\)[ \t]*:\\|@?time[- \t]*stamp[ \t]*:?\\)[ \t]*[<\"]" t))
+(setf *time-stamp-start* (compile-regexp "@?time[- \t]*stamp[ \t]*:?[ \t]*[<\"]" t))
 (setf *time-stamp-end* (compile-regexp "[>\"]" t))
 (setf *time-stamp-format* "%Y-%m-%d %H:%M:%S DeaR")
 
