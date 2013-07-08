@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 15:15:41 DeaR>
+" @timestamp   <2013-07-08 15:37:43 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -165,7 +165,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'kana/vim-altr', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nvoi', '<Plug>(altr-forward)'], ['nvoi', '<Plug>(altr-back)']]}}
+    \     ['nvoi', '<Plug>(altr-forward)', '<Plug>(altr-back)']]}}
 
   NeoBundleLazy 'gist:iori-yja/1615430', {
     \ 'name' : 'arm',
@@ -187,14 +187,16 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'rhysd/clever-f.vim', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nvo', '<Plug>(clever-f-f)'], ['nvo', '<Plug>(clever-f-F)'],
-    \     ['nvo', '<Plug>(clever-f-t)'], ['nvo', '<Plug>(clever-f-T)']]}}
+    \     ['nvo',
+    \      '<Plug>(clever-f-f)', '<Plug>(clever-f-F)',
+    \      '<Plug>(clever-f-t)', '<Plug>(clever-f-T)']]}}
 
   NeoBundleLazy 'deris/columnjump', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nvo', '<Plug>(columnjump-forward)'],
-    \     ['nvo', '<Plug>(columnjump-backward)']]}}
+    \     ['nvo',
+    \      '<Plug>(columnjump-forward)',
+    \      '<Plug>(columnjump-backward)']]}}
 
   NeoBundleLazy 'vim-jp/cpp-vim', {
     \ 'autoload' : {'filetypes' : ['c', 'cpp']}}
@@ -258,8 +260,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'autoload' : {
     \   'commands' : ['Gred', 'Grey'],
     \   'mappings' : [
-    \     ['nvo', '<Plug>(operator-grex-delete)'],
-    \     ['nvo', '<Plug>(operator-grex-yank)']]},
+    \     ['nvo',
+    \      '<Plug>(operator-grex-delete)',
+    \      '<Plug>(operator-grex-yank)']]},
     \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'cohama/vim-hier', {
@@ -411,14 +414,16 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     {'name' : 'NeoSnippetSource',
     \      'complete' : 'file'}],
     \   'mappings' : [
-    \     ['v', '<Plug>(neosnippet_expand_or_jump)'],
-    \     ['v', '<Plug>(neosnippet_jump_or_expand)'],
-    \     ['v', '<Plug>(neosnippet_expand)'],
-    \     ['v', '<Plug>(neosnippet_jump)'],
-    \     ['x', '<Plug>(neosnippet_get_selected_text)'],
-    \     ['x', '<Plug>(neosnippet_expand_target)'],
-    \     ['x', '<Plug>(neosnippet_start_unite_snippet_target)'],
-    \     ['x', '<Plug>(neosnippet_register_oneshot_snippet)']],
+    \     ['v',
+    \      '<Plug>(neosnippet_expand_or_jump)',
+    \      '<Plug>(neosnippet_jump_or_expand)',
+    \      '<Plug>(neosnippet_expand)',
+    \      '<Plug>(neosnippet_jump)'],
+    \     ['x',
+    \      '<Plug>(neosnippet_get_selected_text)',
+    \      '<Plug>(neosnippet_expand_target)',
+    \      '<Plug>(neosnippet_start_unite_snippet_target)',
+    \      '<Plug>(neosnippet_register_oneshot_snippet)']],
     \   'unite_sources' : [
     \     'snippet', 'snippet/target',
     \     'neosnippet/user', 'neosnippet/runtime'],
@@ -454,9 +459,10 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     {'name' : 'OpenBrowserSmartSearch',
     \      'complete' : 'customlist,openbrowser#_cmd_complete'}],
     \   'mappings' : [
-    \     ['nv', '<Plug>(openbrowser-open)'],
-    \     ['nv', '<Plug>(openbrowser-search)'],
-    \     ['nv', '<Plug>(openbrowser-smart-search)']]}}
+    \     ['nv',
+    \      '<Plug>(openbrowser-open)',
+    \      '<Plug>(openbrowser-search)',
+    \      '<Plug>(openbrowser-smart-search)']]}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'OpenBrowserSearch'      : 'openbrowser#_cmd_complete',
     \ 'OpenBrowserSmartSearch' : 'openbrowser#_cmd_complete'})
@@ -464,15 +470,17 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'tyru/operator-camelize.vim', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nvo', '<Plug>(operator-camelize)'],
-    \     ['nvo', '<Plug>(operator-decamelize)']]},
+    \     ['nvo',
+    \      '<Plug>(operator-camelize)',
+    \      '<Plug>(operator-decamelize)']]},
     \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'tyru/operator-html-escape.vim', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nvo', '<Plug>(operator-html-escape)'],
-    \     ['nvo', '<Plug>(operator-html-unescape)']]},
+    \     ['nvo',
+    \      '<Plug>(operator-html-escape)',
+    \      '<Plug>(operator-html-unescape)']]},
     \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'kana/vim-operator-replace', {
@@ -489,8 +497,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'deris/parajump', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nvo', '<Plug>(parajump-forward)'],
-    \     ['nvo', '<Plug>(parajump-backward)']]}}
+    \     ['nvo',
+    \      '<Plug>(parajump-forward)',
+    \      '<Plug>(parajump-backward)']]}}
 
   if executable('perl')
     NeoBundleLazy 'c9s/perlomni.vim', {
@@ -601,11 +610,13 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'tpope/vim-surround', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nx', '<Plug>Dsurround'],  ['nx', '<Plug>Csurround'],
-    \     ['nx', '<Plug>Ysurround'],  ['nx', '<Plug>YSurround'],
-    \     ['nx', '<Plug>Yssurround'], ['nx', '<Plug>YSsurround'],
-    \     ['v',  '<Plug>VSurround'],  ['v',  '<Plug>VgSurround'],
-    \     ['i',  '<Plug>Isurround'],  ['i',  '<Plug>ISurround']]}}
+    \     ['nx',
+    \      '<Plug>Dsurround', '<Plug>Csurround',  '<Plug>Ysurround',
+    \      '<Plug>YSurround', '<Plug>Yssurround', '<Plug>YSsurround'],
+    \     ['v',
+    \      '<Plug>VSurround', '<Plug>VgSurround'],
+    \     ['i',
+    \      '<Plug>Isurround', '<Plug>ISurround']]}}
 
   NeoBundleLazy 'AndrewRadev/switch.vim'
 
@@ -627,7 +638,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \      'complete' : 'customlist,tcomment#CompleteArgs'}],
     \   'mappings' : [
     \     ['nvoi', '<C-_>'], ['nvo', '<Leader>_'],
-    \     ['nx', 'gc'], ['nx', 'gC']]}}
+    \     ['nx', 'gc', 'gC']]}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'TComment'            : 'tcomment#CompleteArgs',
     \ 'TCommentAs'          : 'tcomment#Complete',
@@ -639,25 +650,28 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 't9md/vim-textmanip', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nv', '<Plug>(textmanip-duplicate-down)'],
-    \     ['nv', '<Plug>(textmanip-duplicate-up)'],
-    \     ['nv', '<Plug>(textmanip-move-left)'],
-    \     ['nv', '<Plug>(textmanip-move-down)'],
-    \     ['nv', '<Plug>(textmanip-move-up)'],
-    \     ['nv', '<Plug>(textmanip-move-right)']]}}
+    \     ['nv',
+    \      '<Plug>(textmanip-duplicate-down)',
+    \      '<Plug>(textmanip-duplicate-up)',
+    \      '<Plug>(textmanip-move-left)',
+    \      '<Plug>(textmanip-move-down)',
+    \      '<Plug>(textmanip-move-up)',
+    \      '<Plug>(textmanip-move-right)']]}}
 
   NeoBundleLazy 'thinca/vim-textobj-between', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-between-a)'],
-    \     ['vo', '<Plug>(textobj-between-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-between-a)',
+    \      '<Plug>(textobj-between-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'thinca/vim-textobj-comment', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-comment-a)'],
-    \     ['vo', '<Plug>(textobj-comment-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-comment-a)',
+    \      '<Plug>(textobj-comment-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'rhysd/vim-textobj-continuous-line', {
@@ -665,7 +679,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-datetime', {
-    \ 'autoload' : {'mappings' : [['ox', 'ad'], ['ox', 'id']]},
+    \ 'autoload' : {'mappings' : [['ox', 'ad', 'id']]},
     \ 'depends' : [
     \   'kana/vim-textobj-diff',
     \   'kana/vim-textobj-user']}
@@ -677,15 +691,17 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'kana/vim-textobj-entire', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-entire-a)'],
-    \     ['vo', '<Plug>(textobj-entire-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-entire-a)',
+    \      '<Plug>(textobj-entire-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-fold', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-fold-a)'],
-    \     ['vo', '<Plug>(textobj-fold-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-fold-a)',
+    \      '<Plug>(textobj-fold-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-function', {
@@ -717,59 +733,66 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'glts/vim-textobj-indblock', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-indblock-a)'],
-    \     ['vo', '<Plug>(textobj-indblock-i)'],
-    \     ['vo', '<Plug>(textobj-indblock-same-a)'],
-    \     ['vo', '<Plug>(textobj-indblock-same-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-indblock-a)',
+    \      '<Plug>(textobj-indblock-i)',
+    \      '<Plug>(textobj-indblock-same-a)',
+    \      '<Plug>(textobj-indblock-same-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-indent', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-indent-a)'],
-    \     ['vo', '<Plug>(textobj-indent-i)'],
-    \     ['vo', '<Plug>(textobj-indent-same-a)'],
-    \     ['vo', '<Plug>(textobj-indent-same-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-indent-a)',
+    \      '<Plug>(textobj-indent-i)',
+    \      '<Plug>(textobj-indent-same-a)',
+    \      '<Plug>(textobj-indent-same-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-jabraces', {
-    \ 'autoload' : {'mappings' : [['vo', 'aj'], ['vo', 'ij']]},
+    \ 'autoload' : {'mappings' : [['vo', 'aj', 'ij']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'rhysd/vim-textobj-lastinserted', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-lastinserted-a)'],
-    \     ['vo', '<Plug>(textobj-lastinserted-i)']],
+    \     ['vo',
+    \      '<Plug>(textobj-lastinserted-a)',
+    \      '<Plug>(textobj-lastinserted-i)']],
     \   'insert' : 1},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-lastpat', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-lastpat-n)'],
-    \     ['vo', '<Plug>(textobj-lastpat-N)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-lastpat-n)',
+    \      '<Plug>(textobj-lastpat-N)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-line', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-line-a)'],
-    \     ['vo', '<Plug>(textobj-line-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-line-a)',
+    \      '<Plug>(textobj-line-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-multiblock-a)'],
-    \     ['vo', '<Plug>(textobj-multiblock-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-multiblock-a)',
+    \      '<Plug>(textobj-multiblock-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'sgur/vim-textobj-parameter', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-parameter-a)'],
-    \     ['vo', '<Plug>(textobj-parameter-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-parameter-a)',
+    \      '<Plug>(textobj-parameter-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'akiyan/vim-textobj-php', {
@@ -791,29 +814,33 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'saihoooooooo/vim-textobj-space', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-space-a)'],
-    \     ['vo', '<Plug>(textobj-space-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-space-a)',
+    \      '<Plug>(textobj-space-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-syntax', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-syntax-a)'],
-    \     ['vo', '<Plug>(textobj-syntax-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-syntax-a)',
+    \      '<Plug>(textobj-syntax-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'lucapette/vim-textobj-underscore', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-undcerscore-a)'],
-    \     ['vo', '<Plug>(textobj-undcerscore-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-undcerscore-a)',
+    \      '<Plug>(textobj-undcerscore-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'mattn/vim-textobj-url', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-url-a)'],
-    \     ['vo', '<Plug>(textobj-url-i)']]},
+    \     ['vo',
+    \      '<Plug>(textobj-url-a)',
+    \      '<Plug>(textobj-url-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-user', {
@@ -822,12 +849,14 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'h1mesuke/textobj-wiw', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nvo', '<Plug>(textobj-wiw-n)'],
-    \     ['nvo', '<Plug>(textobj-wiw-p)'],
-    \     ['nvo', '<Plug>(textobj-wiw-N)'],
-    \     ['nvo', '<Plug>(textobj-wiw-P)'],
-    \     ['vo',  '<Plug>(textobj-wiw-a)'],
-    \     ['vo',  '<Plug>(textobj-wiw-i)']]}}
+    \     ['nvo',
+    \      '<Plug>(textobj-wiw-n)',
+    \      '<Plug>(textobj-wiw-p)',
+    \      '<Plug>(textobj-wiw-N)',
+    \      '<Plug>(textobj-wiw-P)'],
+    \     ['vo',
+    \      '<Plug>(textobj-wiw-a)',
+    \      '<Plug>(textobj-wiw-i)']]}}
 
   NeoBundleLazy 'zaiste/tmux.vim', {
     \ 'autoload' : {'filetypes' : 'tmux'}}
@@ -1051,8 +1080,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'DeaR/vim-visualstar', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     '<Plug>(visualstar-*)', '<Plug>(visualstar-g*)',
-    \     '<Plug>(visualstar-#)', '<Plug>(visualstar-g#)']}}
+    \     ['nvo',
+    \       '<Plug>(visualstar-*)', '<Plug>(visualstar-g*)',
+    \       '<Plug>(visualstar-#)', '<Plug>(visualstar-g#)']]}}
 
   NeoBundleLazy 'osyo-manga/vim-watchdogs', {
     \ 'autoload' : {
