@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 19:46:17 DeaR>
+" @timestamp   <2013-07-09 02:11:53 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1256,6 +1256,8 @@ set ruler
 set wrap
 set display=lastline
 set scrolloff=5
+autocmd MyVimrc CmdwinEnter *
+  \ setlocal nonumber norelativenumber
 
 " Match
 set showmatch
@@ -1351,6 +1353,8 @@ set foldmethod=marker
 set foldcolumn=2
 set foldlevelstart=99
 set commentstring=%s
+autocmd MyVimrc CmdwinEnter *
+  \ setlocal nofoldenable foldcolumn=0
 
 " Folding By FileType
 let g:c_no_comment_fold   = 1
@@ -1458,6 +1462,8 @@ if has('gui_running') || &t_Co > 255
       \ endif
     autocmd BufWinLeave,WinLeave *
       \ setlocal nocursorline |
+      \ setlocal nocursorcolumn
+    autocmd CmdwinEnter *
       \ setlocal nocursorcolumn
   augroup END
 endif
