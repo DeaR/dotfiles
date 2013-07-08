@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 14:34:46 DeaR>
+" @timestamp   <2013-07-08 14:42:12 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2377,10 +2377,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:autodate_lines        = 10
     let g:autodate_format       = '%Y-%m-%d %H:%M:%S DeaR'
-    let g:autodate_keyword_post = '[>".]'
-    let g:autodate_keyword_pre  = join([
-      \ '\c\%(@\?time[-[:space:]]*stamp\s*:\?\|',
-      \ 'Last\s*\%(Changed\?\|Updated\?\|Modified\)\s*:\)\s\+[<"]\?'], '')
+    let g:autodate_keyword_post = '[>"]'
+    let g:autodate_keyword_pre  =
+      \ '\c@\?time[-[:space:]]*stamp\s*:\?\s\+[<"]'
   endfunction
 endif
 unlet! s:bundle
