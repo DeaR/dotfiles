@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 16:29:04 DeaR>
+" @timestamp   <2013-07-08 17:39:32 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -637,7 +637,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     {'name' : 'TCommentMaybeInline',
     \      'complete' : 'customlist,tcomment#CompleteArgs'}],
     \   'mappings' : [
-    \     ['nvoi', '<C-_>'], ['nvo', '<Leader>_'],
+    \     ['nvoi', '<C-_>'],
+    \     '<Leader>_',
     \     ['nx', 'gc', 'gC']]}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'TComment'            : 'tcomment#CompleteArgs',
@@ -3632,6 +3633,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       noremap  <Leader>_n       q:TCommentAs <C-R>=&ft<CR><Space>
       noremap  <Leader>_s       q:TCommentAs <C-R>=&ft<CR>_
     endif
+
+    sunmap <Leader>__
+    sunmap <Leader>_p
+    sunmap <Leader>_<Space>
+    sunmap <Leader>_r
+    sunmap <Leader>_b
+    sunmap <Leader>_a
+    sunmap <Leader>_n
+    sunmap <Leader>_s
   endfunction
 endif
 unlet! s:bundle
