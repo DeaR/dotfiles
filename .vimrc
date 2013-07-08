@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-05 19:59:57 DeaR>
+" @timestamp   <2013-07-08 11:50:40 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -447,9 +447,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \   'windows' : join([
       \     $VCVARSALL, $PROCESSOR_ARCHITECTURE, '&',
       \     'msbuild server/OmniSharp.sln /p:Platform="Any CPU"']),
-      \   'mac'     :
-      \     'xbuild server/OmniSharp.sln /p:Platform="Any CPU"',
-      \   'unix'    :
+      \   'others'  :
       \     'xbuild server/OmniSharp.sln /p:Platform="Any CPU"'}}
   endif
 
@@ -999,9 +997,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \   'windows' : join([
     \     $VCVARSALL, $PROCESSOR_ARCHITECTURE, '&',
     \     'nmake -f Make_msvc.mak nodebug=1']),
-    \   'cygwin'  : 'make -f make_cygwin.mak',
-    \   'mac'     : 'make -f make_mac.mak',
-    \   'unix'    : 'make -f make_unix.mak'}}
+    \   'others'  : 'make'}}
 
   NeoBundleLazy 'Shougo/vimshell.vim', {
     \ 'autoload' : {
