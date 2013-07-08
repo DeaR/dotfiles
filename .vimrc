@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 19:41:16 DeaR>
+" @timestamp   <2013-07-08 19:46:17 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1482,13 +1482,13 @@ NOXnoremap <Leader>      <Nop>
 NOXnoremap <LocalLeader> <Nop>
 
 " Mark
-NOXnoremap m <Nop>
+nnoremap m <Nop>
 nnoremap <M-m> m
 
 " Useless
 NOXnoremap M     <Nop>
-NXnoremap  ;     <Nop>
-NXnoremap  ,     <Nop>
+NOXnoremap ;     <Nop>
+NOXnoremap ,     <Nop>
 NXnoremap  s     <Nop>
 NXnoremap  S     <Nop>
 nnoremap   <C-G> <Nop>
