@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 12:10:06 DeaR>
+" @timestamp   <2013-07-08 14:34:46 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -103,26 +103,20 @@ let g:maplocalleader = '|'
 let s:cmdwin_enable = 1
 
 " AlterCommand
-if !exists('s:altercmd_define')
-  let s:altercmd_define = {}
-endif
+let s:altercmd_define =
+  \ get(s:, 'altercmd_define', {})
 
 " NeoComplete or NeoComplCache
-if !exists('s:neocompl_force_omni_patterns')
-  let s:neocompl_force_omni_patterns = {}
-endif
-if !exists('s:neocompl_keyword_patterns')
-  let s:neocompl_keyword_patterns = {}
-endif
-if !exists('s:neocompl_omni_patterns')
-  let s:neocompl_omni_patterns = {}
-endif
-if !exists('s:neocompl_dictionary_filetype_lists')
-  let s:neocompl_dictionary_filetype_lists = {}
-endif
-if !exists('s:neocompl_vim_completefuncs')
-  let s:neocompl_vim_completefuncs = {}
-endif
+let s:neocompl_force_omni_patterns =
+  \ get(s:, 'neocompl_force_omni_patterns', {})
+let s:neocompl_keyword_patterns =
+  \ get(s:, 'neocompl_keyword_patterns', {})
+let s:neocompl_omni_patterns =
+  \ get(s:, 'neocompl_omni_patterns', {})
+let s:neocompl_dictionary_filetype_lists =
+  \ get(s:, 'neocompl_dictionary_filetype_lists', {})
+let s:neocompl_vim_completefuncs =
+  \ get(s:, 'neocompl_vim_completefuncs', {})
 
 " VCvarsall.bat
 if has('win32') && !exists('$VCVARSALL')
@@ -1944,9 +1938,7 @@ function! s:init_mark()
   endif
 endfunction
 function! s:auto_mark()
-  if !exists('b:mark_pos')
-    let b:mark_pos = 0
-  endif
+  let b:mark_pos = get(b:, 'mark_pos', 0)
   let cmd = join(['mark', s:mark_char[b:mark_pos]])
   echo "\r:" . cmd
   execute cmd
@@ -1977,9 +1969,7 @@ function! s:init_file_mark()
   endif
 endfunction
 function! s:auto_file_mark()
-  if !exists('s:file_mark_pos')
-    let s:file_mark_pos = 0
-  endif
+  let s:file_mark_pos = get(s:, 'file_mark_pos', 0)
   let cmd = join(['mark', toupper(s:mark_char[s:file_mark_pos])])
   echo "\r:" . cmd
   execute cmd
@@ -3005,9 +2995,9 @@ silent! let s:bundle = neobundle#get('neosnippet')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:neosnippet#snippets_directory = expand('~/.vim/snippets')
-    if !exists('g:neosnippet#disable_runtime_snippets')
-      let g:neosnippet#disable_runtime_snippets = {}
-    endif
+
+    let g:neosnippet#disable_runtime_snippets =
+      \ get(g:, 'neosnippet#disable_runtime_snippets', {})
     let g:neosnippet#disable_runtime_snippets._ = 1
 
     imap <C-J> <Plug>(neosnippet_expand_or_jump)
@@ -3202,12 +3192,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endfunction
     call quickrun#module#register(hook, 1)
 
-    if !exists('g:quickrun_config')
-      let g:quickrun_config = {}
-    endif
-    if !exists('g:quickrun_config._')
-      let g:quickrun_config._ = {}
-    endif
+    let g:quickrun_config =
+      \ get(g:, 'quickrun_config', {})
+    let g:quickrun_config._ =
+      \ get(g:quickrun_config, '_', {})
 
     if s:has_vimproc()
       call extend(g:quickrun_config._, {
@@ -4106,9 +4094,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       let g:unite_source_grep_default_opts  = '-Hn'
     endif
 
-    if !exists('g:unite_source_menu_menus')
-      let g:unite_source_menu_menus = {}
-    endif
+    let g:unite_source_menu_menus =
+      \ get(g:, 'unite_source_menu_menus', {})
 
     let g:unite_source_menu_menus.set_ff = {
       \ 'description' : 'Change file format option.'}
@@ -4522,9 +4509,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:watchdogs_check_BufWritePost_enable = 1
 
-    if !exists('g:quickrun_config')
-      let g:quickrun_config = {}
-    endif
+    let g:quickrun_config =
+      \ get(g:, 'quickrun_config', {})
 
     if exists('$VCVARSALL')
       call extend(g:quickrun_config, {
