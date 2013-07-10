@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-10 15:33:01 DeaR>
+" @timestamp   <2013-07-10 16:47:44 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -955,8 +955,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'rbtnn/vimconsole.vim', {
     \ 'autoload' : {
     \   'commands' : [
-    \     'VimConsoleLog', 'VimConsoleWarn', 'VimConsoleError',
-    \     'VimConsoleOpen', 'VimConsoleToggle']},
+    \     'VimConsole', 'VimConsoleOpen', 'VimConsoleToggle',
+    \     'VimConsoleLog', 'VimConsoleWarn', 'VimConsoleError']},
     \ 'depends' : 'thinca/vim-prettyprint'}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'VimConsoleLog'   : 'expression',
