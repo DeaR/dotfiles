@@ -4,12 +4,12 @@
 " @description Switch ftplugin for ZSH
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-19 15:44:33 DeaR>
+" @timestamp   <2013-07-10 16:01:00 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! s:init_switch_definitions()
+function! s:initialize()
   let s:cst = {}
   let s:inc = {}
   let s:dec = {}
@@ -33,18 +33,15 @@ function! s:init_switch_definitions()
     \ '\C!='     : '='})
 endfunction
 if !exists('s:cst') || !exists('s:inc') || !exists('s:dec')
-  call s:init_switch_definitions()
+  call s:initialize()
 endif
 
-if !exists('b:switch_custom_definitions')
-  let b:switch_custom_definitions = []
-endif
-if !exists('b:switch_increment_definitions')
-  let b:switch_increment_definitions = []
-endif
-if !exists('b:switch_decrement_definitions')
-  let b:switch_decrement_definitions = []
-endif
+let b:switch_custom_definitions =
+  \ get(b:, 'switch_custom_definitions', [])
+let b:switch_increment_definitions =
+  \ get(b:, 'switch_increment_definitions', [])
+let b:switch_decrement_definitions =
+  \ get(b:, 'switch_decrement_definitions', [])
 
 call add(b:switch_custom_definitions,    s:cst)
 call add(b:switch_increment_definitions, s:inc)
@@ -54,7 +51,7 @@ function! s:SID_PREFIX()
   return matchstr(expand('<sfile>'), '\zs<SNR>\d\+_\zeSID_PREFIX$')
 endfunction
 
-function! s:remove_switch_definitions()
+function! s:finalize()
   if exists('s:cst')
     call filter(b:switch_custom_definitions,
       \ 'v:val isnot s:cst')
@@ -75,7 +72,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ call call("' . s:SID_PREFIX() . 'remove_switch_definitions", [])'
+  \ call call("' . s:SID_PREFIX() . 'finalize", [])'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
