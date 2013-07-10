@@ -4,7 +4,7 @@
 " @description Golang ftplugin for Go
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 17:49:18 DeaR>
+" @timestamp   <2013-07-10 20:03:27 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -27,7 +27,6 @@ let b:undo_ftplugin .= '
   \ delcommand ImportAs |
   \ silent! unmap <buffer> <LocalLeader>f|
   \ silent! unmap <buffer> <LocalLeader>F|
-  \
   \ unlet b:did_ftplugin_go_import'
 
 let &cpo = s:save_cpo
