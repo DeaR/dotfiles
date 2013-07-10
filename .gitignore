@@ -2,7 +2,6 @@
 
 .gitconfig
 .hgrc
-.less
 .scratch
 .zcompdump
 
@@ -13,4 +12,3 @@
 /howm/
 
 /.xyzzy.d/projects.lisp
-/.bash/*.CYGWIN_NT-6.1-WOW64
