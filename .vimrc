@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-10 13:36:25 DeaR>
+" @timestamp   <2013-07-10 15:33:01 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4491,7 +4491,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:visualstar_no_default_key_mappings = 1
   endfunction
 
-  function! s:visual_substitute(range, g)
+  function! s:visual_substitute(prefix, g)
     let text = visualstar#get_text()
 
     let [pre, post] = ['', '']
@@ -4504,7 +4504,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     let s:visual_substitute_cmd = join([
       \ (s:cmdwin_enable? 'q:' : ':'),
-      \ "\<C-U>", a:range, 's/\V',
+      \ "\<C-U>", a:prefix, 's/\V',
       \ pre, text, post,
       \ '//gc', "\<Left>\<Left>\<Left>"], '')
   endfunction
@@ -4546,6 +4546,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nnoremap <expr> <SID>(visual-substitute-do)
     \ <SID>visual_substitute_cmd()
+
   xnoremap <script> s*
     \ :<C-U>call <SID>visual_substitute('1,', 0)<CR><SID>(visual-substitute-do)
   xnoremap <script> s#
@@ -4555,8 +4556,32 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   xnoremap <script> sg#
     \ :<C-U>call <SID>visual_substitute('$,', 1)<CR><SID>(visual-substitute-do)
 
+  xnoremap <script> sa*
+    \ :<C-U>call <SID>visual_substitute('argdo %', 0)<CR><SID>(visual-substitute-do)
+  xnoremap <script> sag*
+    \ :<C-U>call <SID>visual_substitute('argdo %', 1)<CR><SID>(visual-substitute-do)
+
+  xnoremap <script> sb*
+    \ :<C-U>call <SID>visual_substitute('bufdo %', 0)<CR><SID>(visual-substitute-do)
+  xnoremap <script> sbg*
+    \ :<C-U>call <SID>visual_substitute('bufdo %', 1)<CR><SID>(visual-substitute-do)
+
+  xnoremap <script> st*
+    \ :<C-U>call <SID>visual_substitute('tabdo %', 0)<CR><SID>(visual-substitute-do)
+  xnoremap <script> stg*
+    \ :<C-U>call <SID>visual_substitute('tabdo %', 1)<CR><SID>(visual-substitute-do)
+
+  xnoremap <script> sw*
+    \ :<C-U>call <SID>visual_substitute('windo %', 0)<CR><SID>(visual-substitute-do)
+  xnoremap <script> swg*
+    \ :<C-U>call <SID>visual_substitute('windo %', 1)<CR><SID>(visual-substitute-do)
+
   xmap sg/  s*
   xmap sg?  s#
+  xmap sag/ sa*
+  xmap sbg/ sb*
+  xmap stg/ st*
+  xmap swg/ sw*
 endif
 unlet! s:bundle
 "}}}
