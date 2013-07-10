@@ -4,7 +4,7 @@
 # @description NYAOS settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-07-05 14:13:53 DeaR>
+# @timestamp   <2013-07-10 17:15:43 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -336,21 +336,21 @@ source %NYAOS_DIR%\vcvars.lua
 #-----------------------------------------------------------------------------
 # Source By ComputerName, UserName: {{{
 if %PROCESSOR_ARCHITEW6432.defined% -ne 0 then
-  if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%" then
-    source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%
+  if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%.ny" then
+    source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITEW6432%.ny
   endif
 else
-  if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%" then
-    source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%
+  if exist "%NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%.ny" then
+    source %NYAOS_DIR%\_nya.%PROCESSOR_ARCHITECTURE%.ny
   endif
 endif
-if exist "%NYAOS_DIR%\_nya.%COMPUTERNAME%" then
-  source %NYAOS_DIR%\_nya.%COMPUTERNAME%
+if exist "%NYAOS_DIR%\_nya.%COMPUTERNAME%.ny" then
+  source %NYAOS_DIR%\_nya.%COMPUTERNAME%.ny
 endif
-if exist "%NYAOS_DIR%\_nya.%USERNAME%" then
-  source %NYAOS_DIR%\_nya.%USERNAME%
+if exist "%NYAOS_DIR%\_nya.%USERNAME%.ny" then
+  source %NYAOS_DIR%\_nya.%USERNAME%.ny
 endif
-if exist "%LOCAL_DIR%\_nya.local" then
-  source %LOCAL_DIR%\_nya.local
+if exist "%LOCAL_DIR%\_nya.local.ny" then
+  source %LOCAL_DIR%\_nya.local.ny
 endif
 #}}}
