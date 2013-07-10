@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-10 12:02:45 DeaR>
+" @timestamp   <2013-07-10 13:36:25 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1185,7 +1185,7 @@ set shortmess+=a
 set title
 
 " Use beep
-set noerrorbells
+set errorbells
 set novisualbell
 set t_vb=
 
