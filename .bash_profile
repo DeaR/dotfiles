@@ -4,7 +4,7 @@
 # @description Bash settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-07-05 14:07:21 DeaR>
+# @timestamp   <2013-07-10 17:17:11 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -110,17 +110,17 @@ fi
 
 #-----------------------------------------------------------------------------
 # Source By Platform, Host, User: {{{
-if hash uname 2> /dev/null && [ -n "$(uname)" -a -f "${BASH_DIR}/.bash_profile.$(uname)" ]; then
-  source "${BASH_DIR}/.bash_profile.$(uname)"
+if hash uname 2> /dev/null && [ -n "$(uname)" -a -f "${BASH_DIR}/.bash_profile.$(uname).bash" ]; then
+  source "${BASH_DIR}/.bash_profile.$(uname).bash"
 fi
-if [ -n "${HOSTNAME}" -a -f "${BASH_DIR}/.bash_profile.${HOSTNAME}" ]; then
-  source "${BASH_DIR}/.bash_profile.${HOSTNAME}"
+if [ -n "${HOSTNAME}" -a -f "${BASH_DIR}/.bash_profile.${HOSTNAME}.bash" ]; then
+  source "${BASH_DIR}/.bash_profile.${HOSTNAME}.bash"
 fi
-if [ -n "${USER}" -a -f "${BASH_DIR}/.bash_profile.${USER}" ]; then
-  source "${BASH_DIR}/.bash_profile.${USER}"
+if [ -n "${USER}" -a -f "${BASH_DIR}/.bash_profile.${USER}.bash" ]; then
+  source "${BASH_DIR}/.bash_profile.${USER}.bash"
 fi
-if [ -f "${LOCAL_DIR}/.bash_profile.local" ]; then
-  source "${LOCAL_DIR}/.bash_profile.local"
+if [ -f "${LOCAL_DIR}/.bash_profile.local.bash" ]; then
+  source "${LOCAL_DIR}/.bash_profile.local.bash"
 fi
 #}}}
 

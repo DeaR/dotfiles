@@ -4,7 +4,7 @@
 # @description Bash interactive settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-07-05 14:09:32 DeaR>
+# @timestamp   <2013-07-10 17:16:45 DeaR>
 
 #-----------------------------------------------------------------------------
 # If not running interactively, don't do anything: {{{
@@ -153,17 +153,17 @@ fi
 
 #-----------------------------------------------------------------------------
 # Source By Platform, Host, User: {{{
-if hash uname 2> /dev/null && [ -n "$(uname)" -a -f "${BASH_DIR}/.bashrc.$(uname)" ]; then
-  source "${BASH_DIR}/.bashrc.$(uname)"
+if hash uname 2> /dev/null && [ -n "$(uname)" -a -f "${BASH_DIR}/.bashrc.$(uname).bash" ]; then
+  source "${BASH_DIR}/.bashrc.$(uname).bash"
 fi
-if [ -n "${HOSTNAME}" -a -f "${BASH_DIR}/.bashrc.${HOSTNAME}" ]; then
-  source "${BASH_DIR}/.bashrc.${HOSTNAME}"
+if [ -n "${HOSTNAME}" -a -f "${BASH_DIR}/.bashrc.${HOSTNAME}.bash" ]; then
+  source "${BASH_DIR}/.bashrc.${HOSTNAME}.bash"
 fi
-if [ -n "${USER}" -a -f "${BASH_DIR}/.bashrc.${USER}" ]; then
-  source "${BASH_DIR}/.bashrc.${USER}"
+if [ -n "${USER}" -a -f "${BASH_DIR}/.bashrc.${USER}.bash" ]; then
+  source "${BASH_DIR}/.bashrc.${USER}.bash"
 fi
-if [ -f "${LOCAL_DIR}/.bashrc.local" ]; then
-  source "${LOCAL_DIR}/.bashrc.local"
+if [ -f "${LOCAL_DIR}/.bashrc.local.bash" ]; then
+  source "${LOCAL_DIR}/.bashrc.local.bash"
 fi
 #}}}
 
