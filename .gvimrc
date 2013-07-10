@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-18 18:53:13 DeaR>
+" @timestamp   <2013-07-10 12:02:04 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -53,7 +53,7 @@ set guioptions-=l
 set guioptions-=L
 set guicursor+=i-ci:ver50-Cursor/lCursor
 
-" Disable bell
+" Use beep
 set noerrorbells
 set novisualbell
 set t_vb=
