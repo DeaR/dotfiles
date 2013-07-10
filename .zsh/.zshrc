@@ -4,7 +4,7 @@
 # @description Zsh interactive settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-07-10 17:16:13 DeaR>
+# @timestamp   <2013-07-10 17:37:53 DeaR>
 
 #-----------------------------------------------------------------------------
 # Option: {{{
@@ -276,7 +276,7 @@ fi
 if hash uname 2> /dev/null && [ -n "$(uname)" -a -f "${ZDOTDIR}/.zshrc.$(uname).zsh" ]; then
   source "${ZDOTDIR}/.zshrc.$(uname).zsh"
 fi
-if [ -n "${HOSTNAME}" -a -f "${ZDOTDIR}/.zshrc.${HOSTNAME.zsh}" ]; then
+if [ -n "${HOSTNAME}" -a -f "${ZDOTDIR}/.zshrc.${HOSTNAME}.zsh" ]; then
   source "${ZDOTDIR}/.zshrc.${HOSTNAME}.zsh"
 fi
 if [ -n "${USER}" -a -f "${ZDOTDIR}/.zshrc.${USER}.zsh" ]; then
