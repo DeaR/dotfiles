@@ -4,7 +4,7 @@
 " @description SmartChr ftplugin for D
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 17:36:04 DeaR>
+" @timestamp   <2013-07-10 19:02:10 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -39,9 +39,9 @@ function! s:smartchr_slash()
   for c in ['+', '*']
     let ec = escape(c, '\')
     if search('\V ' . ec . '/\? \%#', 'bcnW')
-      return smartchr#one_of(' ' . ec . ' ',  ec . '/' . nr2char(6))
+      return smartchr#one_of(' ' . ec . ' ',  ec . '/<C-F>')
     elseif search('\V' . ec . '\%#', 'bcnW')
-      return smartchr#one_of(ec, ec . '/' . nr2char(6))
+      return smartchr#one_of(ec, ec . '/<C-F>')
     endif
   endfor
   return smartchr#one_of(' / ', '// ', '/')
