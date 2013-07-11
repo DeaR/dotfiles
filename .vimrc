@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-11 16:20:36 DeaR>
+" @timestamp   <2013-07-11 16:30:50 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1563,8 +1563,8 @@ NOXnoremap mk [`
 "-----------------------------------------------------------------------------
 " Useful: {{{
 " Semi-colon shortcut
-nnoremap ;w     :<C-U>update<CR>
-nnoremap ;W     :<C-U>wall<CR>
+nnoremap ;w     :<C-U>confirm update<CR>
+nnoremap ;W     :<C-U>confirm wall<CR>
 nnoremap ;c     :<C-U>confirm bdelete<CR>
 nnoremap ;C     :<C-U>confirm 1,$bdelete<CR>
 nnoremap ;j     :<C-U>jumps<CR>
