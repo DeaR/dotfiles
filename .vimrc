@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-10 16:56:52 DeaR>
+" @timestamp   <2013-07-11 16:20:36 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1465,8 +1465,7 @@ if has('gui_running') || &t_Co > 255
       \   setlocal cursorcolumn |
       \ endif
     autocmd BufWinLeave,WinLeave *
-      \ setlocal nocursorline |
-      \ setlocal nocursorcolumn
+      \ setlocal nocursorline nocursorcolumn
     autocmd CmdwinEnter *
       \ setlocal nocursorcolumn
   augroup END
@@ -1850,8 +1849,7 @@ if exists('$VCVARSALL')
     let save_shell = s:get_shell()
     let save_isi   = &isident
     ShellCmd
-    set isident+=(
-    set isident+=)
+    set isident+=( isident+=)
     try
       let env = system(join([$VCVARSALL, a:arch, '&', 'set']))
       for s in split(env, '\n')
@@ -2237,8 +2235,7 @@ autocmd MyVimrc BufWritePre *
 "-----------------------------------------------------------------------------
 " No Insert Comment Leader: {{{
 autocmd MyVimrc FileType *
-  \ setlocal formatoptions-=r |
-  \ setlocal formatoptions-=o
+  \ setlocal formatoptions-=r formatoptions-=o
 "}}}
 
 "-----------------------------------------------------------------------------
