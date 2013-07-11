@@ -4,7 +4,7 @@
 " @description SmartChr ftplugin for Java
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-10 19:02:11 DeaR>
+" @timestamp   <2013-07-11 19:36:40 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -22,12 +22,19 @@ function! s:smartchr_equal()
 endfunction
 inoremap <buffer><expr> = <SID>smartchr_equal()
 
-inoremap <buffer><expr> *
-  \ search('\V /*\? \%#', 'bcnW') ?
-  \   smartchr#one_of(' / ', '/*') :
-  \   search('\V/\%#', 'bcnW') ?
-  \     smartchr#one_of('/', '/*') :
-  \     smartchr#one_of(' * ', '*')
+function! s:smartchr_star()
+  if search('\V\^\s\*\%#') &&
+    \ synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name') ==# 'Comment'
+    return "* \<C-F>"
+  elseif search('\V /*\? \%#', 'bcnW')
+    return smartchr#one_of(' / ', '/*')
+  elseif search('\V/\%#', 'bcnW')
+    return smartchr#one_of('/', '/*')
+  else
+    return smartchr#one_of(' * ', '*')
+  endif
+endfunction
+inoremap <buffer><expr> * <SID>smartchr_star()
 
 inoremap <buffer><expr> /
   \ search('\V */\? \%#', 'bcnW') ?
@@ -56,8 +63,8 @@ else
 endif
 let b:undo_ftplugin .= '
   \ silent! iunmap <buffer> =|
-  \
   \ silent! iunmap <buffer> *|
+  \
   \ silent! iunmap <buffer> /|
   \
   \ silent! iunmap <buffer> +|
