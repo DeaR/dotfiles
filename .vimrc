@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-11 16:30:50 DeaR>
+" @timestamp   <2013-07-11 17:08:04 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1568,6 +1568,7 @@ nnoremap ;W     :<C-U>confirm wall<CR>
 nnoremap ;c     :<C-U>confirm bdelete<CR>
 nnoremap ;C     :<C-U>confirm 1,$bdelete<CR>
 nnoremap ;j     :<C-U>jumps<CR>
+nnoremap ;<C-D> :<C-U>pwd<CR>
 nnoremap ;e     :<C-U>edit<Space>
 nnoremap ;b     :<C-U>buffer<Space>
 nnoremap ;t     :<C-U>tabm<Space>
