@@ -5,30 +5,32 @@
 # @description Filter of less
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-27 20:13:16 DeaR>
+# @timestamp   <2013-07-11 17:56:20 DeaR>
 
 highlight() {
-  if which src-hilite-lesspipe.sh > /dev/null; then
-    src-hilite-lesspipe.sh "$1"
-  elif [ -f "${HOME}/.source-highlight/src-hilite-lesspipe.sh" ]; then
+  if [ -f "${HOME}/.source-highlight/src-hilite-lesspipe.sh" ]; then
     ${HOME}/.source-highlight/src-hilite-lesspipe.sh "$1"
   elif [ -f "/usr/local/share/source-highlight/src-hilite-lesspipe.sh" ]; then
     /usr/local/share/source-highlight/src-hilite-lesspipe.sh "$1"
   elif [ -f "/usr/share/source-highlight/src-hilite-lesspipe.sh" ]; then
     /usr/share/source-highlight/src-hilite-lesspipe.sh "$1"
-  elif which source-highlight > /dev/null; then
-    source-highlight --failsafe --infer-lang -f esc --style-file=esc.style -i "$1"
+  elif which src-hilite-lesspipe.sh > /dev/null; then
+    src-hilite-lesspipe.sh "$1"
   else
-    cat "$1"
+    source-highlight --failsafe --infer-lang -f esc --style-file=esc.style -i "$1"
   fi
 }
 
 
 if file -Lb "$1" | grep '\btext\b' > /dev/null; then
-  if which nkf > /dev/null; then
-    highlight "$1" | nkf -w
-  else
-    highlight "$1"
+  if which source-highlight > /dev/null; then
+    if which nkf > /dev/null; then
+      highlight "$1" | nkf -w
+    else
+      highlight "$1"
+    fi
+  elif which nkf > /dev/null; then
+    nkf -w "$1"
   fi
   exit 0
 fi
