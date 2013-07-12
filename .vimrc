@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-12 19:54:39 DeaR>
+" @timestamp   <2013-07-13 05:08:45 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1077,8 +1077,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \ 'VinariseScript2Hex' : 'vinarise#complete'})
   endif
 
-  " NeoBundleLazy 'thinca/vim-visualstar', {
-  NeoBundleLazy 'DeaR/vim-visualstar', {
+  NeoBundleLazy 'thinca/vim-visualstar', {
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo',
@@ -4482,29 +4481,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:visualstar_no_default_key_mappings = 1
   endfunction
 
-  function! s:visual_substitute(prefix, g)
-    let text = visualstar#get_text()
-
-    let [pre, post] = ['', '']
-    if !a:g
-      let pre  = visualstar#get_prefix(text)
-      let post = visualstar#get_suffix(text)
-    endif
-
-    let text = substitute(escape(text, '\/'), "\n", '\\n', 'g')
-
-    let s:visual_substitute_cmd = join([
-      \ (s:cmdwin_enable? 'q:' : ':'),
-      \ "\<C-U>", a:prefix, 's/\V',
-      \ pre, text, post,
-      \ '//gc', "\<Left>\<Left>\<Left>"], '')
-  endfunction
-
-  let s:visual_substitute_cmd = ''
-  function! s:visual_substitute_cmd()
-    return s:visual_substitute_cmd
-  endfunction
-
   xmap <SID>(visualstar-*)  <Plug>(visualstar-*)
   xmap <SID>(visualstar-#)  <Plug>(visualstar-#)
   xmap <SID>(visualstar-g*) <Plug>(visualstar-g*)
@@ -4535,37 +4511,65 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \   '<C-W>sgv<SID>(visualstar-g#)zz' :
     \   '<C-W>vgv<SID>(visualstar-g#)zz'
 
-  nnoremap <expr> <SID>(visual-substitute-do)
-    \ <SID>visual_substitute_cmd()
+  if s:cmdwin_enable
+    xnoremap <script> s*
+      \ <SID>(visualstar-*)Nq:<C-U>.,$s///gc<Left><Left><Left>
+    xnoremap <script> s#
+      \ <SID>(visualstar-#)Nq:<C-U>1,.s///gc<Left><Left><Left>
+    xnoremap <script> sg*
+      \ <SID>(visualstar-g*)Nq:<C-U>.,$s///gc<Left><Left><Left>
+    xnoremap <script> sg#
+      \ <SID>(visualstar-g#)Nq:<C-U>1,.s///gc<Left><Left><Left>
 
-  xnoremap <script> s*
-    \ :<C-U>call <SID>visual_substitute('.,$', 0)<CR><SID>(visual-substitute-do)
-  xnoremap <script> s#
-    \ :<C-U>call <SID>visual_substitute('1,.', 0)<CR><SID>(visual-substitute-do)
-  xnoremap <script> sg*
-    \ :<C-U>call <SID>visual_substitute('.,$', 1)<CR><SID>(visual-substitute-do)
-  xnoremap <script> sg#
-    \ :<C-U>call <SID>visual_substitute('1,.', 1)<CR><SID>(visual-substitute-do)
+    xnoremap <script> sa*
+      \ <SID>(visualstar-*)Nq:<C-U>argdo %s///gc<Left><Left><Left>
+    xnoremap <script> sag*
+      \ <SID>(visualstar-g*)Nq:<C-U>argdo %s///gc<Left><Left><Left>
 
-  xnoremap <script> sa*
-    \ :<C-U>call <SID>visual_substitute('argdo %', 0)<CR><SID>(visual-substitute-do)
-  xnoremap <script> sag*
-    \ :<C-U>call <SID>visual_substitute('argdo %', 1)<CR><SID>(visual-substitute-do)
+    xnoremap <script> sb*
+      \ <SID>(visualstar-*)Nq:<C-U>bufdo %s///gc<Left><Left><Left>
+    xnoremap <script> sbg*
+      \ <SID>(visualstar-g*)Nq:<C-U>bufdo %s///gc<Left><Left><Left>
 
-  xnoremap <script> sb*
-    \ :<C-U>call <SID>visual_substitute('bufdo %', 0)<CR><SID>(visual-substitute-do)
-  xnoremap <script> sbg*
-    \ :<C-U>call <SID>visual_substitute('bufdo %', 1)<CR><SID>(visual-substitute-do)
+    xnoremap <script> st*
+      \ <SID>(visualstar-*)Nq:<C-U>tabdo %s///gc<Left><Left><Left>
+    xnoremap <script> stg*
+      \ <SID>(visualstar-g*)Nq:<C-U>tabdo %s///gc<Left><Left><Left>
 
-  xnoremap <script> st*
-    \ :<C-U>call <SID>visual_substitute('tabdo %', 0)<CR><SID>(visual-substitute-do)
-  xnoremap <script> stg*
-    \ :<C-U>call <SID>visual_substitute('tabdo %', 1)<CR><SID>(visual-substitute-do)
+    xnoremap <script> sw*
+      \ <SID>(visualstar-*)Nq:<C-U>windo %s///gc<Left><Left><Left>
+    xnoremap <script> swg*
+      \ <SID>(visualstar-g*)Nq:<C-U>windo %s///gc<Left><Left><Left>
+  else
+    xnoremap <script> s*
+      \ <SID>(visualstar-*)N:<C-U>.,$s///gc<Left><Left><Left>
+    xnoremap <script> s#
+      \ <SID>(visualstar-#)N:<C-U>1,.s///gc<Left><Left><Left>
+    xnoremap <script> sg*
+      \ <SID>(visualstar-g*)N:<C-U>.,$s///gc<Left><Left><Left>
+    xnoremap <script> sg#
+      \ <SID>(visualstar-g#)N:<C-U>1,.s///gc<Left><Left><Left>
 
-  xnoremap <script> sw*
-    \ :<C-U>call <SID>visual_substitute('windo %', 0)<CR><SID>(visual-substitute-do)
-  xnoremap <script> swg*
-    \ :<C-U>call <SID>visual_substitute('windo %', 1)<CR><SID>(visual-substitute-do)
+    xnoremap <script> sa*
+      \ <SID>(visualstar-*)N:<C-U>argdo %s///gc<Left><Left><Left>
+    xnoremap <script> sag*
+      \ <SID>(visualstar-g*)N:<C-U>argdo %s///gc<Left><Left><Left>
+
+    xnoremap <script> sb*
+      \ <SID>(visualstar-*)N:<C-U>bufdo %s///gc<Left><Left><Left>
+    xnoremap <script> sbg*
+      \ <SID>(visualstar-g*)N:<C-U>bufdo %s///gc<Left><Left><Left>
+
+    xnoremap <script> st*
+      \ <SID>(visualstar-*)N:<C-U>tabdo %s///gc<Left><Left><Left>
+    xnoremap <script> stg*
+      \ <SID>(visualstar-g*)N:<C-U>tabdo %s///gc<Left><Left><Left>
+
+    xnoremap <script> sw*
+      \ <SID>(visualstar-*)N:<C-U>windo %s///gc<Left><Left><Left>
+    xnoremap <script> swg*
+      \ <SID>(visualstar-g*)N:<C-U>windo %s///gc<Left><Left><Left>
+  endif
 
   xmap sg/  s*
   xmap sg?  s#
