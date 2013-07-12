@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-13 05:08:45 DeaR>
+" @timestamp   <2013-07-13 05:14:56 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4522,24 +4522,24 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ <SID>(visualstar-g#)Nq:<C-U>1,.s///gc<Left><Left><Left>
 
     xnoremap <script> sa*
-      \ <SID>(visualstar-*)Nq:<C-U>argdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-*)Nq:<C-U>argdo %s///gce<Left><Left><Left><Left>
     xnoremap <script> sag*
-      \ <SID>(visualstar-g*)Nq:<C-U>argdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-g*)Nq:<C-U>argdo %s///gce<Left><Left><Left><Left>
 
     xnoremap <script> sb*
-      \ <SID>(visualstar-*)Nq:<C-U>bufdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-*)Nq:<C-U>bufdo %s///gce<Left><Left><Left><Left>
     xnoremap <script> sbg*
-      \ <SID>(visualstar-g*)Nq:<C-U>bufdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-g*)Nq:<C-U>bufdo %s///gce<Left><Left><Left><Left>
 
     xnoremap <script> st*
-      \ <SID>(visualstar-*)Nq:<C-U>tabdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-*)Nq:<C-U>tabdo %s///gce<Left><Left><Left><Left>
     xnoremap <script> stg*
-      \ <SID>(visualstar-g*)Nq:<C-U>tabdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-g*)Nq:<C-U>tabdo %s///gce<Left><Left><Left><Left>
 
     xnoremap <script> sw*
-      \ <SID>(visualstar-*)Nq:<C-U>windo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-*)Nq:<C-U>windo %s///gce<Left><Left><Left><Left>
     xnoremap <script> swg*
-      \ <SID>(visualstar-g*)Nq:<C-U>windo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-g*)Nq:<C-U>windo %s///gce<Left><Left><Left><Left>
   else
     xnoremap <script> s*
       \ <SID>(visualstar-*)N:<C-U>.,$s///gc<Left><Left><Left>
@@ -4551,24 +4551,24 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ <SID>(visualstar-g#)N:<C-U>1,.s///gc<Left><Left><Left>
 
     xnoremap <script> sa*
-      \ <SID>(visualstar-*)N:<C-U>argdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-*)N:<C-U>argdo %s///gce<Left><Left><Left><Left>
     xnoremap <script> sag*
-      \ <SID>(visualstar-g*)N:<C-U>argdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-g*)N:<C-U>argdo %s///gce<Left><Left><Left><Left>
 
     xnoremap <script> sb*
-      \ <SID>(visualstar-*)N:<C-U>bufdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-*)N:<C-U>bufdo %s///gce<Left><Left><Left><Left>
     xnoremap <script> sbg*
-      \ <SID>(visualstar-g*)N:<C-U>bufdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-g*)N:<C-U>bufdo %s///gce<Left><Left><Left><Left>
 
     xnoremap <script> st*
-      \ <SID>(visualstar-*)N:<C-U>tabdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-*)N:<C-U>tabdo %s///gce<Left><Left><Left><Left>
     xnoremap <script> stg*
-      \ <SID>(visualstar-g*)N:<C-U>tabdo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-g*)N:<C-U>tabdo %s///gce<Left><Left><Left><Left>
 
     xnoremap <script> sw*
-      \ <SID>(visualstar-*)N:<C-U>windo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-*)N:<C-U>windo %s///gce<Left><Left><Left><Left>
     xnoremap <script> swg*
-      \ <SID>(visualstar-g*)N:<C-U>windo %s///gc<Left><Left><Left>
+      \ <SID>(visualstar-g*)N:<C-U>windo %s///gce<Left><Left><Left><Left>
   endif
 
   xmap sg/  s*
