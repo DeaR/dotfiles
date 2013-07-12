@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-11 17:08:04 DeaR>
+" @timestamp   <2013-07-12 13:37:19 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1490,26 +1490,19 @@ endif
 NOXnoremap <Leader>      <Nop>
 NOXnoremap <LocalLeader> <Nop>
 
-" Mark
-nnoremap m <Nop>
-nnoremap <M-m> m
-
 " Useless
-NOXnoremap M     <Nop>
 NOXnoremap ;     <Nop>
 NOXnoremap ,     <Nop>
 NXnoremap  s     <Nop>
 NXnoremap  S     <Nop>
-nnoremap   <C-G> <Nop>
+NOXnoremap m     <Nop>
+NOXnoremap M     <Nop>
+NOnoremap  <C-G> <Nop>
 cnoremap   <C-G> <Nop>
 "}}}
 
 "-----------------------------------------------------------------------------
 " Moving: {{{
-" PageUp, PageDown
-NOXnoremap <PageUp>   <C-U>
-NOXnoremap <PageDOwn> <C-D>
-
 " Jump
 NOXnoremap ' `
 NOXnoremap ` '
@@ -1692,6 +1685,9 @@ NXmap <C-W>g? <C-W>#
 
 "-----------------------------------------------------------------------------
 " Subrogation: {{{
+" Mark
+nnoremap <M-m> m
+
 " To Column
 NOXnoremap g\| \|
 
