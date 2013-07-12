@@ -4539,13 +4539,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ <SID>visual_substitute_cmd()
 
   xnoremap <script> s*
-    \ :<C-U>call <SID>visual_substitute('1,', 0)<CR><SID>(visual-substitute-do)
+    \ :<C-U>call <SID>visual_substitute('.,$', 0)<CR><SID>(visual-substitute-do)
   xnoremap <script> s#
-    \ :<C-U>call <SID>visual_substitute('$,', 0)<CR><SID>(visual-substitute-do)
+    \ :<C-U>call <SID>visual_substitute('1,.', 0)<CR><SID>(visual-substitute-do)
   xnoremap <script> sg*
-    \ :<C-U>call <SID>visual_substitute('1,', 1)<CR><SID>(visual-substitute-do)
+    \ :<C-U>call <SID>visual_substitute('.,$', 1)<CR><SID>(visual-substitute-do)
   xnoremap <script> sg#
-    \ :<C-U>call <SID>visual_substitute('$,', 1)<CR><SID>(visual-substitute-do)
+    \ :<C-U>call <SID>visual_substitute('1,.', 1)<CR><SID>(visual-substitute-do)
 
   xnoremap <script> sa*
     \ :<C-U>call <SID>visual_substitute('argdo %', 0)<CR><SID>(visual-substitute-do)
