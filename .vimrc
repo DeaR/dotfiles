@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-14 03:35:02 DeaR>
+" @timestamp   <2013-07-14 03:42:28 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3687,10 +3687,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     NOXmap <Leader>dfK <Plug>(textobj-diff-file-P)
     NOXmap <Leader>dfj <Plug>(textobj-diff-file-n)
     NOXmap <Leader>dfk <Plug>(textobj-diff-file-p)
-    NOXmap <Leader>dJ  <Plug>(textobj-diff-file-N)
-    NOXmap <Leader>dK  <Plug>(textobj-diff-file-P)
-    NOXmap <Leader>dj  <Plug>(textobj-diff-file-n)
-    NOXmap <Leader>dk  <Plug>(textobj-diff-file-p)
+    NOXmap <Leader>dJ  <Plug>(textobj-diff-hunk-N)
+    NOXmap <Leader>dK  <Plug>(textobj-diff-hunk-P)
+    NOXmap <Leader>dj  <Plug>(textobj-diff-hunk-n)
+    NOXmap <Leader>dk  <Plug>(textobj-diff-hunk-p)
 
     OXnoremap ad <Nop>
     OXmap adH <Plug>(textobj-diff-file)
