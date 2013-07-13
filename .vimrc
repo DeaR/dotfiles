@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-13 17:06:07 DeaR>
+" @timestamp   <2013-07-13 17:35:48 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2575,22 +2575,24 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('kwbdi')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:kwbd()
-    NeoBundleSource kwbdi
-    if v:lang =~? '^ja' && has('multi_lang')
-      let msg = join(['変更を "', expand('%:t'), '" に保存しますか?'], '')
-      let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
-    else
-      let msg = join(['Save changes to "', expand('%:t'), '"?'], '')
-      let choices = "&Yes\n&No\n&Cancel"
-    endif
     if &modified
+      if v:lang =~? '^ja' && has('multi_lang')
+        let msg = join(['変更を "', expand('%:t'), '" に保存しますか?'], '')
+        let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
+      else
+        let msg = join(['Save changes to "', expand('%:t'), '"?'], '')
+        let choices = "&Yes\n&No\n&Cancel"
+      endif
+
       let ret = confirm(msg, choices, 1, 'Question')
       if ret == 1
-        silent write
+        silent write!
       elseif ret == 3
         return
       endif
     endif
+
+    NeoBundleSource kwbdi
     silent execute "normal \<Plug>Kwbd"
   endfunction
   nnoremap ;c :<C-U>call <SID>kwbd()<CR>
