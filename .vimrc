@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-14 00:40:26 DeaR>
+" @timestamp   <2013-07-14 03:35:02 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -235,6 +235,20 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     'Gwrite',  'Gw',      'Gwq',      'Gdiff',
     \     'Gvdiff',  'Gsdiff',  'Gbrowse']}}
 
+  NeoBundleLazy 'kana/vim-gf-user', {
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['nv',
+    \      '<Plug>(gf-user-gf)',
+    \      '<Plug>(gf-user-gF)',
+    \      '<Plug>(gf-user-<C-w>f)',
+    \      '<Plug>(gf-user-<C-w><C-f>)',
+    \      '<Plug>(gf-user-<C-w>F)',
+    \      '<Plug>(gf-user-<C-w>gf)',
+    \      '<Plug>(gf-user-<C-w>gF)']]},
+    \ 'depends' : [
+    \   'sgur/vim-gf-autoload',
+    \   'kana/vim-gf-diff']}
 
   NeoBundleLazy 'gist:mattn/5457352', {
     \ 'name' : 'ginger',
@@ -2488,6 +2502,25 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_post_source(bundle)
     call fugitive#detect(expand('%') == '' ? getcwd() : expand('%:p'))
   endfunction
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Goto File: {{{
+silent! let s:bundle = neobundle#get('gf-user')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:gf_user_no_default_key_mappings = 1
+  endfunction
+
+  NXmap gf         <Plug>(gf-user-gf)
+  NXmap gF         <Plug>(gf-user-gF)
+  NXmap <C-W>f     <Plug>(gf-user-<C-w>f)
+  NXmap <C-W>F     <Plug>(gf-user-<C-w>F)
+  NXmap <C-W>gf    <Plug>(gf-user-<C-w>gf)
+  NXmap <C-W>gF    <Plug>(gf-user-<C-w>gF)
+  NXmap <C-W><C-F> <Plug>(gf-user-<C-w><C-f>)
 endif
 unlet! s:bundle
 "}}}
