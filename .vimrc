@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-13 17:35:48 DeaR>
+" @timestamp   <2013-07-13 17:44:59 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -359,7 +359,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \   'insert' : 1},
       \ 'depends' : [
       \   'Shougo/context_filetype.vim',
-      \   'Shougo/echodoc',
       \   'hrsh7th/vim-neco-calc',
       \   'ujihisa/neco-look']}
     call extend(s:neocompl_vim_completefuncs, {
@@ -395,7 +394,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \   'unite_sources' : ['file_include', 'neocomplcache'],
       \   'insert' : 1},
       \ 'depends' : [
-      \   'Shougo/echodoc',
       \   'hrsh7th/vim-neco-calc',
       \   'ujihisa/neco-look']}
     call extend(s:neocompl_vim_completefuncs, {
@@ -428,9 +426,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     'snippet', 'snippet/target',
     \     'neosnippet/user', 'neosnippet/runtime'],
     \   'insert' : 1},
-    \ 'depends' : [
-    \   'Shougo/context_filetype.vim',
-    \   'Shougo/echodoc']}
+    \ 'depends' : 'Shougo/context_filetype.vim'}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'NeoSnippetEdit'      : 'neosnippet#edit_complete',
     \ 'NeoSnippetMakeCache' : 'neosnippet#filetype_complete'})
@@ -1045,9 +1041,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \      'complete' : 'customlist,vimshell#vimshell_execute_complete'}],
     \   'unite_sources' : [
     \     'vimshell/external_history', 'vimshell/history']},
-    \ 'depends' : [
-    \   'Shougo/echodoc',
-    \   'ujihisa/vimshell-ssh']}
+    \ 'depends' : 'ujihisa/vimshell-ssh'}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'VimShell'            : 'vimshell#complete',
     \ 'VimShellCreate'      : 'vimshell#complete',
@@ -2465,17 +2459,6 @@ silent! let s:bundle = neobundle#get('columnjump')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap <C-K> <Plug>(columnjump-backward)zz
   nmap <C-J> <Plug>(columnjump-forward)zz
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" EchoDoc: {{{
-silent! let s:bundle = neobundle#get('echodoc')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    call echodoc#enable()
-  endfunction
 endif
 unlet! s:bundle
 "}}}
