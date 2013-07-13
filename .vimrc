@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-13 05:14:56 DeaR>
+" @timestamp   <2013-07-13 17:06:07 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1554,6 +1554,15 @@ NOXnoremap mk [`
 
 "-----------------------------------------------------------------------------
 " Useful: {{{
+" Split Nicely
+function! s:split_nicely_expr()
+  return &columns < 160
+endfunction
+noremap <expr> <SID>(split-nicely)
+  \ <SID>split_nicely_expr() ?
+  \   '<C-W>s' :
+  \   '<C-W>v'
+
 " Semi-colon shortcut
 nnoremap ;w     :<C-U>confirm update<CR>
 nnoremap ;W     :<C-U>confirm wall<CR>
@@ -1585,8 +1594,8 @@ nnoremap <M-r>     g+
 nnoremap <Leader>u :<C-U>undolist<CR>
 
 " New line
-nnoremap <M-o> o<Esc>k
-nnoremap <M-O> O<Esc>j
+nnoremap <M-o> o<Esc>0"_Dk
+nnoremap <M-O> O<Esc>0"_Dj
 
 " Auto recenter
 nnoremap  <Tab> <Tab>zz
@@ -1622,15 +1631,15 @@ augroup END
 
 " Help
 inoremap <expr> <F1>
-  \ &columns < 160 ?
+  \ <SID>split_nicely_expr() ?
   \   '<C-O>:<C-U>help<Space>' :
   \   '<C-O>:<C-U>vertical help<Space>'
 nnoremap <expr> <F1>
-  \ &columns < 160 ?
+  \ <SID>split_nicely_expr() ?
   \   ':<C-U>help<Space>' :
   \   ':<C-U>vertical help<Space>'
 nnoremap <expr> g<F1>
-  \ &columns < 160 ?
+  \ <SID>split_nicely_expr() ?
   \   ':<C-U>help ' . expand('<cword>') . '<CR>' :
   \   ':<C-U>vertical help ' . expand('<cword>') . '<CR>'
 
@@ -1642,41 +1651,12 @@ xnoremap <C-N> :global//print<CR>
 nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
 
 " Search Split Window
-if s:cmdwin_enable
-  NXnoremap <expr> <C-W>/
-    \ &columns < 160 ?
-    \   '<C-W>sq/' :
-    \   '<C-W>vq/'
-  NXnoremap <expr> <C-W>?
-    \ &columns < 160 ?
-    \   '<C-W>sq?' :
-    \   '<C-W>vq?'
-else
-  NXnoremap <expr> <C-W>/
-    \ &columns < 160 ?
-    \   '<C-W>s/' :
-    \   '<C-W>v/'
-  NXnoremap <expr> <C-W>?
-    \ &columns < 160 ?
-    \   '<C-W>s?' :
-    \   '<C-W>v?'
-endif
-NXnoremap <expr> <C-W>*
-  \ &columns < 160 ?
-  \   '<C-W>s*zz' :
-  \   '<C-W>v*zz'
-NXnoremap <expr> <C-W>#
-  \ &columns < 160 ?
-  \   '<C-W>s#zz' :
-  \   '<C-W>v#zz'
-NXnoremap <expr> <C-W>g*
-  \ &columns < 160 ?
-  \   '<C-W>sg*zz' :
-  \   '<C-W>vg*zz'
-NXnoremap <expr> <C-W>g#
-  \ &columns < 160 ?
-  \   '<C-W>sg#zz' :
-  \   '<C-W>vg#zz'
+NXnoremap <script><expr> <C-W>/  <SID>(split-nicely)<SID>/
+NXnoremap <script><expr> <C-W>?  <SID>(split-nicely)<SID>?
+NXnoremap <script><expr> <C-W>*  <SID>(split-nicely)*zz
+NXnoremap <script><expr> <C-W>#  <SID>(split-nicely)#zz
+NXnoremap <script><expr> <C-W>g* <SID>(split-nicely)*zz
+NXnoremap <script><expr> <C-W>g# <SID>(split-nicely)#zz
 
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
@@ -1923,20 +1903,23 @@ function! s:cmdline_enter(type)
 endfunction
 
 if s:cmdwin_enable
-  NXnoremap : q:
-  NXnoremap / q/
-  NXnoremap ? q?
-
-  NXnoremap <expr> ;: <SID>cmdline_enter(':')
-  NXnoremap <expr> ;/ <SID>cmdline_enter('/')
-  NXnoremap <expr> ;? <SID>cmdline_enter('?')
+  noremap <SID>: q:
+  noremap <SID>/ q/
+  noremap <SID>? q?
 else
-  NXnoremap <expr> : <SID>cmdline_enter(':')
-  NXnoremap <expr> / <SID>cmdline_enter('/')
-  NXnoremap <expr> ? <SID>cmdline_enter('?')
+  noremap <expr> <SID>: <SID>cmdline_enter(':')
+  noremap <expr> <SID>/ <SID>cmdline_enter('/')
+  noremap <expr> <SID>? <SID>cmdline_enter('?')
 endif
 
-NXmap ;; :
+NXmap ;; <SID>:
+NXmap :  <SID>:
+NXmap /  <SID>/
+NXmap ?  <SID>?
+
+NXnoremap <expr> ;: <SID>cmdline_enter(':')
+NXnoremap <expr> ;/ <SID>cmdline_enter('/')
+NXnoremap <expr> ;? <SID>cmdline_enter('?')
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -2056,97 +2039,50 @@ inoremap <silent><expr> <M-L> '<C-O>' . <SID>smart_eol()
 
 "-----------------------------------------------------------------------------
 " Substitute: {{{
-if s:cmdwin_enable
-  xnoremap <expr> s/
-    \ 'q:s//gc<Left><Left><Left>'
+xnoremap <script><expr> s/
+  \ '<SID>:s//gc<Left><Left><Left>'
 
-  nnoremap <expr> s/
-    \ 'q:<C-U>.,$s//gc<Left><Left><Left>'
-  nnoremap <expr> s*
-    \ 'q:<C-U>.,$s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
-  nnoremap <expr> sg*
-    \ 'q:<C-U>.,$s/' . expand('<cword>') . '//gc<Left><Left><Left>'
+nnoremap <script><expr> s/
+  \ '<SID>:<C-U>.,$s//gc<Left><Left><Left>'
+nnoremap <script><expr> s*
+  \ '<SID>:<C-U>.,$s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
+nnoremap <script><expr> sg*
+  \ '<SID>:<C-U>.,$s/' . expand('<cword>') . '//gc<Left><Left><Left>'
 
-  nnoremap <expr> s?
-    \ 'q:<C-U>1,.s//gc<Left><Left><Left>'
-  nnoremap <expr> s#
-    \ 'q:<C-U>1,.s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
-  nnoremap <expr> sg#
-    \ 'q:<C-U>1,.s/' . expand('<cword>') . '//gc<Left><Left><Left>'
+nnoremap <script><expr> s?
+  \ '<SID>:<C-U>1,.s//gc<Left><Left><Left>'
+nnoremap <script><expr> s#
+  \ '<SID>:<C-U>1,.s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
+nnoremap <script><expr> sg#
+  \ '<SID>:<C-U>1,.s/' . expand('<cword>') . '//gc<Left><Left><Left>'
 
-  nnoremap <expr> sa/
-    \ 'q:<C-U>argdo %s//gce<Left><Left><Left><Left>'
-  nnoremap <expr> sa*
-    \ 'q:<C-U>argdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-  nnoremap <expr> sag*
-    \ 'q:<C-U>argdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
+nnoremap <script><expr> sa/
+  \ '<SID>:<C-U>argdo %s//gce<Left><Left><Left><Left>'
+nnoremap <script><expr> sa*
+  \ '<SID>:<C-U>argdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
+nnoremap <script><expr> sag*
+  \ '<SID>:<C-U>argdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
 
-  nnoremap <expr> sb/
-    \ 'q:<C-U>bufdo %s//gce<Left><Left><Left><Left>'
-  nnoremap <expr> sb*
-    \ 'q:<C-U>bufdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-  nnoremap <expr> sbg*
-    \ 'q:<C-U>bufdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
+nnoremap <script><expr> sb/
+  \ '<SID>:<C-U>bufdo %s//gce<Left><Left><Left><Left>'
+nnoremap <script><expr> sb*
+  \ '<SID>:<C-U>bufdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
+nnoremap <script><expr> sbg*
+  \ '<SID>:<C-U>bufdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
 
-  nnoremap <expr> st/
-    \ 'q:<C-U>tabdo %s//gce<Left><Left><Left><Left>'
-  nnoremap <expr> st*
-    \ 'q:<C-U>tabdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-  nnoremap <expr> stg*
-    \ 'q:<C-U>tabdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
+nnoremap <script><expr> st/
+  \ '<SID>:<C-U>tabdo %s//gce<Left><Left><Left><Left>'
+nnoremap <script><expr> st*
+  \ '<SID>:<C-U>tabdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
+nnoremap <script><expr> stg*
+  \ '<SID>:<C-U>tabdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
 
-  nnoremap <expr> sw/
-    \ 'q:<C-U>windo %s//gce<Left><Left><Left><Left>'
-  nnoremap <expr> sw*
-    \ 'q:<C-U>windo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-  nnoremap <expr> swg*
-    \ 'q:<C-U>windo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
-else
-  xnoremap <expr> s/
-    \ ':s//gc<Left><Left><Left>'
-
-  nnoremap <expr> s/
-    \ ':<C-U>.,$s//gc<Left><Left><Left>'
-  nnoremap <expr> s*
-    \ ':<C-U>.,$s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
-  nnoremap <expr> sg*
-    \ ':<C-U>.,$s/' . expand('<cword>') . '//gc<Left><Left><Left>'
-
-  nnoremap <expr> s?
-    \ ':<C-U>1,.s//gc<Left><Left><Left>'
-  nnoremap <expr> s#
-    \ ':<C-U>1,.s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
-  nnoremap <expr> sg#
-    \ ':<C-U>1,.s/' . expand('<cword>') . '//gc<Left><Left><Left>'
-
-  nnoremap <expr> sa/
-    \ ':<C-U>argdo %s//gce<Left><Left><Left><Left>'
-  nnoremap <expr> sa*
-    \ ':<C-U>argdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-  nnoremap <expr> sag*
-    \ ':<C-U>argdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
-
-  nnoremap <expr> sb/
-    \ ':<C-U>bufdo %s//gce<Left><Left><Left><Left>'
-  nnoremap <expr> sb*
-    \ ':<C-U>bufdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-  nnoremap <expr> sbg*
-    \ ':<C-U>bufdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
-
-  nnoremap <expr> st/
-    \ ':<C-U>tabdo %s//gce<Left><Left><Left><Left>'
-  nnoremap <expr> st*
-    \ ':<C-U>tabdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-  nnoremap <expr> stg*
-    \ ':<C-U>tabdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
-
-  nnoremap <expr> sw/
-    \ ':<C-U>windo %s//gce<Left><Left><Left><Left>'
-  nnoremap <expr> sw*
-    \ ':<C-U>windo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-  nnoremap <expr> swg*
-    \ ':<C-U>windo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
-endif
+nnoremap <script><expr> sw/
+  \ '<SID>:<C-U>windo %s//gce<Left><Left><Left><Left>'
+nnoremap <script><expr> sw*
+  \ '<SID>:<C-U>windo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
+nnoremap <script><expr> swg*
+  \ '<SID>:<C-U>windo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
 
 nmap sg?  s#
 nmap sg/  s*
@@ -2226,12 +2162,6 @@ function! s:auto_mkdir(dir, force)
 endfunction
 autocmd MyVimrc BufWritePre *
   \ call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
-"}}}
-
-"-----------------------------------------------------------------------------
-" No Insert Comment Leader: {{{
-autocmd MyVimrc FileType *
-  \ setlocal formatoptions-=r formatoptions-=o
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -3626,21 +3556,19 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   function! s:bundle.hooks.on_post_source(bundle)
-    if s:cmdwin_enable
-      noremap  <C-_><Space> q:TComment<Space>
-      inoremap <C-_><Space> <C-O>q:TComment<Space>
-      noremap  <C-_>a       q:TCommentAs<Space>
-      inoremap <C-_>a       <C-O>q:TCommentAs<Space>
-      noremap  <C-_>n       q:TCommentAs <C-R>=&ft<CR><Space>
-      inoremap <C-_>n       <C-O>q:TCommentAs <C-R>=&ft<CR><Space>
-      noremap  <C-_>s       q:TCommentAs <C-R>=&ft<CR>_
-      inoremap <C-_>s       <C-O>q:TCommentAs <C-R>=&ft<CR>_
+    noremap  <script> <C-_><Space> <SID>:TComment<Space>
+    inoremap <script> <C-_><Space> <C-O><SID>:TComment<Space>
+    noremap  <script> <C-_>a       <SID>:TCommentAs<Space>
+    inoremap <script> <C-_>a       <C-O><SID>:TCommentAs<Space>
+    noremap  <script> <C-_>n       <SID>:TCommentAs <C-R>=&ft<CR><Space>
+    inoremap <script> <C-_>n       <C-O><SID>:TCommentAs <C-R>=&ft<CR><Space>
+    noremap  <script> <C-_>s       <SID>:TCommentAs <C-R>=&ft<CR>_
+    inoremap <script> <C-_>s       <C-O><SID>:TCommentAs <C-R>=&ft<CR>_
 
-      noremap  <Leader>_<Space> q:TComment<Space>
-      noremap  <Leader>_a       q:TCommentAs<Space>
-      noremap  <Leader>_n       q:TCommentAs <C-R>=&ft<CR><Space>
-      noremap  <Leader>_s       q:TCommentAs <C-R>=&ft<CR>_
-    endif
+    noremap  <script> <Leader>_<Space> <SID>:TComment<Space>
+    noremap  <script> <Leader>_a       <SID>:TCommentAs<Space>
+    noremap  <script> <Leader>_n       <SID>:TCommentAs <C-R>=&ft<CR><Space>
+    noremap  <script> <Leader>_s       <SID>:TCommentAs <C-R>=&ft<CR>_
 
     sunmap <Leader>__
     sunmap <Leader>_p
@@ -4229,11 +4157,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nnoremap ;u <Nop>
 
-  if s:cmdwin_enable
-    nnoremap ;uu q:<C-U>Unite<Space>
-  else
-    nnoremap ;uu :<C-U>Unite<Space>
-  endif
+  nnoremap <script> ;uu <SID>:<C-U>Unite<Space>
 
   nnoremap ;um :<C-U>Unite menu<CR>
   nnoremap ;u<CR> :<C-U>Unite menu:set_ff<CR>
@@ -4494,82 +4418,39 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   xnoremap <script> <S-LeftMouse>  <SID>(visualstar-*)zz
   xnoremap <script> g<S-LeftMouse> <SID>(visualstar-g*)zz
 
-  xnoremap <script><expr> <C-W>*
-    \ &columns < 160 ?
-    \   '<C-W>sgv<SID>(visualstar-*)zz' :
-    \   '<C-W>vgv<SID>(visualstar-*)zz'
-  xnoremap <script><expr> <C-W>#
-    \ &columns < 160 ?
-    \   '<C-W>sgv<SID>(visualstar-#)zz' :
-    \   '<C-W>vgv<SID>(visualstar-#)zz'
-  xnoremap <script><expr> <C-W>g*
-    \ &columns < 160 ?
-    \   '<C-W>sgv<SID>(visualstar-g*)zz' :
-    \   '<C-W>vgv<SID>(visualstar-g*)zz'
-  xnoremap <script><expr> <C-W>g#
-    \ &columns < 160 ?
-    \   '<C-W>sgv<SID>(visualstar-g#)zz' :
-    \   '<C-W>vgv<SID>(visualstar-g#)zz'
+  xnoremap <script> <C-W>*  <SID>(split-nicely)gv<SID>(visualstar-*)zz
+  xnoremap <script> <C-W>#  <SID>(split-nicely)gv<SID>(visualstar-#)zz
+  xnoremap <script> <C-W>g* <SID>(split-nicely)gv<SID>(visualstar-g*)zz
+  xnoremap <script> <C-W>g# <SID>(split-nicely)gv<SID>(visualstar-g#)zz
 
-  if s:cmdwin_enable
-    xnoremap <script> s*
-      \ <SID>(visualstar-*)Nq:<C-U>.,$s///gc<Left><Left><Left>
-    xnoremap <script> s#
-      \ <SID>(visualstar-#)Nq:<C-U>1,.s///gc<Left><Left><Left>
-    xnoremap <script> sg*
-      \ <SID>(visualstar-g*)Nq:<C-U>.,$s///gc<Left><Left><Left>
-    xnoremap <script> sg#
-      \ <SID>(visualstar-g#)Nq:<C-U>1,.s///gc<Left><Left><Left>
+  xnoremap <script> s*
+    \ <SID>(visualstar-*)N<SID>:<C-U>.,$s///gc<Left><Left><Left>
+  xnoremap <script> s#
+    \ <SID>(visualstar-#)N<SID>:<C-U>1,.s///gc<Left><Left><Left>
+  xnoremap <script> sg*
+    \ <SID>(visualstar-g*)N<SID>:<C-U>.,$s///gc<Left><Left><Left>
+  xnoremap <script> sg#
+    \ <SID>(visualstar-g#)N<SID>:<C-U>1,.s///gc<Left><Left><Left>
 
-    xnoremap <script> sa*
-      \ <SID>(visualstar-*)Nq:<C-U>argdo %s///gce<Left><Left><Left><Left>
-    xnoremap <script> sag*
-      \ <SID>(visualstar-g*)Nq:<C-U>argdo %s///gce<Left><Left><Left><Left>
+  xnoremap <script> sa*
+    \ <SID>(visualstar-*)N<SID>:<C-U>argdo %s///gce<Left><Left><Left><Left>
+  xnoremap <script> sag*
+    \ <SID>(visualstar-g*)N<SID>:<C-U>argdo %s///gce<Left><Left><Left><Left>
 
-    xnoremap <script> sb*
-      \ <SID>(visualstar-*)Nq:<C-U>bufdo %s///gce<Left><Left><Left><Left>
-    xnoremap <script> sbg*
-      \ <SID>(visualstar-g*)Nq:<C-U>bufdo %s///gce<Left><Left><Left><Left>
+  xnoremap <script> sb*
+    \ <SID>(visualstar-*)N<SID>:<C-U>bufdo %s///gce<Left><Left><Left><Left>
+  xnoremap <script> sbg*
+    \ <SID>(visualstar-g*)N<SID>:<C-U>bufdo %s///gce<Left><Left><Left><Left>
 
-    xnoremap <script> st*
-      \ <SID>(visualstar-*)Nq:<C-U>tabdo %s///gce<Left><Left><Left><Left>
-    xnoremap <script> stg*
-      \ <SID>(visualstar-g*)Nq:<C-U>tabdo %s///gce<Left><Left><Left><Left>
+  xnoremap <script> st*
+    \ <SID>(visualstar-*)N<SID>:<C-U>tabdo %s///gce<Left><Left><Left><Left>
+  xnoremap <script> stg*
+    \ <SID>(visualstar-g*)N<SID>:<C-U>tabdo %s///gce<Left><Left><Left><Left>
 
-    xnoremap <script> sw*
-      \ <SID>(visualstar-*)Nq:<C-U>windo %s///gce<Left><Left><Left><Left>
-    xnoremap <script> swg*
-      \ <SID>(visualstar-g*)Nq:<C-U>windo %s///gce<Left><Left><Left><Left>
-  else
-    xnoremap <script> s*
-      \ <SID>(visualstar-*)N:<C-U>.,$s///gc<Left><Left><Left>
-    xnoremap <script> s#
-      \ <SID>(visualstar-#)N:<C-U>1,.s///gc<Left><Left><Left>
-    xnoremap <script> sg*
-      \ <SID>(visualstar-g*)N:<C-U>.,$s///gc<Left><Left><Left>
-    xnoremap <script> sg#
-      \ <SID>(visualstar-g#)N:<C-U>1,.s///gc<Left><Left><Left>
-
-    xnoremap <script> sa*
-      \ <SID>(visualstar-*)N:<C-U>argdo %s///gce<Left><Left><Left><Left>
-    xnoremap <script> sag*
-      \ <SID>(visualstar-g*)N:<C-U>argdo %s///gce<Left><Left><Left><Left>
-
-    xnoremap <script> sb*
-      \ <SID>(visualstar-*)N:<C-U>bufdo %s///gce<Left><Left><Left><Left>
-    xnoremap <script> sbg*
-      \ <SID>(visualstar-g*)N:<C-U>bufdo %s///gce<Left><Left><Left><Left>
-
-    xnoremap <script> st*
-      \ <SID>(visualstar-*)N:<C-U>tabdo %s///gce<Left><Left><Left><Left>
-    xnoremap <script> stg*
-      \ <SID>(visualstar-g*)N:<C-U>tabdo %s///gce<Left><Left><Left><Left>
-
-    xnoremap <script> sw*
-      \ <SID>(visualstar-*)N:<C-U>windo %s///gce<Left><Left><Left><Left>
-    xnoremap <script> swg*
-      \ <SID>(visualstar-g*)N:<C-U>windo %s///gce<Left><Left><Left><Left>
-  endif
+  xnoremap <script> sw*
+    \ <SID>(visualstar-*)N<SID>:<C-U>windo %s///gce<Left><Left><Left><Left>
+  xnoremap <script> swg*
+    \ <SID>(visualstar-g*)N<SID>:<C-U>windo %s///gce<Left><Left><Left><Left>
 
   xmap sg/  s*
   xmap sg?  s#
