@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-13 18:22:46 DeaR>
+" @timestamp   <2013-07-14 00:24:05 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4500,6 +4500,22 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \     executable('cl')      ? 'watchdogs_checker/msvc' : ''}})
 
     call watchdogs#setup(g:quickrun_config)
+  endfunction
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" WebAPI: {{{
+silent! let s:bundle = neobundle#get('webapi')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    if s:has_vimproc()
+      let g:webapi#system_function =
+        \ has('win32') ?
+        \   'vimproc#cmd#system' :
+        \   'vimproc#system'
+    endif
   endfunction
 endif
 unlet! s:bundle
