@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-14 00:24:05 DeaR>
+" @timestamp   <2013-07-14 00:40:26 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -561,7 +561,9 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \      'complete' : 'customlist,quickrun#complete'}],
     \   'mappings' : [
     \     ['nv', '<Plug>(quickrun)'], ['n', '<Plug>(quickrun-op)']]},
-    \ 'depends' : 'osyo-manga/shabadou.vim'}
+    \ 'depends' : [
+    \   'osyo-manga/quickrun-hook-vcvarsall',
+    \   'osyo-manga/shabadou.vim']}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'QuickRun' : 'quickrun#complete'})
 
@@ -3139,29 +3141,6 @@ silent! let s:bundle = neobundle#get('quickrun')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:quickrun_no_default_key_mappings = 1
-
-    let hook = {
-      \ 'name' : 'vcvarsall',
-      \ 'kind' : 'hook',
-      \ 'config' : {
-      \   'enable' : 0,
-      \   'bat' : ''}}
-    function! hook.on_module_loaded(session, context)
-      if type(a:session.config.exec) == type([])
-        let a:session.config.exec[0] = join([
-          \ self.config.bat,
-          \ $PROCESSOR_ARCHITECTURE,
-          \ '\&',
-          \ a:session.config.exec[0]])
-      else
-        let a:session.config.exec = join([
-          \ self.config.bat,
-          \ $PROCESSOR_ARCHITECTURE,
-          \ '\&',
-          \ a:session.config.exec])
-      endif
-    endfunction
-    call quickrun#module#register(hook, 1)
 
     let g:quickrun_config =
       \ get(g:, 'quickrun_config', {})
