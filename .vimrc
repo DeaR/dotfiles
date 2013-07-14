@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-14 03:42:28 DeaR>
+" @timestamp   <2013-07-14 22:57:44 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -695,13 +695,31 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-datetime', {
-    \ 'autoload' : {'mappings' : [['ox', 'ad', 'id']]},
-    \ 'depends' : [
-    \   'kana/vim-textobj-diff',
-    \   'kana/vim-textobj-user']}
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-datetime-auto)',
+    \      '<Plug>(textobj-datetime-date)',
+    \      '<Plug>(textobj-datetime-full)',
+    \      '<Plug>(textobj-datetime-time)',
+    \      '<Plug>(textobj-datetime-tz)']]},
+    \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-diff', {
-    \ 'autoload' : {'mappings' : '<Leader>d'},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-diff-file-N)',
+    \      '<Plug>(textobj-diff-file-P)',
+    \      '<Plug>(textobj-diff-file-n)',
+    \      '<Plug>(textobj-diff-file-p)',
+    \      '<Plug>(textobj-diff-hunk-N)',
+    \      '<Plug>(textobj-diff-hunk-P)',
+    \      '<Plug>(textobj-diff-hunk-n)',
+    \      '<Plug>(textobj-diff-hunk-p)',
+    \      '<Plug>(textobj-diff-file)',
+    \      '<Plug>(textobj-diff-file)',
+    \      '<Plug>(textobj-diff-hunk)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-entire', {
@@ -767,7 +785,31 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-jabraces', {
-    \ 'autoload' : {'mappings' : [['ox', 'aj', 'ij']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-jabraces-parens-a)',
+    \      '<Plug>(textobj-jabraces-parens-i)',
+    \      '<Plug>(textobj-jabraces-braces-a)',
+    \      '<Plug>(textobj-jabraces-braces-i)',
+    \      '<Plug>(textobj-jabraces-brackets-a)',
+    \      '<Plug>(textobj-jabraces-brackets-i)',
+    \      '<Plug>(textobj-jabraces-angles-a)',
+    \      '<Plug>(textobj-jabraces-angles-i)',
+    \      '<Plug>(textobj-jabraces-double-angles-a)',
+    \      '<Plug>(textobj-jabraces-double-angles-i)',
+    \      '<Plug>(textobj-jabraces-kakko-a)',
+    \      '<Plug>(textobj-jabraces-kakko-i)',
+    \      '<Plug>(textobj-jabraces-double-kakko-a)',
+    \      '<Plug>(textobj-jabraces-double-kakko-i)',
+    \      '<Plug>(textobj-jabraces-yama-kakko-a)',
+    \      '<Plug>(textobj-jabraces-yama-kakko-i)',
+    \      '<Plug>(textobj-jabraces-double-yama-kakko-a)',
+    \      '<Plug>(textobj-jabraces-double-yama-kakko-i)',
+    \      '<Plug>(textobj-jabraces-kikkou-kakko-a)',
+    \      '<Plug>(textobj-jabraces-kikkou-kakko-i)',
+    \      '<Plug>(textobj-jabraces-sumi-kakko-a)',
+    \      '<Plug>(textobj-jabraces-sumi-kakko-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'rhysd/vim-textobj-lastinserted', {
@@ -3656,21 +3698,21 @@ silent! let s:bundle = neobundle#get('textobj-datetime')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_datetime_no_default_key_mappings = 1
-
-    OXnoremap ad <Nop>
-    OXmap ada <Plug>(textobj-datetime-auto)
-    OXmap add <Plug>(textobj-datetime-date)
-    OXmap adf <Plug>(textobj-datetime-full)
-    OXmap adt <Plug>(textobj-datetime-time)
-    OXmap adz <Plug>(textobj-datetime-tz)
-
-    OXnoremap id <Nop>
-    OXmap ida <Plug>(textobj-datetime-auto)
-    OXmap idd <Plug>(textobj-datetime-date)
-    OXmap idf <Plug>(textobj-datetime-full)
-    OXmap idt <Plug>(textobj-datetime-time)
-    OXmap idz <Plug>(textobj-datetime-tz)
   endfunction
+
+  OXnoremap ad <Nop>
+  OXmap ada <Plug>(textobj-datetime-auto)
+  OXmap add <Plug>(textobj-datetime-date)
+  OXmap adf <Plug>(textobj-datetime-full)
+  OXmap adt <Plug>(textobj-datetime-time)
+  OXmap adz <Plug>(textobj-datetime-tz)
+
+  OXnoremap id <Nop>
+  OXmap ida <Plug>(textobj-datetime-auto)
+  OXmap idd <Plug>(textobj-datetime-date)
+  OXmap idf <Plug>(textobj-datetime-full)
+  OXmap idt <Plug>(textobj-datetime-time)
+  OXmap idz <Plug>(textobj-datetime-tz)
 endif
 unlet! s:bundle
 "}}}
@@ -3681,27 +3723,27 @@ silent! let s:bundle = neobundle#get('textobj-diff')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_diff_no_default_key_mappings = 1
-
-    NOXnoremap <Leader>d <Nop>
-    NOXmap <Leader>dfJ <Plug>(textobj-diff-file-N)
-    NOXmap <Leader>dfK <Plug>(textobj-diff-file-P)
-    NOXmap <Leader>dfj <Plug>(textobj-diff-file-n)
-    NOXmap <Leader>dfk <Plug>(textobj-diff-file-p)
-    NOXmap <Leader>dJ  <Plug>(textobj-diff-hunk-N)
-    NOXmap <Leader>dK  <Plug>(textobj-diff-hunk-P)
-    NOXmap <Leader>dj  <Plug>(textobj-diff-hunk-n)
-    NOXmap <Leader>dk  <Plug>(textobj-diff-hunk-p)
-
-    OXnoremap ad <Nop>
-    OXmap adH <Plug>(textobj-diff-file)
-    OXmap adf <Plug>(textobj-diff-file)
-    OXmap adh <Plug>(textobj-diff-hunk)
-
-    OXnoremap id <Nop>
-    OXmap idH <Plug>(textobj-diff-file)
-    OXmap idf <Plug>(textobj-diff-file)
-    OXmap idh <Plug>(textobj-diff-hunk)
   endfunction
+
+  NOXnoremap <Leader>d <Nop>
+  NOXmap <Leader>dfJ <Plug>(textobj-diff-file-N)
+  NOXmap <Leader>dfK <Plug>(textobj-diff-file-P)
+  NOXmap <Leader>dfj <Plug>(textobj-diff-file-n)
+  NOXmap <Leader>dfk <Plug>(textobj-diff-file-p)
+  NOXmap <Leader>dJ  <Plug>(textobj-diff-hunk-N)
+  NOXmap <Leader>dK  <Plug>(textobj-diff-hunk-P)
+  NOXmap <Leader>dj  <Plug>(textobj-diff-hunk-n)
+  NOXmap <Leader>dk  <Plug>(textobj-diff-hunk-p)
+
+  OXnoremap ad <Nop>
+  OXmap adH <Plug>(textobj-diff-file)
+  OXmap adf <Plug>(textobj-diff-file)
+  OXmap adh <Plug>(textobj-diff-hunk)
+
+  OXnoremap id <Nop>
+  OXmap idH <Plug>(textobj-diff-file)
+  OXmap idf <Plug>(textobj-diff-file)
+  OXmap idh <Plug>(textobj-diff-hunk)
 endif
 unlet! s:bundle
 "}}}
@@ -3794,49 +3836,49 @@ silent! let s:bundle = neobundle#get('textobj-jabraces')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_jabraces_no_default_key_mappings = 1
-
-    OXnoremap aj <Nop>
-    OXmap ajb <Plug>(textobj-jabraces-parens-a)
-    OXmap aj( <Plug>(textobj-jabraces-parens-a)
-    OXmap aj) <Plug>(textobj-jabraces-parens-a)
-    OXmap ajB <Plug>(textobj-jabraces-braces-a)
-    OXmap aj{ <Plug>(textobj-jabraces-braces-a)
-    OXmap aj} <Plug>(textobj-jabraces-braces-a)
-    OXmap ajr <Plug>(textobj-jabraces-brackets-a)
-    OXmap aj[ <Plug>(textobj-jabraces-brackets-a)
-    OXmap aj] <Plug>(textobj-jabraces-brackets-a)
-    OXmap aja <Plug>(textobj-jabraces-angles-a)
-    OXmap aj< <Plug>(textobj-jabraces-angles-a)
-    OXmap aj> <Plug>(textobj-jabraces-angles-a)
-    OXmap ajA <Plug>(textobj-jabraces-double-angles-a)
-    OXmap ajk <Plug>(textobj-jabraces-kakko-a)
-    OXmap ajK <Plug>(textobj-jabraces-double-kakko-a)
-    OXmap ajy <Plug>(textobj-jabraces-yama-kakko-a)
-    OXmap ajY <Plug>(textobj-jabraces-double-yama-kakko-a)
-    OXmap ajt <Plug>(textobj-jabraces-kikkou-kakko-a)
-    OXmap ajs <Plug>(textobj-jabraces-sumi-kakko-a)
-
-    OXnoremap ij <Nop>
-    OXmap ijb <Plug>(textobj-jabraces-parens-i)
-    OXmap ij( <Plug>(textobj-jabraces-parens-i)
-    OXmap ij) <Plug>(textobj-jabraces-parens-i)
-    OXmap ijB <Plug>(textobj-jabraces-braces-i)
-    OXmap ij{ <Plug>(textobj-jabraces-braces-i)
-    OXmap ij} <Plug>(textobj-jabraces-braces-i)
-    OXmap ijr <Plug>(textobj-jabraces-brackets-i)
-    OXmap ij[ <Plug>(textobj-jabraces-brackets-i)
-    OXmap ij] <Plug>(textobj-jabraces-brackets-i)
-    OXmap ija <Plug>(textobj-jabraces-ingles-i)
-    OXmap ij< <Plug>(textobj-jabraces-ingles-i)
-    OXmap ij> <Plug>(textobj-jabraces-ingles-i)
-    OXmap ijA <Plug>(textobj-jabraces-double-ingles-i)
-    OXmap ijk <Plug>(textobj-jabraces-kakko-i)
-    OXmap ijK <Plug>(textobj-jabraces-double-kakko-i)
-    OXmap ijy <Plug>(textobj-jabraces-yama-kakko-i)
-    OXmap ijY <Plug>(textobj-jabraces-double-yama-kakko-i)
-    OXmap ijt <Plug>(textobj-jabraces-kikkou-kakko-i)
-    OXmap ijs <Plug>(textobj-jabraces-sumi-kakko-i)
   endfunction
+
+  OXnoremap aj <Nop>
+  OXmap ajb <Plug>(textobj-jabraces-parens-a)
+  OXmap aj( <Plug>(textobj-jabraces-parens-a)
+  OXmap aj) <Plug>(textobj-jabraces-parens-a)
+  OXmap ajB <Plug>(textobj-jabraces-braces-a)
+  OXmap aj{ <Plug>(textobj-jabraces-braces-a)
+  OXmap aj} <Plug>(textobj-jabraces-braces-a)
+  OXmap ajr <Plug>(textobj-jabraces-brackets-a)
+  OXmap aj[ <Plug>(textobj-jabraces-brackets-a)
+  OXmap aj] <Plug>(textobj-jabraces-brackets-a)
+  OXmap aja <Plug>(textobj-jabraces-angles-a)
+  OXmap aj< <Plug>(textobj-jabraces-angles-a)
+  OXmap aj> <Plug>(textobj-jabraces-angles-a)
+  OXmap ajA <Plug>(textobj-jabraces-double-angles-a)
+  OXmap ajk <Plug>(textobj-jabraces-kakko-a)
+  OXmap ajK <Plug>(textobj-jabraces-double-kakko-a)
+  OXmap ajy <Plug>(textobj-jabraces-yama-kakko-a)
+  OXmap ajY <Plug>(textobj-jabraces-double-yama-kakko-a)
+  OXmap ajt <Plug>(textobj-jabraces-kikkou-kakko-a)
+  OXmap ajs <Plug>(textobj-jabraces-sumi-kakko-a)
+
+  OXnoremap ij <Nop>
+  OXmap ijb <Plug>(textobj-jabraces-parens-i)
+  OXmap ij( <Plug>(textobj-jabraces-parens-i)
+  OXmap ij) <Plug>(textobj-jabraces-parens-i)
+  OXmap ijB <Plug>(textobj-jabraces-braces-i)
+  OXmap ij{ <Plug>(textobj-jabraces-braces-i)
+  OXmap ij} <Plug>(textobj-jabraces-braces-i)
+  OXmap ijr <Plug>(textobj-jabraces-brackets-i)
+  OXmap ij[ <Plug>(textobj-jabraces-brackets-i)
+  OXmap ij] <Plug>(textobj-jabraces-brackets-i)
+  OXmap ija <Plug>(textobj-jabraces-ingles-i)
+  OXmap ij< <Plug>(textobj-jabraces-ingles-i)
+  OXmap ij> <Plug>(textobj-jabraces-ingles-i)
+  OXmap ijA <Plug>(textobj-jabraces-double-ingles-i)
+  OXmap ijk <Plug>(textobj-jabraces-kakko-i)
+  OXmap ijK <Plug>(textobj-jabraces-double-kakko-i)
+  OXmap ijy <Plug>(textobj-jabraces-yama-kakko-i)
+  OXmap ijY <Plug>(textobj-jabraces-double-yama-kakko-i)
+  OXmap ijt <Plug>(textobj-jabraces-kikkou-kakko-i)
+  OXmap ijs <Plug>(textobj-jabraces-sumi-kakko-i)
 endif
 unlet! s:bundle
 "}}}
