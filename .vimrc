@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-14 22:57:44 DeaR>
+" @timestamp   <2013-07-16 01:32:29 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -631,9 +631,11 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     ['v',
     \      '<Plug>VSurround', '<Plug>VgSurround'],
     \     ['i',
-    \      '<Plug>Isurround', '<Plug>ISurround']]}}
+    \      '<Plug>Isurround', '<Plug>ISurround']]},
+    \ 'depends' : 'tpope/vim-repeat'}
 
-  NeoBundleLazy 'AndrewRadev/switch.vim'
+  NeoBundleLazy 'AndrewRadev/switch.vim', {
+    \ 'depends' : 'tpope/vim-repeat'}
 
   NeoBundleLazy 'tomtom/tcomment_vim', {
     \ 'name' : 'tcomment',
