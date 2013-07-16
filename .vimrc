@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 13:27:10 DeaR>
+" @timestamp   <2013-07-16 13:28:32 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3140,7 +3140,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('operator-reverse')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXmap sr <Plug>(operator-reverse-text)
-  NXmap sR <Plug>(operator-reverse-lines))
+  NXmap sR <Plug>(operator-reverse-lines)
 endif
 unlet! s:bundle
 "}}}
