@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 20:21:03 DeaR>
+" @timestamp   <2013-07-16 22:06:49 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -147,7 +147,7 @@ endif
 
 "-----------------------------------------------------------------------------
 " NeoBundle: {{{
-if isdirectory(expand('~/.local/bundle/neobundle'))
+if isdirectory($HOME . '/.local/bundle/neobundle')
   set runtimepath+=~/.local/bundle/neobundle
   if has('win32')
     let g:neobundle#rm_command = 'rm -rf'
@@ -157,7 +157,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   endif
   let g:neobundle#enable_name_conversion = 1
   let g:neobundle#enable_tail_path       = 1
-  call neobundle#rc(expand('~/.local/bundle'))
+  call neobundle#rc($HOME . '/.local/bundle')
 
   NeoBundleLazy 'h1mesuke/vim-alignta', {
     \ 'autoload' : {
@@ -2451,16 +2451,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:clang_jumpto_back_key        = '<LocalLeader><C-T>'
 
     if has('win64')
-      if filereadable(expand('~/bin64/libclang.dll'))
-        let g:clang_library_path = expand('~/bin64')
+      if filereadable($HOME . '/bin64/libclang.dll')
+        let g:clang_library_path = $HOME . '/bin64'
       endif
     elseif has('win32')
-      if filereadable(expand('~/bin/libclang.dll'))
-        let g:clang_library_path = expand('~/bin')
+      if filereadable($HOME . '/bin/libclang.dll')
+        let g:clang_library_path = $HOME . '/bin'
       endif
     else
-      if filereadable(expand('~/lib/libclang.so'))
-        let g:clang_library_path = expand('~/lib')
+      if filereadable($HOME . '/lib/libclang.so')
+        let g:clang_library_path = $HOME . '/lib'
       elseif filereadable(expand('/usr/local/lib/libclang.so'))
         let g:clang_library_path = expand('/usr/local/lib')
       elseif filereadable(expand('/usr/lib/libclang.so'))
@@ -2717,9 +2717,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:lua_complete_omni = 1
     if has('win64')
-      let g:lua_compiler_name = expand('~/bin64/luac52.exe')
+      let g:lua_compiler_name = $HOME . '/bin64/luac52.exe'
     elseif has('win32')
-      let g:lua_compiler_name = expand('~/bin/luac52.exe')
+      let g:lua_compiler_name = $HOME . '/bin/luac52.exe'
     endif
   endfunction
 
@@ -2807,7 +2807,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplcache_enable_fuzzy_completion      = 0
     let g:neocomplcache_force_overwrite_completefunc = 1
     let g:neocomplcache_temporary_dir                =
-      \ expand('~/.local/.neocomplcache')
+      \ $HOME . '/.local/.neocomplcache'
 
     let g:neocomplcache_force_omni_patterns       =
       \ s:neocompl_force_omni_patterns
@@ -2938,7 +2938,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     " let g:neocomplete#enable_insert_char_pre       = 1
     let g:neocomplete#force_overwrite_completefunc = 1
     let g:neocomplete#data_directory               =
-      \ expand('~/.local/.neocomplete')
+      \ $HOME . '/.local/.neocomplete'
 
     let g:neocomplete#force_omni_input_patterns        =
       \ s:neocompl_force_omni_patterns
@@ -3065,7 +3065,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('neosnippet')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:neosnippet#snippets_directory           = expand('~/.vim/snippets')
+    let g:neosnippet#snippets_directory           = $HOME . '/.vim/snippets'
     let g:neosnippet#disable_select_mode_mappings = 0
 
     let g:neosnippet#disable_runtime_snippets =
@@ -3216,7 +3216,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:QFix_PreviewHeight             = 20
     let g:MyGrep_MenuBar                 = 0
     let g:MyGrep_MultiEncodingGrepScript = 1
-    let g:MyGrep_Resultfile              = expand('~/.local/.qfgrep.txt')
+    let g:MyGrep_Resultfile              = $HOME . '/.local/.qfgrep.txt'
     let g:MyGrep_ExcludeReg              =
       \ '/\.drive\.r/|/\.hg/|/\.git/|/\.svn/'
     if s:executable('jvgrep')
@@ -3228,16 +3228,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       let g:myjpgrepprg = 'agrep.vim'
     endif
 
-    let g:howm_dir                = expand('~/howm')
+    let g:howm_dir                = $HOME . '/howm'
     let g:howm_filename           = '%Y/%m/%Y-%m-%d-%H%M%S.howm'
     let g:howm_fileformat         = 'unix'
     let g:qfixmemo_menubar        = 0
     let g:QFixHowm_Menufile       = '0000-00-01-000000.howm'
     let g:QFixHowm_MenuHeight     = 20
-    let g:QFixHowm_keywordfile    = expand('~/howm/.howm-keys')
-    let g:QFixHowm_RandomWalkFile = expand('~/.local/.howm-random')
-    let g:QFixHowm_VimEnterFile   = expand('~/.local/.vimenter.qf')
-    let g:QFixMRU_Filename        = expand('~/.local/.qfixmru')
+    let g:QFixHowm_keywordfile    = $HOME . '/howm/.howm-keys'
+    let g:QFixHowm_RandomWalkFile = $HOME . '/.local/.howm-random'
+    let g:QFixHowm_VimEnterFile   = $HOME . '/.local/.vimenter.qf'
+    let g:QFixMRU_Filename        = $HOME . '/.local/.qfixmru'
     if has('multi_byte')
       let g:howm_fileencoding = 'cp932'
     endif
@@ -3388,7 +3388,7 @@ silent! let s:bundle = neobundle#get('ref')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:ref_no_default_key_mappings = 1
-    let g:ref_cache_dir               = expand('~/local/.vim_ref_cache')
+    let g:ref_cache_dir               = $HOME . '/local/.vim_ref_cache'
   endfunction
 
   NXmap K <Plug>(ref-keyword)
@@ -4147,7 +4147,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('unite')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:unite_data_directory             = expand('~/.local/.unite')
+    let g:unite_data_directory             = $HOME . '/.local/.unite'
     let g:unite_enable_start_insert        = 1
     let g:unite_winheight                  = 25
     let g:unite_source_history_yank_enable = 1
@@ -4417,7 +4417,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('vimfiler')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:vimfiler_data_directory      = expand('~/.local/.vimfiler')
+    let g:vimfiler_data_directory      = $HOME . '/.local/.vimfiler'
     let g:vimfiler_as_default_explorer = 1
   endfunction
 endif
@@ -4442,8 +4442,8 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('vimshell')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:vimshell_temporary_directory      = expand('~/.local/.vimshell')
-    let g:vimshell_vimshrc_path             = expand('~/.vim/.vimshrc')
+    let g:vimshell_temporary_directory      = $HOME . '/.local/.vimshell'
+    let g:vimshell_vimshrc_path             = $HOME . '/.vim/.vimshrc'
     let g:vimshell_max_command_history      = 100000
     let g:vimshell_no_save_history_commands = {}
     let g:vimshell_scrollback_limit         = 500
@@ -4486,7 +4486,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \
     \ '_sh[ell]' : 'shell'})
   call extend(s:neocompl_dictionary_filetype_lists, {
-    \ 'vimshell' : expand('~/.local/.vimshell/command-history')})
+    \ 'vimshell' : $HOME . '/.local/.vimshell/command-history'})
 endif
 unlet! s:bundle
 "}}}
