@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 22:06:49 DeaR>
+" @timestamp   <2013-07-16 22:37:52 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -17,18 +17,18 @@ if argc() && has('clientserver') && has('vim_starting')
     \ split(serverlist(), '\n'),
     \ 'v:val !=? v:servername')
   if !empty(s:running_vim_list)
-    let s:cmd = join([
-      \ shellescape(join([
-      \   $VIM, has('gui_running') ? 'gvim' : 'vim'], '/')),
-      \ '--servername', s:running_vim_list[0],
-      \ '--remote-silent',
-      \ '+"silent\! call localrc\#load(g:localrc_filename)"',
-      \ join(argv())])
+    let s:cmd =
+      \ shellescape(
+      \   $VIM . (has('gui_running') ? '/gvim' : '/vim')) .
+      \ ' --servername ' . s:running_vim_list[0] .
+      \ ' --remote-silent' .
+      \ ' +"silent\! call localrc\#load(g:localrc_filename)" ' .
+      \ join(argv())
     set viminfo=
     if has('win32')
       silent execute '!start' s:cmd
     else
-      silent call system(join([s:cmd, '&']))
+      silent call system(s:cmd . ' &')
     endif
     qall!
   endif
@@ -466,9 +466,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \ 'autoload' : {'filetypes' : 'cs'},
       \ 'depends' : 'tpope/vim-dispatch',
       \ 'build' : {
-      \   'windows' : join([
-      \     $VCVARSALL, $PROCESSOR_ARCHITECTURE, '&',
-      \     'msbuild server/OmniSharp.sln /p:Platform="Any CPU"']),
+      \   'windows' :
+      \     $VCVARSALL . ' ' . $PROCESSOR_ARCHITECTURE . ' & ' .
+      \     'msbuild server/OmniSharp.sln /p:Platform="Any CPU"',
       \   'others'  :
       \     'xbuild server/OmniSharp.sln /p:Platform="Any CPU"'}}
   endif
@@ -1079,9 +1079,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundle 'Shougo/vimproc.vim', {
     \ 'build' : {
-    \   'windows' : join([
-    \     $VCVARSALL, $PROCESSOR_ARCHITECTURE, '&',
-    \     'nmake -f Make_msvc.mak nodebug=1']),
+    \   'windows' :
+    \     $VCVARSALL . ' ' . $PROCESSOR_ARCHITECTURE . ' & ' .
+    \     'nmake -f Make_msvc.mak nodebug=1',
     \   'others'  : 'make'}}
 
   NeoBundleLazy 'Shougo/vimshell.vim', {
@@ -1478,11 +1478,11 @@ if has('multi_byte')
   let s:enc_jisx0213 = has('iconv') &&
     \ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
 
-  let &fileencodings = join([
-    \ (s:enc_jisx0213 ? 'iso-2022-jp-3' : 'iso-2022-jp'),
-    \ 'cp932',
-    \ (s:enc_jisx0213 ? 'euc-jisx0213,euc-jp' : 'euc-jp'),
-    \ 'ucs-bom'], ',')
+  let &fileencodings =
+    \ (s:enc_jisx0213 ? 'iso-2022-jp-3,' : 'iso-2022-jp,') .
+    \ 'cp932,' .
+    \ (s:enc_jisx0213 ? 'euc-jisx0213,euc-jp,' : 'euc-jp,') .
+    \ 'ucs-bom'
   if has('guess_encode')
     set fileencodings^=guess
   endif
@@ -1916,11 +1916,11 @@ if exists('$VCVARSALL')
     ShellCmd
     set isident+=( isident+=)
     try
-      let env = system(join([$VCVARSALL, a:arch, '&', 'set']))
+      let env = system($VCVARSALL . ' ' . a:arch . ' & set')
       for s in split(env, '\n')
         let e = matchlist(s, '\([^=]\+\)=\(.*\)')
         if len(e) > 2
-          execute join(['let $', e[1], '=', '''', e[2], ''''], '')
+          execute 'let $' . e[1] . '=''' . e[2] . ''''
         endif
       endfor
     finally
@@ -2037,7 +2037,7 @@ function! s:init_mark()
 endfunction
 function! s:auto_mark()
   let b:mark_pos = get(b:, 'mark_pos', 0)
-  let cmd = join(['mark', s:mark_char[b:mark_pos]])
+  let cmd = 'mark ' . s:mark_char[b:mark_pos]
   echo "\r:" . cmd
   execute cmd
   let b:mark_pos = (b:mark_pos + 1) % len(s:mark_char)
@@ -2068,14 +2068,14 @@ function! s:init_file_mark()
 endfunction
 function! s:auto_file_mark()
   let s:file_mark_pos = get(s:, 'file_mark_pos', 0)
-  let cmd = join(['mark', toupper(s:mark_char[s:file_mark_pos])])
+  let cmd = 'mark ' . toupper(s:mark_char[s:file_mark_pos])
   echo "\r:" . cmd
   execute cmd
   let s:file_mark_pos = (s:file_mark_pos + 1) % len(s:mark_char)
 endfunction
 function! s:clear_file_marks()
   rviminfo
-  let cmd = join(['delmarks', toupper(s:mark_char[s:file_mark_pos])])
+  let cmd = 'delmarks ' . toupper(s:mark_char[s:file_mark_pos])
   echo "\r:" . cmd
   execute cmd
   wviminfo!
@@ -2083,9 +2083,7 @@ endfunction
 
 function! s:marks()
   let char = join(s:mark_char, '')
-  let cmd = join([
-    \ 'marks',
-    \ char . toupper(char)])
+  let cmd = 'marks ' . char . toupper(char)
   echo "\r:" . cmd
   execute cmd
 endfunction
@@ -2235,10 +2233,10 @@ nnoremap <M-I> I<C-R>=<SID>keys_to_insert_one_character()<CR>
 " Auto MkDir: {{{
 function! s:auto_mkdir(dir, force)
   if v:lang =~? '^ja' && has('multi_lang')
-    let msg = join(['"', a:dir, '" は存在しません。作成しますか?'], '')
+    let msg = '"' . a:dir . '" は存在しません。作成しますか?'
     let choices = "はい(&Y)\nいいえ(&N)"
   else
-    let msg = join(['"', a:dir, '" does not exist. Create?'], '')
+    let msg = '"' . a:dir . '" does not exist. Create?'
     let choices = "&Yes\n&No"
   endif
   if !isdirectory(a:dir) &&
@@ -2266,9 +2264,9 @@ if has('win32') && !s:has_patch(703, 1182)
       \ if exists('b:save_ar') |
       \   setlocal autoread |
       \   if s:has_vimproc() |
-      \     call vimproc#cmd#system(join(['attrib -R', expand('%:p')])) |
+      \     call vimproc#cmd#system('attrib -R ' . expand('%:p')) |
       \   else |
-      \     call system(join(['attrib -R', expand('%:p')])) |
+      \     call system('attrib -R ' . expand('%:p')) |
       \   endif |
       \ endif
     autocmd BufReadPost *
@@ -2303,10 +2301,11 @@ function! s:reverse_highlight(hl)
     endif
   endfunction
 
-  return join([a:hl,
-    \ 'term='  . l:reversing(a:hl, 'term'),
-    \ 'cterm=' . l:reversing(a:hl, 'cterm'),
-    \ 'gui='   . l:reversing(a:hl, 'gui')])
+  return
+    \ a:hl .
+    \ ' term='  . l:reversing(a:hl, 'term') .
+    \ ' cterm=' . l:reversing(a:hl, 'cterm') .
+    \ ' gui='   . l:reversing(a:hl, 'gui')
 endfunction
 "}}}
 
@@ -2343,9 +2342,9 @@ augroup END
 if has('multi_byte')
   function! s:set_ideographic_space(force)
     if !exists('s:hi_ideographic_space') || a:force
-      silent! let s:hi_ideographic_space = join([
-        \ s:get_highlight('SpecialKey'),
-        \ 'term=underline cterm=underline gui=underline'])
+      silent! let s:hi_ideographic_space =
+        \ s:get_highlight('SpecialKey') .
+        \ ' term=underline cterm=underline gui=underline'
     endif
 
     if exists('s:hi_ideographic_space')
@@ -2472,9 +2471,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
 
     if has('win32')
-      let $PATH = join([substitute(a:bundle.path, '/', '\\', 'g'), '\bin;', $PATH], '')
+      let $PATH = substitute(a:bundle.path, '/', '\\', 'g') . '\bin;' . $PATH
     else
-      let $PATH = join([a:bundle.path, '/bin:', $PATH], '')
+      let $PATH = a:bundle.path . '/bin:' . $PATH
     endif
   endfunction
 
@@ -2686,10 +2685,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:kwbd()
     if &modified
       if v:lang =~? '^ja' && has('multi_lang')
-        let msg = join(['変更を "', expand('%:t'), '" に保存しますか?'], '')
+        let msg = '変更を "' . expand('%:t') . '" に保存しますか?'
         let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
       else
-        let msg = join(['Save changes to "', expand('%:t'), '"?'], '')
+        let msg = 'Save changes to "' . expand('%:t') . '"?'
         let choices = "&Yes\n&No\n&Cancel"
       endif
 
@@ -3167,9 +3166,9 @@ silent! let s:bundle = neobundle#get('perlomni')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     if has('win32')
-      let $PATH = join([substitute(a:bundle.path, '/', '\\', 'g'), '\bin;', $PATH], '')
+      let $PATH = substitute(a:bundle.path, '/', '\\', 'g') . '\bin;' . $PATH
     else
-      let $PATH = join([a:bundle.path, '/bin:', $PATH], '')
+      let $PATH = a:bundle.path . '/bin:' . $PATH
     endif
   endfunction
 
