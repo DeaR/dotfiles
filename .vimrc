@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 11:49:43 DeaR>
+" @timestamp   <2013-07-16 11:50:43 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1283,6 +1283,7 @@ set clipboard=unnamed
 set timeout
 set timeoutlen=3000
 set ttimeoutlen=100
+set updatetime=1000
 
 " Hidden buffer
 set hidden
