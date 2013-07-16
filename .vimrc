@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 16:42:38 DeaR>
+" @timestamp   <2013-07-16 17:45:11 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -819,15 +819,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \      '<Plug>(textobj-jabraces-kikkou-kakko-i)',
     \      '<Plug>(textobj-jabraces-sumi-kakko-a)',
     \      '<Plug>(textobj-jabraces-sumi-kakko-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
-
-  NeoBundleLazy 'rhysd/vim-textobj-lastinserted', {
-    \ 'autoload' : {
-    \   'mappings' : [
-    \     ['vo',
-    \      '<Plug>(textobj-lastinserted-a)',
-    \      '<Plug>(textobj-lastinserted-i)']],
-    \   'insert' : 1},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-lastpat', {
@@ -3949,20 +3940,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   OXmap ijY <Plug>(textobj-jabraces-double-yama-kakko-i)
   OXmap ijt <Plug>(textobj-jabraces-kikkou-kakko-i)
   OXmap ijs <Plug>(textobj-jabraces-sumi-kakko-i)
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" TextObj LastInserted: {{{
-silent! let s:bundle = neobundle#get('textobj-lastinserted')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:textobj_lastinserted_no_default_key_mappings = 1
-  endfunction
-
-  OXmap aU <Plug>(textobj-lastinserted-a)
-  OXmap iU <Plug>(textobj-lastinserted-i)
 endif
 unlet! s:bundle
 "}}}
