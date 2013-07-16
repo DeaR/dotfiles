@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 13:28:32 DeaR>
+" @timestamp   <2013-07-16 14:36:11 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1450,7 +1450,6 @@ set foldenable
 set foldmethod=marker
 set foldcolumn=2
 set foldlevelstart=99
-set commentstring=%s
 autocmd MyVimrc CmdwinEnter *
   \ setlocal nofoldenable foldcolumn=0
 
