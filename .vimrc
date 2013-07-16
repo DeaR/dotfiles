@@ -3144,8 +3144,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:parajump_no_default_key_mappings = 1
   endfunction
 
-  nmap { <Plug>(parajump-backward)zz
-  nmap } <Plug>(parajump-forward)zz
+  nmap <SID>(parajump-backward) <Plug>(parajump-backward)
+  nmap <SID>(parajump-forward)  <Plug>(parajump-forward)
+
+  nnoremap <script> { <SID>(parajump-backward)zz
+  nnoremap <script> } <SID>(parajump-forward)zz
 endif
 unlet! s:bundle
 "}}}
