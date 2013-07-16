@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 22:37:52 DeaR>
+" @timestamp   <2013-07-16 23:17:50 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -184,6 +184,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'autodate.vim'
 
   NeoBundleLazy 'vim-jp/autofmt'
+
+  NeoBundleLazy 'h1mesuke/vim-benchmark'
 
   NeoBundleLazy 'mattn/benchvimrc-vim', {
     \ 'autoload' : {'commands' : 'BenchVimrc'}}
