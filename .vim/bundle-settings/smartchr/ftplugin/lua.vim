@@ -4,7 +4,7 @@
 " @description SmartChr ftplugin for Lua
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 17:36:06 DeaR>
+" @timestamp   <2013-07-16 16:43:35 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -35,13 +35,6 @@ function! s:smartchr_left_sq()
 endfunction
 inoremap <buffer><expr> [ <SID>smartchr_left_sq()
 
-inoremap <buffer><expr> ]
-  \ search('\V--\%(]]\)\? \%#', 'bcnW') ?
-  \   smartchr#one_of('-- ', '--]]') :
-  \   search('\V--\%#', 'bcnW') ?
-  \     smartchr#one_of('--', '--]]') :
-  \     ']'
-
 inoremap <buffer><expr> +  smartchr#one_of(' + ', '+')
 inoremap <buffer><expr> -  smartchr#one_of(' - ', '-- ', '-')
 inoremap <buffer><expr> *  smartchr#one_of(' * ', '*')
@@ -62,8 +55,6 @@ endif
 let b:undo_ftplugin .= '
   \ silent! iunmap <buffer> =|
   \ silent! iunmap <buffer> [|
-  \
-  \ silent! iunmap <buffer> ]|
   \
   \ silent! iunmap <buffer> +|
   \ silent! iunmap <buffer> -|
