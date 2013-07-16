@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 17:45:11 DeaR>
+" @timestamp   <2013-07-16 17:49:59 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -697,10 +697,6 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     ['vo',
     \      '<Plug>(textobj-comment-a)',
     \      '<Plug>(textobj-comment-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
-
-  NeoBundleLazy 'rhysd/vim-textobj-continuous-line', {
-    \ 'autoload' : {'filetypes' : ['c', 'cpp', 'sh', 'vim', 'zsh']},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-datetime', {
@@ -3737,18 +3733,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   OXmap ac <Plug>(textobj-comment-a)
   OXmap ic <Plug>(textobj-comment-i)
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" TextObj Continuous Line: {{{
-silent! let s:bundle = neobundle#get('textobj-continuous-line')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:textobj_continuous_line_no_default_key_mappings = 1
-    let g:textobj_continuous_line_no_default_mappings     = 1
-  endfunction
 endif
 unlet! s:bundle
 "}}}
