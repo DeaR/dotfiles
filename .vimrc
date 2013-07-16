@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 15:58:38 DeaR>
+" @timestamp   <2013-07-16 16:42:38 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3669,6 +3669,24 @@ silent! let s:bundle = neobundle#get('tcomment')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:tcommentMaps = 0
+
+    call tcomment#DefineType('d',         '// %s')
+    call tcomment#DefineType('d_inline',  g:tcommentInlineC)
+    call tcomment#DefineType('d_block',   g:tcommentBlockC)
+    call tcomment#DefineType('gitconfig', '# %s')
+    call tcomment#DefineType('lua',       '-- %s')
+    call tcomment#DefineType('lua_block', '--[[%s]]')
+    call tcomment#DefineType('mayu',      '# %s')
+    call tcomment#DefineType('nyaos',     '# %s')
+    call tcomment#DefineType('screen',    '# %s')
+    call tcomment#DefineType('snippet',   '# %s')
+    call tcomment#DefineType('tmux',      '# %s')
+    call tcomment#DefineType('vbnet',     "' %s")
+    call tcomment#DefineType('vimshrc',   '# %s')
+    call tcomment#DefineType('wsh',       "' %s")
+    call tcomment#DefineType('z80',       '; %s')
+    call tcomment#DefineType('zimbu',     '# %s')
+    call tcomment#DefineType('zsh',       '# %s')
   endfunction
 
   nnoremap gc
