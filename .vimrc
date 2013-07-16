@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 14:36:11 DeaR>
+" @timestamp   <2013-07-16 15:58:38 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -663,11 +663,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     {'name' : 'TCommentInline',
     \      'complete' : 'customlist,tcomment#CompleteArgs'},
     \     {'name' : 'TCommentMaybeInline',
-    \      'complete' : 'customlist,tcomment#CompleteArgs'}],
-    \   'mappings' : [
-    \     ['nvoi', '<C-_>'],
-    \     '<Leader>_',
-    \     ['nx', 'gc', 'gC']]}}
+    \      'complete' : 'customlist,tcomment#CompleteArgs'}]}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'TComment'            : 'tcomment#CompleteArgs',
     \ 'TCommentAs'          : 'tcomment#Complete',
@@ -3672,33 +3668,24 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('tcomment')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:tcommentTextObjectInlineComment = ''
+    let g:tcommentMaps = 0
   endfunction
 
-  function! s:bundle.hooks.on_post_source(bundle)
-    noremap  <script> <C-_><Space> <SID>:TComment<Space>
-    inoremap <script> <C-_><Space> <C-O><SID>:TComment<Space>
-    noremap  <script> <C-_>a       <SID>:TCommentAs<Space>
-    inoremap <script> <C-_>a       <C-O><SID>:TCommentAs<Space>
-    noremap  <script> <C-_>n       <SID>:TCommentAs <C-R>=&ft<CR><Space>
-    inoremap <script> <C-_>n       <C-O><SID>:TCommentAs <C-R>=&ft<CR><Space>
-    noremap  <script> <C-_>s       <SID>:TCommentAs <C-R>=&ft<CR>_
-    inoremap <script> <C-_>s       <C-O><SID>:TCommentAs <C-R>=&ft<CR>_
-
-    noremap  <script> <Leader>_<Space> <SID>:TComment<Space>
-    noremap  <script> <Leader>_a       <SID>:TCommentAs<Space>
-    noremap  <script> <Leader>_n       <SID>:TCommentAs <C-R>=&ft<CR><Space>
-    noremap  <script> <Leader>_s       <SID>:TCommentAs <C-R>=&ft<CR>_
-
-    sunmap <Leader>__
-    sunmap <Leader>_p
-    sunmap <Leader>_<Space>
-    sunmap <Leader>_r
-    sunmap <Leader>_b
-    sunmap <Leader>_a
-    sunmap <Leader>_n
-    sunmap <Leader>_s
-  endfunction
+  nnoremap gc
+    \ :<C-U>let w:tcommentPos = getpos('.') \|
+    \  set opfunc=tcomment#Operator<CR>
+    \ g@
+  nnoremap gcc
+    \ :<C-U>let w:tcommentPos = getpos('.') \|
+    \  set opfunc=tcomment#OperatorLine<CR>
+    \ g@$
+  nnoremap gC
+    \ :<C-U>let w:tcommentPos = getpos('.') \|
+    \  call tcomment#SetOption('mode_extra', 'B') \|
+    \  set opfunc=tcomment#OperatorLine<CR>
+    \ g@
+  xnoremap gc :TComment<CR>
+  xnoremap gC :TCommentBlock<CR>
 endif
 unlet! s:bundle
 "}}}
