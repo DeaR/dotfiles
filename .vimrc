@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 19:21:29 DeaR>
+" @timestamp   <2013-07-16 19:49:20 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1392,7 +1392,7 @@ silent! set completeopt+=noselect
 " Format
 set nrformats=hex
 set formatoptions+=m
-set formatoptions+=M
+set formatoptions+=B
 
 " Free cursor
 set virtualedit=block
