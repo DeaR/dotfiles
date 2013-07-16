@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 11:33:56 DeaR>
+" @timestamp   <2013-07-16 11:36:01 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2966,6 +2966,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       inoremap <expr> <BS>
         \ neocomplete#smart_close_popup() . '<BS>'
     endif
+
+    call neocomplete#initialize()
   endfunction
 
   function! s:cmdwin_enter_neocomplete()
@@ -3020,6 +3022,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ '_' : ''})
   call extend(s:neocompl_keyword_patterns, {
     \ '_' : '[a-zA-Z@0-9_]\+'})
+
+  autocmd MyVimrc CursorHold *
+    \ NeoBundleSource neocomplete
 endif
 unlet! s:bundle
 "}}}
