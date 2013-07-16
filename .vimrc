@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 11:50:43 DeaR>
+" @timestamp   <2013-07-16 12:02:11 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1161,7 +1161,33 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \     'htmldjango', 'less', 'mustache', 'sass', 'scss', 'slim',
     \     'xhtml', 'xml', 'xsl', 'xslt'],
     \   'commands' : 'Zen',
-    \   'mappings' : [['nvi', '<C-Y>']]}}
+    \   'mappings' : [
+    \     ['n',
+    \      '<Plug>ZenCodingExpandNormal',
+    \      '<Plug>ZenCodingExpandWord',
+    \      '<Plug>ZenCodingBalanceTagInwardNormal',
+    \      '<Plug>ZenCodingBalanceTagOutwardNormal',
+    \      '<Plug>ZenCodingSplitJoinTagNormal'],
+    \     ['v',
+    \      '<Plug>ZenCodingExpandVisual',
+    \      '<Plug>ZenCodingBalanceTagInwardVisual',
+    \      '<Plug>ZenCodingBalanceTagOutwardVisual',
+    \      '<Plug>ZenCodingMergeLines',
+    \      '<Plug>ZenCodingCodePretty'],
+    \     ['i',
+    \      '<Plug>ZenCodingExpandAbbr',
+    \      '<Plug>ZenCodingExpandWord',
+    \      '<Plug>ZenCodingBalanceTagInwardInsert',
+    \      '<Plug>ZenCodingBalanceTagOutwardInsert',
+    \      '<Plug>ZenCodingSplitJoinTagInsert'],
+    \     ['ni',
+    \      '<Plug>ZenCodingNext',
+    \      '<Plug>ZenCodingPrev',
+    \      '<Plug>ZenCodingImageSize',
+    \      '<Plug>ZenCodingToggleComment',
+    \      '<Plug>ZenCodingRemoveTag',
+    \      '<Plug>ZenCodingAnchorizeURL',
+    \      '<Plug>ZenCodingAnchorizeSummary']]}}
 endif
 "}}}
 
@@ -4595,11 +4621,44 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('zencoding')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:user_zen_settings   = {
+    let g:user_zen_mode     = ''
+    let g:user_zen_settings = {
       \ 'lang' : 'ja',
       \ 'indentation' : '  ',
       \ 'xml' : {'extends' : 'html'}}
   endfunction
+
+  nmap <C-Y>, <Plug>ZenCodingExpandNormal
+  nmap <C-Y>; <Plug>ZenCodingExpandWord
+  nmap <C-Y>d <Plug>ZenCodingBalanceTagInwardNormal
+  nmap <C-Y>D <Plug>ZenCodingBalanceTagOutwardNormal
+  nmap <C-Y>n <Plug>ZenCodingNext
+  nmap <C-Y>N <Plug>ZenCodingPrev
+  nmap <C-Y>i <Plug>ZenCodingImageSize
+  nmap <C-Y>/ <Plug>ZenCodingToggleComment
+  nmap <C-Y>j <Plug>ZenCodingSplitJoinTagNormal
+  nmap <C-Y>k <Plug>ZenCodingRemoveTag
+  nmap <C-Y>a <Plug>ZenCodingAnchorizeURL
+  nmap <C-Y>A <Plug>ZenCodingAnchorizeSummary
+
+  xmap <C-Y>, <Plug>ZenCodingExpandVisual
+  xmap <C-Y>d <Plug>ZenCodingBalanceTagInwardVisual
+  xmap <C-Y>D <Plug>ZenCodingBalanceTagOutwardVisual
+  xmap <C-Y>m <Plug>ZenCodingMergeLines
+  xmap <C-Y>c <Plug>ZenCodingCodePretty
+
+  imap <C-Y>, <Plug>ZenCodingExpandAbbr
+  imap <C-Y>; <Plug>ZenCodingExpandWord
+  imap <C-Y>d <Plug>ZenCodingBalanceTagInwardInsert
+  imap <C-Y>D <Plug>ZenCodingBalanceTagOutwardInsert
+  imap <C-Y>n <Plug>ZenCodingNext
+  imap <C-Y>N <Plug>ZenCodingPrev
+  imap <C-Y>i <Plug>ZenCodingImageSize
+  imap <C-Y>/ <Plug>ZenCodingToggleComment
+  imap <C-Y>j <Plug>ZenCodingSplitJoinTagInsert
+  imap <C-Y>k <Plug>ZenCodingRemoveTag
+  imap <C-Y>a <Plug>ZenCodingAnchorizeURL
+  imap <C-Y>A <Plug>ZenCodingAnchorizeSummary
 
   call extend(s:neocompl_omni_patterns, {
     \ 'css' : '.*', 'css.drupal' : '.*', 'haml' : '.*', 'html' : '.*',
