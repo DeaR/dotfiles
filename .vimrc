@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 11:36:01 DeaR>
+" @timestamp   <2013-07-16 11:49:43 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -377,7 +377,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \ 'depends' : [
       \   'Shougo/context_filetype.vim',
       \   'hrsh7th/vim-neco-calc',
-      \   'ujihisa/neco-look']}
+      \   'ujihisa/neco-look',
+      \   'Shougo/neosnippet.vim']}
     call extend(s:neocompl_vim_completefuncs, {
       \ 'NeoCompleteDictionaryMakeCache' : 'neocomplete#filetype_complete',
       \ 'NeoCompleteSyntaxMakeCache'     : 'neocomplete#filetype_complete'})
@@ -412,7 +413,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
       \   'insert' : 1},
       \ 'depends' : [
       \   'hrsh7th/vim-neco-calc',
-      \   'ujihisa/neco-look']}
+      \   'ujihisa/neco-look',
+      \   'Shougo/neosnippet.vim']}
     call extend(s:neocompl_vim_completefuncs, {
       \ 'NeoComplCacheCachingDictionary' : 'neocomplcache#filetype_complete',
       \ 'NeoComplCacheCachingSyntax'     : 'neocomplcache#filetype_complete'})
