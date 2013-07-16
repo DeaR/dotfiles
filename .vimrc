@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 12:02:11 DeaR>
+" @timestamp   <2013-07-16 13:22:46 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -487,7 +487,8 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \   'mappings' : [
     \     ['nvo',
     \      '<Plug>(operator-camelize)',
-    \      '<Plug>(operator-decamelize)']]},
+    \      '<Plug>(operator-decamelize)',
+    \      '<Plug>(operator-camelize-toggle)']]},
     \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'tyru/operator-html-escape.vim', {
