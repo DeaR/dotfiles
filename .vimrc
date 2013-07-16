@@ -2563,8 +2563,11 @@ unlet! s:bundle
 " ColumnJump: {{{
 silent! let s:bundle = neobundle#get('columnjump')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nmap <C-K> <Plug>(columnjump-backward)zz
-  nmap <C-J> <Plug>(columnjump-forward)zz
+  nmap <SID>(columnjump-backward) <Plug>(columnjump-backward)
+  nmap <SID>(columnjump-forward)  <Plug>(columnjump-forward)
+
+  nmap <script> <C-K> <SID>(columnjump-backward)zz
+  nmap <script> <C-J> <SID>(columnjump-forward)zz
 endif
 unlet! s:bundle
 "}}}
