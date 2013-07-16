@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 17:49:59 DeaR>
+" @timestamp   <2013-07-16 19:21:29 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -443,8 +443,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \      '<Plug>(neosnippet_register_oneshot_snippet)']],
     \   'unite_sources' : [
     \     'snippet', 'snippet/target',
-    \     'neosnippet/user', 'neosnippet/runtime'],
-    \   'insert' : 1},
+    \     'neosnippet/user', 'neosnippet/runtime']},
     \ 'depends' : 'Shougo/context_filetype.vim'}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'NeoSnippetEdit'      : 'neosnippet#edit_complete',
