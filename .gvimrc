@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-10 13:36:33 DeaR>
+" @timestamp   <2013-07-16 20:43:51 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -30,6 +30,15 @@ function! s:has_vimproc()
     endtry
   endif
   return s:exists_vimproc
+endfunction
+
+" Cached executable
+let s:_executable = get(s:, '_executable', {})
+function! s:executable(expr)
+  if !has_key(s:_executable, a:expr)
+    let s:_executable[a:expr] = executable(a:expr)
+  endif
+  return s:_executable[a:expr]
 endfunction
 
 " Check Android OS

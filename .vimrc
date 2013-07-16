@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 19:58:37 DeaR>
+" @timestamp   <2013-07-16 20:21:03 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -86,6 +86,15 @@ function! s:has_vimproc()
     endtry
   endif
   return s:exists_vimproc
+endfunction
+
+" Cached executable
+let s:_executable = get(s:, '_executable', {})
+function! s:executable(expr)
+  if !has_key(s:_executable, a:expr)
+    let s:_executable[a:expr] = executable(a:expr)
+  endif
+  return s:_executable[a:expr]
 endfunction
 
 " Check Android OS
@@ -179,7 +188,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'mattn/benchvimrc-vim', {
     \ 'autoload' : {'commands' : 'BenchVimrc'}}
 
-  if has('python') && executable('clang')
+  if has('python') && s:executable('clang')
     NeoBundleLazy 'Rip-Rip/clang_complete', {
       \ 'autoload' : {'filetypes' : ['c', 'cpp', 'objc', 'objcpp']}}
   endif
@@ -314,7 +323,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundle 'thinca/vim-localrc'
 
-  if has('lua') || executable('lua')
+  if has('lua') || s:executable('lua')
     NeoBundleLazy 'xolox/vim-lua-ftplugin', {
       \ 'name' : 'ft_lua',
       \ 'autoload' : {'filetypes' : 'lua'},
@@ -452,7 +461,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
   NeoBundleLazy 'Shougo/vim-nyaos', {
     \ 'autoload' : {'filetypes' : 'nyaos'}}
 
-  if has('python') && (exists('$VCVARSALL') || executable('xbuild'))
+  if has('python') && (exists('$VCVARSALL') || s:executable('xbuild'))
     NeoBundleLazy 'nosami/Omnisharp', {
       \ 'autoload' : {'filetypes' : 'cs'},
       \ 'depends' : 'tpope/vim-dispatch',
@@ -524,7 +533,7 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
     \      '<Plug>(parajump-forward)',
     \      '<Plug>(parajump-backward)']]}}
 
-  if executable('perl')
+  if s:executable('perl')
     NeoBundleLazy 'c9s/perlomni.vim', {
       \ 'autoload' : {'filetypes' : 'perl'}}
   endif
@@ -1374,9 +1383,9 @@ endif
 set iskeyword=a-z,A-Z,@,48-57,_
 
 " Grep
-if executable('jvgrep')
+if s:executable('jvgrep')
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
-elseif executable('grep')
+elseif s:executable('grep')
   set grepprg=grep\ -Hn
 else
   set grepprg=internal
@@ -3210,9 +3219,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:MyGrep_Resultfile              = expand('~/.local/.qfgrep.txt')
     let g:MyGrep_ExcludeReg              =
       \ '/\.drive\.r/|/\.hg/|/\.git/|/\.svn/'
-    if executable('jvgrep')
+    if s:executable('jvgrep')
       let g:mygrepprg   = 'jvgrep'
-    elseif executable('grep')
+    elseif s:executable('grep')
       let g:mygrepprg   = 'grep'
     else
       let g:mygrepprg   = 'internal'
@@ -3325,24 +3334,24 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call extend(g:quickrun_config, {
       \ 'c' : {
       \   'type' :
-      \     executable('clang')  ? 'c/clang' :
-      \     executable('gcc')    ? 'c/gcc' :
+      \     s:executable('clang')  ? 'c/clang' :
+      \     s:executable('gcc')    ? 'c/gcc' :
       \     exists('$VCVARSALL') ? 'c/vc' :
-      \     executable('cl')     ? 'c/vc' : ''},
+      \     s:executable('cl')     ? 'c/vc' : ''},
       \ 'cpp' : {
       \   'type' :
-      \     executable('clang++') ? 'cpp/clang++' :
-      \     executable('g++')     ? 'cpp/g++' :
+      \     s:executable('clang++') ? 'cpp/clang++' :
+      \     s:executable('g++')     ? 'cpp/g++' :
       \     exists('$VCVARSALL')  ? 'cpp/vc' :
-      \     executable('cl')      ? 'cpp/vc' : ''},
+      \     s:executable('cl')      ? 'cpp/vc' : ''},
       \ 'cs' : {
       \   'type' :
       \     exists('$VCVARSALL')  ? 'cs/csc' :
-      \     executable('csc')     ? 'cs/csc' :
-      \     executable('dmcs')    ? 'cs/dmcs' :
-      \     executable('smcs')    ? 'cs/smcs' :
-      \     executable('gmcs')    ? 'cs/gmcs' :
-      \     executable('mcs')     ? 'cs/mcs' : ''},
+      \     s:executable('csc')     ? 'cs/csc' :
+      \     s:executable('dmcs')    ? 'cs/dmcs' :
+      \     s:executable('smcs')    ? 'cs/smcs' :
+      \     s:executable('gmcs')    ? 'cs/gmcs' :
+      \     s:executable('mcs')     ? 'cs/mcs' : ''},
       \ 'vbnet' : {
       \   'type' : 'vbnet/vbc'}})
   endfunction
@@ -4146,11 +4155,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
 
-    if executable('jvgrep')
+    if s:executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '-n --exclude .drive.r'
-    elseif executable('grep')
+    elseif s:executable('grep')
       let g:unite_source_grep_command       = 'grep'
       let g:unite_source_grep_recursive_opt = '-r'
       let g:unite_source_grep_default_opts  = '-Hn'
@@ -4456,18 +4465,18 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \ '$USER . "@" . hostname() . " " . getcwd()'
     endif
 
-    if executable('grep')
+    if s:executable('grep')
       call vimshell#set_alias('lld', 'ls -alF | grep "/$"')
       call vimshell#set_alias('llf', 'ls -alF | grep -v "/$"')
       call vimshell#set_alias('lle', 'ls -alF | grep "\*$"')
       call vimshell#set_alias('lls', 'ls -alF | grep "\->"')
     endif
-    if executable('head')
+    if s:executable('head')
       call vimshell#set_alias('h', 'head')
     endif
-    if executable('tailf')
+    if s:executable('tailf')
       call vimshell#set_alias('t', 'tailf')
-    elseif executable('tail')
+    elseif s:executable('tail')
       call vimshell#set_alias('t', 'tail -f')
     endif
   endfunction
@@ -4572,16 +4581,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call extend(g:quickrun_config, {
       \ 'c/watchdogs_checker' : {
       \   'type' :
-      \     executable('clang')  ? 'watchdogs_checker/clang' :
-      \     executable('gcc')    ? 'watchdogs_checker/gcc' :
+      \     s:executable('clang')  ? 'watchdogs_checker/clang' :
+      \     s:executable('gcc')    ? 'watchdogs_checker/gcc' :
       \     exists('$VCVARSALL') ? 'watchdogs_checker/msvc' :
-      \     executable('cl')     ? 'watchdogs_checker/msvc' : ''},
+      \     s:executable('cl')     ? 'watchdogs_checker/msvc' : ''},
       \ 'cpp/watchdogs_checker' : {
       \   'type' :
-      \     executable('clang++') ? 'watchdogs_checker/clang++' :
-      \     executable('g++')     ? 'watchdogs_checker/g++' :
+      \     s:executable('clang++') ? 'watchdogs_checker/clang++' :
+      \     s:executable('g++')     ? 'watchdogs_checker/g++' :
       \     exists('$VCVARSALL')  ? 'watchdogs_checker/msvc' :
-      \     executable('cl')      ? 'watchdogs_checker/msvc' : ''}})
+      \     s:executable('cl')      ? 'watchdogs_checker/msvc' : ''}})
 
     call watchdogs#setup(g:quickrun_config)
   endfunction
