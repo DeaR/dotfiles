@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 02:39:02 DeaR>
+" @timestamp   <2013-07-17 02:51:21 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -451,7 +451,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(neosnippet_get_selected_text)',
     \      '<Plug>(neosnippet_expand_target)',
     \      '<Plug>(neosnippet_start_unite_snippet_target)',
-    \      '<Plug>(neosnippet_register_oneshot_snippet)']],
+    \      '<Plug>(neosnippet_register_oneshot_snippet)'],
+    \     ['i',
+    \      '<Plug>(neosnippet_start_unite_snippet)']],
     \   'unite_sources' : [
     \     'snippet', 'snippet/target',
     \     'neosnippet/user', 'neosnippet/runtime']},
