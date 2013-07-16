@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 13:22:46 DeaR>
+" @timestamp   <2013-07-16 13:26:20 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -501,6 +501,14 @@ if isdirectory(expand('~/.local/bundle/neobundle'))
 
   NeoBundleLazy 'kana/vim-operator-replace', {
     \ 'autoload' : {'mappings' : [['nvo', '<Plug>(operator-replace)']]},
+    \ 'depends' : 'kana/vim-operator-user'}
+
+  NeoBundleLazy 'tyru/operator-reverse.vim', {
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['nvo',
+    \      '<Plug>(operator-reverse-text)',
+    \      '<Plug>(operator-reverse-lines)']]},
     \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'emonkak/vim-operator-sort', {
@@ -3123,6 +3131,16 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('operator-replace')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXmap ss <Plug>(operator-replace)
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Operator Reverse: {{{
+silent! let s:bundle = neobundle#get('operator-reverse')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXmap sr <Plug>(operator-reverse-text)
+  NXmap sR <Plug>(operator-reverse-lines))
 endif
 unlet! s:bundle
 "}}}
