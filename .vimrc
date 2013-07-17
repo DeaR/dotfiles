@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 14:24:15 DeaR>
+" @timestamp   <2013-07-17 15:25:36 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -553,6 +553,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {'commands' : 'PreciousSwitch'},
     \ 'depends' : [
     \   'Shougo/context_filetype.vim',
+    \   'thinca/vim-quickrun',
     \   'kana/vim-textobj-user']}
 
   NeoBundleLazy 'thinca/vim-prettyprint', {
