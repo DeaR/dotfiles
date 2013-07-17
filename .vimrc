@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 02:51:21 DeaR>
+" @timestamp   <2013-07-17 11:12:01 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -690,7 +690,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [
     \     ['nv',
     \      '<Plug>(textmanip-duplicate-down)',
-    \      '<Plug>(textmanip-duplicate-up)',
+    \      '<Plug>(textmanip-duplicate-up)'],
+    \     ['v',
     \      '<Plug>(textmanip-move-left)',
     \      '<Plug>(textmanip-move-down)',
     \      '<Plug>(textmanip-move-up)',
@@ -3708,7 +3709,7 @@ unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
-" TextManipilation: {{{
+" TextManipilate: {{{
 silent! let s:bundle = neobundle#get('textmanip')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXmap <M-p> <Plug>(textmanip-duplicate-down)
