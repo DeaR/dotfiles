@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 15:25:36 DeaR>
+" @timestamp   <2013-07-17 16:16:37 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2586,6 +2586,16 @@ silent! let s:bundle = neobundle#get('grex')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXmap sd <Plug>(operator-grex-delete)
   NXmap sy <Plug>(operator-grex-yank)
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" HybridText: {{{
+silent! let s:bundle = neobundle#get('HybridText')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  autocmd MyVimrc FileType text
+    \ setlocal syntax=hybrid
 endif
 unlet! s:bundle
 "}}}
