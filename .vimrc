@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 17:30:53 DeaR>
+" @timestamp   <2013-07-17 17:56:18 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -12,27 +12,10 @@ scriptencoding utf-8
 "=============================================================================
 " Init First: {{{
 " Singleton
-if argc() && has('clientserver') && has('vim_starting')
-  let s:running_vim_list = filter(
-    \ split(serverlist(), '\n'),
-    \ 'v:val !=? v:servername')
-  if !empty(s:running_vim_list)
-    let s:cmd =
-      \ shellescape(
-      \   $VIM . (has('gui_running') ? '/gvim' : '/vim')) .
-      \ ' --servername ' . s:running_vim_list[0] .
-      \ ' --remote-silent' .
-      \ ' +"silent\! call localrc\#load(g:localrc_filename)" ' .
-      \ join(argv())
-    set viminfo=
-    if has('win32')
-      silent execute '!start' s:cmd
-    else
-      silent call system(s:cmd . ' &')
-    endif
-    qall!
-  endif
-  unlet s:running_vim_list
+if has('clientserver') && isdirectory($HOME . '/.local/bundle/singleton')
+  set runtimepath+=~/.local/bundle/singleton
+  let g:singleton#opener = 'drop'
+  call singleton#enable()
 endif
 
 " Encoding
@@ -640,6 +623,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'jiangmiao/simple-javascript-indenter', {
     \ 'autoload' : {'filetypes' : 'javascript'}}
+
+  if has('clientserver')
+    NeoBundleFetch 'thinca/vim-singleton'
+  endif
 
   " NeoBundleLazy 'kana/vim-smartchr'
 
