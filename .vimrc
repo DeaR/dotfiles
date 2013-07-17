@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 11:30:22 DeaR>
+" @timestamp   <2013-07-17 13:25:54 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -632,8 +632,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'thinca/vim-scouter', {
     \ 'autoload' : {'commands' : 'Scouter'}}
 
-  " NeoBundleLazy 'kana/vim-scratch', {
-  NeoBundleLazy 'DeaR/vim-scratch', {
+  NeoBundleLazy 'kana/vim-scratch', {
     \ 'autoload' : {
     \   'commands' : 'ScratchOpen',
     \   'mappings' : [['nvo', '<Plug>(scratch-open)']]}}
