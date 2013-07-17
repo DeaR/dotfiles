@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 17:15:04 DeaR>
+" @timestamp   <2013-07-17 17:30:53 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3425,17 +3425,6 @@ unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
-" Singleton: {{{
-silent! let s:bundle = neobundle#get('singleton')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:singleton#opener = 'drop'
-  endfunction
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
 " SmartChr: {{{
 silent! let s:bundle = neobundle#get('smartchr')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3836,7 +3825,7 @@ unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
-" TextObj IndBlock: {{{
+" TextObj IndentBlock: {{{
 silent! let s:bundle = neobundle#get('textobj-indblock')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
@@ -3921,7 +3910,7 @@ unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
-" TextObj LastPat: {{{
+" TextObj LastPattern: {{{
 silent! let s:bundle = neobundle#get('textobj-lastpat')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
@@ -4388,7 +4377,7 @@ unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
-" VimFiler: {{{
+" VimDoc Ja: {{{
 silent! let s:bundle = neobundle#get('vimdoc-ja')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   set helplang^=ja
