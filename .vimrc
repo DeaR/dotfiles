@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 11:13:44 DeaR>
+" @timestamp   <2013-07-17 11:15:13 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4624,7 +4624,6 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('zencoding')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:user_zen_mode     = ''
     let g:user_zen_settings = {
       \ 'lang' : 'ja',
       \ 'indentation' : '  ',
