@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 16:16:37 DeaR>
+" @timestamp   <2013-07-17 17:15:04 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2449,12 +2449,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
     if exists('g:clang_library_path') && len(g:clang_library_path)
       let g:clang_use_library = 1
-    endif
-
-    if has('win32')
-      let $PATH = substitute(a:bundle.path, '/', '\\', 'g') . '\bin;' . $PATH
-    else
-      let $PATH = a:bundle.path . '/bin:' . $PATH
     endif
   endfunction
 
