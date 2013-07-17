@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 11:12:01 DeaR>
+" @timestamp   <2013-07-17 11:13:44 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3125,7 +3125,7 @@ unlet! s:bundle
 " Operator Replace: {{{
 silent! let s:bundle = neobundle#get('operator-replace')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXmap <M-y> <Plug>(operator-replace)
+  NXmap sp <Plug>(operator-replace)
 endif
 unlet! s:bundle
 "}}}
