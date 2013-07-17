@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 13:25:54 DeaR>
+" @timestamp   <2013-07-17 14:24:15 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1156,8 +1156,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : [
     \     'WatchdogsRun', 'WatchdogsRunSilent', 'WatchdogsRunSweep']},
     \ 'depends' : [
-    \   'osyo-manga/shabadou.vim',
-    \   'thinca/vim-quickrun']}
+    \   'thinca/vim-quickrun',
+    \   'osyo-manga/quickrun-hook-vcvarsall',
+    \   'osyo-manga/shabadou.vim']}
 
   NeoBundleLazy 'mattn/zencoding-vim', {
     \ 'autoload' : {
