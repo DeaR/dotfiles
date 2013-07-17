@@ -4,20 +4,13 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 17:56:18 DeaR>
+" @timestamp   <2013-07-17 18:14:52 DeaR>
 
 set nocompatible
 scriptencoding utf-8
 
 "=============================================================================
 " Init First: {{{
-" Singleton
-if has('clientserver') && isdirectory($HOME . '/.local/bundle/singleton')
-  set runtimepath+=~/.local/bundle/singleton
-  let g:singleton#opener = 'drop'
-  call singleton#enable()
-endif
-
 " Encoding
 if has('multi_byte')
   set encoding=utf-8
@@ -46,6 +39,13 @@ endif
 " Local runtime
 set runtimepath^=~/.local/.vim
 set runtimepath+=~/.local/.vim/after
+
+" Singleton
+if has('clientserver') && isdirectory($HOME . '/.local/bundle/singleton')
+  set runtimepath+=~/.local/bundle/singleton
+  let g:singleton#opener = 'drop'
+  call singleton#enable()
+endif
 
 " Vimrc autocmd group
 augroup MyVimrc
