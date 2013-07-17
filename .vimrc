@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 18:14:52 DeaR>
+" @timestamp   <2013-07-17 19:42:31 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -31,7 +31,7 @@ if has('win32')
   set shell=sh
   set shellslash
 
-  " Fix runtimepath for windows
+  " Unix like runtime
   set runtimepath^=~/.vim
   set runtimepath+=~/.vim/after
 endif
@@ -625,7 +625,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {'filetypes' : 'javascript'}}
 
   if has('clientserver')
-    NeoBundleFetch 'thinca/vim-singleton'
+    NeoBundleLazy 'thinca/vim-singleton', {
+      \ 'sourced' : 1}
   endif
 
   " NeoBundleLazy 'kana/vim-smartchr'
