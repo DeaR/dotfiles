@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-18 20:11:27 DeaR>
+" @timestamp   <2013-07-18 20:30:55 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3019,6 +3019,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   call extend(s:neocompl_force_omni_patterns, {
     \ 'cs' : '[^.[:digit:] *\t]\.'})
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Open Browser: {{{
+silent! let s:bundle = neobundle#get('open-browser')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXmap gx <Plug>(openbrowser-smart-search)
 endif
 unlet! s:bundle
 "}}}
