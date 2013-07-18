@@ -3094,24 +3094,34 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap g* <Plug>(operator-g*)
   nmap g# <Plug>(operator-g#)
 
-  nnoremap **  *zz
-  nnoremap ##  #zz
-  nnoremap g** g*zz
-  nnoremap g## g#zz
-  nmap g// **
-  nmap g?? ##
+  nnoremap **   *zz
+  nnoremap ##   #zz
+  nnoremap g*g* g*zz
+  nnoremap g#g# g#zz
+  nmap g**    g*g*
+  nmap g##    g#g#
+
+  nmap g/g/ **
+  nmap g?g? ##
+  nmap g//  **
+  nmap g??  ##
 
   nmap <C-W>*  <SID>(split-nicely)<Plug>(operator-*)
   nmap <C-W>#  <SID>(split-nicely)<Plug>(operator-#)
   nmap <C-W>g* <SID>(split-nicely)<Plug>(operator-g*)
   nmap <C-W>g# <SID>(split-nicely)<Plug>(operator-g#)
 
-  nnoremap <script> <C-W>**  <SID>(split-nicely)*zz
-  nnoremap <script> <C-W>##  <SID>(split-nicely)#zz
-  nnoremap <script> <C-W>g** <SID>(split-nicely)*zz
-  nnoremap <script> <C-W>g## <SID>(split-nicely)#zz
-  nmap <C-W>g// <C-W>**
-  nmap <C-W>g?? <C-W>##
+  nnoremap <script> <C-W>**   <SID>(split-nicely)*zz
+  nnoremap <script> <C-W>##   <SID>(split-nicely)#zz
+  nnoremap <script> <C-W>g*g* <SID>(split-nicely)g*zz
+  nnoremap <script> <C-W>g#g# <SID>(split-nicely)g#zz
+  nmap <C-W>g**    <C-W>g*g*
+  nmap <C-W>g##    <C-W>g#g#
+
+  nmap <C-W>g/g/ <C-W>**
+  nmap <C-W>g?g? <C-W>##
+  nmap <C-W>g//  <C-W>**
+  nmap <C-W>g??  <C-W>##
 endif
 unlet! s:bundle
 "}}}
