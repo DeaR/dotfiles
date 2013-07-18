@@ -1747,8 +1747,10 @@ NOXnoremap <M-,> ,
 NOXnoremap g\| \|
 
 " Rot13
-NXnoremap <C-G>?  g?
-nnoremap  <C-G>?? g??
+NXnoremap g13    g?
+nnoremap  g13g13 g?g?
+nnoremap  g1313  g??
+nnoremap  g133   g??
 
 " FileInfo
 nnoremap <C-G><C-G> <C-G>
