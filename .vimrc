@@ -1503,7 +1503,7 @@ let g:is_bash = 1
 if exists(':NeoBundle')
   function! s:load_bundle_settings()
     for d in split(glob('~/.vim/bundle-settings/*'), '\n')
-      if neobundle#is_installed(fnamemodify(d, ':t'))
+      if neobundle#get(fnamemodify(d, ':t')) != {}
         execute 'set runtimepath+=' . d
       endif
     endfor
@@ -2402,7 +2402,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       silent! iunmap <buffer> >
       silent! iunmap <buffer> :
 
-      if neobundle#is_installed('smartchr')
+      if neobundle#get('smartchr') != {}
         " from ~/.vim/bundle-settings/vim-smartchr/*.vim
         inoremap <buffer><expr> >
           \ search('\V ->\? \%#', 'bcn') ?
@@ -2768,7 +2768,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '<C-P>' :
       \   neocomplcache#start_manual_complete()
 
-    if neobundle#is_installed('smartinput')
+    if neobundle#get('smartinput') != {}
       inoremap <expr> <CR>
         \ neocomplcache#smart_close_popup() .
         \ eval(smartinput#sid() . '_trigger_or_fallback("\<CR>", "\<CR>")')
@@ -2804,7 +2804,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '<C-P>' :
       \   neocomplcache#start_manual_complete()
 
-    if neobundle#is_installed('smartinput')
+    if neobundle#get('smartinput') != {}
       inoremap <buffer><silent><expr> <C-H>
         \ col('.') == 1 ?
         \   '<Esc>:quit<CR>' :
@@ -2901,7 +2901,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '<C-P>' :
       \   neocomplete#start_manual_complete()
 
-    if neobundle#is_installed('smartinput')
+    if neobundle#get('smartinput') != {}
       inoremap <expr> <CR>
         \ neocomplete#smart_close_popup() .
         \ eval(smartinput#sid() . '_trigger_or_fallback("\<CR>", "\<CR>")')
@@ -2937,7 +2937,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '<C-P>' :
       \   neocomplete#start_manual_complete()
 
-    if neobundle#is_installed('smartinput')
+    if neobundle#get('smartinput') != {}
       inoremap <buffer><silent><expr> <C-H>
         \ col('.') == 1 ?
         \   '<Esc>:quit<CR>' :
