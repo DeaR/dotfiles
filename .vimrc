@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-18 15:33:25 DeaR>
+" @timestamp   <2013-07-18 16:04:38 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -509,6 +509,16 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'emonkak/vim-operator-sort', {
     \ 'autoload' : {'mappings' : [['nvo', '<Plug>(operator-sort)']]},
     \ 'depends' : 'kana/vim-operator-user'}
+
+  NeoBundleLazy 'tyru/operator-star.vim', {
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['nvo',
+    \      '<Plug>operator-*', '<Plug>operator-g*',
+    \      '<Plug>operator-#', '<Plug>operator-g#']]},
+    \ 'depends' : [
+    \   'kana/vim-operator-user',
+    \   'thinca/vim-visualstar']}
 
   NeoBundleLazy 'kana/vim-operator-user', {
     \ 'autoload' : {'function_prefix' : 'operator'}}
@@ -3119,6 +3129,25 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('operator-sort')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXmap ss <Plug>(operator-sort)
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Operator Star: {{{
+silent! let s:bundle = neobundle#get('operator-star')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  nmap *  <Plug>(operator-*)
+  nmap #  <Plug>(operator-#)
+  nmap g* <Plug>(operator-g*)
+  nmap g# <Plug>(operator-g#)
+
+  nnoremap **  *zz
+  nnoremap ##  #zz
+  nnoremap g** g*zz
+  nnoremap g## g#zz
+  nmap g// **
+  nmap g?? ##
 endif
 unlet! s:bundle
 "}}}
