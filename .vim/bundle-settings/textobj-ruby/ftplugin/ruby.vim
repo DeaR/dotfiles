@@ -1,10 +1,10 @@
 " -*- mode: vimrc; coding: unix -*-
 
 " @name        ruby.vim
-" @description TextObj Rubyftplugin for Ruby
+" @description TextObj Ruby ftplugin for Ruby
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-22 03:37:03 DeaR>
+" @timestamp   <2013-07-18 14:09:04 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
