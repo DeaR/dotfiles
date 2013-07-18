@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-18 11:51:51 DeaR>
+" @timestamp   <2013-07-18 12:05:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -533,7 +533,11 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {'filetypes' : 'php'}}
 
   NeoBundleLazy 'osyo-manga/vim-precious', {
-    \ 'autoload' : {'commands' : 'PreciousSwitch'},
+    \ 'autoload' : {
+    \    'mappings' : [
+    \      ['vo', '<Plug>(textobj-precious-i)'],
+    \      ['n',  '<Plug>(precious-quickrun-op)']],
+    \    'commands' : 'PreciousSwitch'},
     \ 'depends' : [
     \   'Shougo/context_filetype.vim',
     \   'thinca/vim-quickrun',
@@ -3154,8 +3158,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:precious_enable_switchers                = {
       \ 'help' : {'setfiletype' : 0}}
   endfunction
-
-  OXmap iC <Plug>(textobj-precious-i)
 
   autocmd MyVimrc FileType *
     \ NeoBundleSource precious
