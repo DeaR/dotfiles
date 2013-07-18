@@ -3027,8 +3027,13 @@ unlet! s:bundle
 " Operator Camelize: {{{
 silent! let s:bundle = neobundle#get('operator-camelize')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXmap sc <Plug>(operator-camelize)
-  NXmap sC <Plug>(operator-decamelize)
+  NOXmap sU <Plug>(operator-camelize)
+  NOXmap su <Plug>(operator-decamelize)
+  NOXmap s~ <Plug>(operator-camelize-toggle)
+
+  nmap sUU sUsU
+  nmap suu susu
+  nmap s~~ s~s~
 endif
 unlet! s:bundle
 "}}}
