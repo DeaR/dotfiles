@@ -499,6 +499,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {'mappings' : [['nvo', '<Plug>(operator-replace)']]},
     \ 'depends' : 'kana/vim-operator-user'}
 
+  NeoBundleLazy 'sgur/vim-operator-openbrowser', {
+    \ 'autoload' : {'mappings' : [['nvo', '<Plug>(operator-openbrowser)']]},
+    \ 'depends' : [
+    \   'tyru/open-browser.vim',
+    \   'kana/vim-operator-user']}
+
   NeoBundleLazy 'tyru/operator-reverse.vim', {
     \ 'autoload' : {
     \   'mappings' : [
@@ -3056,6 +3062,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nmap shh shsh
   nmap sHH sHsH
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Operator Open Browser: {{{
+silent! let s:bundle = neobundle#get('operator-openbrowser')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NOXmap gx <Plug>(operator-openbrowser)
 endif
 unlet! s:bundle
 "}}}
