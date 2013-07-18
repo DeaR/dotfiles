@@ -2518,8 +2518,11 @@ unlet! s:bundle
 " Grex: {{{
 silent! let s:bundle = neobundle#get('grex')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXmap sd <Plug>(operator-grex-delete)
-  NXmap sy <Plug>(operator-grex-yank)
+  NOXmap sd <Plug>(operator-grex-delete)
+  NOXmap sy <Plug>(operator-grex-yank)
+
+  nmap sdd sdsd
+  nmap syy sysy
 endif
 unlet! s:bundle
 "}}}
