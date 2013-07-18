@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-18 16:42:51 DeaR>
+" @timestamp   <2013-07-18 20:11:27 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -186,7 +186,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(clever-f-t)', '<Plug>(clever-f-T)',
     \      '<Plug>(clever-f-reset)',
     \      '<Plug>(clever-f-repeat-forward)',
-    \      '<Plug>(clever-f-repeat-back)']]}}
+    \      '<Plug>(clever-f-repeat-back)']],
+    \   'insert' : 1}}
 
   NeoBundleLazy 'deris/columnjump', {
     \ 'autoload' : {
@@ -2440,11 +2441,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:clever_f_not_overwrites_standard_mappings = 1
   endfunction
 
-  function! s:clever_f(motion)
-    NeoBundleSource clever-f
-    return "\<Plug>(clever-f-" . a:motion . ")"
-  endfunction
-
   NOXmap f     <Plug>(clever-f-f)
   NOXmap F     <Plug>(clever-f-F)
   NOXmap t     <Plug>(clever-f-t)
@@ -2453,13 +2449,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NOXmap <M-;> <Plug>(clever-f-repeat-forward)
   NOXmap <M-,> <Plug>(clever-f-repeat-back)
 
-  nmap <expr> <SID>(clever-f-f)              <SID>clever_f('f')
-  nmap <expr> <SID>(clever-f-F)              <SID>clever_f('F')
-  nmap <expr> <SID>(clever-f-t)              <SID>clever_f('t')
-  nmap <expr> <SID>(clever-f-T)              <SID>clever_f('T')
-  nmap <expr> <SID>(clever-f-reset)          <SID>clever_f('reset')
-  nmap <expr> <SID>(clever-f-repeat-forward) <SID>clever_f('repeat-forward')
-  nmap <expr> <SID>(clever-f-repeat-back)    <SID>clever_f('repeat-back')
+  nmap <SID>(clever-f-f)              <Plug>(clever-f-f)
+  nmap <SID>(clever-f-F)              <Plug>(clever-f-F)
+  nmap <SID>(clever-f-t)              <Plug>(clever-f-t)
+  nmap <SID>(clever-f-T)              <Plug>(clever-f-T)
+  nmap <SID>(clever-f-reset)          <Plug>(clever-f-reset)
+  nmap <SID>(clever-f-repeat-forward) <Plug>(clever-f-repeat-forward)
+  nmap <SID>(clever-f-repeat-back)    <Plug>(clever-f-repeat-back)
 
   inoremap <script> <M-f> <C-O><SID>(clever-f-f)
   inoremap <script> <M-F> <C-O><SID>(clever-f-F)
