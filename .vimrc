@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 00:42:40 DeaR>
+" @timestamp   <2013-07-19 01:35:23 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -114,7 +114,9 @@ let s:neocompl_vim_completefuncs =
 if has('win32') && !exists('$VCVARSALL')
   let s:save_ssl = &shellslash
   set noshellslash
-  if exists('$VS110COMNTOOLS')
+  if exists('$VS120COMNTOOLS')
+    let $VCVARSALL = shellescape($VS120COMNTOOLS . '..\..\VC\vcvarsall.bat')
+  elseif exists('$VS110COMNTOOLS')
     let $VCVARSALL = shellescape($VS110COMNTOOLS . '..\..\VC\vcvarsall.bat')
   elseif exists('$VS100COMNTOOLS')
     let $VCVARSALL = shellescape($VS100COMNTOOLS . '..\..\VC\vcvarsall.bat')
