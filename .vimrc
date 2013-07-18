@@ -3653,21 +3653,20 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call tcomment#DefineType('zsh',       '# %s')
   endfunction
 
-  nnoremap gc
+  nnoremap sc
     \ :<C-U>let w:tcommentPos = getpos('.') \|
-    \  set opfunc=tcomment#Operator<CR>
-    \ g@
-  nnoremap gcc
+    \  set opfunc=tcomment#Operator<CR>g@
+  nnoremap scsc
     \ :<C-U>let w:tcommentPos = getpos('.') \|
-    \  set opfunc=tcomment#OperatorLine<CR>
-    \ g@$
-  nnoremap gC
+    \  set opfunc=tcomment#OperatorLine<CR>g@$
+  nnoremap sC
     \ :<C-U>let w:tcommentPos = getpos('.') \|
     \  call tcomment#SetOption('mode_extra', 'B') \|
-    \  set opfunc=tcomment#OperatorLine<CR>
-    \ g@
-  xnoremap gc :TComment<CR>
-  xnoremap gC :TCommentBlock<CR>
+    \  set opfunc=tcomment#OperatorLine<CR>g@
+  nmap scc scsc
+
+  xnoremap sc :TComment<CR>
+  xnoremap sC :TCommentBlock<CR>
 endif
 unlet! s:bundle
 "}}}
