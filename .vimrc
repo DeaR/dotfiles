@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-18 22:26:39 DeaR>
+" @timestamp   <2013-07-19 00:42:40 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2093,7 +2093,7 @@ function! s:auto_file_mark()
 endfunction
 function! s:clear_file_marks()
   rviminfo
-  let cmd = 'delmarks ' . toupper(s:mark_char[s:file_mark_pos])
+  let cmd = 'delmarks ' . toupper(join(s:mark_char, ''))
   echo "\r:" . cmd
   execute cmd
   wviminfo!
