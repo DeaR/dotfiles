@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-17 19:42:31 DeaR>
+" @timestamp   <2013-07-18 11:51:51 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -819,14 +819,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(textobj-jabraces-sumi-kakko-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
-  NeoBundleLazy 'kana/vim-textobj-lastpat', {
-    \ 'autoload' : {
-    \   'mappings' : [
-    \     ['vo',
-    \      '<Plug>(textobj-lastpat-n)',
-    \      '<Plug>(textobj-lastpat-N)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
-
   NeoBundleLazy 'kana/vim-textobj-line', {
     \ 'autoload' : {
     \   'mappings' : [
@@ -881,14 +873,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-syntax-a)',
     \      '<Plug>(textobj-syntax-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
-
-  NeoBundleLazy 'lucapette/vim-textobj-underscore', {
-    \ 'autoload' : {
-    \   'mappings' : [
-    \     ['vo',
-    \      '<Plug>(textobj-undcerscore-a)',
-    \      '<Plug>(textobj-undcerscore-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'mattn/vim-textobj-url', {
@@ -3898,22 +3882,6 @@ unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
-" TextObj LastPattern: {{{
-silent! let s:bundle = neobundle#get('textobj-lastpat')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:textobj_lastpat_no_default_key_mappings = 1
-  endfunction
-
-  OXmap a/ <Plug>(textobj-lastpat-n)
-  OXmap a? <Plug>(textobj-lastpat-N)
-  OXmap i/ <Plug>(textobj-lastpat-n)
-  OXmap i? <Plug>(textobj-lastpat-N)
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
 " TextObj Line: {{{
 silent! let s:bundle = neobundle#get('textobj-line')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4024,20 +3992,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   OXmap ay <Plug>(textobj-syntax-a)
   OXmap iy <Plug>(textobj-syntax-i)
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" TextObj Underscore: {{{
-silent! let s:bundle = neobundle#get('textobj-underscore')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:textobj_underscore_no_default_key_mappings = 1
-  endfunction
-
-  OXmap a_ <Plug>(textobj-underscore-a)
-  OXmap i_ <Plug>(textobj-underscore-i)
 endif
 unlet! s:bundle
 "}}}
