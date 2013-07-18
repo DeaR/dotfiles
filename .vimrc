@@ -925,7 +925,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(textobj-wiw-P)'],
     \     ['vo',
     \      '<Plug>(textobj-wiw-a)',
-    \      '<Plug>(textobj-wiw-i)']]}}
+    \      '<Plug>(textobj-wiw-i)']],
+    \   'insert' : 1}}
 
   NeoBundleLazy 'akiyan/vim-textobj-xml-attribute', {
     \ 'autoload' : {'filetypes' : ['html', 'xml']},
@@ -4038,11 +4039,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_wiw_no_default_key_mappings = 1
   endfunction
 
-  function! s:textobj_wiw(motion)
-    NeoBundleSource textobj-wiw
-    return "\<Plug>(textobj-wiw-" . a:motion . ")"
-  endfunction
-
   NOXmap w  <Plug>(textobj-wiw-n)
   NOXmap b  <Plug>(textobj-wiw-p)
   NOXmap e  <Plug>(textobj-wiw-N)
@@ -4051,10 +4047,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   OXmap aw <Plug>(textobj-wiw-a)
   OXmap iw <Plug>(textobj-wiw-i)
 
-  nmap <expr> <SID>(textobj-wiw-n) <SID>textobj_wiw('n')
-  nmap <expr> <SID>(textobj-wiw-p) <SID>textobj_wiw('p')
-  nmap <expr> <SID>(textobj-wiw-N) <SID>textobj_wiw('N')
-  nmap <expr> <SID>(textobj-wiw-P) <SID>textobj_wiw('P')
+  nmap <SID>(textobj-wiw-n) <Plug>(textobj-wiw-n)
+  nmap <SID>(textobj-wiw-p) <Plug>(textobj-wiw-p)
+  nmap <SID>(textobj-wiw-N) <Plug>(textobj-wiw-N)
+  nmap <SID>(textobj-wiw-P) <Plug>(textobj-wiw-P)
 
   inoremap <script> <M-w>      <C-O><SID>(textobj-wiw-n)
   inoremap <script> <M-b>      <C-O><SID>(textobj-wiw-p)
