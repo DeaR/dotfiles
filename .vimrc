@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-18 22:17:28 DeaR>
+" @timestamp   <2013-07-18 22:26:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1975,9 +1975,32 @@ nnoremap <F6> :<C-U>DiffOrig<CR>
 
 "-----------------------------------------------------------------------------
 " Command Line Window: {{{
+function! s:cmdwin_enter()
+  startinsert!
+  nnoremap <buffer><silent> q :<C-U>quit<CR>
+
+  if neobundle#get('smartinput') != {}
+    inoremap <buffer><silent><expr> <C-H>
+      \ col('.') == 1 ?
+      \   '<Esc>:quit<CR>' :
+      \   eval(smartinput#sid() . '_trigger_or_fallback("\<C-H>", "\<C-H>")')
+    inoremap <buffer><silent><expr> <BS>
+      \ col('.') == 1 ?
+      \   '<Esc>:quit<CR>' :
+      \   eval(smartinput#sid() . '_trigger_or_fallback("\<BS>", "\<BS>")')
+  else
+    inoremap <buffer><silent><expr> <C-H>
+      \ col('.') == 1 ?
+      \   '<Esc>:quit<CR>' :
+      \   '<C-H>'
+    inoremap <buffer><silent><expr> <BS>
+      \ col('.') == 1 ?
+      \   '<Esc>:quit<CR>' :
+      \   '<BS>'
+  endif
+endfunction
 autocmd MyVimrc CmdwinEnter *
-  \ startinsert! |
-  \ nnoremap <buffer><silent> q :<C-U>quit<CR>
+  \ call s:cmdwin_enter()
 
 function! s:cmdline_enter(type)
   execute 'doautocmd'
