@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-18 16:06:42 DeaR>
+" @timestamp   <2013-07-18 16:42:51 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -514,8 +514,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo',
-    \      '<Plug>operator-*', '<Plug>operator-g*',
-    \      '<Plug>operator-#', '<Plug>operator-g#']]},
+    \      '<Plug>(operator-*)', '<Plug>(operator-g*)',
+    \      '<Plug>(operator-#)', '<Plug>(operator-g#)']]},
     \ 'depends' : [
     \   'kana/vim-operator-user',
     \   'thinca/vim-visualstar']}
@@ -1721,12 +1721,12 @@ xnoremap <C-N> :global//print<CR>
 nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
 
 " Search Split Window
-NXnoremap <script><expr> <C-W>/  <SID>(split-nicely)<SID>/
-NXnoremap <script><expr> <C-W>?  <SID>(split-nicely)<SID>?
-NXnoremap <script><expr> <C-W>*  <SID>(split-nicely)*zz
-NXnoremap <script><expr> <C-W>#  <SID>(split-nicely)#zz
-NXnoremap <script><expr> <C-W>g* <SID>(split-nicely)*zz
-NXnoremap <script><expr> <C-W>g# <SID>(split-nicely)#zz
+NXnoremap <script> <C-W>/  <SID>(split-nicely)<SID>/
+NXnoremap <script> <C-W>?  <SID>(split-nicely)<SID>?
+NXnoremap <script> <C-W>*  <SID>(split-nicely)*zz
+NXnoremap <script> <C-W>#  <SID>(split-nicely)#zz
+NXnoremap <script> <C-W>g* <SID>(split-nicely)*zz
+NXnoremap <script> <C-W>g# <SID>(split-nicely)#zz
 
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
@@ -3085,6 +3085,18 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap g## g#zz
   nmap g// **
   nmap g?? ##
+
+  nmap <C-W>*  <SID>(split-nicely)<Plug>(operator-*)
+  nmap <C-W>#  <SID>(split-nicely)<Plug>(operator-#)
+  nmap <C-W>g* <SID>(split-nicely)<Plug>(operator-g*)
+  nmap <C-W>g# <SID>(split-nicely)<Plug>(operator-g#)
+
+  nnoremap <script> <C-W>**  <SID>(split-nicely)*zz
+  nnoremap <script> <C-W>##  <SID>(split-nicely)#zz
+  nnoremap <script> <C-W>g** <SID>(split-nicely)*zz
+  nnoremap <script> <C-W>g## <SID>(split-nicely)#zz
+  nmap <C-W>g// <C-W>**
+  nmap <C-W>g?? <C-W>##
 endif
 unlet! s:bundle
 "}}}
