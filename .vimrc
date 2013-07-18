@@ -3078,7 +3078,9 @@ unlet! s:bundle
 " Operator Sort: {{{
 silent! let s:bundle = neobundle#get('operator-sort')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXmap ss <Plug>(operator-sort)
+  NOXmap sS <Plug>(operator-sort)
+
+  nmap sSS sSsS
 endif
 unlet! s:bundle
 "}}}
