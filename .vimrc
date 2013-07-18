@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-18 16:04:38 DeaR>
+" @timestamp   <2013-07-18 16:06:42 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2107,69 +2107,6 @@ NOXnoremap <silent><expr> H <SID>smart_bol()
 NOXnoremap <silent><expr> L <SID>smart_eol()
 inoremap <silent><expr> <M-H> '<C-O>' . <SID>smart_bol()
 inoremap <silent><expr> <M-L> '<C-O>' . <SID>smart_eol()
-"}}}
-
-"-----------------------------------------------------------------------------
-" Substitute: {{{
-xnoremap <script><expr> s/
-  \ '<SID>:s//gc<Left><Left><Left>'
-
-nnoremap <script><expr> s/
-  \ '<SID>:<C-U>.,$s//gc<Left><Left><Left>'
-nnoremap <script><expr> s*
-  \ '<SID>:<C-U>.,$s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
-nnoremap <script><expr> sg*
-  \ '<SID>:<C-U>.,$s/' . expand('<cword>') . '//gc<Left><Left><Left>'
-
-nnoremap <script><expr> s?
-  \ '<SID>:<C-U>1,.s//gc<Left><Left><Left>'
-nnoremap <script><expr> s#
-  \ '<SID>:<C-U>1,.s/\<' . expand('<cword>') . '\>//gc<Left><Left><Left>'
-nnoremap <script><expr> sg#
-  \ '<SID>:<C-U>1,.s/' . expand('<cword>') . '//gc<Left><Left><Left>'
-
-nnoremap <script><expr> sa/
-  \ '<SID>:<C-U>argdo %s//gce<Left><Left><Left><Left>'
-nnoremap <script><expr> sa*
-  \ '<SID>:<C-U>argdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-nnoremap <script><expr> sag*
-  \ '<SID>:<C-U>argdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
-
-nnoremap <script><expr> sb/
-  \ '<SID>:<C-U>bufdo %s//gce<Left><Left><Left><Left>'
-nnoremap <script><expr> sb*
-  \ '<SID>:<C-U>bufdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-nnoremap <script><expr> sbg*
-  \ '<SID>:<C-U>bufdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
-
-nnoremap <script><expr> st/
-  \ '<SID>:<C-U>tabdo %s//gce<Left><Left><Left><Left>'
-nnoremap <script><expr> st*
-  \ '<SID>:<C-U>tabdo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-nnoremap <script><expr> stg*
-  \ '<SID>:<C-U>tabdo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
-
-nnoremap <script><expr> sw/
-  \ '<SID>:<C-U>windo %s//gce<Left><Left><Left><Left>'
-nnoremap <script><expr> sw*
-  \ '<SID>:<C-U>windo %s/\<' . expand('<cword>') . '\>//gce<Left><Left><Left><Left>'
-nnoremap <script><expr> swg*
-  \ '<SID>:<C-U>windo %s/' . expand('<cword>') . '//gce<Left><Left><Left><Left>'
-
-nmap sg?  s#
-nmap sg/  s*
-nmap sag/ sa*
-nmap sbg/ sb*
-nmap stg/ st*
-nmap swg/ sw*
-
-xnoremap sn  :s gc<CR>
-nnoremap sn  :<C-U>.,$s gc<CR>
-nnoremap sN  :<C-U>1,.s gc<CR>
-nnoremap san :<C-U>argdo %s gce<CR>
-nnoremap sbn :<C-U>bufdo %s gce<CR>
-nnoremap stn :<C-U>tabdo %s gce<CR>
-nnoremap swn :<C-U>windo %s gce<CR>
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -4517,42 +4454,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   xnoremap <script> <C-W>#  <SID>(split-nicely)gv<SID>(visualstar-#)zz
   xnoremap <script> <C-W>g* <SID>(split-nicely)gv<SID>(visualstar-g*)zz
   xnoremap <script> <C-W>g# <SID>(split-nicely)gv<SID>(visualstar-g#)zz
-
-  xnoremap <script> s*
-    \ <SID>(visualstar-*)N<SID>:<C-U>.,$s///gc<Left><Left><Left>
-  xnoremap <script> s#
-    \ <SID>(visualstar-#)N<SID>:<C-U>1,.s///gc<Left><Left><Left>
-  xnoremap <script> sg*
-    \ <SID>(visualstar-g*)N<SID>:<C-U>.,$s///gc<Left><Left><Left>
-  xnoremap <script> sg#
-    \ <SID>(visualstar-g#)N<SID>:<C-U>1,.s///gc<Left><Left><Left>
-
-  xnoremap <script> sa*
-    \ <SID>(visualstar-*)N<SID>:<C-U>argdo %s///gce<Left><Left><Left><Left>
-  xnoremap <script> sag*
-    \ <SID>(visualstar-g*)N<SID>:<C-U>argdo %s///gce<Left><Left><Left><Left>
-
-  xnoremap <script> sb*
-    \ <SID>(visualstar-*)N<SID>:<C-U>bufdo %s///gce<Left><Left><Left><Left>
-  xnoremap <script> sbg*
-    \ <SID>(visualstar-g*)N<SID>:<C-U>bufdo %s///gce<Left><Left><Left><Left>
-
-  xnoremap <script> st*
-    \ <SID>(visualstar-*)N<SID>:<C-U>tabdo %s///gce<Left><Left><Left><Left>
-  xnoremap <script> stg*
-    \ <SID>(visualstar-g*)N<SID>:<C-U>tabdo %s///gce<Left><Left><Left><Left>
-
-  xnoremap <script> sw*
-    \ <SID>(visualstar-*)N<SID>:<C-U>windo %s///gce<Left><Left><Left><Left>
-  xnoremap <script> swg*
-    \ <SID>(visualstar-g*)N<SID>:<C-U>windo %s///gce<Left><Left><Left><Left>
-
-  xmap sg/  s*
-  xmap sg?  s#
-  xmap sag/ sa*
-  xmap sbg/ sb*
-  xmap stg/ st*
-  xmap swg/ sw*
 endif
 unlet! s:bundle
 "}}}
