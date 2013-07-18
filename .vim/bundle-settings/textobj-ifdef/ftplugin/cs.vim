@@ -1,10 +1,10 @@
 " -*- mode: vimrc; coding: unix -*-
 
-" @name        textobj-ifdef.vim
+" @name        cs.vim
 " @description TextObj Ifdef ftplugin for C#
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-14 17:36:10 DeaR>
+" @timestamp   <2013-07-18 14:23:36 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
