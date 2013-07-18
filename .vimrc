@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-18 14:08:25 DeaR>
+" @timestamp   <2013-07-18 14:32:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -915,6 +915,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-wiw-a)',
     \      '<Plug>(textobj-wiw-i)']]}}
+
+  NeoBundleLazy 'akiyan/vim-textobj-xml-attribute', {
+    \ 'autoload' : {'filetypes' : ['html', 'xml']},
+    \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'zaiste/tmux.vim', {
     \ 'autoload' : {'filetypes' : 'tmux'}}
@@ -4081,6 +4085,17 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   inoremap <script> <M-b>      <C-O><SID>(textobj-wiw-p)
   inoremap <script> <M-e>      <C-O><SID>(textobj-wiw-N)
   inoremap <script> <M-g><M-e> <C-O><SID>(textobj-wiw-P)
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" TextObj XML Attribute: {{{
+silent! let s:bundle = neobundle#get('textobj-xml-attribute')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:textobj_xmlattribute_no_default_key_mappings = 1
+  endfunction
 endif
 unlet! s:bundle
 "}}}
