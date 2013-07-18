@@ -3065,8 +3065,11 @@ unlet! s:bundle
 " Operator Reverse: {{{
 silent! let s:bundle = neobundle#get('operator-reverse')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXmap sr <Plug>(operator-reverse-text)
-  NXmap sR <Plug>(operator-reverse-lines)
+  NOXmap sr <Plug>(operator-reverse-text)
+  NOXmap sR <Plug>(operator-reverse-lines)
+
+  nmap srr srsr
+  nmap sRR sRsR
 endif
 unlet! s:bundle
 "}}}
