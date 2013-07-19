@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 18:11:24 DeaR>
+" @timestamp   <2013-07-19 18:30:56 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3081,34 +3081,34 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NOmap g* <Plug>(operator-g*)
   NOmap g# <Plug>(operator-g#)
 
-  nnoremap **   *zz
-  nnoremap ##   #zz
-  nnoremap g*g* g*zz
-  nnoremap g#g# g#zz
-  nmap g**      g*g*
-  nmap g##      g#g#
-
-  nmap g/g/ **
-  nmap g?g? ##
-  nmap g//  **
-  nmap g??  ##
-
   NOmap <C-W>*  <SID>(split-nicely)<Plug>(operator-*)
   NOmap <C-W>#  <SID>(split-nicely)<Plug>(operator-#)
   NOmap <C-W>g* <SID>(split-nicely)<Plug>(operator-g*)
   NOmap <C-W>g# <SID>(split-nicely)<Plug>(operator-g#)
 
+  nnoremap **   *zz
+  nnoremap ##   #zz
+  nnoremap g*g* g*zz
+  nnoremap g#g# g#zz
+
+  nmap g/g/ **
+  nmap g?g? ##
+  nmap g//  **
+  nmap g??  ##
+  nmap g**  g*g*
+  nmap g##  g#g#
+
   nnoremap <script> <C-W>**   <SID>(split-nicely)*zz
   nnoremap <script> <C-W>##   <SID>(split-nicely)#zz
   nnoremap <script> <C-W>g*g* <SID>(split-nicely)g*zz
   nnoremap <script> <C-W>g#g# <SID>(split-nicely)g#zz
-  nmap <C-W>g**     <C-W>g*g*
-  nmap <C-W>g##     <C-W>g#g#
 
   nmap <C-W>g/g/ <C-W>**
   nmap <C-W>g?g? <C-W>##
   nmap <C-W>g//  <C-W>**
   nmap <C-W>g??  <C-W>##
+  nmap <C-W>g**  <C-W>g*g*
+  nmap <C-W>g##  <C-W>g#g#
 endif
 unlet! s:bundle
 "}}}
