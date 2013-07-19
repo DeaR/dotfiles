@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 19:17:51 DeaR>
+" @timestamp   <2013-07-19 19:29:54 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3174,6 +3174,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:precious_enable_switchers                = {
       \ 'help' : {'setfiletype' : 0}}
   endfunction
+
+  OXmap ax <Plug>(textobj-precious-i)
+  OXmap ix <Plug>(textobj-precious-i)
 
   autocmd MyVimrc FileType *
     \ NeoBundleSource precious
