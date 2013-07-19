@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 20:05:43 DeaR>
+" @timestamp   <2013-07-20 01:01:19 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1044,7 +1044,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \ 'autoload' : {'filetypes' : 'help'}}
   endif
 
-  NeoBundleLazy 'Shougo/vimfiler.vim', {
+  NeoBundle 'Shougo/vimfiler.vim', {
+    \ 'lazy' : !argc() && has('vim_starting'),
     \ 'autoload' : {
     \   'commands' : [
     \     {'name' : 'VimFiler',
@@ -4597,9 +4598,5 @@ unlet! s:bundle
 " NeoBundle
 if exists(':NeoBundle')
   call neobundle#call_hook('on_source')
-
-  if argc() && has('vim_starting')
-    NeoBundleSource vimfiler
-  endif
 endif
 "}}}
