@@ -4,7 +4,7 @@
 " @description Text Object for Help
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-07 22:30:06 DeaR>
+" @timestamp   <2013-07-19 17:18:52 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -35,8 +35,8 @@ call textobj#user#plugin('help', {
   \   'move-N': '<buffer> <LocalLeader>D',
   \   'move-P': '<buffer> <LocalLeader>E'}})
 
-map <buffer> <C-J> <Plug>(textobj-help-any-n)
-map <buffer> <C-K> <Plug>(textobj-help-any-p)
+map <buffer> J <Plug>(textobj-help-any-n)
+map <buffer> K <Plug>(textobj-help-any-p)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
@@ -56,8 +56,8 @@ let b:undo_ftplugin .= '
   \ silent! unmap <buffer> <LocalLeader>e
   \ silent! unmap <buffer> <LocalLeader>D
   \ silent! unmap <buffer> <LocalLeader>E
-  \ silent! unmap <buffer> <C-J>
-  \ silent! unmap <buffer> <C-K>'
+  \ silent! unmap <buffer> J
+  \ silent! unmap <buffer> K'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
