@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 19:01:32 DeaR>
+" @timestamp   <2013-07-19 19:04:49 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -197,6 +197,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['nvo',
     \      '<Plug>(columnjump-forward)',
     \      '<Plug>(columnjump-backward)']],
+    \   'commands' : [
+    \     'ColumnJumpForward', 'ColumnJumpBackward'],
     \   'insert' : 1}}
 
   NeoBundleLazy 'vim-jp/cpp-vim', {
