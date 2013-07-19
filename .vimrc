@@ -196,7 +196,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [
     \     ['nvo',
     \      '<Plug>(columnjump-forward)',
-    \      '<Plug>(columnjump-backward)']]}}
+    \      '<Plug>(columnjump-backward)']],
+    \   'insert' : 1}}
 
   NeoBundleLazy 'vim-jp/cpp-vim', {
     \ 'autoload' : {'filetypes' : ['c', 'cpp']}}
@@ -2503,8 +2504,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap <SID>(columnjump-backward) <Plug>(columnjump-backward)
   nmap <SID>(columnjump-forward)  <Plug>(columnjump-forward)
 
-  nmap <script> <C-K> <SID>(columnjump-backward)zz
-  nmap <script> <C-J> <SID>(columnjump-forward)zz
+  nnoremap <script> <C-K> <SID>(columnjump-backward)zz
+  nnoremap <script> <C-J> <SID>(columnjump-forward)zz
+
+  inoremap <script> <M-K> <C-O><SID>(columnjump-backward)
+  inoremap <script> <M-J> <C-O><SID>(columnjump-forward)
 endif
 unlet! s:bundle
 "}}}
