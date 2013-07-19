@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 18:30:56 DeaR>
+" @timestamp   <2013-07-19 18:33:28 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4078,7 +4078,7 @@ unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
-" TextObj Word In Word: {{{
+" TextObj WordInWord: {{{
 silent! let s:bundle = neobundle#get('textobj-wiw')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
