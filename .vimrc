@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 17:42:36 DeaR>
+" @timestamp   <2013-07-19 18:11:24 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -246,12 +246,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'depends' : [
     \   'sgur/vim-gf-autoload',
     \   'kana/vim-gf-diff']}
-
-  NeoBundleLazy 'gist:mattn/5457352', {
-    \ 'name' : 'ginger',
-    \ 'autoload' : {'commands' : 'Ginger'},
-    \ 'script_type' : 'plugin',
-    \ 'depends' : 'mattn/webapi-vim'}
 
   NeoBundleLazy 'yomi322/vim-gitcomplete', {
     \ 'autoload' : {'filetypes' : 'vimshell'}}
@@ -4551,22 +4545,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \     s:executable('cl')      ? 'watchdogs_checker/msvc' : ''}})
 
     call watchdogs#setup(g:quickrun_config)
-  endfunction
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" WebAPI: {{{
-silent! let s:bundle = neobundle#get('webapi')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    if s:has_vimproc()
-      let g:webapi#system_function =
-        \ has('win32') ?
-        \   'vimproc#cmd#system' :
-        \   'vimproc#system'
-    endif
   endfunction
 endif
 unlet! s:bundle
