@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 15:12:37 DeaR>
+" @timestamp   <2013-07-19 17:42:36 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1740,6 +1740,10 @@ NXnoremap <script> <C-W>g# <SID>(split-nicely)#zz
 
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
+
+" QuickFix
+nnoremap <C-W>, :<C-U>copen<CR>
+nnoremap <C-W>. :<C-U>cclose<CR>
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -3227,10 +3231,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     sunmap g,rf
   endfunction
 
-  nnoremap <C-W>, :<C-U>ToggleQFixWin<CR>
-  nnoremap <C-W>. :<C-U>MoveToQFixWin<CR>
+  nnoremap <C-W>, :<C-U>OpenQFixWin<CR>
+  nnoremap <C-W>. :<C-U>CloseToQFixWin<CR>
   nnoremap <C-W>0 :<C-U>ToggleLocationListMode<CR>
-  " nnoremap <C-W>/ :<C-U>ToggleLocationListMode<CR>
 endif
 unlet! s:bundle
 "}}}
