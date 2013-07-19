@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 19:47:55 DeaR>
+" @timestamp   <2013-07-19 20:05:43 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1586,19 +1586,20 @@ NOXnoremap gL L
 NOXnoremap <Space> %
 
 " Window Control
-nnoremap <M-j> <C-W>j
-nnoremap <M-k> <C-W>k
-nnoremap <M-h> <C-W>h
-nnoremap <M-l> <C-W>l
-nnoremap <M-J> <C-W>J
-nnoremap <M-K> <C-W>K
-nnoremap <M-H> <C-W>H
-nnoremap <M-L> <C-W>L
-nnoremap <M-+> <C-W>+
-nnoremap <M--> <C-W>-
-nnoremap <M-<> <C-W><
-nnoremap <M->> <C-W>>
-nnoremap <M-=> <C-W>=
+NXnoremap <M-j>  <C-W>j
+NXnoremap <M-k>  <C-W>k
+NXnoremap <M-h>  <C-W>h
+NXnoremap <M-l>  <C-W>l
+NXnoremap <M-J>  <C-W>J
+NXnoremap <M-K>  <C-W>K
+NXnoremap <M-H>  <C-W>H
+NXnoremap <M-L>  <C-W>L
+NXnoremap <M-+>  <C-W>+
+NXnoremap <M-->  <C-W>-
+NXnoremap <M-<>  <C-W><
+NXnoremap <M->>  <C-W>>
+NXnoremap <M-=>  <C-W>=
+NXnoremap <C-W>Q :<C-U>confirm qall<CR>
 
 " Insert-mode & Command-line-mode
 noremap! <M-j> <Down>
@@ -1615,6 +1616,12 @@ inoremap <M-W>      <C-O>W
 inoremap <M-B>      <C-O>B
 inoremap <M-E>      <C-O>E
 inoremap <M-g><M-E> <C-O>gE
+inoremap <M-f>      <C-O>f
+inoremap <M-F>      <C-O>F
+inoremap <M-t>      <C-O>t
+inoremap <M-T>      <C-O>T
+inoremap <M-;>      <C-O>;
+inoremap <M-,>      <C-O>,
 
 " Command-line-mode
 cnoremap <M-H> <Home>
