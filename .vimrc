@@ -4497,9 +4497,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   xnoremap <script> g* <SID>(visualstar-g*)zz
   xnoremap <script> g# <SID>(visualstar-g#)zz
 
-  xnoremap <script> <S-LeftMouse>  <SID>(visualstar-*)zz
-  xnoremap <script> g<S-LeftMouse> <SID>(visualstar-g*)zz
-
   xnoremap <script> <C-W>*  <SID>(split-nicely)gv<SID>(visualstar-*)zz
   xnoremap <script> <C-W>#  <SID>(split-nicely)gv<SID>(visualstar-#)zz
   xnoremap <script> <C-W>g* <SID>(split-nicely)gv<SID>(visualstar-g*)zz
