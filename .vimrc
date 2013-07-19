@@ -532,7 +532,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [
     \     ['nvo',
     \      '<Plug>(parajump-forward)',
-    \      '<Plug>(parajump-backward)']]}}
+    \      '<Plug>(parajump-backward)']],
+    \   'insert' : 1}}
 
   if s:executable('perl')
     NeoBundleLazy 'c9s/perlomni.vim', {
@@ -3137,6 +3138,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nnoremap <script> { <SID>(parajump-backward)zz
   nnoremap <script> } <SID>(parajump-forward)zz
+
+  inoremap <script> <M-{> <C-O><SID>(parajump-backward)
+  inoremap <script> <M-}> <C-O><SID>(parajump-forward)
 endif
 unlet! s:bundle
 "}}}
