@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 19:41:43 DeaR>
+" @timestamp   <2013-07-19 19:47:55 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1772,10 +1772,11 @@ nnoremap Q  @
 nnoremap Q; @:
 nnoremap QQ @@
 
-" Unnecessary key
-nnoremap ZQ <Nop>
-nnoremap ZZ <Nop>
-nnoremap gQ gq
+" Dangerous key
+nnoremap ZQ    <Nop>
+nnoremap ZZ    <Nop>
+nnoremap gQ    gq
+inoremap <C-C> <Esc>
 
 " Insert Tab
 inoremap <C-T> <C-V><Tab>
