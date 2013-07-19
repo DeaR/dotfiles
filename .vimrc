@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 19:04:49 DeaR>
+" @timestamp   <2013-07-19 19:17:51 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -729,16 +729,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(textobj-comment-a)',
     \      '<Plug>(textobj-comment-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
-
-  NeoBundleLazy 'osyo-manga/vim-textobj-context', {
-    \ 'autoload' : {
-    \   'mappings' : [
-    \     ['vo',
-    \      '<Plug>(textobj-context-a)',
-    \      '<Plug>(textobj-context-i)']]},
-    \ 'depends' : [
-    \   'Shougo/context_filetype.vim',
-    \   'kana/vim-textobj-user']}
 
   NeoBundleLazy 'kana/vim-textobj-datetime', {
     \ 'autoload' : {
@@ -3767,20 +3757,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   OXmap ac <Plug>(textobj-comment-a)
   OXmap ic <Plug>(textobj-comment-i)
-endif
-unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" TextObj Context: {{{
-silent! let s:bundle = neobundle#get('textobj-context')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:textobj_context_no_default_key_mappings = 1
-  endfunction
-
-  OXmap ax <Plug>(textobj-context-a)
-  OXmap ix <Plug>(textobj-context-i)
 endif
 unlet! s:bundle
 "}}}
