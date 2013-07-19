@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 18:33:28 DeaR>
+" @timestamp   <2013-07-19 19:01:32 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -927,8 +927,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(textobj-wiw-P)'],
     \     ['vo',
     \      '<Plug>(textobj-wiw-a)',
-    \      '<Plug>(textobj-wiw-i)']],
-    \   'insert' : 1}}
+    \      '<Plug>(textobj-wiw-i)']]}}
 
   NeoBundleLazy 'akiyan/vim-textobj-xml-attribute', {
     \ 'autoload' : {'filetypes' : ['html', 'xml']},
@@ -4085,23 +4084,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_wiw_no_default_key_mappings = 1
   endfunction
 
-  NOXmap w  <Plug>(textobj-wiw-n)
-  NOXmap b  <Plug>(textobj-wiw-p)
-  NOXmap e  <Plug>(textobj-wiw-N)
-  NOXmap ge <Plug>(textobj-wiw-P)
+  NOXmap <M-w>      <Plug>(textobj-wiw-n)
+  NOXmap <M-b>      <Plug>(textobj-wiw-p)
+  NOXmap <M-e>      <Plug>(textobj-wiw-N)
+  NOXmap <M-g><M-e> <Plug>(textobj-wiw-P)
 
-  OXmap aw <Plug>(textobj-wiw-a)
-  OXmap iw <Plug>(textobj-wiw-i)
-
-  nmap <SID>(textobj-wiw-n) <Plug>(textobj-wiw-n)
-  nmap <SID>(textobj-wiw-p) <Plug>(textobj-wiw-p)
-  nmap <SID>(textobj-wiw-N) <Plug>(textobj-wiw-N)
-  nmap <SID>(textobj-wiw-P) <Plug>(textobj-wiw-P)
-
-  inoremap <script> <M-w>      <C-O><SID>(textobj-wiw-n)
-  inoremap <script> <M-b>      <C-O><SID>(textobj-wiw-p)
-  inoremap <script> <M-e>      <C-O><SID>(textobj-wiw-N)
-  inoremap <script> <M-g><M-e> <C-O><SID>(textobj-wiw-P)
+  OXmap a<M-w> <Plug>(textobj-wiw-a)
+  OXmap i<M-w> <Plug>(textobj-wiw-i)
 endif
 unlet! s:bundle
 "}}}
