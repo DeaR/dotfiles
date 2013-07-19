@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-20 01:01:19 DeaR>
+" @timestamp   <2013-07-20 01:50:21 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2060,7 +2060,7 @@ function! s:auto_mark()
   let b:mark_pos = (b:mark_pos + 1) % len(s:mark_char)
 endfunction
 function! s:clear_marks()
-  let cmd = 'delmarks!'
+  let cmd = 'delmarks ' . join(s:mark_char, '')
   echo "\r:" . cmd
   execute cmd
 endfunction
