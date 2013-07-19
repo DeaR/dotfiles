@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 19:29:54 DeaR>
+" @timestamp   <2013-07-19 19:41:43 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3330,13 +3330,21 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \     s:executable('mcs')     ? 'cs/mcs' : ''},
       \ 'vbnet' : {
       \   'type' : 'vbnet/vbc'}})
+
+    nnoremap <expr> <C-C>
+      \ quickrun#is_running() ?
+      \   quickrun#sweep_sessions() :
+      \   '<C-C>'
   endfunction
 
+  if neobundle#get('precious') != {}
+    NOXmap sx <Plug>(precious-quickrun-op)
+  else
+    NOXmap sx <Plug>(quickrun-op)
+  endif
+
+  nmap sxx  sxsx
   nmap <F5> <Plug>(quickrun)
-  nnoremap <expr> <C-C>
-    \ quickrun#is_running() ?
-    \   quickrun#sweep_sessions() :
-    \   '<C-C>'
 endif
 unlet! s:bundle
 "}}}
