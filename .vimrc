@@ -650,6 +650,14 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   " NeoBundleLazy 'kana/vim-smartinput', {
   "   \ 'autoload' : {'insert' : 1}}
+  
+  NeoBundleLazy 'kana/vim-smartword', {
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['nvo',
+    \      '<Plug>(smartword-w)', '<Plug>(smartword-b)',
+    \      '<Plug>(smartword-e)', '<Plug>(smartword-ge)']],
+    \   'insert' : 1}}
 
   NeoBundleLazy 'tpope/vim-surround', {
     \ 'autoload' : {
@@ -3464,6 +3472,28 @@ else
   inoremap <SID>(smartinput-<CR>)  <CR>
   inoremap <SID>(smartinput-<BS>)  <BS>
   inoremap <SID>(smartinput-<C-H>) <C-H>
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" SmartWord: {{{
+silent! let s:bundle = neobundle#get('smartword')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NOXmap w  <Plug>(smartword-w)
+  NOXmap b  <Plug>(smartword-b)
+  NOXmap e  <Plug>(smartword-e)
+  NOXmap ge <Plug>(smartword-ge)
+
+  nmap <SID>(smartword-w)  <Plug>(smartword-w)
+  nmap <SID>(smartword-b)  <Plug>(smartword-b)
+  nmap <SID>(smartword-e)  <Plug>(smartword-e)
+  nmap <SID>(smartword-ge) <Plug>(smartword-ge)
+
+  inoremap <script> <M-w>      <C-O><SID>(smartword-w)
+  inoremap <script> <M-b>      <C-O><SID>(smartword-b)
+  inoremap <script> <M-e>      <C-O><SID>(smartword-e)
+  inoremap <script> <M-g><M-e> <C-O><SID>(smartword-ge)
 endif
 unlet! s:bundle
 "}}}
