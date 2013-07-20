@@ -2864,7 +2864,6 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('neocomplete')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:neocomplete#enable_at_startup            = 1
     let g:neocomplete#enable_auto_select           = 0
     let g:neocomplete#enable_auto_delimiter        = 1
     " let g:neocomplete#enable_insert_char_pre       = 1
