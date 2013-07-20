@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-20 01:50:21 DeaR>
+" @timestamp   <2013-07-21 01:42:21 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2756,7 +2756,6 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('neocomplcache')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:neocomplcache_enable_at_startup            = 1
     let g:neocomplcache_enable_auto_select           = 0
     let g:neocomplcache_enable_auto_delimiter        = 1
     " let g:neocomplcache_enable_insert_char_pre       = 1
