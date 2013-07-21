@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-21 16:01:19 DeaR>
+" @timestamp   <2013-07-21 22:23:30 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3974,10 +3974,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   OXmap ijr <Plug>(textobj-jabraces-brackets-i)
   OXmap ij[ <Plug>(textobj-jabraces-brackets-i)
   OXmap ij] <Plug>(textobj-jabraces-brackets-i)
-  OXmap ija <Plug>(textobj-jabraces-ingles-i)
-  OXmap ij< <Plug>(textobj-jabraces-ingles-i)
-  OXmap ij> <Plug>(textobj-jabraces-ingles-i)
-  OXmap ijA <Plug>(textobj-jabraces-double-ingles-i)
+  OXmap ija <Plug>(textobj-jabraces-angles-i)
+  OXmap ij< <Plug>(textobj-jabraces-angles-i)
+  OXmap ij> <Plug>(textobj-jabraces-angles-i)
+  OXmap ijA <Plug>(textobj-jabraces-double-angles-i)
   OXmap ijk <Plug>(textobj-jabraces-kakko-i)
   OXmap ijK <Plug>(textobj-jabraces-double-kakko-i)
   OXmap ijy <Plug>(textobj-jabraces-yama-kakko-i)
