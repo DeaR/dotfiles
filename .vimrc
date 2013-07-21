@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-21 01:42:21 DeaR>
+" @timestamp   <2013-07-21 16:01:19 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1689,7 +1689,14 @@ NXnoremap g*    g*zz
 NXnoremap g#    g#zz
 
 " Back jump
-nmap <S-Tab> <C-O>
+nnoremap <S-Tab> <C-O>
+
+" Paste toggle
+set pastetoggle=<F11>
+nnoremap <expr> <F11>
+  \ &paste ?
+  \   ':<C-U>set nopaste<CR>' :
+  \   ':<C-U>set paste<CR>'
 
 " Start Visual-mode with the same area
 onoremap gv :<C-U>normal! gv<CR>
