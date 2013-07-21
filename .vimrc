@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-21 23:28:49 DeaR>
+" @timestamp   <2013-07-22 02:46:58 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4044,31 +4044,31 @@ silent! let s:bundle = neobundle#get('textobj-multitextobj')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_multitextobj_textobjects_group_a = {
-      \ 'A' : [
-      \   '<Plug>(textobj-jabraces-parens-a)',
-      \   '<Plug>(textobj-jabraces-braces-a)',
-      \   '<Plug>(textobj-jabraces-brackets-a)',
-      \   '<Plug>(textobj-jabraces-angles-a)',
-      \   '<Plug>(textobj-jabraces-double-angles-a)',
-      \   '<Plug>(textobj-jabraces-kakko-a)',
-      \   '<Plug>(textobj-jabraces-double-kakko-a)',
-      \   '<Plug>(textobj-jabraces-yama-kakko-a)',
-      \   '<Plug>(textobj-jabraces-double-yama-kakko-a)',
-      \   '<Plug>(textobj-jabraces-kikkou-kakko-a)',
-      \   '<Plug>(textobj-jabraces-sumi-kakko-a)']}
+      \ 'A' : [[
+      \   "\<Plug>(textobj-jabraces-parens-a)",
+      \   "\<Plug>(textobj-jabraces-braces-a)",
+      \   "\<Plug>(textobj-jabraces-brackets-a)",
+      \   "\<Plug>(textobj-jabraces-angles-a)",
+      \   "\<Plug>(textobj-jabraces-double-angles-a)",
+      \   "\<Plug>(textobj-jabraces-kakko-a)",
+      \   "\<Plug>(textobj-jabraces-double-kakko-a)",
+      \   "\<Plug>(textobj-jabraces-yama-kakko-a)",
+      \   "\<Plug>(textobj-jabraces-double-yama-kakko-a)",
+      \   "\<Plug>(textobj-jabraces-kikkou-kakko-a)",
+      \   "\<Plug>(textobj-jabraces-sumi-kakko-a)"]]}
     let g:textobj_multitextobj_textobjects_group_i = {
-      \ 'A' : [
-      \   '<Plug>(textobj-jabraces-parens-i)',
-      \   '<Plug>(textobj-jabraces-braces-i)',
-      \   '<Plug>(textobj-jabraces-brackets-i)',
-      \   '<Plug>(textobj-jabraces-angles-i)',
-      \   '<Plug>(textobj-jabraces-double-angles-i)',
-      \   '<Plug>(textobj-jabraces-kakko-i)',
-      \   '<Plug>(textobj-jabraces-double-kakko-i)',
-      \   '<Plug>(textobj-jabraces-yama-kakko-i)',
-      \   '<Plug>(textobj-jabraces-double-yama-kakko-i)',
-      \   '<Plug>(textobj-jabraces-kikkou-kakko-i)',
-      \   '<Plug>(textobj-jabraces-sumi-kakko-i)']}
+      \ 'A' : [[
+      \   "\<Plug>(textobj-jabraces-parens-i)",
+      \   "\<Plug>(textobj-jabraces-braces-i)",
+      \   "\<Plug>(textobj-jabraces-brackets-i)",
+      \   "\<Plug>(textobj-jabraces-angles-i)",
+      \   "\<Plug>(textobj-jabraces-double-angles-i)",
+      \   "\<Plug>(textobj-jabraces-kakko-i)",
+      \   "\<Plug>(textobj-jabraces-double-kakko-i)",
+      \   "\<Plug>(textobj-jabraces-yama-kakko-i)",
+      \   "\<Plug>(textobj-jabraces-double-yama-kakko-i)",
+      \   "\<Plug>(textobj-jabraces-kikkou-kakko-i)",
+      \   "\<Plug>(textobj-jabraces-sumi-kakko-i)"]]}
   endfunction
 
   OXmap <SID>(textobj-jabraces-a) <Plug>(textobj-multitextobj-A-a)
