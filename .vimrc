@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-21 22:23:30 DeaR>
+" @timestamp   <2013-07-21 23:28:49 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -866,6 +866,34 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-multiblock-a)',
     \      '<Plug>(textobj-multiblock-i)']]},
+    \ 'depends' : 'kana/vim-textobj-user'}
+
+  NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', {
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-multitextobj-a)',
+    \      '<Plug>(textobj-multitextobj-A-a)',
+    \      '<Plug>(textobj-multitextobj-B-a)',
+    \      '<Plug>(textobj-multitextobj-C-a)',
+    \      '<Plug>(textobj-multitextobj-D-a)',
+    \      '<Plug>(textobj-multitextobj-E-a)',
+    \      '<Plug>(textobj-multitextobj-i)',
+    \      '<Plug>(textobj-multitextobj-A-i)',
+    \      '<Plug>(textobj-multitextobj-B-i)',
+    \      '<Plug>(textobj-multitextobj-C-i)',
+    \      '<Plug>(textobj-multitextobj-D-i)',
+    \      '<Plug>(textobj-multitextobj-E-i)']]},
+    \ 'depends' : [
+    \   'kana/vim-textobj-jabraces',
+    \   'kana/vim-textobj-user']}
+
+  NeoBundleLazy 'hchbaw/textobj-motionmotion.vim', {
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-motionmotion-a)',
+    \      '<Plug>(textobj-motionmotion-i)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'sgur/vim-textobj-parameter', {
@@ -4012,6 +4040,62 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   OXmap ab <Plug>(textobj-multiblock-a)
   OXmap ib <Plug>(textobj-multiblock-i)
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" TextObj MultiTextObj: {{{
+silent! let s:bundle = neobundle#get('textobj-multitextobj')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:textobj_multitextobj_textobjects_group_a = {
+      \ 'A' : [
+      \   '<Plug>(textobj-jabraces-parens-a)',
+      \   '<Plug>(textobj-jabraces-braces-a)',
+      \   '<Plug>(textobj-jabraces-brackets-a)',
+      \   '<Plug>(textobj-jabraces-angles-a)',
+      \   '<Plug>(textobj-jabraces-double-angles-a)',
+      \   '<Plug>(textobj-jabraces-kakko-a)',
+      \   '<Plug>(textobj-jabraces-double-kakko-a)',
+      \   '<Plug>(textobj-jabraces-yama-kakko-a)',
+      \   '<Plug>(textobj-jabraces-double-yama-kakko-a)',
+      \   '<Plug>(textobj-jabraces-kikkou-kakko-a)',
+      \   '<Plug>(textobj-jabraces-sumi-kakko-a)']}
+    let g:textobj_multitextobj_textobjects_group_i = {
+      \ 'A' : [
+      \   '<Plug>(textobj-jabraces-parens-i)',
+      \   '<Plug>(textobj-jabraces-braces-i)',
+      \   '<Plug>(textobj-jabraces-brackets-i)',
+      \   '<Plug>(textobj-jabraces-angles-i)',
+      \   '<Plug>(textobj-jabraces-double-angles-i)',
+      \   '<Plug>(textobj-jabraces-kakko-i)',
+      \   '<Plug>(textobj-jabraces-double-kakko-i)',
+      \   '<Plug>(textobj-jabraces-yama-kakko-i)',
+      \   '<Plug>(textobj-jabraces-double-yama-kakko-i)',
+      \   '<Plug>(textobj-jabraces-kikkou-kakko-i)',
+      \   '<Plug>(textobj-jabraces-sumi-kakko-i)']}
+  endfunction
+
+  OXmap <SID>(textobj-jabraces-a) <Plug>(textobj-multitextobj-A-a)
+  OXmap <SID>(textobj-jabraces-i) <Plug>(textobj-multitextobj-A-i)
+
+  OXmap aB <SID>(textobj-jabraces-a)
+  OXmap iB <SID>(textobj-jabraces-i)
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" TextObj MotionMotion: {{{
+silent! let s:bundle = neobundle#get('textobj-motionmotion')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:textobj_motionmotion_no_default_key_mappings = 1
+  endfunction
+
+  OXmap am <Plug>(textobj-motionmotion-a)
+  OXmap im <Plug>(textobj-motionmotion-i)
 endif
 unlet! s:bundle
 "}}}
