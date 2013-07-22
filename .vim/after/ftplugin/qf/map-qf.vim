@@ -4,7 +4,7 @@
 " @description Close mapping for QuickFix
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-19 17:30:46 DeaR>
+" @timestamp   <2013-07-22 12:01:49 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -19,10 +19,10 @@ function! s:jk(motion)
     let list = getqflist()
   endif
   let cur = line('.') - 1
-  let pos = (cur + a:motion) % max
+  let pos = (cur + a:motion + max) % max
   let m = 0 < a:motion ? 1 : -1
   while cur != pos && list[pos].bufnr == 0
-    let pos = (pos + m) % max
+    let pos = (pos + m + max) % max
   endwhile
   return (pos + 1) . 'G'
 endfunction
