@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-22 14:52:59 DeaR>
+" @timestamp   <2013-07-22 15:00:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3738,20 +3738,20 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call tcomment#DefineType('zsh',       '# %s')
   endfunction
 
-  nnoremap sc
+  nnoremap gc
     \ :<C-U>let w:tcommentPos = getpos('.') \|
     \  set opfunc=tcomment#Operator<CR>g@
-  nnoremap scsc
+  nnoremap gcgc
     \ :<C-U>let w:tcommentPos = getpos('.') \|
     \  set opfunc=tcomment#OperatorLine<CR>g@$
-  nnoremap sC
+  nnoremap gC
     \ :<C-U>let w:tcommentPos = getpos('.') \|
     \  call tcomment#SetOption('mode_extra', 'B') \|
     \  set opfunc=tcomment#OperatorLine<CR>g@
-  nmap scc scsc
+  nmap gcc gcgc
 
-  xnoremap sc :TComment<CR>
-  xnoremap sC :TCommentBlock<CR>
+  xnoremap gc :TComment<CR>
+  xnoremap gC :TCommentBlock<CR>
 endif
 unlet! s:bundle
 "}}}
