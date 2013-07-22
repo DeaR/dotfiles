@@ -4,10 +4,13 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-16 20:43:51 DeaR>
+" @timestamp   <2013-07-22 16:16:09 DeaR>
 
 "=============================================================================
 " Init First: {{{
+
+"-----------------------------------------------------------------------------
+" Common: {{{
 " GVimrc autocmd group
 augroup MyGVimrc
   autocmd!
@@ -45,6 +48,7 @@ endfunction
 let s:is_android = has('unix') &&
   \ ($HOSTNAME ==? 'android' ||
   \  $VIM =~? 'net\.momodalo\.app\.vimtouch')
+"}}}
 "}}}
 
 "=============================================================================

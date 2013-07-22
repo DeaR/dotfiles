@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-22 15:00:39 DeaR>
+" @timestamp   <2013-07-22 16:16:50 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -47,6 +47,8 @@ if has('clientserver') && isdirectory($HOME . '/.local/bundle/singleton')
   call singleton#enable()
 endif
 
+"-----------------------------------------------------------------------------
+" Common: {{{
 " Vimrc autocmd group
 augroup MyVimrc
   autocmd!
@@ -84,6 +86,7 @@ endfunction
 let s:is_android = has('unix') &&
   \ ($HOSTNAME ==? 'android' ||
   \  $VIM =~? 'net\.momodalo\.app\.vimtouch')
+"}}}
 
 "-----------------------------------------------------------------------------
 " Variable: {{{
