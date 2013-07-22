@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-22 16:16:50 DeaR>
+" @timestamp   <2013-07-22 20:33:37 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1488,9 +1488,14 @@ endif
 set statusline+=%{&ff}]%y%=
 
 if has('multi_byte')
-  set statusline+=\ [U+%04B]\ (%v,%l)/%L\ %4P
+  set statusline+=\ [U+%04B]
+endif
+set statusline+=\ (%v,%l)/%L
+
+if v:lang =~? '^ja' && has('multi_lang')
+  set statusline+=\ %4P
 else
-  set statusline+=\ (%v,%l)/%L\ %3P
+  set statusline+=\ %3P
 endif
 "}}}
 
