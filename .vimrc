@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-22 12:03:19 DeaR>
+" @timestamp   <2013-07-22 14:52:59 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2069,7 +2069,7 @@ let s:mark_char = [
   \ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
   \ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-function! s:get_mark_pos()
+function! s:_get_mark_pos()
   let pos = get(b:, 'mark_pos', -1)
   let pos = (pos + 1) % len(s:mark_char)
   for i in range(pos, len(s:mark_char)) + range(0, pos)
@@ -2082,7 +2082,7 @@ function! s:get_mark_pos()
   return pos
 endfunction
 function! s:auto_mark()
-  let b:mark_pos = s:get_mark_pos()
+  let b:mark_pos = s:_get_mark_pos()
   return
     \ (":\<C-U>mark " .
     \  s:mark_char[b:mark_pos] .
@@ -2096,7 +2096,7 @@ function! s:clear_marks()
     \  "\<CR>")
 endfunction
 
-function! s:get_file_mark_pos()
+function! s:_get_file_mark_pos()
   let pos = get(s:, 'file_mark_pos', -1)
   let pos = (pos + 1) % len(s:mark_char)
   for i in range(pos, len(s:mark_char)) + range(0, pos)
@@ -2109,7 +2109,7 @@ function! s:get_file_mark_pos()
   return pos
 endfunction
 function! s:auto_file_mark()
-  let s:file_mark_pos = s:get_file_mark_pos()
+  let s:file_mark_pos = s:_get_file_mark_pos()
   return
     \ (":\<C-U>mark " .
     \  toupper(s:mark_char[s:file_mark_pos]) .
@@ -2127,8 +2127,7 @@ function! s:marks()
   let char = join(s:mark_char, '')
   return
     \ (":\<C-U>marks " .
-    \ char .
-    \ toupper(char) .
+    \ char . toupper(char) .
     \ "\<CR>")
 endfunction
 
@@ -2163,14 +2162,14 @@ inoremap <silent><expr> <M-L> '<C-O>' . <SID>smart_eol()
 
 "-----------------------------------------------------------------------------
 " Make Searching Directions Consistent: {{{
-function! s:search_forward_p()
+function! s:search_forward_expr()
   return exists('v:searchforward') ? v:searchforward : 1
 endfunction
 
-NXnoremap <expr> n <SID>search_forward_p() ? 'nzvzz' : 'Nzvzz'
-NXnoremap <expr> N <SID>search_forward_p() ? 'Nzvzz' : 'nzvzz'
-onoremap  <expr> n <SID>search_forward_p() ? 'n' : 'N'
-onoremap  <expr> N <SID>search_forward_p() ? 'N' : 'n'
+NXnoremap <expr> n <SID>search_forward_expr() ? 'nzvzz' : 'Nzvzz'
+NXnoremap <expr> N <SID>search_forward_expr() ? 'Nzvzz' : 'nzvzz'
+onoremap  <expr> n <SID>search_forward_expr() ? 'n' : 'N'
+onoremap  <expr> N <SID>search_forward_expr() ? 'N' : 'n'
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -2187,7 +2186,7 @@ nnoremap <F12> :<C-U>call <SID>toggle_line_number_style()<CR>
 
 "-----------------------------------------------------------------------------
 " Insert One Character: {{{
-function! s:keys_to_insert_one_character()
+function! s:insert_one_character()
   echohl ModeMsg
   if v:lang =~? '^ja' && has('multi_lang')
     echo '-- 挿入 (1文字) --'
@@ -2197,10 +2196,10 @@ function! s:keys_to_insert_one_character()
   echohl None
   return nr2char(getchar()) . "\<Esc>"
 endfunction
-nnoremap <M-a> a<C-R>=<SID>keys_to_insert_one_character()<CR>
-nnoremap <M-A> A<C-R>=<SID>keys_to_insert_one_character()<CR>
-nnoremap <M-i> i<C-R>=<SID>keys_to_insert_one_character()<CR>
-nnoremap <M-I> I<C-R>=<SID>keys_to_insert_one_character()<CR>
+nnoremap <M-a> a<C-R>=<SID>insert_one_character()<CR>
+nnoremap <M-A> A<C-R>=<SID>insert_one_character()<CR>
+nnoremap <M-i> i<C-R>=<SID>insert_one_character()<CR>
+nnoremap <M-I> I<C-R>=<SID>insert_one_character()<CR>
 "}}}
 
 "-----------------------------------------------------------------------------
