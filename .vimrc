@@ -2262,24 +2262,24 @@ function! s:get_highlight(hi)
   return matchstr(hl, 'xxx\zs.*$')
 endfunction
 
-function! s:reverse_highlight(hl)
-  function! l:reversing(hl, name)
-    let s = matchstr(a:hl, a:name . '=\zs\S\+')
-    if s =~ '\%(re\|in\)verse'
-      return substitute(s,
-        \ '\%(\%(re\|in\)verse,\?\|,\%(re\|in\)verse\)', '', 'g')
-    elseif s != '' && s != 'NONE'
-      return s . ',reverse'
-    else
-      return 'reverse'
-    endif
-  endfunction
+function! s:_reverse_highlight(hl, name)
+  let s = matchstr(a:hl, a:name . '=\zs\S\+')
+  if s =~ '\%(re\|in\)verse'
+    return substitute(s,
+      \ '\%(\%(re\|in\)verse,\?\|,\%(re\|in\)verse\)', '', 'g')
+  elseif s != '' && s != 'NONE'
+    return s . ',reverse'
+  else
+    return 'reverse'
+  endif
+endfunction
 
+function! s:reverse_highlight(hl)
   return
     \ a:hl .
-    \ ' term='  . l:reversing(a:hl, 'term') .
-    \ ' cterm=' . l:reversing(a:hl, 'cterm') .
-    \ ' gui='   . l:reversing(a:hl, 'gui')
+    \ ' term='  . s:_reverse_highlight(a:hl, 'term') .
+    \ ' cterm=' . s:_reverse_highlight(a:hl, 'cterm') .
+    \ ' gui='   . s:_reverse_highlight(a:hl, 'gui')
 endfunction
 "}}}
 
