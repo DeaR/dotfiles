@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-22 02:46:58 DeaR>
+" @timestamp   <2013-07-22 12:03:19 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2069,89 +2069,74 @@ let s:mark_char = [
   \ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
   \ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-function! s:init_mark()
-  if !exists('b:mark_pos')
+function! s:get_mark_pos()
+  let pos = get(b:, 'mark_pos', -1)
+  let pos = (pos + 1) % len(s:mark_char)
+  for i in range(pos, len(s:mark_char)) + range(0, pos)
     try
-      silent execute 'marks' join(s:mark_char, '')
+      silent execute 'marks' s:mark_char[i]
     catch /^Vim\%((\a\+)\)\?:E283/
-      return
+      return i
     endtry
-
-    for c in range(len(s:mark_char))
-      try
-        silent execute 'marks' s:mark_char[c]
-      catch /^Vim\%((\a\+)\)\?:E283/
-        let b:mark_pos = c
-        return
-      endtry
-    endfor
-  endif
+  endfor
+  return pos
 endfunction
 function! s:auto_mark()
-  let b:mark_pos = get(b:, 'mark_pos', 0)
-  let cmd = 'mark ' . s:mark_char[b:mark_pos]
-  echo "\r:" . cmd
-  execute cmd
-  let b:mark_pos = (b:mark_pos + 1) % len(s:mark_char)
+  let b:mark_pos = s:get_mark_pos()
+  return
+    \ (":\<C-U>mark " .
+    \  s:mark_char[b:mark_pos] .
+    \  "\<CR>")
 endfunction
 function! s:clear_marks()
-  let cmd = 'delmarks ' . join(s:mark_char, '')
-  echo "\r:" . cmd
-  execute cmd
+  let b:mark_pos = -1
+  return
+    \ (":\<C-U>delmarks " .
+    \  join(s:mark_char, '') .
+    \  "\<CR>")
 endfunction
 
-function! s:init_file_mark()
-  if !exists('s:file_mark_pos')
+function! s:get_file_mark_pos()
+  let pos = get(s:, 'file_mark_pos', -1)
+  let pos = (pos + 1) % len(s:mark_char)
+  for i in range(pos, len(s:mark_char)) + range(0, pos)
     try
-      silent execute 'marks' toupper(join(s:mark_char, ''))
+      silent execute 'marks' toupper(s:mark_char[i])
     catch /^Vim\%((\a\+)\)\?:E283/
-      return
+      return i
     endtry
-
-    for c in range(len(s:mark_char))
-      try
-        silent execute 'marks' toupper(s:mark_char[c])
-      catch /^Vim\%((\a\+)\)\?:E283/
-        let s:file_mark_pos = c
-        return
-      endtry
-    endfor
-  endif
+  endfor
+  return pos
 endfunction
 function! s:auto_file_mark()
-  let s:file_mark_pos = get(s:, 'file_mark_pos', 0)
-  let cmd = 'mark ' . toupper(s:mark_char[s:file_mark_pos])
-  echo "\r:" . cmd
-  execute cmd
-  let s:file_mark_pos = (s:file_mark_pos + 1) % len(s:mark_char)
+  let s:file_mark_pos = s:get_file_mark_pos()
+  return
+    \ (":\<C-U>mark " .
+    \  toupper(s:mark_char[s:file_mark_pos]) .
+    \  "\<CR>")
 endfunction
 function! s:clear_file_marks()
-  rviminfo
-  let cmd = 'delmarks ' . toupper(join(s:mark_char, ''))
-  echo "\r:" . cmd
-  execute cmd
-  wviminfo!
+  let s:file_mark_pos = -1
+  return
+    \ (":\<C-U>rviminfo | delmarks " .
+    \  toupper(join(s:mark_char, '')) .
+    \  " | wviminfo!\<CR>")
 endfunction
 
 function! s:marks()
   let char = join(s:mark_char, '')
-  let cmd = 'marks ' . char . toupper(char)
-  echo "\r:" . cmd
-  execute cmd
+  return
+    \ (":\<C-U>marks " .
+    \ char .
+    \ toupper(char) .
+    \ "\<CR>")
 endfunction
 
-augroup MyVimrc
-  autocmd BufRead *
-    \ call s:init_mark()
-  autocmd VimEnter *
-    \ call s:init_file_mark()
-augroup END
-
-nnoremap mm :<C-U>call <SID>auto_mark()<CR>
-nnoremap mc :<C-U>call <SID>clear_marks()<CR>
-nnoremap mM :<C-U>call <SID>auto_file_mark()<CR>
-nnoremap mC :<C-U>call <SID>clear_file_marks()<CR>
-nnoremap ml :<C-U>call <SID>marks()<CR>
+nnoremap <expr> mm <SID>auto_mark()
+nnoremap <expr> mc <SID>clear_marks()
+nnoremap <expr> mM <SID>auto_file_mark()
+nnoremap <expr> mC <SID>clear_file_marks()
+nnoremap <expr> ml <SID>marks()
 "}}}
 
 "-----------------------------------------------------------------------------
