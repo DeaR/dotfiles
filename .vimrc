@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-23 20:22:42 DeaR>
+" @timestamp   <2013-07-23 20:39:27 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3289,14 +3289,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     let g:quickrun_config =
       \ get(g:, 'quickrun_config', {})
-    let g:quickrun_config._ =
-      \ get(g:quickrun_config, '_', {})
-
-    if s:has_vimproc()
-      call extend(g:quickrun_config._, {
-        \ 'runner' : 'vimproc',
-        \ 'runner/vimproc/updatetime' : 100})
-    endif
 
     if exists('$VCVARSALL')
       call extend(g:quickrun_config, {
@@ -3346,6 +3338,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
 
     call extend(g:quickrun_config, {
+      \ '_' : {
+      \   'runner' : s:has_vimproc() ? 'vimproc' : 'system',
+      \   'runner/vimproc/updatetime' : 100},
       \ 'c' : {
       \   'type' :
       \     s:executable('clang') ? 'c/clang' :
