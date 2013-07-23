@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-23 18:35:39 DeaR>
+" @timestamp   <2013-07-23 19:13:59 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4632,18 +4632,18 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   'type' :
       \     s:executable('clang')  ? 'watchdogs_checker/clang' :
       \     s:executable('gcc')    ? 'watchdogs_checker/gcc' :
-      \     exists('$VCVARSALL') ? 'watchdogs_checker/msvc' :
+      \     exists('$VCVARSALL')   ? 'watchdogs_checker/msvc' :
       \     s:executable('cl')     ? 'watchdogs_checker/msvc' : ''},
       \ 'cpp/watchdogs_checker' : {
       \   'type' :
       \     s:executable('clang++') ? 'watchdogs_checker/clang++' :
       \     s:executable('g++')     ? 'watchdogs_checker/g++' :
-      \     exists('$VCVARSALL')  ? 'watchdogs_checker/msvc' :
+      \     exists('$VCVARSALL')    ? 'watchdogs_checker/msvc' :
       \     s:executable('cl')      ? 'watchdogs_checker/msvc' : ''},
       \ 'watchdogs_checker/luac' : {
       \   'command' :
       \     s:executable('luac52') ? 'luac52' : 'luac',
-      \   'hook/sweep/files' : 'luac.out'}})
+      \   'exec' : '%c %o -p %s:p'}})
 
     call watchdogs#setup(g:quickrun_config)
   endfunction
