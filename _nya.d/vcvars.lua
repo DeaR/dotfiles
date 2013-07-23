@@ -4,7 +4,7 @@
 -- @description Visual Studio prompt for NYAOS 3.x
 -- @namespace   http://kuonn.mydns.jp/
 -- @author      DeaR
--- @timestamp   <2013-05-28 11:28:23 DeaR>
+-- @timestamp   <2013-07-23 18:31:39 DeaR>
 
 -- Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -25,7 +25,7 @@
 -- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 if nyaos.command.cmdsource then
-  local vscomntools = os.getenv('VS110COMNTOOLS') or os.getenv('VS100COMNTOOLS') or os.getenv('VS90COMNTOOLS') or os.getenv('VS80COMNTOOLS')
+  local vscomntools = os.getenv('VS120COMNTOOLS') or os.getenv('VS110COMNTOOLS') or os.getenv('VS100COMNTOOLS') or os.getenv('VS90COMNTOOLS') or os.getenv('VS80COMNTOOLS')
   if vscomntools and nyaos.access(vscomntools .. '../../VC/vcvarsall.bat', 0) then
     function nyaos.command.vcvars32()
       nyaos.command.cmdsource(vscomntools .. '../../VC/vcvarsall.bat', 'x86')
