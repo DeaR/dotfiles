@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-23 20:39:27 DeaR>
+" @timestamp   <2013-07-24 00:49:02 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2582,6 +2582,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nmap sdd sdsd
   nmap syy sysy
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Hier: {{{
+silent! let s:bundle = neobundle#get('hier')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  nnoremap <Esc><Esc> :<C-U>nohlsearch \| HierClear<CR><Esc>
 endif
 unlet! s:bundle
 "}}}
