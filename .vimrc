@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-23 20:07:38 DeaR>
+" @timestamp   <2013-07-23 20:22:42 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3348,24 +3348,24 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call extend(g:quickrun_config, {
       \ 'c' : {
       \   'type' :
-      \     s:executable('clang')  ? 'c/clang' :
-      \     s:executable('gcc')    ? 'c/gcc' :
-      \     exists('$VCVARSALL') ? 'c/vc' :
-      \     s:executable('cl')     ? 'c/vc' : ''},
+      \     s:executable('clang') ? 'c/clang' :
+      \     s:executable('gcc')   ? 'c/gcc' :
+      \     exists('$VCVARSALL')  ? 'c/vc' :
+      \     s:executable('cl')    ? 'c/vc' : ''},
       \ 'cpp' : {
       \   'type' :
       \     s:executable('clang++') ? 'cpp/clang++' :
       \     s:executable('g++')     ? 'cpp/g++' :
-      \     exists('$VCVARSALL')  ? 'cpp/vc' :
+      \     exists('$VCVARSALL')    ? 'cpp/vc' :
       \     s:executable('cl')      ? 'cpp/vc' : ''},
       \ 'cs' : {
       \   'type' :
-      \     exists('$VCVARSALL')  ? 'cs/csc' :
-      \     s:executable('csc')     ? 'cs/csc' :
-      \     s:executable('dmcs')    ? 'cs/dmcs' :
-      \     s:executable('smcs')    ? 'cs/smcs' :
-      \     s:executable('gmcs')    ? 'cs/gmcs' :
-      \     s:executable('mcs')     ? 'cs/mcs' : ''},
+      \     exists('$VCVARSALL') ? 'cs/csc' :
+      \     s:executable('csc')  ? 'cs/csc' :
+      \     s:executable('dmcs') ? 'cs/dmcs' :
+      \     s:executable('smcs') ? 'cs/smcs' :
+      \     s:executable('gmcs') ? 'cs/gmcs' :
+      \     s:executable('mcs')  ? 'cs/mcs' : ''},
       \ 'vbnet' : {
       \   'type' : 'vbnet/vbc'}})
 
@@ -4670,10 +4670,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call extend(g:quickrun_config, {
       \ 'c/watchdogs_checker' : {
       \   'type' :
-      \     s:executable('clang')  ? 'watchdogs_checker/clang' :
-      \     s:executable('gcc')    ? 'watchdogs_checker/gcc' :
-      \     exists('$VCVARSALL')   ? 'watchdogs_checker/msvc' :
-      \     s:executable('cl')     ? 'watchdogs_checker/msvc' : ''},
+      \     s:executable('clang') ? 'watchdogs_checker/clang' :
+      \     s:executable('gcc')   ? 'watchdogs_checker/gcc' :
+      \     exists('$VCVARSALL')  ? 'watchdogs_checker/msvc' :
+      \     s:executable('cl')    ? 'watchdogs_checker/msvc' : ''},
       \
       \ 'cpp/watchdogs_checker' : {
       \   'type' :
