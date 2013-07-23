@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-23 19:13:59 DeaR>
+" @timestamp   <2013-07-23 19:54:20 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2702,8 +2702,12 @@ silent! let s:bundle = neobundle#get('ft_lua')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:lua_complete_omni = 1
+    let g:lua_check_syntax  = 0
+    let g:lua_check_globals = 0
 
-    if s:executable('luac52')
+    if s:executable('luac')
+      let g:lua_compiler_name = 'luac'
+    elseif s:executable('luac52')
       let g:lua_compiler_name = 'luac52'
     endif
   endfunction
