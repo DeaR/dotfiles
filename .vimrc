@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-22 20:33:37 DeaR>
+" @timestamp   <2013-07-23 13:37:52 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -747,7 +747,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'kana/vim-textobj-diff', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['vo',
+    \     ['nvo',
     \      '<Plug>(textobj-diff-file-N)',
     \      '<Plug>(textobj-diff-file-P)',
     \      '<Plug>(textobj-diff-file-n)',
@@ -755,7 +755,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(textobj-diff-hunk-N)',
     \      '<Plug>(textobj-diff-hunk-P)',
     \      '<Plug>(textobj-diff-hunk-n)',
-    \      '<Plug>(textobj-diff-hunk-p)',
+    \      '<Plug>(textobj-diff-hunk-p)'],
+    \     ['vo',
     \      '<Plug>(textobj-diff-file)',
     \      '<Plug>(textobj-diff-file)',
     \      '<Plug>(textobj-diff-hunk)']]},
