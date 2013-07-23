@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-23 19:54:20 DeaR>
+" @timestamp   <2013-07-23 20:07:38 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4614,17 +4614,53 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('watchdogs')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:watchdogs_check_BufWritePost_enable = 1
+    let g:watchdogs_check_BufWritePost_enables = {
+      \ 'c' :
+      \   s:executable('clang') ||
+      \   s:executable('gcc') ||
+      \   exists('$VCVARSALL') ||
+      \   s:executable('cl'),
+      \ 'cpp' :
+      \   s:executable('clang++') ||
+      \   s:executable('g++') ||
+      \   exists('$VCVARSALL') ||
+      \   s:executable('cl'),
+      \ 'coffee' :
+      \   s:executable('coffee'),
+      \ 'd' :
+      \   s:executable('dmd'),
+      \ 'haskell' :
+      \   s:executable('ghc-mod') ||
+      \   s:executable('hlint'),
+      \ 'javascript' :
+      \   s:executable('jshint'),
+      \ 'lua' :
+      \   s:executable('luac') ||
+      \   s:executable('luac52'),
+      \ 'perl' :
+      \   s:executable('perl'),
+      \ 'php' :
+      \   s:executable('php'),
+      \ 'python' :
+      \   s:executable('pyflakes'),
+      \ 'ruby' :
+      \   s:executable('ruby'),
+      \ 'sass' :
+      \   s:executable('sass'),
+      \ 'scss' :
+      \   s:executable('scss' ),
+      \ 'scala' :
+      \   s:executable('scalac'),
+      \ 'sh' :
+      \   s:executable('sh'),
+      \ 'zsh' :
+      \   s:executable('zsh')}
 
     let g:quickrun_config =
       \ get(g:, 'quickrun_config', {})
 
     if exists('$VCVARSALL')
       call extend(g:quickrun_config, {
-        \ 'c/watchdogs_checker' : {
-        \   'type' : 'watchdogs_checker/msvc'},
-        \ 'cpp/watchdogs_checker' : {
-        \   'type' : 'watchdogs_checker/msvc'},
         \ 'watchdogs_checker/msvc' : {
         \   'hook/output_encode/encoding' : 'cp932',
         \   'hook/vcvarsall/enable' : 1,
@@ -4638,61 +4674,24 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \     s:executable('gcc')    ? 'watchdogs_checker/gcc' :
       \     exists('$VCVARSALL')   ? 'watchdogs_checker/msvc' :
       \     s:executable('cl')     ? 'watchdogs_checker/msvc' : ''},
+      \
       \ 'cpp/watchdogs_checker' : {
       \   'type' :
       \     s:executable('clang++') ? 'watchdogs_checker/clang++' :
       \     s:executable('g++')     ? 'watchdogs_checker/g++' :
       \     exists('$VCVARSALL')    ? 'watchdogs_checker/msvc' :
       \     s:executable('cl')      ? 'watchdogs_checker/msvc' : ''},
-      \ 'coffee/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('coffee') ? 'watchdogs_checker/coffee' : ''},
-      \ 'd/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('dmd') ? 'watchdogs_checker/dmd' : ''},
+      \
       \ 'haskell/watchdogs_checker' : {
       \   'type' :
       \     s:executable('ghc-mod') ? 'watchdogs_checker/ghc-mod' :
       \     s:executable('hlint')   ? 'watchdogs_checker/hlint' : ''},
-      \ 'javascript/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('jshint') ? 'watchdogs_checker/jshint' : ''},
-      \ 'lua/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('luac')   ? 'watchdogs_checker/luac' :
-      \     s:executable('luac52') ? 'watchdogs_checker/luac52' : ''},
+      \
       \ 'watchdogs_checker/luac' : {
       \   'command' :
       \     s:executable('luac')   ? 'luac' :
       \     s:executable('luac52') ? 'luac52' : '',
-      \   'exec' : '%c %o -p %s:p'},
-      \ 'perl/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('perl') ? 'watchdogs_checker/perl' : ''},
-      \ 'php/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('php') ? 'watchdogs_checker/php' : ''},
-      \ 'python/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('pyflakes') ? 'watchdogs_checker/pyflakes' : ''},
-      \ 'ruby/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('ruby') ? 'watchdogs_checker/ruby' : ''},
-      \ 'sass/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('sass') ? 'watchdogs_checker/sass' : ''},
-      \ 'scss/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('scss' ) ? 'watchdogs_checker/scss' : ''},
-      \ 'scala/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('scalac') ? 'watchdogs_checker/scalac' : ''},
-      \ 'sh/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('sh') ? 'watchdogs_checker/sh' : ''},
-      \ 'zsh/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('zsh') ? 'watchdogs_checker/zsh' : ''}})
+      \   'exec' : '%c %o -p %s:p'}})
 
     call watchdogs#setup(g:quickrun_config)
   endfunction
