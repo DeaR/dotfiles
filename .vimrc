@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-24 00:49:02 DeaR>
+" @timestamp   <2013-07-24 11:33:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1001,6 +1001,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'KamunagiChiduru/unite-javaimport', {
     \ 'autoload' : {'unite_sources' : 'javaimport'}}
+
+  NeoBundleLazy 'ujihisa/unite-locate', {
+    \ 'autoload' : {'unite_sources' : 'locate'}}
 
   NeoBundleLazy 'tacroe/unite-mark', {
     \ 'autoload' : {'unite_sources' : 'mark'}}
