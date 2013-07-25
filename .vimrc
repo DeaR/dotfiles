@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-26 00:06:17 DeaR>
+" @timestamp   <2013-07-26 00:15:50 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1205,6 +1205,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['nvo',
     \       '<Plug>(visualstar-*)', '<Plug>(visualstar-g*)',
     \       '<Plug>(visualstar-#)', '<Plug>(visualstar-g#)']]}}
+
+  NeoBundle 'vim-jp/vital.vim'
 
   NeoBundleLazy 'osyo-manga/vim-watchdogs', {
     \ 'autoload' : {
