@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-22 16:16:09 DeaR>
+" @timestamp   <2013-07-25 22:48:48 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -15,6 +15,14 @@
 augroup MyGVimrc
   autocmd!
 augroup END
+
+" Script ID
+function! s:SID_PREFIX()
+  if !exists('s:_SID_PREFIX')
+    let s:_SID_PREFIX = matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+  endif
+  return s:_SID_PREFIX
+endfunction
 
 " Check Vim version
 function! s:has_patch(version, patch)

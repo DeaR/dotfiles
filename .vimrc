@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-25 20:14:58 DeaR>
+" @timestamp   <2013-07-25 22:56:07 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -53,6 +53,14 @@ endif
 augroup MyVimrc
   autocmd!
 augroup END
+
+" Script ID
+function! s:SID_PREFIX()
+  if !exists('s:_SID_PREFIX')
+    let s:_SID_PREFIX = matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+  endif
+  return s:_SID_PREFIX
+endfunction
 
 " Check Vim version
 function! s:has_patch(version, patch)
@@ -3604,22 +3612,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ ['January', 'February', 'March', 'April', 'May', 'June', 'July',
       \  'August', 'September', 'October', 'November', 'December'],
       \ ['january', 'february', 'march', 'april', 'may', 'june', 'july',
-      \  'august', 'september', 'october', 'november', 'december'],
-      \ ['ZEROTH', 'FIRST', 'SECOND',  'THIRD',  'FOURTH',
-      \  'FIFTH',  'SIXTH', 'SEVENTH', 'EIGHTH', 'NINTH',
-      \  'TENTH',      'ELEVENTH',   'TWELFTH',   'THIRTEENTH',
-      \  'FOURTEENTH', 'FIFTEENTH',  'SIXTEENTH', 'SEVENTEENTH',
-      \  'EIGHTEENTH', 'NINETEENTH', 'TWENTIETH'],
-      \ ['Zeroth', 'First', 'Second',  'Third',  'Fourth',
-      \  'Fifth',  'Sixth', 'Seventh', 'Eighth', 'Ninth',
-      \  'Tenth',      'Eleventh',   'Twelfth',   'Thirteenth',
-      \  'Fourteenth', 'Fifteenth',  'Sixteenth', 'Seventeenth',
-      \  'Eighteenth', 'Nineteenth', 'Twentieth'],
-      \ ['zeroth', 'first', 'second',  'third',  'fourth',
-      \  'fifth',  'sixth', 'seventh', 'eighth', 'ninth',
-      \  'tenth',      'eleventh',   'twelfth',   'thirteenth',
-      \  'fourteenth', 'fifteenth',  'sixteenth', 'seventeenth',
-      \  'eighteenth', 'nineteenth', 'twentieth']]
+      \  'august', 'september', 'october', 'november', 'december']]
       let inc = {}
       let dec = {}
       for i in range(len(l))
@@ -3638,49 +3631,43 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       call add(g:switch_decrement_definitions, reverse(copy(l)))
     endfor
 
-    call extend(g:switch_increment_definitions, [
-      \ {'\C\(-\?\d*0\)TH' : '\=(submatch(1) + 1) . "ST"',
-      \  '\C\(-\?\d*1\)ST' : '\=(submatch(1) + 1) . "ND"',
-      \  '\C\(-\?\d*2\)ND' : '\=(submatch(1) + 1) . "RD"',
-      \  '\C\(-\?\d*3\)RD' : '\=(submatch(1) + 1) . "TH"',
-      \  '\C\(-\?\d*4\)TH' : '\=(submatch(1) + 1) . "TH"',
-      \  '\C\(-\?\d*5\)TH' : '\=(submatch(1) + 1) . "TH"',
-      \  '\C\(-\?\d*6\)TH' : '\=(submatch(1) + 1) . "TH"',
-      \  '\C\(-\?\d*7\)TH' : '\=(submatch(1) + 1) . "TH"',
-      \  '\C\(-\?\d*8\)TH' : '\=(submatch(1) + 1) . "TH"',
-      \  '\C\(-\?\d*9\)TH' : '\=(submatch(1) + 1) . "TH"'},
-      \ {'\C\(-\?\d*0\)th' : '\=(submatch(1) + 1) . "st"',
-      \  '\C\(-\?\d*1\)st' : '\=(submatch(1) + 1) . "nd"',
-      \  '\C\(-\?\d*2\)nd' : '\=(submatch(1) + 1) . "rd"',
-      \  '\C\(-\?\d*3\)rd' : '\=(submatch(1) + 1) . "th"',
-      \  '\C\(-\?\d*4\)th' : '\=(submatch(1) + 1) . "th"',
-      \  '\C\(-\?\d*5\)th' : '\=(submatch(1) + 1) . "th"',
-      \  '\C\(-\?\d*6\)th' : '\=(submatch(1) + 1) . "th"',
-      \  '\C\(-\?\d*7\)th' : '\=(submatch(1) + 1) . "th"',
-      \  '\C\(-\?\d*8\)th' : '\=(submatch(1) + 1) . "th"',
-      \  '\C\(-\?\d*9\)th' : '\=(submatch(1) + 1) . "th"'}])
+    for l in [
+      \ ['ZEROTH', 'FIRST', 'SECOND',  'THIRD',  'FOURTH',
+      \  'FIFTH',  'SIXTH', 'SEVENTH', 'EIGHTH', 'NINTH',
+      \  'TENTH',      'ELEVENTH',   'TWELFTH',   'THIRTEENTH',
+      \  'FOURTEENTH', 'FIFTEENTH',  'SIXTEENTH', 'SEVENTEENTH',
+      \  'EIGHTEENTH', 'NINETEENTH', 'TWENTIETH'],
+      \ ['Zeroth', 'First', 'Second',  'Third',  'Fourth',
+      \  'Fifth',  'Sixth', 'Seventh', 'Eighth', 'Ninth',
+      \  'Tenth',      'Eleventh',   'Twelfth',   'Thirteenth',
+      \  'Fourteenth', 'Fifteenth',  'Sixteenth', 'Seventeenth',
+      \  'Eighteenth', 'Nineteenth', 'Twentieth'],
+      \ ['zeroth', 'first', 'second',  'third',  'fourth',
+      \  'fifth',  'sixth', 'seventh', 'eighth', 'ninth',
+      \  'tenth',      'eleventh',   'twelfth',   'thirteenth',
+      \  'fourteenth', 'fifteenth',  'sixteenth', 'seventeenth',
+      \  'eighteenth', 'nineteenth', 'twentieth']]
+      call add(g:switch_increment_definitions, l)
+      call add(g:switch_decrement_definitions, reverse(copy(l)))
+    endfor
 
+    let s:ordinal_suffixes = [
+      \ 'th', 'st', 'nd', 'rd', 'th',
+      \ 'th', 'th', 'th', 'th', 'th']
+    function! s:ordinal(num)
+      return a:num . s:ordinal_suffixes[abs(a:num % 10)]
+    endfunction
+
+    call extend(g:switch_increment_definitions, [
+      \ {'\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
+      \    '\=toupper(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) + 1]))',
+      \  '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
+      \    '\=tolower(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) + 1]))'}])
     call extend(g:switch_decrement_definitions, [
-      \ {'\C\(-\?\d*0\)TH' : '\=(submatch(1) - 1) . "TH"',
-      \  '\C\(-\?\d*1\)ST' : '\=(submatch(1) - 1) . "TH"',
-      \  '\C\(-\?\d*2\)ND' : '\=(submatch(1) - 1) . "ST"',
-      \  '\C\(-\?\d*3\)RD' : '\=(submatch(1) - 1) . "ND"',
-      \  '\C\(-\?\d*4\)TH' : '\=(submatch(1) - 1) . "RD"',
-      \  '\C\(-\?\d*5\)TH' : '\=(submatch(1) - 1) . "TH"',
-      \  '\C\(-\?\d*6\)TH' : '\=(submatch(1) - 1) . "TH"',
-      \  '\C\(-\?\d*7\)TH' : '\=(submatch(1) - 1) . "TH"',
-      \  '\C\(-\?\d*8\)TH' : '\=(submatch(1) - 1) . "TH"',
-      \  '\C\(-\?\d*9\)TH' : '\=(submatch(1) - 1) . "TH"'},
-      \ {'\C\(-\?\d*0\)th' : '\=(submatch(1) - 1) . "th"',
-      \  '\C\(-\?\d*1\)st' : '\=(submatch(1) - 1) . "th"',
-      \  '\C\(-\?\d*2\)nd' : '\=(submatch(1) - 1) . "st"',
-      \  '\C\(-\?\d*3\)rd' : '\=(submatch(1) - 1) . "nd"',
-      \  '\C\(-\?\d*4\)th' : '\=(submatch(1) - 1) . "rd"',
-      \  '\C\(-\?\d*5\)th' : '\=(submatch(1) - 1) . "th"',
-      \  '\C\(-\?\d*6\)th' : '\=(submatch(1) - 1) . "th"',
-      \  '\C\(-\?\d*7\)th' : '\=(submatch(1) - 1) . "th"',
-      \  '\C\(-\?\d*8\)th' : '\=(submatch(1) - 1) . "th"',
-      \  '\C\(-\?\d*9\)th' : '\=(submatch(1) - 1) . "th"'}])
+      \ {'\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
+      \    '\=toupper(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) - 1]))',
+      \  '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
+      \    '\=tolower(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) - 1]))'}])
   endfunction
 
   function! s:switch(direction)
