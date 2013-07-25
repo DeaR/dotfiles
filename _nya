@@ -4,7 +4,7 @@
 # @description NYAOS settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-07-10 17:15:43 DeaR>
+# @timestamp   <2013-07-25 17:06:33 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -20,6 +20,10 @@ if "`which gcc`" != "" then
 else if "`which cc`" != "" then
   set CC=cc
 endif
+if %CC.defined% -ne 0 then
+  set C_INCLUDE_PATH=%MINGW_HOME%\include
+  set LIBRARY_PATH=%MINGW_HOME%\lib
+endif
 
 if "`which g++`" != "" then
   set CXX=g++
@@ -33,6 +37,10 @@ else if "`which gcc`" != "" then
 else if "`which cc`" != "" then
   set CXX=cc
   set CCC=cc
+endif
+if %CXX.defined% -ne 0 then
+  set CPLUS_INCLUDE_PATH=%MINGW_HOME%\include
+  set LIBRARY_PATH=%MINGW_HOME%\lib
 endif
 
 if "`which vim`" != "" then
