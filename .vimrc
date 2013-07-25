@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-25 15:14:51 DeaR>
+" @timestamp   <2013-07-25 15:49:59 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3303,66 +3303,33 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:quickrun_config =
       \ get(g:, 'quickrun_config', {})
 
-    if exists('$VCVARSALL')
-      call extend(g:quickrun_config, {
-        \ 'c/vc' : {
-        \   'command' : 'cl',
-        \   'exec' : [
-        \     '%c %o %s /nologo /Fo%s:p:r.obj /Fe%s:p:r.exe',
-        \     '%s:p:r.exe %a'],
-        \   'tempfile' : '%{tempname()}.c',
-        \   'hook/output_encode/encoding' : 'cp932',
-        \   'hook/sweep/files' : ['%s:p:r.exe', '%s:p:r.obj'],
-        \   'hook/vcvarsall/enable' : 1,
-        \   'hook/vcvarsall/bat' : $VCVARSALL},
-        \ 'cpp/vc' : {
-        \   'command' : 'cl',
-        \   'exec' : [
-        \     '%c %o %s /nologo /Fo%s:p:r.obj /Fe%s:p:r.exe',
-        \     '%s:p:r.exe %a'],
-        \   'tempfile' : '%{tempname()}.cpp',
-        \   'hook/output_encode/encoding' : 'cp932',
-        \   'hook/sweep/files' : ['%s:p:r.exe', '%s:p:r.obj'],
-        \   'hook/vcvarsall/enable' : 1,
-        \   'hook/vcvarsall/bat' : $VCVARSALL},
-        \ 'cs/csc' : {
-        \   'command' : 'csc',
-        \   'exec' : [
-        \     '%c /nologo /out:%s:p:r.exe %s',
-        \     '%s:p:r.exe %a'],
-        \   'tempfile' : '%{tempname()}.cs',
-        \   'hook/output_encode/encoding' : 'cp932',
-        \   'hook/sweep/files' : ['%s:p:r.exe'],
-        \   'hook/vcvarsall/enable' : 1,
-        \   'hook/vcvarsall/bat' : $VCVARSALL},
-        \ 'vbnet/vbc' : {
-        \   'command' : 'vbc',
-        \   'exec' : [
-        \     '%c /nologo /out:%s:p:r.exe %s',
-        \     '%s:p:r.exe %a'],
-        \   'tempfile' : '%{tempname()}.vb',
-        \   'hook/output_encode/encoding' : 'cp932',
-        \   'hook/sweep/files' : ['%s:p:r.exe'],
-        \   'hook/vcvarsall/enable' : 1,
-        \   'hook/vcvarsall/bat' : $VCVARSALL}})
-    endif
-
     call extend(g:quickrun_config, {
       \ '_' : {
       \   'runner' : s:has_vimproc() ? 'vimproc' : 'system',
       \   'runner/vimproc/updatetime' : 100},
+      \
       \ 'c' : {
       \   'type' :
       \     s:executable('clang') ? 'c/clang' :
       \     s:executable('gcc')   ? 'c/gcc' :
       \     exists('$VCVARSALL')  ? 'c/vc' :
       \     s:executable('cl')    ? 'c/vc' : ''},
+      \ 'c/vc' : {
+      \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
+      \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
+      \   'hook/vcvarsall/bat' : $VCVARSALL},
+      \
       \ 'cpp' : {
       \   'type' :
       \     s:executable('clang++') ? 'cpp/clang++' :
       \     s:executable('g++')     ? 'cpp/g++' :
       \     exists('$VCVARSALL')    ? 'cpp/vc' :
       \     s:executable('cl')      ? 'cpp/vc' : ''},
+      \ 'cpp/vc' : {
+      \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
+      \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
+      \   'hook/vcvarsall/bat' : $VCVARSALL},
+      \
       \ 'cs' : {
       \   'type' :
       \     exists('$VCVARSALL') ? 'cs/csc' :
@@ -3371,26 +3338,43 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \     s:executable('smcs') ? 'cs/smcs' :
       \     s:executable('gmcs') ? 'cs/gmcs' :
       \     s:executable('mcs')  ? 'cs/mcs' : ''},
+      \ 'cs/csc' : {
+      \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
+      \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
+      \   'hook/vcvarsall/bat' : $VCVARSALL},
+      \
       \ 'vbnet' : {
       \   'type' :
       \     exists('$VCVARSALL') ? 'vbnet/vbc' :
       \     s:executable('vbc')  ? 'vbnet/vbc' : ''},
+      \ 'vbnet/vbc' : {
+      \   'command' : 'vbc',
+      \   'exec' : [
+      \     '%c /nologo /out:%s:p:r.exe %s',
+      \     '%s:p:r.exe %a'],
+      \   'tempfile' : '%{tempname()}.vb',
+      \   'hook/sweep/files' : ['%s:p:r.exe'],
+      \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
+      \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
+      \   'hook/vcvarsall/bat' : $VCVARSALL},
+      \
       \ 'objc' : {
       \   'type' :
       \     s:executable('clang') ? 'objc/clang' : ''},
       \ 'objc/clang': {
-      \   'command': 'clang',
-      \   'exec': ['%c %o -ObjC %s -o %s:p:r', '%s:p:r %a'],
-      \   'tempfile': '%{tempname()}.c',
-      \   'hook/sweep/files': '%S:p:r'},
+      \   'command' : 'clang',
+      \   'exec' : ['%c %o -ObjC %s -o %s:p:r', '%s:p:r %a'],
+      \   'tempfile' : '%{tempname()}.c',
+      \   'hook/sweep/files' : '%S:p:r'},
+      \
       \ 'objcpp' : {
       \   'type' :
       \     s:executable('clang++') ? 'objcpp/clang++' : ''},
       \ 'objcpp/clang++': {
-      \   'command': 'clang++',
-      \   'exec': ['%c %o -ObjC++ %s -o %s:p:r', '%s:p:r %a'],
-      \   'tempfile': '%{tempname()}.cpp',
-      \   'hook/sweep/files': ['%S:p:r']}})
+      \   'command' : 'clang++',
+      \   'exec' : ['%c %o -ObjC++ %s -o %s:p:r', '%s:p:r %a'],
+      \   'tempfile' : '%{tempname()}.cpp',
+      \   'hook/sweep/files' : ['%S:p:r']}})
 
     nnoremap <expr> <C-C>
       \ quickrun#is_running() ?
