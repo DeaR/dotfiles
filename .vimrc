@@ -4624,15 +4624,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:watchdogs_check_BufWritePost_enables = {
       \ 'c' :
+      \   exists('$VCVARSALL') ||
+      \   s:executable('cl') ||
       \   s:executable('clang') ||
-      \   s:executable('gcc') ||
-      \   exists('$VCVARSALL') ||
-      \   s:executable('cl'),
+      \   s:executable('gcc'),
       \ 'cpp' :
-      \   s:executable('clang++') ||
-      \   s:executable('g++') ||
       \   exists('$VCVARSALL') ||
-      \   s:executable('cl'),
+      \   s:executable('cl') ||
+      \   s:executable('clang++') ||
+      \   s:executable('g++'),
       \ 'coffee' :
       \   s:executable('coffee'),
       \ 'd' :
@@ -4674,16 +4674,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call extend(g:quickrun_config, {
       \ 'c/watchdogs_checker' : {
       \   'type' :
-      \     s:executable('clang') ? 'watchdogs_checker/clang' :
-      \     s:executable('gcc')   ? 'watchdogs_checker/gcc' :
       \     exists('$VCVARSALL')  ? 'watchdogs_checker/msvc' :
-      \     s:executable('cl')    ? 'watchdogs_checker/msvc' : ''},
+      \     s:executable('cl')    ? 'watchdogs_checker/msvc' :
+      \     s:executable('clang') ? 'watchdogs_checker/clang' :
+      \     s:executable('gcc')   ? 'watchdogs_checker/gcc' : ''},
       \ 'cpp/watchdogs_checker' : {
       \   'type' :
-      \     s:executable('clang++') ? 'watchdogs_checker/clang++' :
-      \     s:executable('g++')     ? 'watchdogs_checker/g++' :
       \     exists('$VCVARSALL')    ? 'watchdogs_checker/msvc' :
-      \     s:executable('cl')      ? 'watchdogs_checker/msvc' : ''},
+      \     s:executable('cl')      ? 'watchdogs_checker/msvc' :
+      \     s:executable('clang++') ? 'watchdogs_checker/clang++' :
+      \     s:executable('g++')     ? 'watchdogs_checker/g++' : ''},
       \ 'watchdogs_checker/msvc' : {
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
