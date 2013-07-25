@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-24 11:33:33 DeaR>
+" @timestamp   <2013-07-25 15:14:51 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3314,7 +3314,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   'hook/sweep/files' : ['%s:p:r.exe', '%s:p:r.obj'],
         \   'hook/vcvarsall/enable' : 1,
         \   'hook/vcvarsall/bat' : $VCVARSALL},
-        \
         \ 'cpp/vc' : {
         \   'command' : 'cl',
         \   'exec' : [
@@ -3325,7 +3324,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   'hook/sweep/files' : ['%s:p:r.exe', '%s:p:r.obj'],
         \   'hook/vcvarsall/enable' : 1,
         \   'hook/vcvarsall/bat' : $VCVARSALL},
-        \
         \ 'cs/csc' : {
         \   'command' : 'csc',
         \   'exec' : [
@@ -3336,7 +3334,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         \   'hook/sweep/files' : ['%s:p:r.exe'],
         \   'hook/vcvarsall/enable' : 1,
         \   'hook/vcvarsall/bat' : $VCVARSALL},
-        \
         \ 'vbnet/vbc' : {
         \   'command' : 'vbc',
         \   'exec' : [
@@ -3374,7 +3371,25 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \     s:executable('gmcs') ? 'cs/gmcs' :
       \     s:executable('mcs')  ? 'cs/mcs' : ''},
       \ 'vbnet' : {
-      \   'type' : 'vbnet/vbc'}})
+      \   'type' :
+      \     exists('$VCVARSALL') ? 'vbnet/vbc' :
+      \     s:executable('vbc')  ? 'vbnet/vbc' : ''},
+      \ 'objc' : {
+      \   'type' :
+      \     s:executable('clang') ? 'objc/clang' : ''},
+      \ 'objc/clang': {
+      \   'command': 'clang',
+      \   'exec': ['%c %o -ObjC %s -o %s:p:r', '%s:p:r %a'],
+      \   'tempfile': '%{tempname()}.c',
+      \   'hook/sweep/files': '%S:p:r'},
+      \ 'objcpp' : {
+      \   'type' :
+      \     s:executable('clang++') ? 'objcpp/clang++' : ''},
+      \ 'objcpp/clang++': {
+      \   'command': 'clang++',
+      \   'exec': ['%c %o -ObjC++ %s -o %s:p:r', '%s:p:r %a'],
+      \   'tempfile': '%{tempname()}.cpp',
+      \   'hook/sweep/files': ['%S:p:r']}})
 
     nnoremap <expr> <C-C>
       \ quickrun#is_running() ?
