@@ -4,7 +4,7 @@
 -- @description Visual Studio prompt for NYAOS 3.x
 -- @namespace   http://kuonn.mydns.jp/
 -- @author      DeaR
--- @timestamp   <2013-07-25 16:47:49 DeaR>
+-- @timestamp   <2013-07-25 16:59:39 DeaR>
 
 -- Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -33,7 +33,7 @@ if nyaos.command.cmdsource then
       nyaos.putenv('CXX', nil)
       nyaos.putenv('CCC', nil)
       nyaos.putenv('C_INCLUDE_PATH', nil)
-      nyaos.putenv('CPP_INCLUDE_PATH', nil)
+      nyaos.putenv('CPLUS_INCLUDE_PATH', nil)
       nyaos.putenv('LIBRARY_PATH', nil)
     end
     local arch = os.getenv('PROCESSOR_ARCHITEW6432') or os.getenv('PROCESSOR_ARCHITECTURE')
@@ -44,7 +44,7 @@ if nyaos.command.cmdsource then
         nyaos.putenv('CXX', nil)
         nyaos.putenv('CCC', nil)
         nyaos.putenv('C_INCLUDE_PATH', nil)
-        nyaos.putenv('CPP_INCLUDE_PATH', nil)
+        nyaos.putenv('CPLUS_INCLUDE_PATH', nil)
         nyaos.putenv('LIBRARY_PATH', nil)
       end
     end
