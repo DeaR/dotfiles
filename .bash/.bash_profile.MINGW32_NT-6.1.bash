@@ -4,7 +4,7 @@
 # @description Bash settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-27 20:13:17 DeaR>
+# @timestamp   <2013-07-25 17:07:55 DeaR>
 
 #-----------------------------------------------------------------------------
 # Environment Variable: {{{
@@ -12,6 +12,15 @@ export MANPATH="${HOME}/share/man:${HOME}/man:/usr/local/share/man:/usr/local/ma
 export INFOPATH="${HOME}/share/info:${HOME}/info:usr/local/share/info:/usr/local/info:/mingw/share/info:/mingw/info:/usr/share/info:/usr/info:${INFOPATH}:${XYZZY}/info:${EMACS}/info"
 if [ -z "${TERM}" ]; then
   export TERM="cygwin"
+fi
+
+if [ -n "${CC}" ]; then
+  export C_INCLUDE_PATH="${MINGW_HOME}/include"
+  export LIBRARY_PATH="${MINGW_HOME}/lib"
+fi
+if [ -n "${CXX}" ]; then
+  export CPP_INCLUDE_PATH="${MINGW_HOME}/include"
+  export LIBRARY_PATH="${MINGW_HOME}/lib"
 fi
 
 if hash vim 2> /dev/null; then
