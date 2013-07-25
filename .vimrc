@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-25 19:48:21 DeaR>
+" @timestamp   <2013-07-25 20:14:58 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3037,8 +3037,9 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('Omnisharp')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:OmniSharp_typeLookupInPreview = 0
-    let g:OmniSharp_timeout             = 5
+    let g:OmniSharp_typeLookupInPreview    = 0
+    let g:OmniSharp_timeout                = 5
+    let g:OmniSharp_BufWritePreSyntaxCheck = 1
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
