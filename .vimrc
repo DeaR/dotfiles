@@ -4670,14 +4670,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:quickrun_config =
       \ get(g:, 'quickrun_config', {})
 
-    if exists('$VCVARSALL')
-      call extend(g:quickrun_config, {
-        \ 'watchdogs_checker/msvc' : {
-        \   'hook/output_encode/encoding' : 'cp932',
-        \   'hook/vcvarsall/enable' : 1,
-        \   'hook/vcvarsall/bat' : $VCVARSALL}})
-    endif
-
     call extend(g:quickrun_config, {
       \ 'c/watchdogs_checker' : {
       \   'type' :
@@ -4691,26 +4683,34 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \     s:executable('g++')     ? 'watchdogs_checker/g++' :
       \     exists('$VCVARSALL')    ? 'watchdogs_checker/msvc' :
       \     s:executable('cl')      ? 'watchdogs_checker/msvc' : ''},
+      \ 'watchdogs_checker/msvc' : {
+      \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
+      \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
+      \   'hook/vcvarsall/bat' : $VCVARSALL},
+      \
       \ 'haskell/watchdogs_checker' : {
       \   'type' :
       \     s:executable('ghc-mod') ? 'watchdogs_checker/ghc-mod' :
       \     s:executable('hlint')   ? 'watchdogs_checker/hlint' : ''},
+      \
       \ 'watchdogs_checker/luac' : {
       \   'command' :
       \     s:executable('luac')   ? 'luac' :
       \     s:executable('luac52') ? 'luac52' : '',
       \   'exec' : '%c %o -p %s:p'},
+      \
       \ 'objc/watchdogs_checker' : {
       \   'type' :
       \     s:executable('clang') ? 'watchdogs_checker/objclang' : ''},
       \ 'watchdogs_checker/objclang' : {
-      \   'command' : 'clang'
+      \   'command' : 'clang',
       \   'exec' : '%c %o -ObjC -fsyntax-only %s:p'},
+      \
       \ 'objcpp/watchdogs_checker' : {
       \   'type' :
-      \     s:executable('clang++') ? 'watchdogs_checker/objclang++' : ''}
+      \     s:executable('clang++') ? 'watchdogs_checker/objclang++' : ''},
       \ 'watchdogs_checker/objclang++' : {
-      \   'command' : 'clang++'
+      \   'command' : 'clang++',
       \   'exec' : '%c %o -ObjC++ -fsyntax-only %s:p'}})
 
     call watchdogs#setup(g:quickrun_config)
