@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-25 15:49:59 DeaR>
+" @timestamp   <2013-07-25 19:48:21 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -565,11 +565,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'thinca/vim-prettyprint', {
     \ 'autoload' : {
-    \   'commands' : ['PrettyPrint', 'PP'],
+    \   'commands' : [
+    \     {'name' : 'PrettyPrint',
+    \      'complete' : 'expression'},
+    \     {'name' : 'PP',
+    \      'complete' : 'expression'}],
     \   'functions': ['PrettyPrint', 'PP']}}
-  call extend(s:neocompl_vim_completefuncs, {
-    \ 'PrettyPrint' : 'expression',
-    \ 'PP'          : 'expression'})
 
   NeoBundleLazy 'kannokanno/previm', {
     \ 'autoload' : {'filetypes' : 'markdown'},
