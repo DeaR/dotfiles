@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-25 22:56:07 DeaR>
+" @timestamp   <2013-07-26 00:06:17 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1136,6 +1136,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'Read'               : 'vimfiler#complete',
     \ 'Source'             : 'vimfiler#complete',
     \ 'Write'              : 'vimfiler#complete'})
+
+  NeoBundleLazy 'syngan/vim-vimlint', {
+    \ 'depends' : 'ynkdir/vim-vimlparser'}
 
   NeoBundle 'Shougo/vimproc.vim', {
     \ 'build' : {
