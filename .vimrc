@@ -1197,8 +1197,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'osyo-manga/vim-watchdogs', {
     \ 'autoload' : {
     \   'filetypes' : [
-    \     'c', 'cpp', 'coffee', 'd', 'haskell', 'javascript', 'lua', 'perl',
-    \     'php', 'python', 'ruby', 'sass', 'scss', 'scala', 'sh', 'zsh'],
+    \     'c', 'cpp', 'coffee', 'd', 'haskell', 'javascript',
+    \     'lua', 'objc', 'objcpp', 'perl', 'php', 'python',
+    \     'ruby', 'sass', 'scss', 'scala', 'sh', 'zsh'],
     \   'commands' : [
     \     'WatchdogsRun', 'WatchdogsRunSilent', 'WatchdogsRunSweep']},
     \ 'depends' : [
@@ -4659,6 +4660,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ 'lua' :
       \   s:executable('luac') ||
       \   s:executable('luac52'),
+      \ 'objc' :
+      \   s:executable('clang'),
+      \ 'objcpp' :
+      \   s:executable('clang++'),
       \ 'perl' :
       \   s:executable('perl'),
       \ 'php' :
@@ -4696,24 +4701,33 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \     s:executable('gcc')   ? 'watchdogs_checker/gcc' :
       \     exists('$VCVARSALL')  ? 'watchdogs_checker/msvc' :
       \     s:executable('cl')    ? 'watchdogs_checker/msvc' : ''},
-      \
       \ 'cpp/watchdogs_checker' : {
       \   'type' :
       \     s:executable('clang++') ? 'watchdogs_checker/clang++' :
       \     s:executable('g++')     ? 'watchdogs_checker/g++' :
       \     exists('$VCVARSALL')    ? 'watchdogs_checker/msvc' :
       \     s:executable('cl')      ? 'watchdogs_checker/msvc' : ''},
-      \
       \ 'haskell/watchdogs_checker' : {
       \   'type' :
       \     s:executable('ghc-mod') ? 'watchdogs_checker/ghc-mod' :
       \     s:executable('hlint')   ? 'watchdogs_checker/hlint' : ''},
-      \
       \ 'watchdogs_checker/luac' : {
       \   'command' :
       \     s:executable('luac')   ? 'luac' :
       \     s:executable('luac52') ? 'luac52' : '',
-      \   'exec' : '%c %o -p %s:p'}})
+      \   'exec' : '%c %o -p %s:p'},
+      \ 'objc/watchdogs_checker' : {
+      \   'type' :
+      \     s:executable('clang') ? 'watchdogs_checker/objclang' : ''},
+      \ 'watchdogs_checker/objclang' : {
+      \   'command' : 'clang'
+      \   'exec' : '%c %o -ObjC -fsyntax-only %s:p'},
+      \ 'objcpp/watchdogs_checker' : {
+      \   'type' :
+      \     s:executable('clang++') ? 'watchdogs_checker/objclang++' : ''}
+      \ 'watchdogs_checker/objclang++' : {
+      \   'command' : 'clang++'
+      \   'exec' : '%c %o -ObjC++ -fsyntax-only %s:p'}})
 
     call watchdogs#setup(g:quickrun_config)
   endfunction
