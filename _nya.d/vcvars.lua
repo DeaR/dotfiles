@@ -4,7 +4,7 @@
 -- @description Visual Studio prompt for NYAOS 3.x
 -- @namespace   http://kuonn.mydns.jp/
 -- @author      DeaR
--- @timestamp   <2013-07-23 18:31:39 DeaR>
+-- @timestamp   <2013-07-25 16:47:49 DeaR>
 
 -- Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -29,17 +29,23 @@ if nyaos.command.cmdsource then
   if vscomntools and nyaos.access(vscomntools .. '../../VC/vcvarsall.bat', 0) then
     function nyaos.command.vcvars32()
       nyaos.command.cmdsource(vscomntools .. '../../VC/vcvarsall.bat', 'x86')
-      nyaos.putenv('CC', 'cl')
-      nyaos.putenv('CXX', 'cl')
-      nyaos.putenv('CCC', 'cl')
+      nyaos.putenv('CC', nil)
+      nyaos.putenv('CXX', nil)
+      nyaos.putenv('CCC', nil)
+      nyaos.putenv('C_INCLUDE_PATH', nil)
+      nyaos.putenv('CPP_INCLUDE_PATH', nil)
+      nyaos.putenv('LIBRARY_PATH', nil)
     end
     local arch = os.getenv('PROCESSOR_ARCHITEW6432') or os.getenv('PROCESSOR_ARCHITECTURE')
     if arch and os.getenv('PROGRAMFILES(X86)') then
       function nyaos.command.vcvars64()
         nyaos.command.cmdsource(vscomntools .. '../../VC/vcvarsall.bat', arch)
-        nyaos.putenv('CC', 'cl')
-        nyaos.putenv('CXX', 'cl')
-        nyaos.putenv('CCC', 'cl')
+        nyaos.putenv('CC', nil)
+        nyaos.putenv('CXX', nil)
+        nyaos.putenv('CCC', nil)
+        nyaos.putenv('C_INCLUDE_PATH', nil)
+        nyaos.putenv('CPP_INCLUDE_PATH', nil)
+        nyaos.putenv('LIBRARY_PATH', nil)
       end
     end
   end
