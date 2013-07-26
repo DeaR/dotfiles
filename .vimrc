@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-26 00:15:50 DeaR>
+" @timestamp   <2013-07-26 16:04:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1707,6 +1707,7 @@ nnoremap ;W     :<C-U>confirm wall<CR>
 nnoremap ;c     :<C-U>confirm bdelete<CR>
 nnoremap ;C     :<C-U>confirm 1,$bdelete<CR>
 nnoremap ;j     :<C-U>jumps<CR>
+nnoremap ;J     :<C-U>changes<CR>
 nnoremap ;<C-D> :<C-U>pwd<CR>
 nnoremap ;e     :<C-U>edit<Space>
 nnoremap ;b     :<C-U>buffer<Space>
@@ -4361,8 +4362,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ :<C-U>Unite file_mru file file/new directory/new
     \ -buffer-name=files -no-split<CR>
   nnoremap ;j
-    \ :<C-U>Unite jump change
-    \ -buffer-name=files -no-split -multi-line -no-start-insert<CR>
+    \ :<C-U>Unite jump
+    \ -buffer-name=files -no-split -multi-line<CR>
+  nnoremap ;J
+    \ :<C-U>Unite change
+    \ -buffer-name=files -no-split -multi-line -auto-preview<CR>
   nnoremap ;b
     \ :<C-U>Unite buffer
     \ -buffer-name=files -no-split<CR>
@@ -4379,15 +4383,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   if &grepprg == 'internal'
     nnoremap ;g
       \ :<C-U>Unite vimgrep
-      \ -buffer-name=grep -no-split -multi-line<CR>
+      \ -buffer-name=grep -no-split -multi-line -auto-preview<CR>
   else
     nnoremap ;g
       \ :<C-U>Unite grep
-      \ -buffer-name=grep -no-split -multi-line<CR>
+      \ -buffer-name=grep -no-split -multi-line -auto-preview<CR>
   endif
   nnoremap ;G
     \ :<C-U>UniteResume grep
-    \ -no-split -multi-line -no-start-insert<CR>
+    \ -no-split -multi-line -no-start-insert -auto-preview<CR>
 
   nnoremap <C-P>
     \ :<C-U>Unite register history/yank
