@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-27 23:39:12 DeaR>
+" @timestamp   <2013-07-27 23:47:02 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4623,52 +4623,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('watchdogs')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:watchdogs_check_BufWritePost_enables = {
-      \ 'c' :
-      \   exists('$VCVARSALL') ||
-      \   s:executable('cl') ||
-      \   s:executable('clang') ||
-      \   s:executable('gcc'),
-      \ 'cpp' :
-      \   exists('$VCVARSALL') ||
-      \   s:executable('cl') ||
-      \   s:executable('clang++') ||
-      \   s:executable('g++'),
-      \ 'coffee' :
-      \   s:executable('coffee'),
-      \ 'd' :
-      \   s:executable('dmd'),
-      \ 'haskell' :
-      \   s:executable('ghc-mod') ||
-      \   s:executable('hlint'),
-      \ 'javascript' :
-      \   s:executable('jshint'),
-      \ 'lua' :
-      \   s:executable('luac') ||
-      \   s:executable('luac52'),
-      \ 'objc' :
-      \   s:executable('clang'),
-      \ 'objcpp' :
-      \   s:executable('clang++'),
-      \ 'perl' :
-      \   s:executable('perl'),
-      \ 'php' :
-      \   s:executable('php'),
-      \ 'python' :
-      \   s:executable('pyflakes'),
-      \ 'ruby' :
-      \   s:executable('ruby'),
-      \ 'sass' :
-      \   s:executable('sass'),
-      \ 'scss' :
-      \   s:executable('scss' ),
-      \ 'scala' :
-      \   s:executable('scalac'),
-      \ 'sh' :
-      \   s:executable('sh'),
-      \ 'vim' : 1,
-      \ 'zsh' :
-      \   s:executable('zsh')}
+    let g:watchdogs_check_BufWritePost_enable = 1
 
     let g:quickrun_config =
       \ get(g:, 'quickrun_config', {})
@@ -4690,11 +4645,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
       \   'hook/vcvarsall/bat' : $VCVARSALL},
-      \
-      \ 'haskell/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('ghc-mod') ? 'watchdogs_checker/ghc-mod' :
-      \     s:executable('hlint')   ? 'watchdogs_checker/hlint' : ''},
       \
       \ 'watchdogs_checker/luac' : {
       \   'command' :
