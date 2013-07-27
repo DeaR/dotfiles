@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-28 02:08:23 DeaR>
+" @timestamp   <2013-07-28 02:08:48 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4476,7 +4476,8 @@ unlet! s:bundle
 " Unite QuickRun Config: {{{
 silent! let s:bundle = neobundle#get('unite-quickrun_config')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nnoremap ;u<F5>
+  nnoremap ;ur  <Nop>
+  nnoremap ;urr
     \ :<C-U>Unite quickrun_config
     \ -buffer-name=register<CR>
 endif
