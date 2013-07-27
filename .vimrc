@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-26 17:49:00 DeaR>
+" @timestamp   <2013-07-27 17:44:14 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4362,12 +4362,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap ;e
     \ :<C-U>Unite file_mru file file/new directory/new
     \ -buffer-name=files -no-split<CR>
-  nnoremap ;j
-    \ :<C-U>Unite jump
-    \ -buffer-name=files -no-split -multi-line<CR>
-  nnoremap ;J
-    \ :<C-U>Unite change
-    \ -buffer-name=files -no-split -multi-line -auto-preview<CR>
   nnoremap ;b
     \ :<C-U>Unite buffer
     \ -buffer-name=files -no-split<CR>
@@ -4394,6 +4388,12 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ :<C-U>UniteResume grep
     \ -no-split -multi-line -no-start-insert -auto-preview<CR>
 
+  nnoremap ;j
+    \ :<C-U>Unite jump
+    \ -buffer-name=register -no-split -multi-line<CR>
+  nnoremap ;J
+    \ :<C-U>Unite change
+    \ -buffer-name=register -no-split -multi-line -auto-preview<CR>
   nnoremap <C-P>
     \ :<C-U>Unite register history/yank
     \ -buffer-name=register -multi-line<CR>
@@ -4452,7 +4452,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nnoremap ml
     \ :<C-U>Unite mark bookmark
-    \ -buffer-name=files -no-split -multi-line -no-start-insert<CR>
+    \ -buffer-name=register -no-split -multi-line -no-start-insert<CR>
   nnoremap mu :<C-U>UniteBookmarkAdd<CR>
 endif
 unlet! s:bundle
@@ -4464,7 +4464,7 @@ silent! let s:bundle = neobundle#get('unite-outline')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap ;o
     \ :<C-U>Unite outline
-    \ -buffer-name=files -no-split -auto-preview -multi-line<CR>
+    \ -buffer-name=outline -no-split -auto-preview -multi-line<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -4475,7 +4475,7 @@ silent! let s:bundle = neobundle#get('unite-quickrun_config')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap ;u<F5>
     \ :<C-U>Unite quickrun_config
-    \ -buffer-name=files<CR>
+    \ -buffer-name=register<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -4486,7 +4486,7 @@ silent! let s:bundle = neobundle#get('unite-tag')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap ;ut
     \ :<C-U>UniteWithCursorWord tag tag/include
-    \ -buffer-name=files -no-split<CR>
+    \ -buffer-name=outline -no-split<CR>
 endif
 unlet! s:bundle
 "}}}
