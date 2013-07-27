@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-27 22:54:31 DeaR>
+" @timestamp   <2013-07-27 23:39:12 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1433,6 +1433,8 @@ elseif s:executable('grep')
 else
   set grepprg=internal
 endif
+autocmd MyVimrc QuickFixCmdPost make,grep,vimgrep,helpgrep
+  \ cwindow
 "}}}
 
 "-----------------------------------------------------------------------------
