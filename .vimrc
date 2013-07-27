@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-27 23:47:02 DeaR>
+" @timestamp   <2013-07-27 23:56:08 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1214,7 +1214,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'filetypes' : [
     \     'c', 'cpp', 'coffee', 'd', 'haskell', 'javascript',
     \     'lua', 'objc', 'objcpp', 'perl', 'php', 'python',
-    \     'ruby', 'sass', 'scss', 'scala', 'sh', 'zsh'],
+    \     'ruby', 'sass', 'scss', 'scala', 'sh', 'vim', 'zsh'],
     \   'commands' : [
     \     'WatchdogsRun', 'WatchdogsRunSilent', 'WatchdogsRunSweep']},
     \ 'depends' : [
@@ -4646,11 +4646,14 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
       \   'hook/vcvarsall/bat' : $VCVARSALL},
       \
-      \ 'watchdogs_checker/luac' : {
-      \   'command' :
-      \     s:executable('luac')   ? 'luac' :
-      \     s:executable('luac52') ? 'luac52' : '',
-      \   'exec' : '%c %o -p %s:p'},
+      \ 'lua/watchdogs_checker' : {
+      \   'type' :
+      \     s:executable('luac')   ? 'watchdogs_checker/luac' :
+      \     s:executable('luac52') ? 'watchdogs_checker/luac52' : ''},
+      \ 'watchdogs_checker/luac52' : {
+      \   'command' : 'luac52',
+      \   'exec'    : '%c %o %s:p',
+      \   'quickfix/errorformat' : '%.%#: %#%f:%l: %m'},
       \
       \ 'objc/watchdogs_checker' : {
       \   'type' :
