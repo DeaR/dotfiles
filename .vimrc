@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-27 23:56:08 DeaR>
+" @timestamp   <2013-07-28 01:47:52 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -326,7 +326,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \ 'depends' : 'xolox/vim-misc'}
   endif
 
-  NeoBundleLazy 'https://raw.github.com/januswel/dotfiles/master/vimfiles/syntax/mayu.vim', {
+  NeoBundleLazy 'https://raw.github.com/januswel/dotfiles/master/.vim/syntax/mayu.vim', {
     \ 'name' : 'mayu',
     \ 'autoload' : {'filetypes' : 'mayu'},
     \ 'script_type' : 'syntax'}
