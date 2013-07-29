@@ -4,10 +4,10 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-29 20:04:52 DeaR>
+" @timestamp   <2013-07-29 22:52:57 DeaR>
 
 "=============================================================================
-" Init First: {{{
+" Pre Init: {{{
 
 "-----------------------------------------------------------------------------
 " Common: {{{
@@ -151,4 +151,11 @@ autocmd MyGVimrc GUIEnter,ColorScheme *
 map  <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
 "}}}
+"}}}
+
+"=============================================================================
+" Post Init: {{{
+silent! execute 'doautocmd'
+  \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
+  \ 'User GVimrcPost'
 "}}}

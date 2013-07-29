@@ -4,13 +4,13 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-29 21:31:37 DeaR>
+" @timestamp   <2013-07-29 22:55:03 DeaR>
 
 set nocompatible
 scriptencoding utf-8
 
 "=============================================================================
-" Init First: {{{
+" Pre Init: {{{
 " Encoding
 if has('multi_byte')
   set encoding=utf-8
@@ -2061,7 +2061,7 @@ autocmd MyVimrc CmdwinEnter *
   \ call s:cmdwin_enter()
 
 function! s:cmdline_enter(type)
-  execute 'doautocmd'
+  silent! execute 'doautocmd'
     \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
     \ 'User CmdlineEnter'
   return a:type
@@ -2493,7 +2493,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     autocmd MyVimrc FileType c,cpp,objc,objcpp
       \ call s:clang_complete_init_2('<amatch>')
-    execute 'doautocmd'
+    silent! execute 'doautocmd'
       \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
       \ 'MyVimrc FileType' &filetype
   endfunction
@@ -2802,6 +2802,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   command! -bar -complete=customlist,neobundle#complete_bundles -nargs=?
     \ NeoBundleGitGc
     \ :call s:neobundle_git_gc(<q-args>)
+
+  autocmd MyVimrc User VimrcPost
+    \ call neobundle#call_hook('on_source')
 endif
 unlet! s:bundle
 "}}}
@@ -4460,6 +4463,30 @@ unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
+" Unite SSH: {{{
+silent! let s:bundle = neobundle#get('unite-ssh')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  autocmd MyVimrc User VimrcPost
+    \ if has('vim_starting') && filter(argv(), 'v:val =~# "^ssh:"') != [] |
+    \   NeoBundleSource unite-ssh |
+    \ endif
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Unite Sudo: {{{
+silent! let s:bundle = neobundle#get('unite-sudo')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  autocmd MyVimrc User VimrcPost
+    \ if has('vim_starting') && filter(argv(), 'v:val =~# "^sudo:"') != [] |
+    \   NeoBundleSource unite-sudo |
+    \ endif
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
 " Unite Tag: {{{
 silent! let s:bundle = neobundle#get('unite-tag')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4660,13 +4687,8 @@ unlet! s:bundle
 "}}}
 
 "=============================================================================
-" Init Last: {{{
-" NeoBundle
-if exists(':NeoBundle')
-  call neobundle#call_hook('on_source')
-
-  if has('vim_starting') && filter(argv(), 'v:val =~# "^ssh:\\|^sudo:"') != []
-    NeoBundleSource vimfiler
-  endif
-endif
+" Post Init: {{{
+silent! execute 'doautocmd'
+  \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
+  \ 'User VimrcPost'
 "}}}
