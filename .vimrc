@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-28 02:08:48 DeaR>
+" @timestamp   <2013-07-29 13:34:41 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -56,9 +56,7 @@ augroup END
 
 " Script ID
 function! s:SID_PREFIX()
-  if !exists('s:_SID_PREFIX')
-    let s:_SID_PREFIX = matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
-  endif
+  let s:_SID_PREFIX = get(s:, '_SID_PREFIX', matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
   return s:_SID_PREFIX
 endfunction
 
@@ -2654,11 +2652,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     autocmd ColorScheme *
       \ call s:set_indent_line_color(1)
     autocmd FileType *
-      \ if !exists('b:indentLine_enabled') || b:indentLine_enabled != &expandtab |
+      \ if get(b:, 'indentLine_enabled', 1) && !&expandtab |
       \   execute 'IndentLinesToggle' |
       \ endif
     autocmd Syntax *
-      \ if !exists('b:indentLine_enabled') || b:indentLine_enabled |
+      \ if get(b:, 'indentLine_enabled', 1) |
       \   execute 'IndentLinesReset' |
       \ endif
   augroup END
@@ -3410,6 +3408,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nmap srr srsr
   nmap <Leader>r <Plug>(quickrun)
+  nmap <F5>      <Plug>(quickrun)
 endif
 unlet! s:bundle
 "}}}
