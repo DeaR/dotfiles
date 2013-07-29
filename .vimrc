@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-30 00:39:02 DeaR>
+" @timestamp   <2013-07-30 00:48:38 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2471,7 +2471,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   function! s:bundle.hooks.on_post_source(bundle)
-    function s:clang_complete_init_2(ext)
+    function s:clang_complete_init(ext)
       silent! iunmap <buffer> <C-X><C-U>
       silent! iunmap <buffer> .
       silent! iunmap <buffer> >
@@ -2494,10 +2494,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endfunction
 
     autocmd MyVimrc FileType c,cpp,objc,objcpp
-      \ call s:clang_complete_init_2('<amatch>')
-    execute 'doautocmd'
-      \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
-      \ 'MyVimrc FileType' &filetype
+      \ call s:clang_complete_init('<amatch>')
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
