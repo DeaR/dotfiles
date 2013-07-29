@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-30 01:09:31 DeaR>
+" @timestamp   <2013-07-30 02:18:57 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1225,65 +1225,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [['nvi', '<C-Y>']]}}
 endif
 "}}}
-
-"-----------------------------------------------------------------------------
-" Mapping Some Mode: {{{
-command! -complete=mapping -nargs=*
-  \ NVmap
-  \ nmap <args>| vmap <args>
-command! -complete=mapping -nargs=*
-  \ NOmap
-  \ nmap <args>| omap <args>
-command! -complete=mapping -nargs=*
-  \ NXmap
-  \ nmap <args>| xmap <args>
-command! -complete=mapping -nargs=*
-  \ NSmap
-  \ nmap <args>| smap <args>
-command! -complete=mapping -nargs=*
-  \ VOmap
-  \ vmap <args>| omap <args>
-command! -complete=mapping -nargs=*
-  \ OXmap
-  \ omap <args>| xmap <args>
-command! -complete=mapping -nargs=*
-  \ OSmap
-  \ omap <args>| smap <args>
-command! -complete=mapping -nargs=*
-  \ NOXmap
-  \ nmap <args>| omap <args>| xmap <args>
-command! -complete=mapping -nargs=*
-  \ NOSmap
-  \ nmap <args>| omap <args>| smap <args>
-
-command! -complete=mapping -nargs=*
-  \ NVnoremap
-  \ nnoremap <args>| vnoremap <args>
-command! -complete=mapping -nargs=*
-  \ NOnoremap
-  \ nnoremap <args>| onoremap <args>
-command! -complete=mapping -nargs=*
-  \ NXnoremap
-  \ nnoremap <args>| xnoremap <args>
-command! -complete=mapping -nargs=*
-  \ NSnoremap
-  \ nnoremap <args>| snoremap <args>
-command! -complete=mapping -nargs=*
-  \ VOnoremap
-  \ vnoremap <args>| onoremap <args>
-command! -complete=mapping -nargs=*
-  \ OXnoremap
-  \ onoremap <args>| xnoremap <args>
-command! -complete=mapping -nargs=*
-  \ OSnoremap
-  \ onoremap <args>| snoremap <args>
-command! -complete=mapping -nargs=*
-  \ NOXnoremap
-  \ nnoremap <args>| onoremap <args>| xnoremap <args>
-command! -complete=mapping -nargs=*
-  \ NOSnoremap
-  \ nnoremap <args>| onoremap <args>| snoremap <args>
-"}}}
 "}}}
 
 "=============================================================================
@@ -1609,6 +1550,65 @@ endif
 
 "=============================================================================
 " Mappings: {{{
+
+"-----------------------------------------------------------------------------
+" Mapping Some Mode: {{{
+command! -complete=mapping -nargs=*
+  \ NVmap
+  \ nmap <args>| vmap <args>
+command! -complete=mapping -nargs=*
+  \ NOmap
+  \ nmap <args>| omap <args>
+command! -complete=mapping -nargs=*
+  \ NXmap
+  \ nmap <args>| xmap <args>
+command! -complete=mapping -nargs=*
+  \ NSmap
+  \ nmap <args>| smap <args>
+command! -complete=mapping -nargs=*
+  \ VOmap
+  \ vmap <args>| omap <args>
+command! -complete=mapping -nargs=*
+  \ OXmap
+  \ omap <args>| xmap <args>
+command! -complete=mapping -nargs=*
+  \ OSmap
+  \ omap <args>| smap <args>
+command! -complete=mapping -nargs=*
+  \ NOXmap
+  \ nmap <args>| omap <args>| xmap <args>
+command! -complete=mapping -nargs=*
+  \ NOSmap
+  \ nmap <args>| omap <args>| smap <args>
+
+command! -complete=mapping -nargs=*
+  \ NVnoremap
+  \ nnoremap <args>| vnoremap <args>
+command! -complete=mapping -nargs=*
+  \ NOnoremap
+  \ nnoremap <args>| onoremap <args>
+command! -complete=mapping -nargs=*
+  \ NXnoremap
+  \ nnoremap <args>| xnoremap <args>
+command! -complete=mapping -nargs=*
+  \ NSnoremap
+  \ nnoremap <args>| snoremap <args>
+command! -complete=mapping -nargs=*
+  \ VOnoremap
+  \ vnoremap <args>| onoremap <args>
+command! -complete=mapping -nargs=*
+  \ OXnoremap
+  \ onoremap <args>| xnoremap <args>
+command! -complete=mapping -nargs=*
+  \ OSnoremap
+  \ onoremap <args>| snoremap <args>
+command! -complete=mapping -nargs=*
+  \ NOXnoremap
+  \ nnoremap <args>| onoremap <args>| xnoremap <args>
+command! -complete=mapping -nargs=*
+  \ NOSnoremap
+  \ nnoremap <args>| onoremap <args>| snoremap <args>
+"}}}
 
 "-----------------------------------------------------------------------------
 " Prefix: {{{
