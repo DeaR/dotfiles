@@ -4633,21 +4633,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ 'watchdogs_checker/luac52' : {
       \   'command' : 'luac52',
       \   'exec'    : '%c %o %s:p',
-      \   'quickfix/errorformat' : '%.%#: %#%f:%l: %m'},
-      \
-      \ 'objc/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('clang') ? 'watchdogs_checker/objclang' : ''},
-      \ 'watchdogs_checker/objclang' : {
-      \   'command' : 'clang',
-      \   'exec' : '%c %o -ObjC -fsyntax-only %s:p'},
-      \
-      \ 'objcpp/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('clang++') ? 'watchdogs_checker/objclang++' : ''},
-      \ 'watchdogs_checker/objclang++' : {
-      \   'command' : 'clang++',
-      \   'exec' : '%c %o -ObjC++ -fsyntax-only %s:p'}})
+      \   'quickfix/errorformat' : '%.%#: %#%f:%l: %m'}})
   endfunction
 
   autocmd MyVimrc FileType *
