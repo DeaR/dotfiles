@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-30 01:06:38 DeaR>
+" @timestamp   <2013-07-30 01:09:31 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1705,12 +1705,12 @@ nnoremap ;C     :<C-U>confirm 1,$bdelete<CR>
 nnoremap ;j     :<C-U>jumps<CR>
 nnoremap ;J     :<C-U>changes<CR>
 nnoremap ;<C-D> :<C-U>pwd<CR>
-nnoremap ;e     :<C-U>edit<Space>
-nnoremap ;b     :<C-U>buffer<Space>
-nnoremap ;t     :<C-U>tabm<Space>
-nnoremap ;g     :<C-U>grep<Space>
-nnoremap ;<M-d> :<C-U>lcd<Space>
-nnoremap ;<M-D> :<C-U>cd<Space>
+nnoremap <script> ;e     <SID>:<C-U>edit<Space>
+nnoremap <script> ;b     <SID>:<C-U>buffer<Space>
+nnoremap <script> ;t     <SID>:<C-U>tabm<Space>
+nnoremap <script> ;g     <SID>:<C-U>grep<Space>
+nnoremap <script> ;<M-d> <SID>:<C-U>lcd<Space>
+nnoremap <script> ;<M-D> <SID>:<C-U>cd<Space>
 
 " Paste
 NXnoremap <C-P> :<C-U>registers<CR>
