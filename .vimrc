@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-30 02:18:57 DeaR>
+" @timestamp   <2013-07-30 03:03:09 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -41,7 +41,7 @@ set runtimepath^=~/.local/.vim
 set runtimepath+=~/.local/.vim/after
 
 " Singleton
-if has('clientserver') && isdirectory($HOME . '/.local/bundle/singleton')
+if isdirectory($HOME . '/.local/bundle/singleton')
   set runtimepath+=~/.local/bundle/singleton
   let g:singleton#opener = 'drop'
   call singleton#enable()
