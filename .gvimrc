@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-29 22:52:57 DeaR>
+" @timestamp   <2013-07-30 00:35:55 DeaR>
 
 "=============================================================================
 " Pre Init: {{{
@@ -155,7 +155,9 @@ map! <S-Insert> <MiddleMouse>
 
 "=============================================================================
 " Post Init: {{{
-silent! execute 'doautocmd'
-  \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
-  \ 'User GVimrcPost'
+if exists('#User#GVimrcPost')
+  execute 'doautocmd'
+    \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
+    \ 'User GVimrcPost'
+endif
 "}}}

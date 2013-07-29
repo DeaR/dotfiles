@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-29 22:55:03 DeaR>
+" @timestamp   <2013-07-30 00:39:02 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2061,9 +2061,11 @@ autocmd MyVimrc CmdwinEnter *
   \ call s:cmdwin_enter()
 
 function! s:cmdline_enter(type)
-  silent! execute 'doautocmd'
-    \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
-    \ 'User CmdlineEnter'
+  if exists('#User#CmdlineEnter')
+    execute 'doautocmd'
+      \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
+      \ 'User CmdlineEnter'
+  endif
   return a:type
 endfunction
 
@@ -2493,7 +2495,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     autocmd MyVimrc FileType c,cpp,objc,objcpp
       \ call s:clang_complete_init_2('<amatch>')
-    silent! execute 'doautocmd'
+    execute 'doautocmd'
       \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
       \ 'MyVimrc FileType' &filetype
   endfunction
@@ -4688,7 +4690,9 @@ unlet! s:bundle
 
 "=============================================================================
 " Post Init: {{{
-silent! execute 'doautocmd'
-  \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
-  \ 'User VimrcPost'
+if exists('#User#VimrcPost')
+  execute 'doautocmd'
+    \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
+    \ 'User VimrcPost'
+endif
 "}}}
