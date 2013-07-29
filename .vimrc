@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-29 16:33:44 DeaR>
+" @timestamp   <2013-07-29 19:10:51 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1211,10 +1211,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'osyo-manga/vim-watchdogs', {
     \ 'autoload' : {
-    \   'filetypes' : [
-    \     'c', 'cpp', 'coffee', 'd', 'haskell', 'javascript',
-    \     'lua', 'objc', 'objcpp', 'perl', 'php', 'python',
-    \     'ruby', 'sass', 'scss', 'scala', 'sh', 'vim', 'zsh'],
     \   'commands' : [
     \     'WatchdogsRun', 'WatchdogsRunSilent', 'WatchdogsRunSweep']},
     \ 'depends' : [
@@ -4670,9 +4666,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ 'watchdogs_checker/objclang++' : {
       \   'command' : 'clang++',
       \   'exec' : '%c %o -ObjC++ -fsyntax-only %s:p'}})
-
-    call watchdogs#setup(g:quickrun_config)
   endfunction
+
+  autocmd MyVimrc FileType *
+    \ NeoBundleSource watchdogs
 endif
 unlet! s:bundle
 "}}}
