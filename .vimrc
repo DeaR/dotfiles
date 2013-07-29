@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-29 19:10:51 DeaR>
+" @timestamp   <2013-07-29 19:13:09 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3372,25 +3372,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   'hook/sweep/files' : ['%s:p:r.exe'],
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-      \   'hook/vcvarsall/bat' : $VCVARSALL},
-      \
-      \ 'objc' : {
-      \   'type' :
-      \     s:executable('clang') ? 'objc/clang' : ''},
-      \ 'objc/clang': {
-      \   'command' : 'clang',
-      \   'exec' : ['%c %o -ObjC %s -o %s:p:r', '%s:p:r %a'],
-      \   'tempfile' : '%{tempname()}.c',
-      \   'hook/sweep/files' : '%S:p:r'},
-      \
-      \ 'objcpp' : {
-      \   'type' :
-      \     s:executable('clang++') ? 'objcpp/clang++' : ''},
-      \ 'objcpp/clang++': {
-      \   'command' : 'clang++',
-      \   'exec' : ['%c %o -ObjC++ %s -o %s:p:r', '%s:p:r %a'],
-      \   'tempfile' : '%{tempname()}.cpp',
-      \   'hook/sweep/files' : ['%S:p:r']}})
+      \   'hook/vcvarsall/bat' : $VCVARSALL}})
 
     nnoremap <expr> <C-C>
       \ quickrun#is_running() ?
