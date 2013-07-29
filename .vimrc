@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-29 20:52:04 DeaR>
+" @timestamp   <2013-07-29 20:52:24 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4473,6 +4473,25 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
   if has('vim_starting') && s:check_arg_ssh()
     NeoBundleSource unite-ssh
+  endif
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Unite Sudo: {{{
+silent! let s:bundle = neobundle#get('unite-sudo')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:check_arg_sudo()
+    for i in range(argc())
+      if argv(i) =~# '^sudo:'
+        return 1
+      endif
+    endfor
+    return 0
+  endfunction
+  if has('vim_starting') && s:check_arg_sudo()
+    NeoBundleSource unite-sudo
   endif
 endif
 unlet! s:bundle
