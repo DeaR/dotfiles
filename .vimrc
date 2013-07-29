@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-29 19:13:09 DeaR>
+" @timestamp   <2013-07-29 20:04:50 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -56,7 +56,8 @@ augroup END
 
 " Script ID
 function! s:SID_PREFIX()
-  let s:_SID_PREFIX = get(s:, '_SID_PREFIX', matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
+  let s:_SID_PREFIX = get(s:, '_SID_PREFIX',
+    \ matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
   return s:_SID_PREFIX
 endfunction
 
@@ -82,9 +83,7 @@ endfunction
 " Cached executable
 let s:_executable = get(s:, '_executable', {})
 function! s:executable(expr)
-  if !has_key(s:_executable, a:expr)
-    let s:_executable[a:expr] = executable(a:expr)
-  endif
+  let s:_executable[a:expr] = get(s:_executable, a:expr, executable(a:expr))
   return s:_executable[a:expr]
 endfunction
 

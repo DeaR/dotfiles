@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-25 22:48:48 DeaR>
+" @timestamp   <2013-07-29 20:04:52 DeaR>
 
 "=============================================================================
 " Init First: {{{
@@ -18,16 +18,15 @@ augroup END
 
 " Script ID
 function! s:SID_PREFIX()
-  if !exists('s:_SID_PREFIX')
-    let s:_SID_PREFIX = matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
-  endif
+  let s:_SID_PREFIX = get(s:, '_SID_PREFIX',
+    \ matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
   return s:_SID_PREFIX
 endfunction
 
 " Check Vim version
 function! s:has_patch(version, patch)
   return (v:version > a:version) || (v:version == a:version &&
-    \  has(type(a:patch) == type(0) ? ('patch' . a:patch) : a:patch))
+    \ has(type(a:patch) == type(0) ? ('patch' . a:patch) : a:patch))
 endfunction
 
 " Check vimproc
@@ -46,9 +45,7 @@ endfunction
 " Cached executable
 let s:_executable = get(s:, '_executable', {})
 function! s:executable(expr)
-  if !has_key(s:_executable, a:expr)
-    let s:_executable[a:expr] = executable(a:expr)
-  endif
+  let s:_executable[a:expr] = get(s:_executable, a:expr, executable(a:expr))
   return s:_executable[a:expr]
 endfunction
 
