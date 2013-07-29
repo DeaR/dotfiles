@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-30 00:48:38 DeaR>
+" @timestamp   <2013-07-30 01:06:38 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3399,10 +3399,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:reanimate_save_dir = $HOME . '/.local/reanimate'
   endfunction
 
-  nnoremap ;ur  <Nop>
-  nnoremap ;url :<C-U>Unite reanimate
+  nnoremap ;usl :<C-U>Unite reanimate
     \ -buffer-name=files -no-split -default-action=reanimate_load<CR>
-  nnoremap ;urs :<C-U>Unite reanimate
+  nnoremap ;uss :<C-U>Unite reanimate
     \ -buffer-name=files -no-split -default-action=reanimate_save<CR>
 endif
 unlet! s:bundle
@@ -4335,7 +4334,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     nnoremap ;uf :<C-U>Unite menu:set_fenc<CR>
   endif
 
-  nnoremap ;us
+  nnoremap ;uU
     \ :<C-U>Unite source
     \ -buffer-name=help -no-split<CR>
 
@@ -4453,8 +4452,7 @@ unlet! s:bundle
 " Unite QuickRun Config: {{{
 silent! let s:bundle = neobundle#get('unite-quickrun_config')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nnoremap ;ur  <Nop>
-  nnoremap ;urr
+  nnoremap ;ur
     \ :<C-U>Unite quickrun_config
     \ -buffer-name=register<CR>
 endif
