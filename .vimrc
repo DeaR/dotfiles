@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-31 02:39:16 DeaR>
+" @timestamp   <2013-07-31 02:51:47 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2125,8 +2125,8 @@ function! s:marks()
   let char = join(s:mark_char, '')
   return
     \ (":\<C-U>marks " .
-    \ char . toupper(char) .
-    \ "\<CR>")
+    \  char . toupper(char) .
+    \  "\<CR>")
 endfunction
 
 nnoremap <expr> mm <SID>auto_mark()
