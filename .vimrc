@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-31 02:09:34 DeaR>
+" @timestamp   <2013-07-31 02:32:05 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1276,9 +1276,8 @@ endif
 set undofile
 set undodir^=~/.bak
 autocmd MyVimrc BufNewFile,BufRead *
-  \ if expand('%:p') =~? '\.clean$\|/\.hg/\|/\.git/\|/\.svn/' |
-  \   setlocal noundofile |
-  \ endif
+  \ let &l:undofile =
+  \   (expand('%:p') !~? '\.clean$\|/\.hg/\|/\.git/\|/\.svn/')
 
 " ClipBoard
 set clipboard=unnamed
@@ -1464,13 +1463,11 @@ if has('multi_byte')
     \ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
 
   let &fileencodings =
+    \ (has('guess_encode') ? 'guess,' : '') .
     \ (s:enc_jisx0213 ? 'iso-2022-jp-3,' : 'iso-2022-jp,') .
     \ 'cp932,' .
     \ (s:enc_jisx0213 ? 'euc-jisx0213,euc-jp,' : 'euc-jp,') .
     \ 'ucs-bom'
-  if has('guess_encode')
-    set fileencodings^=guess
-  endif
 
   let s:last_enc = &encoding
   augroup MyVimrc
@@ -1498,15 +1495,15 @@ let g:asmsyntax = 'masm'
 let g:is_bash = 1
 
 " Runtimepath by bundle
-if exists(':NeoBundle')
-  function! s:load_bundle_settings()
+if isdirectory($HOME . '/.local/bundle/neobundle')
+  function! s:add_bundle_settings()
     for d in split(glob('~/.vim/bundle-settings/*'), '\n')
       if neobundle#get(fnamemodify(d, ':t')) != {}
         execute 'set runtimepath+=' . d
       endif
     endfor
   endfunction
-  call s:load_bundle_settings()
+  call s:add_bundle_settings()
 endif
 
 " Enable plugin
@@ -1523,16 +1520,8 @@ if has('gui_running') || &t_Co > 255
   " No cursor line & column at other window
   augroup MyVimrc
     autocmd BufWinEnter,WinEnter *
-      \ if exists('b:nocursorline') && b:nocursorline |
-      \   setlocal nocursorline |
-      \ else |
-      \   setlocal cursorline |
-      \ endif |
-      \ if exists('b:nocursorcolumn') && b:nocursorcolumn |
-      \   setlocal nocursorcolumn |
-      \ else |
-      \   setlocal cursorcolumn |
-      \ endif
+      \ let [&cursorline, &cursorcolumn] = [
+      \   !get(b:, 'nocursorline'), !get(b:, 'nocursorcolumn')]
     autocmd BufWinLeave,WinLeave *
       \ setlocal nocursorline nocursorcolumn
     autocmd CmdwinEnter *
@@ -2004,7 +1993,7 @@ command! -bar -nargs=1 -complete=file
   \ vertical diffsplit <args>
 command! -bar
   \ Undiff
-  \ setlocal nodiff scrollbind< wrap< cursorbind<
+  \ setlocal diff< scrollbind< wrap< cursorbind<
 
 nnoremap ;D :<C-U>CdCurrent<CR>
 nnoremap ;d :<C-U>LcdCurrent<CR>
