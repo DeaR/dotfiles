@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-30 03:03:09 DeaR>
+" @timestamp   <2013-07-31 02:09:34 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -28,8 +28,10 @@ endif
 
 if has('win32')
   " Shell
-  set shell=sh
-  set shellslash
+  let s:default_shell = [
+    \ &shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
+  " set shell=sh
+  " set shellslash
 
   " Unix like runtime
   set runtimepath^=~/.vim
@@ -1936,38 +1938,19 @@ endif
 " Shell Setting: {{{
 if has('win32')
   function! s:get_shell()
-    return {
-      \ 'shell'        : &shell,
-      \ 'shellslash'   : &shellslash,
-      \ 'shellcmdflag' : &shellcmdflag,
-      \ 'shellquote'   : &shellquote,
-      \ 'shellxquote'  : &shellxquote}
+    return [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
   endfunction
   function! s:set_shell(value)
-    let &shell        = a:value.shell
-    let &shellslash   = a:value.shellslash
-    let &shellcmdflag = a:value.shellcmdflag
-    let &shellquote   = a:value.shellquote
-    let &shellxquote  = a:value.shellxquote
+    let [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote] =
+      \ a:value
   endfunction
 
   command! -bar
     \ ShellCmd
-    \ call s:set_shell({
-    \   'shell'        : 'cmd',
-    \   'shellslash'   : 0,
-    \   'shellcmdflag' : '/c',
-    \   'shellquote'   : '',
-    \   'shellxquote'  : '('})
-
+    \ call s:set_shell(s:default_shell)
   command! -bar -nargs=?
     \ ShellSh
-    \ call s:set_shell({
-    \   'shell'        : len(<q-args>) ? <q-args> : 'sh',
-    \   'shellslash'   : 1,
-    \   'shellcmdflag' : '-c',
-    \   'shellquote'   : '',
-    \   'shellxquote'  : '"'})
+    \ call s:set_shell([len(<q-args>) ? <q-args> : 'sh', 1, '-c', '', '"'])
 endif
 "}}}
 
