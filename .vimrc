@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-31 02:32:05 DeaR>
+" @timestamp   <2013-07-31 02:39:16 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1277,7 +1277,7 @@ set undofile
 set undodir^=~/.bak
 autocmd MyVimrc BufNewFile,BufRead *
   \ let &l:undofile =
-  \   (expand('%:p') !~? '\.clean$\|/\.hg/\|/\.git/\|/\.svn/')
+  \   (expand('%:p') !~? '\.clean$\|[/\\]\%(\.hg\|\.git\|\.svn\)[/\\]')
 
 " ClipBoard
 set clipboard=unnamed
