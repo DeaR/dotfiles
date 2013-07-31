@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-31 13:47:33 DeaR>
+" @timestamp   <2013-07-31 14:20:21 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -98,8 +98,8 @@ let s:is_android = has('unix') &&
 "-----------------------------------------------------------------------------
 " Variable: {{{
 " <Leader> <LocalLeader>
-let g:mapleader      = '\'
-let g:maplocalleader = '|'
+let g:mapleader      = ';'
+let g:maplocalleader = ','
 
 " Command line window
 let s:cmdwin_enable = 1
@@ -756,16 +756,15 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo',
-    \      '<Plug>(textobj-diff-file-N)',
-    \      '<Plug>(textobj-diff-file-P)',
     \      '<Plug>(textobj-diff-file-n)',
     \      '<Plug>(textobj-diff-file-p)',
-    \      '<Plug>(textobj-diff-hunk-N)',
-    \      '<Plug>(textobj-diff-hunk-P)',
+    \      '<Plug>(textobj-diff-file-N)',
+    \      '<Plug>(textobj-diff-file-P)',
     \      '<Plug>(textobj-diff-hunk-n)',
-    \      '<Plug>(textobj-diff-hunk-p)'],
+    \      '<Plug>(textobj-diff-hunk-p)',
+    \      '<Plug>(textobj-diff-hunk-N)',
+    \      '<Plug>(textobj-diff-hunk-P)'],
     \     ['vo',
-    \      '<Plug>(textobj-diff-file)',
     \      '<Plug>(textobj-diff-file)',
     \      '<Plug>(textobj-diff-hunk)']]},
     \ 'depends' : 'kana/vim-textobj-user'}
@@ -1692,19 +1691,19 @@ noremap <expr> <SID>(split-nicely)
   \   '<C-W>v'
 
 " Semi-colon shortcut
-nnoremap ;w     :<C-U>confirm update<CR>
-nnoremap ;W     :<C-U>confirm wall<CR>
-nnoremap ;c     :<C-U>confirm bdelete<CR>
-nnoremap ;C     :<C-U>confirm 1,$bdelete<CR>
-nnoremap ;j     :<C-U>jumps<CR>
-nnoremap ;J     :<C-U>changes<CR>
-nnoremap ;<C-D> :<C-U>pwd<CR>
-nnoremap <script> ;e     <SID>:<C-U>edit<Space>
-nnoremap <script> ;b     <SID>:<C-U>buffer<Space>
-nnoremap <script> ;t     <SID>:<C-U>tabm<Space>
-nnoremap <script> ;g     <SID>:<C-U>grep<Space>
-nnoremap <script> ;<M-d> <SID>:<C-U>lcd<Space>
-nnoremap <script> ;<M-D> <SID>:<C-U>cd<Space>
+nnoremap          <Leader>w     :<C-U>confirm update<CR>
+nnoremap          <Leader>W     :<C-U>confirm wall<CR>
+nnoremap          <Leader>q     :<C-U>confirm bdelete<CR>
+nnoremap          <Leader>Q     :<C-U>confirm 1,$bdelete<CR>
+nnoremap          <Leader>j     :<C-U>jumps<CR>
+nnoremap          <Leader>J     :<C-U>changes<CR>
+nnoremap          <Leader><C-D> :<C-U>pwd<CR>
+nnoremap <script> <Leader>e     <SID>:<C-U>edit<Space>
+nnoremap <script> <Leader>b     <SID>:<C-U>buffer<Space>
+nnoremap <script> <Leader>t     <SID>:<C-U>tabm<Space>
+nnoremap <script> <Leader>g     <SID>:<C-U>grep<Space>
+nnoremap <script> <Leader><M-d> <SID>:<C-U>lcd<Space>
+nnoremap <script> <Leader><M-D> <SID>:<C-U>cd<Space>
 
 " Paste
 NXnoremap <C-P> :<C-U>registers<CR>
@@ -1718,9 +1717,9 @@ nnoremap <BS> X
 nnoremap Y y$
 
 " Undo branch
-nnoremap <M-u>     g-
-nnoremap <M-r>     g+
-nnoremap <Leader>u :<C-U>undolist<CR>
+nnoremap <M-u> g-
+nnoremap <M-r> g+
+nnoremap <M-U> :<C-U>undolist<CR>
 
 " New line
 nnoremap <M-o> o<Esc>0"_Dk
@@ -1998,8 +1997,8 @@ command! -bar
   \ Undiff
   \ setlocal diff< scrollbind< wrap< cursorbind<
 
-nnoremap ;D :<C-U>CdCurrent<CR>
-nnoremap ;d :<C-U>LcdCurrent<CR>
+nnoremap <Leader>D :<C-U>CdCurrent<CR>
+nnoremap <Leader>d :<C-U>LcdCurrent<CR>
 nnoremap <F8> :<C-U>Undiff<CR>
 "}}}
 
@@ -2688,7 +2687,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     NeoBundleSource kwbdi
     silent execute "normal \<Plug>Kwbd"
   endfunction
-  nnoremap ;c :<C-U>call <SID>kwbd()<CR>
+  nnoremap <Leader>q :<C-U>call <SID>kwbd()<CR>
   map <SID>Kwbd <Plug>Kwbd
 endif
 unlet! s:bundle
@@ -2734,7 +2733,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('narrow')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   xnoremap <Leader>n :Narrow<CR>
-  nnoremap <Leader>w :Widen<CR>
+  nnoremap <Leader>n :Widen<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -3377,9 +3376,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:reanimate_save_dir = $HOME . '/.local/reanimate'
   endfunction
 
-  nnoremap ;usl :<C-U>Unite reanimate
+  nnoremap <Leader>usl :<C-U>Unite reanimate
     \ -buffer-name=files -no-split -default-action=reanimate_load<CR>
-  nnoremap ;uss :<C-U>Unite reanimate
+  nnoremap <Leader>uss :<C-U>Unite reanimate
     \ -buffer-name=files -no-split -default-action=reanimate_save<CR>
 endif
 unlet! s:bundle
@@ -3803,23 +3802,23 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_diff_no_default_key_mappings = 1
   endfunction
 
-  NOXnoremap <Leader>d <Nop>
-  NOXmap <Leader>dfJ <Plug>(textobj-diff-file-N)
-  NOXmap <Leader>dfK <Plug>(textobj-diff-file-P)
-  NOXmap <Leader>dfj <Plug>(textobj-diff-file-n)
-  NOXmap <Leader>dfk <Plug>(textobj-diff-file-p)
-  NOXmap <Leader>dJ  <Plug>(textobj-diff-hunk-N)
-  NOXmap <Leader>dK  <Plug>(textobj-diff-hunk-P)
-  NOXmap <Leader>dj  <Plug>(textobj-diff-hunk-n)
-  NOXmap <Leader>dk  <Plug>(textobj-diff-hunk-p)
+  NOXnoremap <Leader>f <Nop>
+  NOXmap <Leader>fj <Plug>(textobj-diff-file-n)
+  NOXmap <Leader>fk <Plug>(textobj-diff-file-p)
+  NOXmap <Leader>fJ <Plug>(textobj-diff-file-N)
+  NOXmap <Leader>fK <Plug>(textobj-diff-file-P)
+
+  NOXnoremap <Leader>h <Nop>
+  NOXmap <Leader>hj <Plug>(textobj-diff-hunk-n)
+  NOXmap <Leader>hk <Plug>(textobj-diff-hunk-p)
+  NOXmap <Leader>hJ <Plug>(textobj-diff-hunk-N)
+  NOXmap <Leader>hK <Plug>(textobj-diff-hunk-P)
 
   OXnoremap ad <Nop>
-  OXmap adH <Plug>(textobj-diff-file)
   OXmap adf <Plug>(textobj-diff-file)
   OXmap adh <Plug>(textobj-diff-hunk)
 
   OXnoremap id <Nop>
-  OXmap idH <Plug>(textobj-diff-file)
   OXmap idf <Plug>(textobj-diff-file)
   OXmap idh <Plug>(textobj-diff-hunk)
 endif
@@ -4189,7 +4188,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:undotree_SetFocusWhenToggle = 1
   endfunction
 
-  nnoremap <Leader>u :<C-U>UndotreeToggle<CR>
+  nnoremap <M-U> :<C-U>UndotreeToggle<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -4307,54 +4306,54 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
-  nnoremap ;u <Nop>
+  nnoremap <Leader>u <Nop>
 
-  nnoremap <script> ;uu <SID>:<C-U>Unite<Space>
+  nnoremap <script> <Leader>uu <SID>:<C-U>Unite<Space>
 
-  nnoremap ;um :<C-U>Unite menu<CR>
-  nnoremap ;u<CR> :<C-U>Unite menu:set_ff<CR>
+  nnoremap <Leader>um :<C-U>Unite menu<CR>
+  nnoremap <Leader>u<CR> :<C-U>Unite menu:set_ff<CR>
   if has('multi_byte')
-    nnoremap ;ue :<C-U>Unite menu:edit_enc<CR>
-    nnoremap ;uf :<C-U>Unite menu:set_fenc<CR>
+    nnoremap <Leader>ue :<C-U>Unite menu:edit_enc<CR>
+    nnoremap <Leader>uf :<C-U>Unite menu:set_fenc<CR>
   endif
 
-  nnoremap ;uU
+  nnoremap <Leader>uU
     \ :<C-U>Unite source
     \ -buffer-name=help -no-split<CR>
 
-  nnoremap ;e
+  nnoremap <Leader>e
     \ :<C-U>Unite file_mru file file/new directory/new
     \ -buffer-name=files -no-split<CR>
-  nnoremap ;b
+  nnoremap <Leader>b
     \ :<C-U>Unite buffer
     \ -buffer-name=files -no-split<CR>
-  nnoremap ;t
+  nnoremap <Leader>t
     \ :<C-U>Unite tab
     \ -buffer-name=files -no-split<CR>
-  nnoremap ;<M-d>
+  nnoremap <Leader><M-d>
     \ :<C-U>Unite directory_mru directory directory/new
     \ -buffer-name=files -no-split -default-action=lcd<CR>
-  nnoremap ;<M-D>
+  nnoremap <Leader><M-D>
     \ :<C-U>Unite directory_mru directory directory/new
     \ -buffer-name=files -no-split -default-action=cd<CR>
 
   if &grepprg == 'internal'
-    nnoremap ;g
+    nnoremap <Leader>g
       \ :<C-U>Unite vimgrep
       \ -buffer-name=grep -no-split -multi-line -auto-preview<CR>
   else
-    nnoremap ;g
+    nnoremap <Leader>g
       \ :<C-U>Unite grep
       \ -buffer-name=grep -no-split -multi-line -auto-preview<CR>
   endif
-  nnoremap ;G
+  nnoremap <Leader>G
     \ :<C-U>UniteResume grep
     \ -no-split -multi-line -no-start-insert -auto-preview<CR>
 
-  nnoremap ;j
+  nnoremap <Leader>j
     \ :<C-U>Unite jump
     \ -buffer-name=register -no-split -multi-line<CR>
-  nnoremap ;J
+  nnoremap <Leader>J
     \ :<C-U>Unite change
     \ -buffer-name=register -no-split -multi-line -auto-preview<CR>
   nnoremap <C-P>
@@ -4369,19 +4368,19 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \   'is_multi_line' : 1,
     \   'direction' : 'leftabove'})
 
-  nnoremap ;u/
+  nnoremap <Leader>u/
     \ :<C-U>call <SID>unite_search_forward()<CR>
-  nnoremap ;u?
+  nnoremap <Leader>u?
     \ :<C-U>call <SID>unite_search_backward()<CR>
-  nnoremap ;u*
+  nnoremap <Leader>u*
     \ :<C-U>call <SID>unite_search_cword_forward()<CR>
-  nnoremap ;u#
+  nnoremap <Leader>u#
     \ :<C-U>call <SID>unite_search_cword_backward()<CR>
-  nnoremap ;ug/
+  nnoremap <Leader>ug/
     \ :<C-U>call <SID>unite_search_cword_forward()<CR>
-  nnoremap ;ug?
+  nnoremap <Leader>ug?
     \ :<C-U>call <SID>unite_search_cword_backward()<CR>
-  nnoremap ;un
+  nnoremap <Leader>un
     \ :<C-U>UniteResume search -start-insert<CR>
 
   call extend(s:altercmd_define, {
@@ -4394,10 +4393,10 @@ unlet! s:bundle
 " Unite Help: {{{
 silent! let s:bundle = neobundle#get('unite-help')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nnoremap ;u<F1>
+  nnoremap <Leader>u<F1>
     \ :<C-U>Unite help
     \ -buffer-name=help -no-split -start-insert<CR>
-  nnoremap ;ug<F1>
+  nnoremap <Leader>ug<F1>
     \ :<C-U>UniteWithCursorWord help
     \ -buffer-name=help -no-split -no-start-insert<CR>
 endif
@@ -4425,7 +4424,7 @@ unlet! s:bundle
 " Unite Outline: {{{
 silent! let s:bundle = neobundle#get('unite-outline')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nnoremap ;o
+  nnoremap <Leader>uo
     \ :<C-U>Unite outline
     \ -buffer-name=outline -no-split -auto-preview -multi-line<CR>
 endif
@@ -4436,7 +4435,7 @@ unlet! s:bundle
 " Unite QuickRun Config: {{{
 silent! let s:bundle = neobundle#get('unite-quickrun_config')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nnoremap ;ur
+  nnoremap <Leader>ur
     \ :<C-U>Unite quickrun_config
     \ -buffer-name=register<CR>
 endif
@@ -4471,7 +4470,7 @@ unlet! s:bundle
 " Unite Tag: {{{
 silent! let s:bundle = neobundle#get('unite-tag')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nnoremap ;ut
+  nnoremap <Leader>ut
     \ :<C-U>UniteWithCursorWord tag tag/include
     \ -buffer-name=outline -no-split<CR>
 endif
