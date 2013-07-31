@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-31 02:51:47 DeaR>
+" @timestamp   <2013-07-31 13:41:36 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1362,6 +1362,9 @@ set iskeyword=a-z,A-Z,@,48-57,_
 " Grep
 if s:executable('jvgrep')
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
+elseif s:executable('ag')
+  set grepprg=ag\ --nocolor\ --nogroup\ --hidden\ --ignore-dir=.drive.r\
+    \ --ignore-dir=.hg\ --ignore-dir=.git\ --ignore-dir=.svn
 elseif s:executable('grep')
   set grepprg=grep\ -Hn
 else
@@ -3233,14 +3236,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:MyGrep_Resultfile              = $HOME . '/.local/.qfgrep.txt'
     let g:MyGrep_ExcludeReg              =
       \ '/\.drive\.r/|/\.hg/|/\.git/|/\.svn/'
-    if s:executable('jvgrep')
-      let g:mygrepprg   = 'jvgrep'
-    elseif s:executable('grep')
-      let g:mygrepprg   = 'grep'
-    else
-      let g:mygrepprg   = 'internal'
-      let g:myjpgrepprg = 'agrep.vim'
-    endif
 
     let g:howm_dir                = $HOME . '/howm'
     let g:howm_filename           = '%Y/%m/%Y-%m-%d-%H%M%S.howm'
@@ -3252,6 +3247,17 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:QFixHowm_RandomWalkFile = $HOME . '/.local/.howm-random'
     let g:QFixHowm_VimEnterFile   = $HOME . '/.local/.vimenter.qf'
     let g:QFixMRU_Filename        = $HOME . '/.local/.qfixmru'
+
+    if s:executable('jvgrep')
+      let g:mygrepprg = 'jvgrep'
+    elseif s:executable('ag')
+      let g:mygrepprg = 'ag'
+    elseif s:executable('grep')
+      let g:mygrepprg = 'grep'
+    else
+      let g:mygrepprg   = 'internal'
+      let g:myjpgrepprg = 'agrep.vim'
+    endif
     if has('multi_byte')
       let g:howm_fileencoding = 'cp932'
     endif
@@ -4205,6 +4211,12 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '-n --exclude .drive.r'
+    elseif s:executable('ag')
+      let g:unite_source_grep_command       = 'ag'
+      let g:unite_source_grep_recursive_opt = ''
+      let g:unite_source_grep_default_opts  =
+        \ '--nocolor --nogroup --hidden --ignore-dir=.drive.r ' .
+        \ '--ignore-dir=.hg --ignore-dir=.git --ignore-dir=.svn'
     elseif s:executable('grep')
       let g:unite_source_grep_command       = 'grep'
       let g:unite_source_grep_recursive_opt = '-r'

@@ -4,7 +4,7 @@
 " @description Mapping for Unite
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-08 19:18:57 DeaR>
+" @timestamp   <2013-07-31 13:33:43 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -12,6 +12,8 @@ set cpo&vim
 silent! iunmap <buffer> <Tab>
 silent! iunmap <buffer> <S-Tab>
 
+nnoremap <buffer><silent><expr> dd
+  \ unite#smart_map('d', unite#do_action('delete'))
 nmap <buffer> <C-J> <Plug>(unite_choose_action)
 imap <buffer> <C-J> <Plug>(unite_choose_action)
 imap <buffer> <M-H> <Plug>(unite_move_head)
@@ -27,6 +29,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
+  \ silent! nunmap <buffer> dd|
   \ silent! nunmap <buffer> <C-J>|
   \ silent! iunmap <buffer> <C-J>|
   \ silent! iunmap <buffer> <M-H>|
