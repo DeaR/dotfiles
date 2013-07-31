@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-31 14:20:21 DeaR>
+" @timestamp   <2013-07-31 15:51:15 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1442,7 +1442,7 @@ let g:xml_syntax_folding  = 1
 " Status Line: {{{
 set statusline=%<%f\ %m%r[
 if has('multi_byte')
-  set statusline+=%{(&fenc!=''?&fenc:&enc).':'}
+  set statusline+=%{(&fenc!=''?&fenc:&enc)}:
 endif
 set statusline+=%{&ff}]%y%=
 
@@ -1941,7 +1941,7 @@ if has('win32')
     \ call s:set_shell(s:default_shell)
   command! -bar -nargs=?
     \ ShellSh
-    \ call s:set_shell([len(<q-args>) ? <q-args> : 'sh', 1, '-c', '', '"'])
+    \ call s:set_shell([<q-args> != '' ? <q-args> : 'sh', 1, '-c', '', '"'])
 endif
 "}}}
 
@@ -2439,7 +2439,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         let g:clang_library_path = expand('/usr/lib')
       endif
     endif
-    if exists('g:clang_library_path') && len(g:clang_library_path)
+    if get(g:, 'clang_library_path', '') != ''
       let g:clang_use_library = 1
     endif
   endfunction
@@ -3213,6 +3213,20 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:precious_enable_switchers                = {
       \ 'help' : {'setfiletype' : 0}}
   endfunction
+
+  function! StatusLine_y()
+    let base = precious#base_filetype()
+    if base == ''
+      return ''
+    endif
+
+    let context = precious#context_filetype()
+    return
+      \ '[' .
+      \ (base == context ? base : (base . ':' . context)) .
+      \ ']'
+  endfunction
+  let &statusline = substitute(&statusline, '%y', '%{StatusLine_y()}', '')
 
   OXmap ax <Plug>(textobj-precious-i)
   OXmap ix <Plug>(textobj-precious-i)
