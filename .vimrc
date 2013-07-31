@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-31 20:53:35 DeaR>
+" @timestamp   <2013-07-31 21:09:15 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3213,19 +3213,31 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:precious_enable_switchers                = {
       \ 'help' : {'setfiletype' : 0}}
 
-    function! StatusLine_y()
-      let base = precious#base_filetype()
-      if base == ''
-        return ''
-      endif
-
-      let context = precious#context_filetype()
-      return
-        \ '[' .
-        \ (base == context ? base : (base . ':' . context)) .
-        \ ']'
-    endfunction
     let &statusline = substitute(&statusline, '%y', '%{StatusLine_y()}', '')
+  endfunction
+
+  function! StatusLine_y()
+    if &filetype == ''
+      return ''
+    endif
+
+    let context = precious#context_filetype()
+    return
+      \ '[' .
+      \ &filetype .
+      \ (&filetype != context ? (':' . context) : '') .
+      \ ']'
+  endfunction
+  function! StatusLine_Y()
+    if &filetype == ''
+      return ''
+    endif
+
+    let context = precious#context_filetype()
+    return toupper(
+      \ ',' .
+      \ &filetype .
+      \ (&filetype != context ? (',' . context) : ''))
   endfunction
 
   OXmap ax <Plug>(textobj-precious-i)
