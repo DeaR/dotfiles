@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-31 21:09:15 DeaR>
+" @timestamp   <2013-08-01 00:30:07 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -568,7 +568,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'depends' : [
     \   'Shougo/context_filetype.vim',
     \   'thinca/vim-quickrun',
-    \   'kana/vim-textobj-user']}
+    \   'DeaR/vim-textobj-user']}
+    " \   'kana/vim-textobj-user']}
 
   NeoBundleLazy 'thinca/vim-prettyprint', {
     \ 'autoload' : {
@@ -648,7 +649,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'thinca/vim-scouter', {
     \ 'autoload' : {'commands' : 'Scouter'}}
 
-  NeoBundleLazy 'kana/vim-scratch', {
+  " NeoBundleLazy 'kana/vim-scratch', {
+  NeoBundleLazy 'DeaR/vim-scratch', {
     \ 'autoload' : {
     \   'commands' : 'ScratchOpen',
     \   'mappings' : [['nvo', '<Plug>(scratch-open)']]}}
@@ -666,7 +668,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   " NeoBundleLazy 'kana/vim-smartinput', {
   "   \ 'autoload' : {'insert' : 1}}
   
-  NeoBundleLazy 'kana/vim-smartword', {
+  " NeoBundleLazy 'kana/vim-smartword', {
+  NeoBundleLazy 'DeaR/vim-smartword', {
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo',
@@ -731,7 +734,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-between-a)',
     \      '<Plug>(textobj-between-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'thinca/vim-textobj-comment', {
     \ 'autoload' : {
@@ -739,7 +743,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-comment-a)',
     \      '<Plug>(textobj-comment-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-datetime', {
     \ 'autoload' : {
@@ -750,7 +755,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(textobj-datetime-full)',
     \      '<Plug>(textobj-datetime-time)',
     \      '<Plug>(textobj-datetime-tz)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-diff', {
     \ 'autoload' : {
@@ -767,11 +773,13 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-diff-file)',
     \      '<Plug>(textobj-diff-hunk)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'deris/vim-textobj-enclosedsyntax', {
     \ 'autoload' : {'filetypes' : ['perl', 'ruby', 'eruby']},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-entire', {
     \ 'autoload' : {
@@ -779,7 +787,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-entire-a)',
     \      '<Plug>(textobj-entire-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-fold', {
     \ 'autoload' : {
@@ -787,33 +796,39 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-fold-a)',
     \      '<Plug>(textobj-fold-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-function', {
     \ 'autoload' : {'filetypes' : ['c', 'cpp', 'objc', 'objcpp', 'vim']},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'thinca/vim-textobj-function-javascript', {
     \ 'autoload' : {'filetypes' : 'javascript'},
     \ 'depends' : [
     \   'kana/vim-textobj-function',
-    \   'kana/vim-textobj-user']}
+    \   'DeaR/vim-textobj-user']}
+    " \   'kana/vim-textobj-user']}
 
   NeoBundleLazy 'thinca/vim-textobj-function-perl', {
     \ 'autoload' : {'filetypes' : 'perl'},
     \ 'depends' : [
     \   'kana/vim-textobj-function',
-    \   'kana/vim-textobj-user']}
+    \   'DeaR/vim-textobj-user']}
+    " \   'kana/vim-textobj-user']}
 
   NeoBundleLazy 't9md/vim-textobj-function-ruby', {
     \ 'autoload' : {'filetypes' : ['eruby', 'ruby']},
     \ 'depends' : [
     \   'kana/vim-textobj-function',
-    \   'kana/vim-textobj-user']}
+    \   'DeaR/vim-textobj-user']}
+    " \   'kana/vim-textobj-user']}
 
   NeoBundleLazy 'anyakichi/vim-textobj-ifdef', {
     \ 'autoload' : {'filetypes' : ['c', 'cpp', 'cs', 'objc', 'objcpp']},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'glts/vim-textobj-indblock', {
     \ 'autoload' : {
@@ -823,7 +838,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(textobj-indblock-i)',
     \      '<Plug>(textobj-indblock-same-a)',
     \      '<Plug>(textobj-indblock-same-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-indent', {
     \ 'autoload' : {
@@ -833,7 +849,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(textobj-indent-i)',
     \      '<Plug>(textobj-indent-same-a)',
     \      '<Plug>(textobj-indent-same-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-jabraces', {
     \ 'autoload' : {
@@ -861,7 +878,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(textobj-jabraces-kikkou-kakko-i)',
     \      '<Plug>(textobj-jabraces-sumi-kakko-a)',
     \      '<Plug>(textobj-jabraces-sumi-kakko-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-line', {
     \ 'autoload' : {
@@ -869,7 +887,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-line-a)',
     \      '<Plug>(textobj-line-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {
     \ 'autoload' : {
@@ -877,7 +896,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-multiblock-a)',
     \      '<Plug>(textobj-multiblock-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', {
     \ 'autoload' : {
@@ -897,7 +917,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(textobj-multitextobj-E-i)']]},
     \ 'depends' : [
     \   'kana/vim-textobj-jabraces',
-    \   'kana/vim-textobj-user']}
+    \   'DeaR/vim-textobj-user']}
+    " \   'kana/vim-textobj-user']}
 
   NeoBundleLazy 'hchbaw/textobj-motionmotion.vim', {
     \ 'autoload' : {
@@ -905,7 +926,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-motionmotion-a)',
     \      '<Plug>(textobj-motionmotion-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'sgur/vim-textobj-parameter', {
     \ 'autoload' : {
@@ -913,23 +935,28 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-parameter-a)',
     \      '<Plug>(textobj-parameter-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'akiyan/vim-textobj-php', {
     \ 'autoload' : {'filetypes' : 'php'},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'bps/vim-textobj-python', {
     \ 'autoload' : {'filetypes' : 'python'},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'rhysd/vim-textobj-ruby', {
     \ 'autoload' : {'filetypes' : 'ruby'},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'vimtaku/vim-textobj-sigil', {
     \ 'autoload' : {'filetypes' : 'perl'},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'saihoooooooo/vim-textobj-space', {
     \ 'autoload' : {
@@ -937,7 +964,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-space-a)',
     \      '<Plug>(textobj-space-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-syntax', {
     \ 'autoload' : {
@@ -945,7 +973,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-syntax-a)',
     \      '<Plug>(textobj-syntax-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'mattn/vim-textobj-url', {
     \ 'autoload' : {
@@ -953,12 +982,15 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['vo',
     \      '<Plug>(textobj-url-a)',
     \      '<Plug>(textobj-url-i)']]},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
-  NeoBundleLazy 'kana/vim-textobj-user', {
+  " NeoBundleLazy 'kana/vim-textobj-user', {
+  NeoBundleLazy 'DeaR/vim-textobj-user', {
     \ 'autoload' : {'function_prefix' : 'textobj'}}
 
-  NeoBundleLazy 'h1mesuke/textobj-wiw', {
+  " NeoBundleLazy 'h1mesuke/textobj-wiw', {
+  NeoBundleLazy 'DeaR/textobj-wiw', {
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo',
@@ -968,11 +1000,14 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(textobj-wiw-P)'],
     \     ['vo',
     \      '<Plug>(textobj-wiw-a)',
-    \      '<Plug>(textobj-wiw-i)']]}}
+    \      '<Plug>(textobj-wiw-i)']]},
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'akiyan/vim-textobj-xml-attribute', {
     \ 'autoload' : {'filetypes' : ['html', 'xml']},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'zaiste/tmux.vim', {
     \ 'autoload' : {'filetypes' : 'tmux'}}
@@ -1216,7 +1251,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'osyo-manga/shabadou.vim',
     \   'syngan/vim-vimlint']}
 
-  NeoBundleLazy 'mattn/zencoding-vim', {
+  " NeoBundleLazy 'mattn/zencoding-vim', {
+  NeoBundleLazy 'DeaR/zencoding-vim', {
     \ 'autoload' : {
     \   'filetypes' : [
     \     'css', 'css.drupal', 'haml', 'html', 'html.django_template',
