@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-31 15:51:15 DeaR>
+" @timestamp   <2013-07-31 19:38:55 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1828,9 +1828,9 @@ nnoremap <C-G>H     gH
 nnoremap <C-G><C-H> g<C-H>
 
 " Repeat command
-nnoremap Q  @
-nnoremap Q; @:
-nnoremap QQ @@
+NXnoremap Q  @
+NXnoremap Q; @:
+NXnoremap QQ @@
 
 " Dangerous key
 nnoremap ZQ    <Nop>
