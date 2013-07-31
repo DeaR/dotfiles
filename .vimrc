@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-31 13:41:36 DeaR>
+" @timestamp   <2013-07-31 13:47:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1260,7 +1260,7 @@ set history=100
 set backup
 set nowritebackup
 set backupdir^=~/.bak
-set backupskip+=*.clean,*/.hg/*,*/.git/*,*/.svn/*
+set backupskip+=*.clean,*/.drive.r/*,*/.hg/*,*/.git/*,*/.svn/*
 set patchmode=.clean
 set suffixes+=.clean
 
@@ -1277,7 +1277,7 @@ set undofile
 set undodir^=~/.bak
 autocmd MyVimrc BufNewFile,BufRead *
   \ let &l:undofile =
-  \   (expand('%:p') !~? '\.clean$\|[/\\]\%(\.hg\|\.git\|\.svn\)[/\\]')
+  \   (expand('%:p') !~? '\.clean$\|[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]')
 
 " ClipBoard
 set clipboard=unnamed
@@ -2340,7 +2340,7 @@ endif
 " From Example: {{{
 autocmd MyVimrc BufRead *
   \ if line("'\"") > 1 && line("'\"") <= line('$') &&
-  \   expand('%:p') !~? '\.clean$\|/\.hg/\|/\.git/\|/\.svn/' |
+  \   expand('%:p') !~? '\.clean$\|[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]' |
   \   execute 'normal! g`"' |
   \ endif
 "}}}
@@ -3235,7 +3235,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:MyGrep_MultiEncodingGrepScript = 1
     let g:MyGrep_Resultfile              = $HOME . '/.local/.qfgrep.txt'
     let g:MyGrep_ExcludeReg              =
-      \ '/\.drive\.r/|/\.hg/|/\.git/|/\.svn/'
+      \ '[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]')
 
     let g:howm_dir                = $HOME . '/howm'
     let g:howm_filename           = '%Y/%m/%Y-%m-%d-%H%M%S.howm'
