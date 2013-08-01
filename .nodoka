@@ -5,7 +5,7 @@
 #              Realforce101
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-03 11:37:19 DeaR>
+# @timestamp   <2013-08-01 13:55:17 DeaR>
 
 #-----------------------------------------------------------------------------
 # HHKB Professional: {{{
@@ -430,4 +430,3 @@ window TalesWeaver /InphaseNXD\.exe/ : RAltIme
 # TERA: {{{
 window TERA /TERA_Invoker\.exe/ : RAltIme
 #}}}
- 

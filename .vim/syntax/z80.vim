@@ -23,7 +23,7 @@ syn keyword z80Inst rr rra rrc rrca rrd rst sbc scf set sl1 sla slia sll sra
 syn keyword z80Inst srl sub xor
 
 " sjasmplus inst
-syn keyword z80Inst sli exa 
+syn keyword z80Inst sli exa
 
 "Grab the condition too
 syn match z80Inst "\s\+jp\s\+n\=[covz]\>" "Match Z C O V NZ NC NO NV
@@ -82,13 +82,13 @@ syn keyword z80PreProc semifree size superfree
 " sjasmplus directives
 syn keyword z80PreProc DEVICE ABYTE ABYTEC ABYTEZ ALIGN ASSERT BINARY BLOCK BYTE
 syn keyword z80PreProc DB DC DD DEFARRAY DEPHASE DEFB DEFD DEFDEVICE DEFINE
-syn keyword z80PreProc DEFM DEFS DEFW DEVICE DISP DISPLAY DM DS DUP DW DWORD 
+syn keyword z80PreProc DEFM DEFS DEFW DEVICE DISP DISPLAY DM DS DUP DW DWORD
 syn keyword z80PreProc DZ EMPTYTRD ENCODING END ENDLUA ENDMOD ENDT ENT EQU
-syn keyword z80PreProc ENDMODULE EXPORT FIELD FPOS INCBIN INCHOB INCLUDE INCLUDELUA 
+syn keyword z80PreProc ENDMODULE EXPORT FIELD FPOS INCBIN INCHOB INCLUDE INCLUDELUA
 syn keyword z80PreProc INCTRD INSERT LABELSLIST LUA MAP MEMORYMAP MODULE ORG
-syn keyword z80PreProc OUTPUT PAGE PHASE REPT SAVEBIN SAVEHOB SAVESNA SAVETRD SHELLEXEC 
+syn keyword z80PreProc OUTPUT PAGE PHASE REPT SAVEBIN SAVEHOB SAVESNA SAVETRD SHELLEXEC
 syn keyword z80PreProc SIZE SLOT TEXTAREA UNPHASE WORD IF IFN IFDEF IFNDEF ELSE ENDIF
-syn keyword z80PreProc MACRO ENDM D24 
+syn keyword z80PreProc MACRO ENDM D24
 
 
 " Strings
@@ -121,7 +121,7 @@ syn match z80Reg "(sp)"
 " Comments
 syn match z80Comment ";.*$"
 syn match z80Comment "^\*$"
-syn region z80Comment2 start="\<\.endasm\>" skip="\n" end="\<\.asm\>" keepend contains=z80Comment,z80Comment2 
+syn region z80Comment2 start="\<\.endasm\>" skip="\n" end="\<\.asm\>" keepend contains=z80Comment,z80Comment2
 syn region z80Comment start="\/\*" end="\*\/"
 
 " Define the default highlighting.

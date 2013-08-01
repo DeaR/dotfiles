@@ -4,7 +4,7 @@
 # @description Colordiff settings
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-05-28 11:31:03 DeaR>
+# @timestamp   <2013-08-01 14:01:38 DeaR>
 
 banner=no
 color_patches=no
@@ -13,3 +13,5 @@ newtext=green
 oldtext=red
 diffstuff=cyan
 cvsstuff=white
+
+# vim: ft=cfg

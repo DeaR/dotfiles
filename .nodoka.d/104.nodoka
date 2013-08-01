@@ -58,7 +58,7 @@ def key S				=    0x1f
 def key D				=    0x20
 def key Mute				= E0-0x20 # (Media Player)
 def key F				=    0x21
-def key ALCalculator			= E0-0x21 # (N/A) Calculator 
+def key ALCalculator			= E0-0x21 # (N/A) Calculator
 def key G				=    0x22
 def key Play/Pause			= E0-0x22 # (Media Player)
 def key H				=    0x23
@@ -146,7 +146,7 @@ def key ACRefresh			= E0-0x67 # (Internet Explorer)
 def key ACStop				= E0-0x68 # (Internet Explorer)
 def key ACForward			= E0-0x69 # (Internet Explorer)
 def key ACBack				= E0-0x6a # (Internet Explorer)
-def key ALLocalBrowser			= E0-0x6b # (N/A) My Computer 
+def key ALLocalBrowser			= E0-0x6b # (N/A) My Computer
 def key ALEmailReader Email		= E0-0x6c
 def key ALConsumerControlConfiguration	= E0-0x6d # (N/A) Media Player
 
