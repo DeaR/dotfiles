@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-01 13:31:35 DeaR>
+" @timestamp   <2013-08-01 13:52:25 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -667,7 +667,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   " NeoBundleLazy 'kana/vim-smartinput', {
   "   \ 'autoload' : {'insert' : 1}}
-  
+
   " NeoBundleLazy 'kana/vim-smartword', {
   NeoBundleLazy 'DeaR/vim-smartword', {
     \ 'autoload' : {
@@ -1954,7 +1954,7 @@ if has('multi_byte')
       \ EditIso2022jp
       \ edit<bang> ++enc=iso-2022-jp-3 <args>
   else
-    command! -bang -bar -complete=file -nargs=? 
+    command! -bang -bar -complete=file -nargs=?
       \ EditIso2022jp
       \ edit<bang> ++enc=iso-2022-jp <args>
   endif
