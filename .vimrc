@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-01 13:52:25 DeaR>
+" @timestamp   <2013-08-01 15:28:12 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4694,11 +4694,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ 'lua/watchdogs_checker' : {
       \   'type' :
       \     s:executable('luac')   ? 'watchdogs_checker/luac' :
-      \     s:executable('luac52') ? 'watchdogs_checker/luac52' : ''},
-      \ 'watchdogs_checker/luac52' : {
-      \   'command' : 'luac52',
-      \   'exec'    : '%c %o %s:p',
-      \   'quickfix/errorformat' : '%.%#: %#%f:%l: %m'}})
+      \     s:executable('luac52') ? 'watchdogs_checker/luac' : ''},
+      \ 'watchdogs_checker/luac' : {
+      \   'command' :
+      \     s:executable('luac')   ? 'luac' :
+      \     s:executable('luac52') ? 'luac52' : '',
+      \   'exec' : '%c %o -o %s:p:r.luac %s:p',
+      \   'hook/sweep/files' : '%S:p:r.luac'}})
   endfunction
 
   autocmd MyVimrc FileType *
