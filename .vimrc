@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-02 16:02:39 DeaR>
+" @timestamp   <2013-08-02 18:07:32 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2420,8 +2420,10 @@ unlet! s:bundle
 " Altr: {{{
 silent! let s:bundle = neobundle#get('altr')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  nmap <F2>  <Plug>(altr-forward)
-  nmap g<F2> <Plug>(altr-back)
+  nmap g<M-f>     <Plug>(altr-forward)
+  nmap g<M-F>     <Plug>(altr-back)
+  nmap <C-W><M-f> <SID>(split-nicely)<Plug>(altr-forward)
+  nmap <C-W><M-F> <SID>(split-nicely)<Plug>(altr-back)
 endif
 unlet! s:bundle
 "}}}
