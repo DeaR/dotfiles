@@ -3200,6 +3200,9 @@ silent! let s:bundle = neobundle#get('parajump')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:parajump_no_default_key_mappings = 1
+
+    inoremap <script> <M-{> <C-O><SID>(parajump-backward)
+    inoremap <script> <M-}> <C-O><SID>(parajump-forward)
   endfunction
 
   nmap <SID>(parajump-backward) <Plug>(parajump-backward)
@@ -3207,9 +3210,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nnoremap <script> { <SID>(parajump-backward)zz
   nnoremap <script> } <SID>(parajump-forward)zz
-
-  inoremap <script> <M-{> <C-O><SID>(parajump-backward)
-  inoremap <script> <M-}> <C-O><SID>(parajump-forward)
 endif
 unlet! s:bundle
 "}}}
