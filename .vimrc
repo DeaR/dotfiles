@@ -2555,14 +2555,16 @@ unlet! s:bundle
 " ColumnJump: {{{
 silent! let s:bundle = neobundle#get('columnjump')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    inoremap <script> <M-K> <C-O><SID>(columnjump-backward)
+    inoremap <script> <M-J> <C-O><SID>(columnjump-forward)
+  endfunction
+
   nmap <SID>(columnjump-backward) <Plug>(columnjump-backward)
   nmap <SID>(columnjump-forward)  <Plug>(columnjump-forward)
 
   nnoremap <script> <C-K> <SID>(columnjump-backward)zz
   nnoremap <script> <C-J> <SID>(columnjump-forward)zz
-
-  inoremap <script> <M-K> <C-O><SID>(columnjump-backward)
-  inoremap <script> <M-J> <C-O><SID>(columnjump-forward)
 endif
 unlet! s:bundle
 "}}}
