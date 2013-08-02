@@ -4723,7 +4723,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ 'watchdogs_checker/luac' : {
       \   'command' :
       \     s:executable('luac')   ? 'luac' :
-      \     s:executable('luac52') ? 'luac52' : ''}})
+      \     s:executable('luac52') ? 'luac52' : ''},
+      \ 'vim/watchdogs_checker' : {
+      \   'type' :
+      \     has('python') ? 'watchdogs_checker/vimlint_by_dbakker' : ''}})
   endfunction
 
   autocmd MyVimrc FileType *
