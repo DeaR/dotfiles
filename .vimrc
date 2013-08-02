@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-01 15:28:12 DeaR>
+" @timestamp   <2013-08-02 13:51:51 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2522,6 +2522,22 @@ silent! let s:bundle = neobundle#get('clever-f')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:clever_f_not_overwrites_standard_mappings = 1
+
+    nmap <SID>(clever-f-f)              <Plug>(clever-f-f)
+    nmap <SID>(clever-f-F)              <Plug>(clever-f-F)
+    nmap <SID>(clever-f-t)              <Plug>(clever-f-t)
+    nmap <SID>(clever-f-T)              <Plug>(clever-f-T)
+    nmap <SID>(clever-f-reset)          <Plug>(clever-f-reset)
+    nmap <SID>(clever-f-repeat-forward) <Plug>(clever-f-repeat-forward)
+    nmap <SID>(clever-f-repeat-back)    <Plug>(clever-f-repeat-back)
+
+    inoremap <script> <M-f> <C-O><SID>(clever-f-f)
+    inoremap <script> <M-F> <C-O><SID>(clever-f-F)
+    inoremap <script> <M-t> <C-O><SID>(clever-f-t)
+    inoremap <script> <M-T> <C-O><SID>(clever-f-T)
+    inoremap <script> <M-.> <C-O><SID>(clever-f-reset)
+    inoremap <script> <M-;> <C-O><SID>(clever-f-repeat-forward)
+    inoremap <script> <M-,> <C-O><SID>(clever-f-repeat-back)
   endfunction
 
   NOXmap f     <Plug>(clever-f-f)
@@ -2531,22 +2547,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NOXmap <M-.> <Plug>(clever-f-reset)
   NOXmap <M-;> <Plug>(clever-f-repeat-forward)
   NOXmap <M-,> <Plug>(clever-f-repeat-back)
-
-  nmap <SID>(clever-f-f)              <Plug>(clever-f-f)
-  nmap <SID>(clever-f-F)              <Plug>(clever-f-F)
-  nmap <SID>(clever-f-t)              <Plug>(clever-f-t)
-  nmap <SID>(clever-f-T)              <Plug>(clever-f-T)
-  nmap <SID>(clever-f-reset)          <Plug>(clever-f-reset)
-  nmap <SID>(clever-f-repeat-forward) <Plug>(clever-f-repeat-forward)
-  nmap <SID>(clever-f-repeat-back)    <Plug>(clever-f-repeat-back)
-
-  inoremap <script> <M-f> <C-O><SID>(clever-f-f)
-  inoremap <script> <M-F> <C-O><SID>(clever-f-F)
-  inoremap <script> <M-t> <C-O><SID>(clever-f-t)
-  inoremap <script> <M-T> <C-O><SID>(clever-f-T)
-  inoremap <script> <M-.> <C-O><SID>(clever-f-reset)
-  inoremap <script> <M-;> <C-O><SID>(clever-f-repeat-forward)
-  inoremap <script> <M-,> <C-O><SID>(clever-f-repeat-back)
 endif
 unlet! s:bundle
 "}}}
