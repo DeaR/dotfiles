@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-02 13:51:51 DeaR>
+" @timestamp   <2013-08-02 13:56:22 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1015,8 +1015,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'mbbill/undotree', {
     \ 'autoload' : {
     \   'commands' : 'UndotreeToggle',
-    \   'functions' : 'UndotreeToggle',
-    \   'insert' : 1}}
+    \   'functions' : 'UndotreeToggle'}}
 
   NeoBundle 'Shougo/unite.vim'
   call extend(s:neocompl_vim_completefuncs, {
