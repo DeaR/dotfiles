@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-07-30 00:35:55 DeaR>
+" @timestamp   <2013-08-02 19:52:06 DeaR>
 
 "=============================================================================
 " Pre Init: {{{
@@ -114,9 +114,9 @@ elseif has('mac')
 endif
 
 " Direct Write
-if 0 && has('directx')
-  set renderoptions=type:directx
-endif
+" if has('directx')
+"   set renderoptions=type:directx
+" endif
 
 " Full screen
 if has('win32')

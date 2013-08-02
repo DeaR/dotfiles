@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-02 19:49:52 DeaR>
+" @timestamp   <2013-08-02 20:15:40 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1405,8 +1405,7 @@ set iskeyword=a-z,A-Z,@,48-57,_
 if s:executable('jvgrep')
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
 elseif s:executable('ag')
-  set grepprg=ag\ --nocolor\ --nogroup\ --hidden\ --ignore-dir=.drive.r\
-    \ --ignore-dir=.hg\ --ignore-dir=.git\ --ignore-dir=.svn
+  set grepprg=ag\ --nocolor\ --nogroup\ --hidden\ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
 elseif s:executable('grep')
   set grepprg=grep\ -Hn
 else
@@ -1768,14 +1767,6 @@ nnoremap <M-U> :<C-U>undolist<CR>
 nnoremap <M-o> o<Esc>0"_Dk
 nnoremap <M-O> O<Esc>0"_Dj
 
-" Auto recenter
-nnoremap  <Tab> <Tab>zz
-nnoremap  <C-O> <C-O>zz
-NXnoremap *     *zz
-NXnoremap #     #zz
-NXnoremap g*    g*zz
-NXnoremap g#    g#zz
-
 " Back jump
 nnoremap <S-Tab> <C-O>
 
@@ -1827,6 +1818,10 @@ NXmap g? #
 nnoremap <C-N> :<C-U>global//print<CR>
 xnoremap <C-N> :global//print<CR>
 nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
+NXnoremap *  *zz
+NXnoremap #  #zz
+NXnoremap g* g*zz
+NXnoremap g# g#zz
 
 " Search Split Window
 NXnoremap <script> <C-W>/  <SID>(split-nicely)<SID>/
@@ -2068,11 +2063,11 @@ function! s:cmdwin_enter()
   inoremap <buffer><silent><script><expr> <C-H>
     \ col('.') == 1 ?
     \   '<Esc>:quit<CR>' :
-    \   '<SID>(smartinput-<C-H>)'
+    \   '<SID><C-H>'
   inoremap <buffer><silent><script><expr> <BS>
     \ col('.') == 1 ?
     \   '<Esc>:quit<CR>' :
-    \   '<SID>(smartinput-<BS>)'
+    \   '<SID><BS>'
 endfunction
 autocmd MyVimrc CmdwinEnter *
   \ call s:cmdwin_enter()
@@ -2882,11 +2877,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   neocomplcache#start_manual_complete()
 
     inoremap <script><expr> <CR>
-      \ neocomplcache#smart_close_popup() . '<SID>(smartinput-<CR>)'
+      \ neocomplcache#smart_close_popup() . '<SID><CR>'
     inoremap <script><expr> <C-H>
-      \ neocomplcache#smart_close_popup() . '<SID>(smartinput-<C-H>)'
+      \ neocomplcache#smart_close_popup() . '<SID><C-H>'
     inoremap <script><expr> <BS>
-      \ neocomplcache#smart_close_popup() . '<SID>(smartinput-<BS>)'
+      \ neocomplcache#smart_close_popup() . '<SID><BS>'
 
     call neocomplcache#initialize()
   endfunction
@@ -2908,11 +2903,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     inoremap <buffer><script><silent><expr> <C-H>
       \ col('.') == 1 ?
       \   '<Esc>:quit<CR>' :
-      \   (neocomplcache#smart_close_popup() . '<SID>(smartinput-<C-H>)')
+      \   (neocomplcache#smart_close_popup() . '<SID><C-H>')
     inoremap <buffer><script><silent><expr> <BS>
       \ col('.') == 1 ?
       \   '<Esc>:quit<CR>' :
-      \   (neocomplcache#smart_close_popup() . '<SID>(smartinput-<BS>)')
+      \   (neocomplcache#smart_close_popup() . '<SID><BS>')
   endfunction
   augroup MyVimrc
     autocmd CmdwinEnter *
@@ -2989,11 +2984,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   neocomplete#start_manual_complete()
 
     inoremap <script><expr> <CR>
-      \ neocomplete#smart_close_popup() . '<SID>(smartinput-<CR>)'
+      \ neocomplete#smart_close_popup() . '<SID><CR>'
     inoremap <script><expr> <C-H>
-      \ neocomplete#smart_close_popup() . '<SID>(smartinput-<C-H>)'
+      \ neocomplete#smart_close_popup() . '<SID><C-H>'
     inoremap <script><expr> <BS>
-      \ neocomplete#smart_close_popup() . '<SID>(smartinput-<BS>)'
+      \ neocomplete#smart_close_popup() . '<SID><BS>'
 
     call neocomplete#initialize()
   endfunction
@@ -3015,11 +3010,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     inoremap <buffer><silent><script><expr> <C-H>
       \ col('.') == 1 ?
       \   '<Esc>:quit<CR>' :
-      \   (neocomplete#smart_close_popup() . '<SID>(smartinput-<C-H>)')
+      \   (neocomplete#smart_close_popup() . '<SID><C-H>')
     inoremap <buffer><silent><script><expr> <BS>
       \ col('.') == 1 ?
       \   '<Esc>:quit<CR>' :
-      \   (neocomplete#smart_close_popup() . '<SID>(smartinput-<BS>)')
+      \   (neocomplete#smart_close_popup() . '<SID><BS>')
   endfunction
   augroup MyVimrc
     autocmd CmdwinEnter *
@@ -3307,7 +3302,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:MyGrep_MultiEncodingGrepScript = 1
     let g:MyGrep_Resultfile              = $HOME . '/.local/.qfgrep.txt'
     let g:MyGrep_ExcludeReg              =
-      \ '[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]')
+      \ '[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
 
     let g:howm_dir                = $HOME . '/howm'
     let g:howm_filename           = '%Y/%m/%Y-%m-%d-%H%M%S.howm'
@@ -3566,14 +3561,14 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ '<C-H>',
       \ '<C-H>')
 
-    imap <SID>(smartinput-<CR>)  <Plug>(smartinput-<CR>)
-    imap <SID>(smartinput-<BS>)  <Plug>(smartinput-<BS>)
-    imap <SID>(smartinput-<C-H>) <Plug>(smartinput-<C-H>)
+    imap <SID><CR>  <Plug>(smartinput-<CR>)
+    imap <SID><BS>  <Plug>(smartinput-<BS>)
+    imap <SID><C-H> <Plug>(smartinput-<C-H>)
   endfunction
 else
-  inoremap <SID>(smartinput-<CR>)  <CR>
-  inoremap <SID>(smartinput-<BS>)  <BS>
-  inoremap <SID>(smartinput-<C-H>) <C-H>
+  inoremap <SID><CR>  <CR>
+  inoremap <SID><BS>  <BS>
+  inoremap <SID><C-H> <C-H>
 endif
 unlet! s:bundle
 "}}}
@@ -4301,8 +4296,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_default_opts  =
-        \ '--nocolor --nogroup --hidden --ignore-dir=.drive.r ' .
-        \ '--ignore-dir=.hg --ignore-dir=.git --ignore-dir=.svn'
+        \ '--nocolor --nogroup --hidden --ignore .drive.r ' .
+        \ '--ignore .hg --ignore .git --ignore .svn'
     elseif s:executable('grep')
       let g:unite_source_grep_command       = 'grep'
       let g:unite_source_grep_recursive_opt = '-r'
@@ -4724,6 +4719,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   'command' :
       \     s:executable('luac')   ? 'luac' :
       \     s:executable('luac52') ? 'luac52' : ''},
+      \
       \ 'vim/watchdogs_checker' : {
       \   'type' :
       \     has('python') ? 'watchdogs_checker/vimlint_by_dbakker' : ''}})
