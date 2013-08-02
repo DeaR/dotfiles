@@ -3573,20 +3573,22 @@ unlet! s:bundle
 " SmartWord: {{{
 silent! let s:bundle = neobundle#get('smartword')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    nmap <SID>(smartword-w)  <Plug>(smartword-w)
+    nmap <SID>(smartword-b)  <Plug>(smartword-b)
+    nmap <SID>(smartword-e)  <Plug>(smartword-e)
+    nmap <SID>(smartword-ge) <Plug>(smartword-ge)
+
+    inoremap <script> <M-w>      <C-O><SID>(smartword-w)
+    inoremap <script> <M-b>      <C-O><SID>(smartword-b)
+    inoremap <script> <M-e>      <C-O><SID>(smartword-e)
+    inoremap <script> <M-g><M-e> <C-O><SID>(smartword-ge)
+  endfunction
+
   NOXmap w  <Plug>(smartword-w)
   NOXmap b  <Plug>(smartword-b)
   NOXmap e  <Plug>(smartword-e)
   NOXmap ge <Plug>(smartword-ge)
-
-  nmap <SID>(smartword-w)  <Plug>(smartword-w)
-  nmap <SID>(smartword-b)  <Plug>(smartword-b)
-  nmap <SID>(smartword-e)  <Plug>(smartword-e)
-  nmap <SID>(smartword-ge) <Plug>(smartword-ge)
-
-  inoremap <script> <M-w>      <C-O><SID>(smartword-w)
-  inoremap <script> <M-b>      <C-O><SID>(smartword-b)
-  inoremap <script> <M-e>      <C-O><SID>(smartword-e)
-  inoremap <script> <M-g><M-e> <C-O><SID>(smartword-ge)
 endif
 unlet! s:bundle
 "}}}
