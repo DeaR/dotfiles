@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-02 14:36:36 DeaR>
+" @timestamp   <2013-08-02 14:45:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -747,8 +747,11 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'rhysd/vim-textobj-continuous-line', {
-    \ 'autoload' : {'filetypes' : ['c', 'cpp', 'sh', 'vim', 'zsh']},
-    \ 'depends' : 'kana/vim-textobj-user'}
+    \ 'autoload' : {
+    \   'filetypes' : [
+    \     'c', 'cpp', 'objc', 'objcpp', 'sh', 'vim', 'zsh']},
+    \ 'depends' : 'DeaR/vim-textobj-user'}
+    " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-datetime', {
     \ 'autoload' : {
