@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-02 20:15:40 DeaR>
+" @timestamp   <2013-08-05 16:42:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2763,7 +2763,7 @@ silent! let s:bundle = neobundle#get('maplist')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:maplist_mode_length  = 4
-    let g:maplist_key_length   = 50
+    let g:maplist_lhs_length   = 50
     let g:maplist_local_length = 2
   endfunction
 endif
