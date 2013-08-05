@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-05 18:56:57 DeaR>
+" @timestamp   <2013-08-06 00:14:53 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -83,7 +83,7 @@ function! s:has_vimproc()
 endfunction
 
 " Cached executable
-let s:_executable = get(s:, '_executable', {})
+let s:_executable = {}
 function! s:executable(expr)
   let s:_executable[a:expr] = get(s:_executable, a:expr, executable(a:expr))
   return s:_executable[a:expr]
@@ -108,20 +108,14 @@ let s:cmdwin_enable = 1
 let s:jvgrep_enable = 0
 
 " AlterCommand
-let s:altercmd_define =
-  \ get(s:, 'altercmd_define', {})
+let s:altercmd_define = {}
 
 " NeoComplete or NeoComplCache
-let s:neocompl_force_omni_patterns =
-  \ get(s:, 'neocompl_force_omni_patterns', {})
-let s:neocompl_keyword_patterns =
-  \ get(s:, 'neocompl_keyword_patterns', {})
-let s:neocompl_omni_patterns =
-  \ get(s:, 'neocompl_omni_patterns', {})
-let s:neocompl_dictionary_filetype_lists =
-  \ get(s:, 'neocompl_dictionary_filetype_lists', {})
-let s:neocompl_vim_completefuncs =
-  \ get(s:, 'neocompl_vim_completefuncs', {})
+let s:neocompl_force_omni_patterns = {}
+let s:neocompl_keyword_patterns = {}
+let s:neocompl_omni_patterns = {}
+let s:neocompl_dictionary_filetype_lists = {}
+let s:neocompl_vim_completefuncs = {}
 
 " VCvarsall.bat
 if has('win32') && !exists('$VCVARSALL')
@@ -2482,7 +2476,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         let g:clang_library_path = expand('/usr/lib')
       endif
     endif
-    if get(g:, 'clang_library_path', '') != ''
+    if exists('g:clang_library_path')
       let g:clang_use_library = 1
     endif
   endfunction
