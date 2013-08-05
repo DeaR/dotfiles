@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-05 16:59:03 DeaR>
+" @timestamp   <2013-08-05 17:56:04 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3317,10 +3317,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     if s:executable('jvgrep')
       let g:mygrepprg = 'jvgrep'
-    elseif s:executable('ag')
-      let g:mygrepprg = 'ag'
-    elseif s:executable('grep')
-      let g:mygrepprg = 'grep'
     else
       let g:mygrepprg   = 'internal'
       let g:myjpgrepprg = 'agrep.vim'
