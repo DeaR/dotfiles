@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-05 17:56:04 DeaR>
+" @timestamp   <2013-08-05 18:56:57 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -103,6 +103,9 @@ let g:maplocalleader = ','
 
 " Command line window
 let s:cmdwin_enable = 1
+
+" JvGrep
+let s:jvgrep_enable = 0
 
 " AlterCommand
 let s:altercmd_define =
@@ -1402,7 +1405,7 @@ endif
 set iskeyword=a-z,A-Z,@,48-57,_
 
 " Grep
-if s:executable('jvgrep')
+if s:executable('jvgrep') && s:jvgrep_enable
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
 elseif s:executable('ag')
   set grepprg=ag\ --nocolor\ --nogroup\ --hidden\ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
@@ -4284,7 +4287,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
 
-    if s:executable('jvgrep')
+    if s:executable('jvgrep') && s:jvgrep_enable
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '-n --exclude .drive.r'
