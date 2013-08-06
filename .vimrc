@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-06 00:14:53 DeaR>
+" @timestamp   <2013-08-06 15:09:16 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4344,46 +4344,48 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
+  function! s:unite_search_expr()
+    return line('$') > 10000
+  endfunction
   function! s:unite_search_forward()
-    if line('$') > 10000
-      Unite line/fast
-        \ -buffer-name=search -no-split -start-insert
-    else
-      Unite line
-        \ -buffer-name=search -no-split -start-insert -auto-preview
-    endif
+    return
+      \ s:unite_search_expr() ?
+      \   (":\<C-U>Unite line/fast" .
+      \    " -buffer-name=search -no-split -start-insert\<CR>") :
+      \   (":\<C-U>Unite line" .
+      \    " -buffer-name=search -no-split -start-insert -auto-preview\<CR>")
   endfunction
   function! s:unite_search_backward()
-    if line('$') > 10000
-      Unite line/fast:backward
-        \ -buffer-name=search -no-split -start-insert
-    else
-      Unite line:backward
-        \ -buffer-name=search -no-split -start-insert -auto-preview
-    endif
+    return
+      \ s:unite_search_expr() ?
+      \   (":\<C-U>Unite line/fast:backward" .
+      \    " -buffer-name=search -no-split -start-insert\<CR>") :
+      \   (":\<C-U>Unite line:backward" .
+      \    " -buffer-name=search -no-split -start-insert -auto-preview\<CR>")
   endfunction
   function! s:unite_search_cword_forward()
-    if line('$') > 10000
-      UniteWithCursorWord line/fast
-        \ -buffer-name=search -no-split -start-insert
-    else
-      UniteWithCursorWord line
-        \ -buffer-name=search -no-split -start-insert -auto-preview
-    endif
+    return
+      \ s:unite_search_expr() ?
+      \   (":\<C-U>UniteWithCursorWord line/fast" .
+      \    " -buffer-name=search -no-split -no-start-insert\<CR>") :
+      \   (":\<C-U>UniteWithCursorWord line" .
+      \    " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
   endfunction
   function! s:unite_search_cword_backward()
-    if line('$') > 10000
-      UniteWithCursorWord line/fast:backward
-        \ -buffer-name=search -no-split -start-insert
-    else
-      UniteWithCursorWord line:backward
-        \ -buffer-name=search -no-split -start-insert -auto-preview
-    endif
+    return
+      \ s:unite_search_expr() ?
+      \   (":\<C-U>UniteWithCursorWord line/fast:backward" .
+      \    " -buffer-name=search -no-split -no-start-insert\<CR>") :
+      \   (":\<C-U>UniteWithCursorWord line:backward" .
+      \    " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
   endfunction
 
   nnoremap <Leader>u <Nop>
-
   nnoremap <script> <Leader>uu <SID>:<C-U>Unite<Space>
+
+  nnoremap <Leader>uU
+    \ :<C-U>Unite source
+    \ -buffer-name=help -no-split<CR>
 
   nnoremap <Leader>um :<C-U>Unite menu<CR>
   nnoremap <Leader>u<CR> :<C-U>Unite menu:set_ff<CR>
@@ -4391,10 +4393,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     nnoremap <Leader>ue :<C-U>Unite menu:edit_enc<CR>
     nnoremap <Leader>uf :<C-U>Unite menu:set_fenc<CR>
   endif
-
-  nnoremap <Leader>uU
-    \ :<C-U>Unite source
-    \ -buffer-name=help -no-split<CR>
 
   nnoremap <Leader>e
     \ :<C-U>Unite file_mru file file/new directory/new
@@ -4443,20 +4441,14 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \   'is_multi_line' : 1,
     \   'direction' : 'leftabove'})
 
-  nnoremap <Leader>u/
-    \ :<C-U>call <SID>unite_search_forward()<CR>
-  nnoremap <Leader>u?
-    \ :<C-U>call <SID>unite_search_backward()<CR>
-  nnoremap <Leader>u*
-    \ :<C-U>call <SID>unite_search_cword_forward()<CR>
-  nnoremap <Leader>u#
-    \ :<C-U>call <SID>unite_search_cword_backward()<CR>
-  nnoremap <Leader>ug/
-    \ :<C-U>call <SID>unite_search_cword_forward()<CR>
-  nnoremap <Leader>ug?
-    \ :<C-U>call <SID>unite_search_cword_backward()<CR>
-  nnoremap <Leader>un
+  nnoremap <expr> <Leader>un
     \ :<C-U>UniteResume search -start-insert<CR>
+  nnoremap <expr> <Leader>u/ <SID>unite_search_forward()
+  nnoremap <expr> <Leader>u? <SID>unite_search_backward()
+  nnoremap <expr> <Leader>u* <SID>unite_search_cword_forward()
+  nnoremap <expr> <Leader>u# <SID>unite_search_cword_backward()
+  nmap <Leader>ug/ <Leader>u*
+  nmap <Leader>ug? <Leader>u#
 
   call extend(s:altercmd_define, {
     \ 'u[nite]' : 'Unite'})
@@ -4547,7 +4539,7 @@ silent! let s:bundle = neobundle#get('unite-tag')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <Leader>ut
     \ :<C-U>UniteWithCursorWord tag tag/include
-    \ -buffer-name=outline -no-split<CR>
+    \ -buffer-name=outline -no-split -no-start-insert<CR>
 endif
 unlet! s:bundle
 "}}}
