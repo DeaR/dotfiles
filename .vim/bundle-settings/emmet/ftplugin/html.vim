@@ -1,15 +1,15 @@
 " -*- mode: vimrc; coding: unix -*-
 
-" @name        less.vim
-" @description ZenCoding ftplugin for LESS
+" @name        html.vim
+" @description Emmet ftplugin for HTML
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-06-07 22:30:44 DeaR>
+" @timestamp   <2013-08-06 20:07:48 DeaR>
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-setlocal omnifunc=zencoding#CompleteTag
+setlocal omnifunc=emmet#CompleteTag
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'

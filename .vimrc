@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-06 18:14:48 DeaR>
+" @timestamp   <2013-08-06 20:12:56 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1259,14 +1259,13 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'osyo-manga/shabadou.vim',
     \   'syngan/vim-vimlint']}
 
-  " NeoBundleLazy 'mattn/zencoding-vim', {
-  NeoBundleLazy 'DeaR/zencoding-vim', {
+  NeoBundleLazy 'mattn/emmet-vim', {
     \ 'autoload' : {
     \   'filetypes' : [
     \     'css', 'css.drupal', 'haml', 'html', 'html.django_template',
     \     'htmldjango', 'less', 'mustache', 'sass', 'scss', 'slim',
     \     'xhtml', 'xml', 'xsl', 'xslt'],
-    \   'commands' : 'Zen',
+    \   'commands' : 'Emmet',
     \   'mappings' : [['nvi', '<C-Y>']]}}
 endif
 "}}}
@@ -4775,14 +4774,20 @@ unlet! s:bundle
 "}}}
 
 "-----------------------------------------------------------------------------
-" ZenCoding: {{{
-silent! let s:bundle = neobundle#get('zencoding')
+" Emmet: {{{
+silent! let s:bundle = neobundle#get('emmet')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:user_zen_settings = {
+    let g:user_emmet_settings = {
       \ 'lang' : 'ja',
       \ 'indentation' : '  ',
       \ 'xml' : {'extends' : 'html'}}
+  endfunction
+
+  function! s:bundle.hooks.on_post_source(bundle)
+    " https://github.com/mattn/emmet-vim/pull/127
+    nmap <C-Y>, <Plug>EmmetExpandNormal
+    nmap <C-Y>; <Plug>EmmetExpandWord
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
