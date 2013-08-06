@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-06 15:20:10 DeaR>
+" @timestamp   <2013-08-06 16:35:59 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1404,7 +1404,7 @@ if s:executable('jvgrep') && s:jvgrep_enable
 elseif s:executable('ag')
   set grepprg=ag\ --nocolor\ --nogroup\ --hidden\ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
 elseif s:executable('grep')
-  set grepprg=grep\ -Hn
+  set grepprg=grep\ -EHn
 else
   set grepprg=internal
 endif
@@ -4294,7 +4294,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     elseif s:executable('grep')
       let g:unite_source_grep_command       = 'grep'
       let g:unite_source_grep_recursive_opt = '-r'
-      let g:unite_source_grep_default_opts  = '-Hn'
+      let g:unite_source_grep_default_opts  = '-EHn'
     endif
 
     let g:unite_source_menu_menus =
