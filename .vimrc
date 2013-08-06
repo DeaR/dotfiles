@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-06 15:09:16 DeaR>
+" @timestamp   <2013-08-06 15:20:10 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1815,18 +1815,18 @@ NXmap g? #
 nnoremap <C-N> :<C-U>global//print<CR>
 xnoremap <C-N> :global//print<CR>
 nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
-NXnoremap *  *zz
-NXnoremap #  #zz
-NXnoremap g* g*zz
-NXnoremap g# g#zz
+NXnoremap *  *zvzz
+NXnoremap #  #zvzz
+NXnoremap g* g*zvzz
+NXnoremap g# g#zvzz
 
 " Search Split Window
 NXnoremap <script> <C-W>/  <SID>(split-nicely)<SID>/
 NXnoremap <script> <C-W>?  <SID>(split-nicely)<SID>?
-NXnoremap <script> <C-W>*  <SID>(split-nicely)*zz
-NXnoremap <script> <C-W>#  <SID>(split-nicely)#zz
-NXnoremap <script> <C-W>g* <SID>(split-nicely)*zz
-NXnoremap <script> <C-W>g# <SID>(split-nicely)#zz
+NXnoremap <script> <C-W>*  <SID>(split-nicely)*zvzz
+NXnoremap <script> <C-W>#  <SID>(split-nicely)#zvzz
+NXnoremap <script> <C-W>g* <SID>(split-nicely)*zvzz
+NXnoremap <script> <C-W>g# <SID>(split-nicely)#zvzz
 
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
@@ -2564,8 +2564,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap <SID>(columnjump-backward) <Plug>(columnjump-backward)
   nmap <SID>(columnjump-forward)  <Plug>(columnjump-forward)
 
-  nnoremap <script> <C-K> <SID>(columnjump-backward)zz
-  nnoremap <script> <C-J> <SID>(columnjump-forward)zz
+  nnoremap <script> <C-K> <SID>(columnjump-backward)zvzz
+  nnoremap <script> <C-J> <SID>(columnjump-forward)zvzz
 endif
 unlet! s:bundle
 "}}}
@@ -3168,10 +3168,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NOmap <C-W>g* <SID>(split-nicely)<Plug>(operator-g*)
   NOmap <C-W>g# <SID>(split-nicely)<Plug>(operator-g#)
 
-  nnoremap **   *zz
-  nnoremap ##   #zz
-  nnoremap g*g* g*zz
-  nnoremap g#g# g#zz
+  nnoremap **   *zvzz
+  nnoremap ##   #zvzz
+  nnoremap g*g* g*zvzz
+  nnoremap g#g# g#zvzz
 
   nmap g/g/ **
   nmap g?g? ##
@@ -3180,10 +3180,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap g**  g*g*
   nmap g##  g#g#
 
-  nnoremap <script> <C-W>**   <SID>(split-nicely)*zz
-  nnoremap <script> <C-W>##   <SID>(split-nicely)#zz
-  nnoremap <script> <C-W>g*g* <SID>(split-nicely)g*zz
-  nnoremap <script> <C-W>g#g# <SID>(split-nicely)g#zz
+  nnoremap <script> <C-W>**   <SID>(split-nicely)*zvzz
+  nnoremap <script> <C-W>##   <SID>(split-nicely)#zvzz
+  nnoremap <script> <C-W>g*g* <SID>(split-nicely)g*zvzz
+  nnoremap <script> <C-W>g#g# <SID>(split-nicely)g#zvzz
 
   nmap <C-W>g/g/ <C-W>**
   nmap <C-W>g?g? <C-W>##
@@ -3209,8 +3209,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap <SID>(parajump-backward) <Plug>(parajump-backward)
   nmap <SID>(parajump-forward)  <Plug>(parajump-forward)
 
-  nnoremap <script> { <SID>(parajump-backward)zz
-  nnoremap <script> } <SID>(parajump-forward)zz
+  nnoremap <script> { <SID>(parajump-backward)zvzz
+  nnoremap <script> } <SID>(parajump-forward)zvzz
 endif
 unlet! s:bundle
 "}}}
@@ -4655,15 +4655,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   xmap <SID>(visualstar-g*) <Plug>(visualstar-g*)
   xmap <SID>(visualstar-g#) <Plug>(visualstar-g#)
 
-  xnoremap <script> *  <SID>(visualstar-*)zz
-  xnoremap <script> #  <SID>(visualstar-#)zz
-  xnoremap <script> g* <SID>(visualstar-g*)zz
-  xnoremap <script> g# <SID>(visualstar-g#)zz
+  xnoremap <script> *  <SID>(visualstar-*)zvzz
+  xnoremap <script> #  <SID>(visualstar-#)zvzz
+  xnoremap <script> g* <SID>(visualstar-g*)zvzz
+  xnoremap <script> g# <SID>(visualstar-g#)zvzz
 
-  xnoremap <script> <C-W>*  <SID>(split-nicely)gv<SID>(visualstar-*)zz
-  xnoremap <script> <C-W>#  <SID>(split-nicely)gv<SID>(visualstar-#)zz
-  xnoremap <script> <C-W>g* <SID>(split-nicely)gv<SID>(visualstar-g*)zz
-  xnoremap <script> <C-W>g# <SID>(split-nicely)gv<SID>(visualstar-g#)zz
+  xnoremap <script> <C-W>*  <SID>(split-nicely)gv<SID>(visualstar-*)zvzz
+  xnoremap <script> <C-W>#  <SID>(split-nicely)gv<SID>(visualstar-#)zvzz
+  xnoremap <script> <C-W>g* <SID>(split-nicely)gv<SID>(visualstar-g*)zvzz
+  xnoremap <script> <C-W>g# <SID>(split-nicely)gv<SID>(visualstar-g#)zvzz
 endif
 unlet! s:bundle
 "}}}
