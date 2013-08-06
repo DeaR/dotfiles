@@ -534,7 +534,11 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'thinca/vim-visualstar']}
 
   NeoBundleLazy 'kana/vim-operator-user', {
-    \ 'autoload' : {'function_prefix' : 'operator'}}
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['nvo',
+    \      '<Plug>(operator-grep)']],
+    \   'function_prefix' : 'operator'}}
 
   NeoBundleLazy 'deris/parajump', {
     \ 'autoload' : {
@@ -3191,6 +3195,50 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap <C-W>g??  <C-W>##
   nmap <C-W>g**  <C-W>g*g*
   nmap <C-W>g##  <C-W>g#g#
+endif
+unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Operator User: {{{
+silent! let s:bundle = neobundle#get('operator-user')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    call operator#user#define('grep', s:SID_PREFIX() . 'grep')
+    function! s:grep(motion_wise)
+      if a:motion_wise == 'char'
+        let lines = getline(line("'["), line("']"))
+        let lines[-1] = lines[-1][ : col("']")-1]
+        let lines[0] = lines[0][col("'[")-1:]
+      elseif a:motion_wise == 'line'
+        let lines = getline(line("'["), line("']"))
+      else " a:motion_wise == 'block'
+        let start = col("'<")-1
+        let end = col("'>")-1
+        let lines = map(
+          \ getline(line("'<"), line("'>")),
+          \ 'v:val[start : end]')
+      endif
+
+      if neobundle#get('unite') != {}
+        if &grepprg == 'internal'
+          execute
+            \ 'Unite vimgrep::' .
+            \ escape(join(lines), '\[].*^$') .
+            \ ' -buffer-name=grep -no-split -multi-line -auto-preview'
+        else
+          execute
+            \ 'Unite grep:::' .
+            \ escape(join(lines), '\[](){}|.?+*^$') .
+            \ ' -buffer-name=grep -no-split -multi-line -auto-preview'
+        endif
+      else
+        execute input(':', 'grep "' . join(lines) . '"')
+      endif
+    endfunction
+  endfunction
+
+  NOXmap <Leader>g <Plug>(operator-grep)
 endif
 unlet! s:bundle
 "}}}
