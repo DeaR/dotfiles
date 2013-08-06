@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-06 17:48:39 DeaR>
+" @timestamp   <2013-08-06 18:14:48 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2075,7 +2075,8 @@ autocmd MyVimrc CmdwinEnter *
 
 function! s:cmdline_enter(type)
   if exists('#User#CmdlineEnter')
-    execute 'doautocmd'
+    execute
+      \ 'doautocmd'
       \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
       \ 'User CmdlineEnter'
   endif
@@ -4797,7 +4798,8 @@ unlet! s:bundle
 "=============================================================================
 " Post Init: {{{
 if exists('#User#VimrcPost')
-  execute 'doautocmd'
+  execute
+    \ 'doautocmd'
     \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
     \ 'User VimrcPost'
 endif
