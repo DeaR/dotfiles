@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-06 20:12:56 DeaR>
+" @timestamp   <2013-08-06 20:55:57 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -216,6 +216,15 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'JesseKPhillips/d.vim', {
     \ 'autoload' : {'filetypes' : 'd'}}
+
+  NeoBundleLazy 'mattn/emmet-vim', {
+    \ 'autoload' : {
+    \   'filetypes' : [
+    \     'css', 'css.drupal', 'haml', 'html', 'html.django_template',
+    \     'htmldjango', 'less', 'mustache', 'sass', 'scss', 'slim',
+    \     'xhtml', 'xml', 'xsl', 'xslt'],
+    \   'commands' : 'Emmet',
+    \   'mappings' : [['nvi', '<C-Y>']]}}
 
   NeoBundleLazy 'thinca/vim-ft-clojure', {
     \ 'autoload' : {'filetypes' : 'clojure'}}
@@ -1258,15 +1267,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'osyo-manga/quickrun-hook-vcvarsall',
     \   'osyo-manga/shabadou.vim',
     \   'syngan/vim-vimlint']}
-
-  NeoBundleLazy 'mattn/emmet-vim', {
-    \ 'autoload' : {
-    \   'filetypes' : [
-    \     'css', 'css.drupal', 'haml', 'html', 'html.django_template',
-    \     'htmldjango', 'less', 'mustache', 'sass', 'scss', 'slim',
-    \     'xhtml', 'xml', 'xsl', 'xslt'],
-    \   'commands' : 'Emmet',
-    \   'mappings' : [['nvi', '<C-Y>']]}}
 endif
 "}}}
 "}}}
@@ -2572,6 +2572,33 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <script> <C-J> <SID>(columnjump-forward)zvzz
 endif
 unlet! s:bundle
+"}}}
+
+"-----------------------------------------------------------------------------
+" Emmet: {{{
+silent! let s:bundle = neobundle#get('emmet')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:user_emmet_settings = {
+      \ 'lang' : 'ja',
+      \ 'indentation' : '  ',
+      \ 'xml' : {'extends' : 'html'}}
+  endfunction
+
+  function! s:bundle.hooks.on_post_source(bundle)
+    " https://github.com/mattn/emmet-vim/pull/127
+    nmap <C-Y>, <Plug>EmmetExpandNormal
+    nmap <C-Y>; <Plug>EmmetExpandWord
+  endfunction
+
+  call extend(s:neocompl_omni_patterns, {
+    \ 'css' : '.*', 'css.drupal' : '.*', 'haml' : '.*', 'html' : '.*',
+    \ 'html.django_template' : '.*', 'htmldjango' : '.*', 'less' : '.*',
+    \ 'mustache' : '.*', 'sass' : '.*', 'scss' : '.*', 'slim' : '.*',
+    \ 'xhtml' : '.*', 'xml' : '.*', 'xsl' : '.*', 'xslt' : '.*'})
+endif
+unlet! s:bundle
+"}}}
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -4771,33 +4798,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ NeoBundleSource watchdogs
 endif
 unlet! s:bundle
-"}}}
-
-"-----------------------------------------------------------------------------
-" Emmet: {{{
-silent! let s:bundle = neobundle#get('emmet')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:user_emmet_settings = {
-      \ 'lang' : 'ja',
-      \ 'indentation' : '  ',
-      \ 'xml' : {'extends' : 'html'}}
-  endfunction
-
-  function! s:bundle.hooks.on_post_source(bundle)
-    " https://github.com/mattn/emmet-vim/pull/127
-    nmap <C-Y>, <Plug>EmmetExpandNormal
-    nmap <C-Y>; <Plug>EmmetExpandWord
-  endfunction
-
-  call extend(s:neocompl_omni_patterns, {
-    \ 'css' : '.*', 'css.drupal' : '.*', 'haml' : '.*', 'html' : '.*',
-    \ 'html.django_template' : '.*', 'htmldjango' : '.*', 'less' : '.*',
-    \ 'mustache' : '.*', 'sass' : '.*', 'scss' : '.*', 'slim' : '.*',
-    \ 'xhtml' : '.*', 'xml' : '.*', 'xsl' : '.*', 'xslt' : '.*'})
-endif
-unlet! s:bundle
-"}}}
 "}}}
 
 "=============================================================================
