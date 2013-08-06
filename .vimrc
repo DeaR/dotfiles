@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-06 17:16:07 DeaR>
+" @timestamp   <2013-08-06 17:48:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1403,7 +1403,7 @@ endif
 set iskeyword=a-z,A-Z,@,48-57,_
 
 " Grep
-if s:executable('jvgrep') && s:jvgrep_enable
+if s:jvgrep_enable && s:executable('jvgrep')
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
 elseif s:executable('ag')
   set grepprg=ag\ --nocolor\ --nogroup\ --hidden\ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
@@ -3204,17 +3204,17 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('operator-user')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    if s:executable('jvgrep') && s:jvgrep_enable
-      let s:operator_grep_escape = ' \[](){}|.?+*^$'
+    if s:jvgrep_enable && s:executable('jvgrep')
+      let s:operator_grep_escape = ' :\[](){}|.?+*^$'
     elseif s:executable('ag')
-      let s:operator_grep_escape = ' \[](){}|.?+*^$'
+      let s:operator_grep_escape = ' :\[](){}|.?+*^$'
     elseif s:executable('grep')
-      let s:operator_grep_escape = ' \[].*^$'
+      let s:operator_grep_escape = ' :\[].*^$'
     else
-      let s:operator_grep_escape = ' \[].*^$'
+      let s:operator_grep_escape = ' :\[].*^$'
     endif
 
-    function! s:grep(motion_wise)
+    function! s:operator_grep(motion_wise)
       if a:motion_wise == 'char'
         let lines = getline(line("'["), line("']"))
         let lines[-1] = lines[-1][: col("']") - 1]
@@ -3242,7 +3242,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
           \  '" '))
       endif
     endfunction
-    call operator#user#define('grep', s:SID_PREFIX() . 'grep')
+    call operator#user#define('grep', s:SID_PREFIX() . 'operator_grep')
   endfunction
 
   NOXmap <Leader>g <Plug>(operator-grep)
@@ -4336,7 +4336,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
 
-    if s:executable('jvgrep') && s:jvgrep_enable
+    if s:jvgrep_enable && s:executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '-n --exclude .drive.r'
