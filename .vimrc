@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-06 16:35:59 DeaR>
+" @timestamp   <2013-08-06 17:16:07 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1408,7 +1408,7 @@ if s:executable('jvgrep') && s:jvgrep_enable
 elseif s:executable('ag')
   set grepprg=ag\ --nocolor\ --nogroup\ --hidden\ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
 elseif s:executable('grep')
-  set grepprg=grep\ -EHn
+  set grepprg=grep\ -Hn
 else
   set grepprg=internal
 endif
@@ -3204,38 +3204,45 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('operator-user')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    call operator#user#define('grep', s:SID_PREFIX() . 'grep')
+    if s:executable('jvgrep') && s:jvgrep_enable
+      let s:operator_grep_escape = ' \[](){}|.?+*^$'
+    elseif s:executable('ag')
+      let s:operator_grep_escape = ' \[](){}|.?+*^$'
+    elseif s:executable('grep')
+      let s:operator_grep_escape = ' \[].*^$'
+    else
+      let s:operator_grep_escape = ' \[].*^$'
+    endif
+
     function! s:grep(motion_wise)
       if a:motion_wise == 'char'
         let lines = getline(line("'["), line("']"))
-        let lines[-1] = lines[-1][ : col("']")-1]
-        let lines[0] = lines[0][col("'[")-1:]
+        let lines[-1] = lines[-1][: col("']") - 1]
+        let lines[0] = lines[0][col("'[") - 1 :]
       elseif a:motion_wise == 'line'
         let lines = getline(line("'["), line("']"))
       else " a:motion_wise == 'block'
-        let start = col("'<")-1
-        let end = col("'>")-1
+        let start = col("'<") - 1
+        let end = col("'>") - 1
         let lines = map(
           \ getline(line("'<"), line("'>")),
           \ 'v:val[start : end]')
       endif
 
       if neobundle#get('unite') != {}
-        if &grepprg == 'internal'
-          execute
-            \ 'Unite vimgrep::' .
-            \ escape(join(lines), '\[].*^$') .
-            \ ' -buffer-name=grep -no-split -multi-line -auto-preview'
-        else
-          execute
-            \ 'Unite grep:::' .
-            \ escape(join(lines), '\[](){}|.?+*^$') .
-            \ ' -buffer-name=grep -no-split -multi-line -auto-preview'
-        endif
+        execute
+          \ (&grepprg == 'internal' ? 'Unite vimgrep::' : 'Unite grep:::') .
+          \ escape(join(lines), s:operator_grep_escape) .
+          \ ' -buffer-name=grep -no-split -multi-line -auto-preview'
       else
-        execute input(':', 'grep "' . join(lines) . '"')
+        execute input(
+          \ ':',
+          \ ('grep "' .
+          \  escape(join(lines), s:operator_grep_escape) .
+          \  '" '))
       endif
     endfunction
+    call operator#user#define('grep', s:SID_PREFIX() . 'grep')
   endfunction
 
   NOXmap <Leader>g <Plug>(operator-grep)
@@ -4342,7 +4349,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     elseif s:executable('grep')
       let g:unite_source_grep_command       = 'grep'
       let g:unite_source_grep_recursive_opt = '-r'
-      let g:unite_source_grep_default_opts  = '-EHn'
+      let g:unite_source_grep_default_opts  = '-Hn'
     endif
 
     let g:unite_source_menu_menus =
