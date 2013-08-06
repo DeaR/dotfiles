@@ -4459,11 +4459,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ -buffer-name=files -no-split -default-action=cd<CR>
 
   if &grepprg == 'internal'
-    nnoremap <Leader>g
+    nnoremap <Leader>g<Leader>g
       \ :<C-U>Unite vimgrep
       \ -buffer-name=grep -no-split -multi-line -auto-preview<CR>
   else
-    nnoremap <Leader>g
+    nnoremap <Leader>g<Leader>g
       \ :<C-U>Unite grep
       \ -buffer-name=grep -no-split -multi-line -auto-preview<CR>
   endif
@@ -4495,6 +4495,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <expr> <Leader>u? <SID>unite_search_backward()
   nnoremap <expr> <Leader>u* <SID>unite_search_cword_forward()
   nnoremap <expr> <Leader>u# <SID>unite_search_cword_backward()
+
+  nmap <Leader>gg  <Leader>g<Leader>g
   nmap <Leader>ug/ <Leader>u*
   nmap <Leader>ug? <Leader>u#
 
