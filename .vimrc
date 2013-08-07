@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-08 02:43:36 DeaR>
+" @timestamp   <2013-08-08 02:54:41 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3679,16 +3679,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       return a:num . s:ordinal_suffixes[abs(a:num % 10)]
     endfunction
 
-    call extend(g:switch_increment_definitions, [
-      \ {'\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
-      \    '\=toupper(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) + 1]))',
-      \  '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
-      \    '\=tolower(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) + 1]))'}])
-    call extend(g:switch_decrement_definitions, [
-      \ {'\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
-      \    '\=toupper(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) - 1]))',
-      \  '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
-      \    '\=tolower(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) - 1]))'}])
+    call extend(g:switch_increment_definitions, [{
+      \ '\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
+      \   '\=toupper(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) + 1]))',
+      \ '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
+      \   '\=tolower(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) + 1]))'}])
+    call extend(g:switch_decrement_definitions, [{
+      \ '\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
+      \   '\=toupper(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) - 1]))',
+      \ '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
+      \   '\=tolower(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) - 1]))'}])
   endfunction
 
   function! s:switch(direction)
@@ -3748,6 +3748,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:tcommentMaps = 0
 
+    call tcomment#DefineType('c',         '// %s')
     call tcomment#DefineType('d',         '// %s')
     call tcomment#DefineType('d_inline',  g:tcommentInlineC)
     call tcomment#DefineType('d_block',   g:tcommentBlockC)
@@ -4285,8 +4286,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_default_opts  =
-        \ '--nocolor --nogroup --hidden --ignore .drive.r ' .
-        \ '--ignore .hg --ignore .git --ignore .svn'
+        \ '--nocolor --nogroup --hidden --ignore .drive.r --ignore .hg --ignore .git --ignore .svn'
     elseif s:executable('grep')
       let g:unite_source_grep_command       = 'grep'
       let g:unite_source_grep_recursive_opt = '-r'
