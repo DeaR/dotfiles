@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-07 14:30:54 DeaR>
+" @timestamp   <2013-08-07 18:05:32 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1747,9 +1747,9 @@ nnoremap <script> <Leader>b <SID>:<C-U>buffer<Space>
 nnoremap <script> <Leader>t <SID>:<C-U>tabm<Space>
 nnoremap <script> <Leader>g <SID>:<C-U>grep<Space>
 nnoremap <script><expr> <Leader>d
-  \ '<SID>:<C-U>lcd ' . expand(has('win32') ? '%:p:h:gs?\\?/?' : '%:p:h')
+  \ '<SID>:<C-U>lcd ' . expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??') . '/'
 nnoremap <script><expr> <Leader>D
-  \ '<SID>:<C-U>cd ' . expand(has('win32') ? '%:p:h:gs?\\?/?' : '%:p:h')
+  \ '<SID>:<C-U>cd ' . expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??') . '/'
 
 " Paste
 NXnoremap <C-P> :<C-U>registers<CR>
@@ -4473,7 +4473,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endif
 
   nnoremap <Leader>e
-    \ :<C-U>Unite file_mru file file/new directory/new
+    \ :<C-U>Unite file_mru file file/new
     \ -buffer-name=files -no-split<CR>
   nnoremap <Leader>b
     \ :<C-U>Unite buffer
