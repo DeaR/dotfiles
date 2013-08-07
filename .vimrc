@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-08 00:42:24 DeaR>
+" @timestamp   <2013-08-08 01:57:51 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -28,8 +28,7 @@ if has('win32')
   endif
 
   " Shell
-  let s:default_shell = [
-    \ &shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
+  let s:default_shell = [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
   " set shell=sh
   " set shellslash
 
@@ -58,8 +57,7 @@ augroup END
 
 " Script ID
 function! s:SID_PREFIX()
-  let s:_SID_PREFIX = get(s:, '_SID_PREFIX',
-    \ matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
+  let s:_SID_PREFIX = get(s:, '_SID_PREFIX', matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
   return s:_SID_PREFIX
 endfunction
 
@@ -91,8 +89,7 @@ endfunction
 
 " Check Android OS
 let s:is_android = has('unix') &&
-  \ ($HOSTNAME ==? 'android' ||
-  \  $VIM =~? 'net\.momodalo\.app\.vimtouch')
+  \ ($HOSTNAME ==? 'android' || $VIM =~? 'net\.momodalo\.app\.vimtouch')
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -1318,8 +1315,7 @@ endif
 set undofile
 set undodir^=~/.bak
 autocmd MyVimrc BufNewFile,BufRead *
-  \ let &l:undofile =
-  \   (expand('%:p') !~? '\.clean$\|[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]')
+  \ let &l:undofile = (expand('%:p') !~? '\.clean$\|[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]')
 
 " ClipBoard
 set clipboard=unnamed
@@ -1564,8 +1560,7 @@ if has('gui_running') || &t_Co > 255
   " No cursor line & column at other window
   augroup MyVimrc
     autocmd BufWinEnter,WinEnter *
-      \ let [&cursorline, &cursorcolumn] = [
-      \   !get(b:, 'nocursorline'), !get(b:, 'nocursorcolumn')]
+      \ let [&cursorline, &cursorcolumn] = [!get(b:, 'nocursorline'), !get(b:, 'nocursorcolumn')]
     autocmd BufWinLeave,WinLeave *
       \ setlocal nocursorline nocursorcolumn
     autocmd CmdwinEnter *
@@ -1728,9 +1723,7 @@ function! s:split_nicely_expr()
   return &columns < 160
 endfunction
 noremap <expr> <SID>(split-nicely)
-  \ <SID>split_nicely_expr() ?
-  \   '<C-W>s' :
-  \   '<C-W>v'
+  \ <SID>split_nicely_expr() ? '<C-W>s' : '<C-W>v'
 
 " Semi-colon shortcut
 nnoremap <Leader>! :<C-U>shell<CR>
@@ -1781,9 +1774,7 @@ nnoremap <S-Tab> <C-O>
 " Paste toggle
 set pastetoggle=<F11>
 nnoremap <expr> <F11>
-  \ &paste ?
-  \   ':<C-U>set nopaste<CR>' :
-  \   ':<C-U>set paste<CR>'
+  \ &paste ? ':<C-U>set nopaste<CR>' : ':<C-U>set paste<CR>'
 
 " Start Visual-mode with the same area
 onoremap gv :<C-U>normal! gv<CR>
@@ -2020,10 +2011,7 @@ if exists('$VCVARSALL')
   if exists('$PROGRAMFILES(x86)')
     command! -bar
       \ VCVars64
-      \ call s:vcvarsall(
-      \   exists('PROCESSOR_ARCHITEW6432') ?
-      \     $PROCESSOR_ARCHITEW6432 :
-      \     $PROCESSOR_ARCHITECTURE)
+      \ call s:vcvarsall(exists('PROCESSOR_ARCHITEW6432') ? $PROCESSOR_ARCHITEW6432 : $PROCESSOR_ARCHITECTURE)
   endif
 endif
 "}}}
@@ -2061,22 +2049,16 @@ function! s:cmdwin_enter()
   nnoremap <buffer><silent> q :<C-U>quit<CR>
 
   inoremap <buffer><silent><script><expr> <C-H>
-    \ col('.') == 1 ?
-    \   '<Esc>:quit<CR>' :
-    \   '<SID><C-H>'
+    \ col('.') == 1 ? '<Esc>:quit<CR>' : '<SID><C-H>'
   inoremap <buffer><silent><script><expr> <BS>
-    \ col('.') == 1 ?
-    \   '<Esc>:quit<CR>' :
-    \   '<SID><BS>'
+    \ col('.') == 1 ? '<Esc>:quit<CR>' : '<SID><BS>'
 endfunction
 autocmd MyVimrc CmdwinEnter *
   \ call s:cmdwin_enter()
 
 function! s:cmdline_enter(type)
   if exists('#User#CmdlineEnter')
-    execute
-      \ 'doautocmd'
-      \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
+    execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
       \ 'User CmdlineEnter'
   endif
   return a:type
@@ -2122,17 +2104,11 @@ function! s:_get_mark_pos()
 endfunction
 function! s:auto_mark()
   let b:mark_pos = s:_get_mark_pos()
-  return
-    \ (":\<C-U>mark " .
-    \  s:mark_char[b:mark_pos] .
-    \  "\<CR>")
+  return (":\<C-U>mark " . s:mark_char[b:mark_pos] . "\<CR>")
 endfunction
 function! s:clear_marks()
   let b:mark_pos = -1
-  return
-    \ (":\<C-U>delmarks " .
-    \  join(s:mark_char, '') .
-    \  "\<CR>")
+  return (":\<C-U>delmarks " . join(s:mark_char, '') . "\<CR>")
 endfunction
 
 function! s:_get_file_mark_pos()
@@ -2149,25 +2125,16 @@ function! s:_get_file_mark_pos()
 endfunction
 function! s:auto_file_mark()
   let s:file_mark_pos = s:_get_file_mark_pos()
-  return
-    \ (":\<C-U>mark " .
-    \  toupper(s:mark_char[s:file_mark_pos]) .
-    \  "\<CR>")
+  return (":\<C-U>mark " . toupper(s:mark_char[s:file_mark_pos]) . "\<CR>")
 endfunction
 function! s:clear_file_marks()
   let s:file_mark_pos = -1
-  return
-    \ (":\<C-U>rviminfo | delmarks " .
-    \  toupper(join(s:mark_char, '')) .
-    \  " | wviminfo!\<CR>")
+  return (":\<C-U>rviminfo | delmarks " . toupper(join(s:mark_char, '')) . " | wviminfo!\<CR>")
 endfunction
 
 function! s:marks()
   let char = join(s:mark_char, '')
-  return
-    \ (":\<C-U>marks " .
-    \  char . toupper(char) .
-    \  "\<CR>")
+  return (":\<C-U>marks " . char . toupper(char) . "\<CR>")
 endfunction
 
 nnoremap <expr> mm <SID>auto_mark()
@@ -2181,16 +2148,10 @@ nnoremap <expr> ml <SID>marks()
 " Smart BOL: {{{
 function! s:smart_bol()
   let col = col('.')
-  return
-    \ col <= 1 || col > match(getline('.'), '^\s*\zs') + 1 ?
-    \   '^' :
-    \   '0'
+  return col <= 1 || col > match(getline('.'), '^\s*\zs') + 1 ? '^' : '0'
 endfunction
 function! s:smart_eol()
-  return
-    \ col('.') < col('$') - (mode() !~# "[vV\<C-V>sS\<C-S>]" ? 1 : 0) ?
-    \   '$' :
-    \   'g_'
+  return col('.') < col('$') - (mode() !~# "[vV\<C-V>sS\<C-S>]" ? 1 : 0) ? '$' : 'g_'
 endfunction
 
 NOXnoremap <silent><expr> H <SID>smart_bol()
@@ -2251,12 +2212,8 @@ function! s:auto_mkdir(dir, force)
     let msg = '"' . a:dir . '" does not exist. Create?'
     let choices = "&Yes\n&No"
   endif
-  if !isdirectory(a:dir) &&
-    \ (a:force || confirm(msg, choices, 1, 'Question') == 1)
-    call mkdir(
-      \ has('iconv') ?
-      \   iconv(a:dir, &encoding, &termencoding) :
-      \   a:dir, 'p')
+  if !isdirectory(a:dir) && (a:force || confirm(msg, choices, 1, 'Question') == 1)
+    call mkdir(has('iconv') ? iconv(a:dir, &encoding, &termencoding) : a:dir, 'p')
   endif
 endfunction
 autocmd MyVimrc BufWritePre *
@@ -2303,8 +2260,7 @@ endfunction
 function! s:_reverse_highlight(hl, name)
   let s = matchstr(a:hl, a:name . '=\zs\S\+')
   if s =~ '\%(re\|in\)verse'
-    return substitute(s,
-      \ '\%(\%(re\|in\)verse,\?\|,\%(re\|in\)verse\)', '', 'g')
+    return substitute(s, '\%(\%(re\|in\)verse,\?\|,\%(re\|in\)verse\)', '', 'g')
   elseif s != '' && s != 'NONE'
     return s . ',reverse'
   else
@@ -2313,8 +2269,7 @@ function! s:_reverse_highlight(hl, name)
 endfunction
 
 function! s:reverse_highlight(hl)
-  return
-    \ a:hl .
+  return a:hl .
     \ ' term='  . s:_reverse_highlight(a:hl, 'term') .
     \ ' cterm=' . s:_reverse_highlight(a:hl, 'cterm') .
     \ ' gui='   . s:_reverse_highlight(a:hl, 'gui')
@@ -2355,8 +2310,7 @@ if has('multi_byte')
   function! s:set_ideographic_space(force)
     if !exists('s:hi_ideographic_space') || a:force
       silent! let s:hi_ideographic_space =
-        \ s:get_highlight('SpecialKey') .
-        \ ' term=underline cterm=underline gui=underline'
+        \ s:get_highlight('SpecialKey') . ' term=underline cterm=underline gui=underline'
     endif
 
     if exists('s:hi_ideographic_space')
@@ -2433,8 +2387,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:autodate_lines        = 10
     let g:autodate_format       = '%Y-%m-%d %H:%M:%S DeaR'
     let g:autodate_keyword_post = '[>"]'
-    let g:autodate_keyword_pre  =
-      \ '\c@\?time[-[:space:]]*stamp\s*:\?\s\+[<"]'
+    let g:autodate_keyword_pre  = '\c@\?time[-[:space:]]*stamp\s*:\?\s\+[<"]'
   endfunction
 
   autocmd MyVimrc BufNewFile,BufRead *
@@ -2675,8 +2628,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   function! s:set_indent_line_color(force)
-    if !exists('g:indentLine_color_term') ||
-      \ !exists('g:indentLine_color_gui') || a:force
+    if !exists('g:indentLine_color_term') || !exists('g:indentLine_color_gui') || a:force
       let hi_special_key          = s:get_highlight('SpecialKey')
       let g:indentLine_color_term = matchstr(hi_special_key, 'ctermfg=\zs\S\+')
       let g:indentLine_color_gui  = matchstr(hi_special_key, 'guifg=\zs\S\+')
@@ -2814,10 +2766,7 @@ silent! let s:bundle = neobundle#get('neobundle')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:neobundle_git_gc(names)
     let names   = split(a:names)
-    let bundles =
-      \ empty(names) ?
-      \   neobundle#config#get_neobundles() :
-      \   neobundle#config#search(names)
+    let bundles = empty(names) ? neobundle#config#get_neobundles() : neobundle#config#search(names)
 
     let cwd = getcwd()
     let System = function(
@@ -2864,24 +2813,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplcache_enable_underbar_completion   = 0
     let g:neocomplcache_enable_fuzzy_completion      = 0
     let g:neocomplcache_force_overwrite_completefunc = 1
-    let g:neocomplcache_temporary_dir                =
-      \ $HOME . '/.local/.neocomplcache'
+    let g:neocomplcache_temporary_dir                = $HOME . '/.local/.neocomplcache'
 
-    let g:neocomplcache_force_omni_patterns       =
-      \ s:neocompl_force_omni_patterns
-    let g:neocomplcache_keyword_patterns          =
-      \ s:neocompl_keyword_patterns
-    let g:neocomplcache_omni_patterns             =
-      \ s:neocompl_omni_patterns
-    let g:neocomplcache_dictionary_filetype_lists =
-      \ s:neocompl_dictionary_filetype_lists
-    let g:neocomplcache_vim_completefuncs         =
-      \ s:neocompl_vim_completefuncs
+    let g:neocomplcache_force_omni_patterns       = s:neocompl_force_omni_patterns
+    let g:neocomplcache_keyword_patterns          = s:neocompl_keyword_patterns
+    let g:neocomplcache_omni_patterns             = s:neocompl_omni_patterns
+    let g:neocomplcache_dictionary_filetype_lists = s:neocompl_dictionary_filetype_lists
+    let g:neocomplcache_vim_completefuncs         = s:neocompl_vim_completefuncs
 
-    call neocomplcache#custom_source(
-      \ 'syntax_complete', 'rank',  9)
-    call neocomplcache#custom_source(
-      \ 'snippets_complete', 'rank', 80)
+    call neocomplcache#custom_source('syntax_complete',   'rank',  9)
+    call neocomplcache#custom_source('snippets_complete', 'rank', 80)
 
     inoremap <expr> <C-G>
       \ neocomplcache#undo_completion()
@@ -2969,26 +2910,17 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplete#enable_auto_delimiter        = 1
     " let g:neocomplete#enable_insert_char_pre       = 1
     let g:neocomplete#force_overwrite_completefunc = 1
-    let g:neocomplete#data_directory               =
-      \ $HOME . '/.local/.neocomplete'
+    let g:neocomplete#data_directory               = $HOME . '/.local/.neocomplete'
 
-    let g:neocomplete#force_omni_input_patterns        =
-      \ s:neocompl_force_omni_patterns
-    let g:neocomplete#keyword_patterns                 =
-      \ s:neocompl_keyword_patterns
-    let g:neocomplete#sources#omni#input_patterns      =
-      \ s:neocompl_omni_patterns
-    let g:neocomplete#sources#dictionary#dictionaryies =
-      \ s:neocompl_dictionary_filetype_lists
-    let g:neocomplete#sources#vim#complete_functions   =
-      \ s:neocompl_vim_completefuncs
+    let g:neocomplete#force_omni_input_patterns        = s:neocompl_force_omni_patterns
+    let g:neocomplete#keyword_patterns                 = s:neocompl_keyword_patterns
+    let g:neocomplete#sources#omni#input_patterns      = s:neocompl_omni_patterns
+    let g:neocomplete#sources#dictionary#dictionaryies = s:neocompl_dictionary_filetype_lists
+    let g:neocomplete#sources#vim#complete_functions   = s:neocompl_vim_completefuncs
 
-    call neocomplete#custom#source(
-      \ '_', 'matchers', ['matcher_head'])
-    call neocomplete#custom#source(
-      \ 'syntax_complete', 'rank',  9)
-    call neocomplete#custom#source(
-      \ 'snippets_complete', 'rank', 80)
+    call neocomplete#custom#source('_', 'matchers', ['matcher_head'])
+    call neocomplete#custom#source('syntax_complete',   'rank',  9)
+    call neocomplete#custom#source('snippets_complete', 'rank', 80)
 
     inoremap <expr> <C-G>
       \ neocomplete#undo_completion()
@@ -3343,11 +3275,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
 
     let context = precious#context_filetype()
-    return
-      \ '[' .
-      \ &filetype .
-      \ (&filetype != context ? (':' . context) : '') .
-      \ ']'
+    return '[' . &filetype . (&filetype != context ? (':' . context) : '') . ']'
   endfunction
   function! StatusLine_Y()
     if &filetype == ''
@@ -3355,10 +3283,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
 
     let context = precious#context_filetype()
-    return toupper(
-      \ ',' .
-      \ &filetype .
-      \ (&filetype != context ? (',' . context) : ''))
+    return toupper(',' . &filetype . (&filetype != context ? (',' . context) : ''))
   endfunction
 
   OXmap ax <Plug>(textobj-precious-i)
@@ -3380,8 +3305,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:MyGrep_MenuBar                 = 0
     let g:MyGrep_MultiEncodingGrepScript = 1
     let g:MyGrep_Resultfile              = $HOME . '/.local/.qfgrep.txt'
-    let g:MyGrep_ExcludeReg              =
-      \ '[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
+    let g:MyGrep_ExcludeReg              = '[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
 
     let g:howm_dir                = $HOME . '/howm'
     let g:howm_filename           = '%Y/%m/%Y-%m-%d-%H%M%S.howm'
@@ -3493,9 +3417,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   'hook/vcvarsall/bat' : $VCVARSALL}})
 
     nnoremap <expr> <C-C>
-      \ quickrun#is_running() ?
-      \   quickrun#sweep_sessions() :
-      \   '<C-C>'
+      \ quickrun#is_running() ? quickrun#sweep_sessions() : '<C-C>'
   endfunction
 
   if neobundle#get('precious') != {}
@@ -4454,45 +4376,40 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     return line('$') > 10000
   endfunction
   function! s:unite_search_forward()
-    return
-      \ s:unite_search_expr() ?
-      \   (":\<C-U>Unite line/fast" .
-      \    " -buffer-name=search -no-split -start-insert\<CR>") :
-      \   (":\<C-U>Unite line" .
-      \    " -buffer-name=search -no-split -start-insert -auto-preview\<CR>")
+    return s:unite_search_expr() ?
+      \ (":\<C-U>Unite line/fast" .
+      \  " -buffer-name=search -no-split -start-insert\<CR>") :
+      \ (":\<C-U>Unite line" .
+      \  " -buffer-name=search -no-split -start-insert -auto-preview\<CR>")
   endfunction
   function! s:unite_search_backward()
-    return
-      \ s:unite_search_expr() ?
-      \   (":\<C-U>Unite line/fast:backward" .
-      \    " -buffer-name=search -no-split -start-insert\<CR>") :
-      \   (":\<C-U>Unite line:backward" .
-      \    " -buffer-name=search -no-split -start-insert -auto-preview\<CR>")
+    return s:unite_search_expr() ?
+      \ (":\<C-U>Unite line/fast:backward" .
+      \  " -buffer-name=search -no-split -start-insert\<CR>") :
+      \ (":\<C-U>Unite line:backward" .
+      \  " -buffer-name=search -no-split -start-insert -auto-preview\<CR>")
   endfunction
   function! s:unite_search_cword_forward()
-    return
-      \ s:unite_search_expr() ?
-      \   (":\<C-U>UniteWithCursorWord line/fast" .
-      \    " -buffer-name=search -no-split -no-start-insert\<CR>") :
-      \   (":\<C-U>UniteWithCursorWord line" .
-      \    " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
+    return s:unite_search_expr() ?
+      \ (":\<C-U>UniteWithCursorWord line/fast" .
+      \  " -buffer-name=search -no-split -no-start-insert\<CR>") :
+      \ (":\<C-U>UniteWithCursorWord line" .
+      \  " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
   endfunction
   function! s:unite_search_cword_backward()
-    return
-      \ s:unite_search_expr() ?
-      \   (":\<C-U>UniteWithCursorWord line/fast:backward" .
-      \    " -buffer-name=search -no-split -no-start-insert\<CR>") :
-      \   (":\<C-U>UniteWithCursorWord line:backward" .
-      \    " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
+    return s:unite_search_expr() ?
+      \ (":\<C-U>UniteWithCursorWord line/fast:backward" .
+      \  " -buffer-name=search -no-split -no-start-insert\<CR>") :
+      \ (":\<C-U>UniteWithCursorWord line:backward" .
+      \  " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
   endfunction
   function! s:unite_cwd_expr(action)
     let d = expand('%:~:.:h:' . (has('win32') ? 'gs?\\?/?' : '') . ':s?^.$??')
-    return
-      \ (":\<C-U>Unite" .
-      \  " menu:cwd directory_mru" .
-      \  " directory:" . d . " directory/new:" . d .
-      \  " -buffer-name=files -no-split -default-action=" .
-      \  a:action . "\<CR>")
+    return (":\<C-U>Unite" .
+      \ " menu:cwd directory_mru" .
+      \ " directory:" . d . " directory/new:" . d .
+      \ " -buffer-name=files -no-split -default-action=" .
+      \ a:action . "\<CR>")
   endfunction
 
   nnoremap <Leader>u <Nop>
@@ -4724,20 +4641,17 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:vimshell_scrollback_limit         = 500
     let g:vimshell_prompt                   = '$ '
     let g:vimshell_secondary_prompt         = '> '
-    let g:vimshell_right_prompt             =
-      \ 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
+    let g:vimshell_right_prompt             = 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
 
     if has('win32')
       if filereadable('C:/Apps/ckw/ckw.exe')
         let g:vimshell_use_terminal_command = 'C:/Apps/ckw/ckw.exe -e'
       endif
       let g:vimshell_environment_term     = 'cygwin'
-      let g:vimshell_user_prompt          =
-        \ '$USERNAME . "@" . hostname() . " " . getcwd()'
+      let g:vimshell_user_prompt          = '$USERNAME . "@" . hostname() . " " . getcwd()'
     else
       let g:vimshell_environment_term     = 'xterm-256color'
-      let g:vimshell_user_prompt          =
-        \ '$USER . "@" . hostname() . " " . getcwd()'
+      let g:vimshell_user_prompt          = '$USER . "@" . hostname() . " " . getcwd()'
     endif
 
     if s:executable('grep')
@@ -4845,9 +4759,7 @@ unlet! s:bundle
 "=============================================================================
 " Post Init: {{{
 if exists('#User#VimrcPost')
-  execute
-    \ 'doautocmd'
-    \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
+  execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
     \ 'User VimrcPost'
 endif
 "}}}

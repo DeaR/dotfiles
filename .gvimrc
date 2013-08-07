@@ -4,7 +4,7 @@
 " @description GVim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-06 18:15:07 DeaR>
+" @timestamp   <2013-08-08 01:02:47 DeaR>
 
 "=============================================================================
 " Pre Init: {{{
@@ -18,8 +18,7 @@ augroup END
 
 " Script ID
 function! s:SID_PREFIX()
-  let s:_SID_PREFIX = get(s:, '_SID_PREFIX',
-    \ matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
+  let s:_SID_PREFIX = get(s:, '_SID_PREFIX', matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
   return s:_SID_PREFIX
 endfunction
 
@@ -51,8 +50,7 @@ endfunction
 
 " Check Android OS
 let s:is_android = has('unix') &&
-  \ ($HOSTNAME ==? 'android' ||
-  \  $VIM =~? 'net\.momodalo\.app\.vimtouch')
+  \ ($HOSTNAME ==? 'android' || $VIM =~? 'net\.momodalo\.app\.vimtouch')
 "}}}
 "}}}
 
@@ -156,9 +154,7 @@ map! <S-Insert> <MiddleMouse>
 "=============================================================================
 " Post Init: {{{
 if exists('#User#GVimrcPost')
-  execute
-    \ 'doautocmd'
-    \ (s:has_patch(703, 438) ? '<nomodeline>' : '')
+  execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
     \ 'User GVimrcPost'
 endif
 "}}}
