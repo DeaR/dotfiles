@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-06 20:55:57 DeaR>
+" @timestamp   <2013-08-07 12:03:13 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1733,6 +1733,8 @@ noremap <expr> <SID>(split-nicely)
   \   '<C-W>v'
 
 " Semi-colon shortcut
+nnoremap          <Leader>!     :<C-U>shell<CR>
+nnoremap          <Leader>E     :<C-U>Explorer<CR>
 nnoremap          <Leader>w     :<C-U>confirm update<CR>
 nnoremap          <Leader>W     :<C-U>confirm wall<CR>
 nnoremap          <Leader>q     :<C-U>confirm bdelete<CR>
@@ -4655,6 +4657,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:vimfiler_data_directory      = $HOME . '/.local/.vimfiler'
     let g:vimfiler_as_default_explorer = 1
   endfunction
+
+  nnoremap <Leader>E     :<C-U>VimFiler<CR>
+  nnoremap <Leader><C-E> :<C-U>VimFilerExplorer<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -4715,6 +4720,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       call vimshell#set_alias('t', 'tail -f')
     endif
   endfunction
+
+  nnoremap <Leader>! :<C-U>VimShell<CR>
 
   call extend(s:altercmd_define, {
     \ 'sh[ell]' : 'VimShell',
