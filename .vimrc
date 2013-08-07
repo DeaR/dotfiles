@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-07 20:20:18 DeaR>
+" @timestamp   <2013-08-07 20:24:58 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4459,7 +4459,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \    " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
   endfunction
   function! s:unite_directory_expr(action)
-    let d = expand('%:~:.:h:gs?\\?/?')
+    let d = expand('%:~:.:h:gs?\\?/?:s?^.$??')
     return
       \ (":\<C-U>Unite" .
       \  " directory_dot:" . d . " directory_mru" .
