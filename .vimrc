@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-08 01:57:51 DeaR>
+" @timestamp   <2013-08-08 02:35:41 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2151,7 +2151,7 @@ function! s:smart_bol()
   return col <= 1 || col > match(getline('.'), '^\s*\zs') + 1 ? '^' : '0'
 endfunction
 function! s:smart_eol()
-  return col('.') < col('$') - (mode() !~# "[vV\<C-V>sS\<C-S>]" ? 1 : 0) ? '$' : 'g_'
+  return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
 endfunction
 
 NOXnoremap <silent><expr> H <SID>smart_bol()
