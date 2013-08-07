@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-07 18:05:32 DeaR>
+" @timestamp   <2013-08-07 20:20:18 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -4358,6 +4358,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_cursor_line_highlight      = 'CursorLine'
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
+    " let g:unite_source_directory_mru_filename_format = ':p'
 
     if s:jvgrep_enable && s:executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
@@ -4457,6 +4458,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   (":\<C-U>UniteWithCursorWord line:backward" .
       \    " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
   endfunction
+  function! s:unite_directory_expr(action)
+    let d = expand('%:~:.:h:gs?\\?/?')
+    return
+      \ (":\<C-U>Unite" .
+      \  " directory_dot:" . d . " directory_mru" .
+      \  " directory:" . d . " directory/new:" . d .
+      \  " -buffer-name=files -no-split -default-action=" .
+      \  a:action . "\<CR>")
+  endfunction
 
   nnoremap <Leader>u <Nop>
   nnoremap <script> <Leader>uu <SID>:<C-U>Unite<Space>
@@ -4481,12 +4491,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <Leader>t
     \ :<C-U>Unite tab
     \ -buffer-name=files -no-split<CR>
-  " nnoremap <Leader>d
-  "   \ :<C-U>Unite directory_mru directory directory/new
-  "   \ -buffer-name=files -no-split -default-action=lcd<CR>
-  " nnoremap <Leader>D
-  "   \ :<C-U>Unite directory_mru directory directory/new
-  "   \ -buffer-name=files -no-split -default-action=cd<CR>
+
+  nnoremap <expr> <Leader>d <SID>unite_directory_expr('lcd')
+  nnoremap <expr> <Leader>D <SID>unite_directory_expr('cd')
 
   if &grepprg == 'internal'
     nnoremap <Leader>g<Leader>g
@@ -4519,8 +4526,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \   'is_multi_line' : 1,
     \   'direction' : 'leftabove'})
 
-  nnoremap <expr> <Leader>un
+  nnoremap <Leader>un
     \ :<C-U>UniteResume search -start-insert<CR>
+
   nnoremap <expr> <Leader>u/ <SID>unite_search_forward()
   nnoremap <expr> <Leader>u? <SID>unite_search_backward()
   nnoremap <expr> <Leader>u* <SID>unite_search_cword_forward()
