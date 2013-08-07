@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-07 20:24:58 DeaR>
+" @timestamp   <2013-08-08 00:42:24 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1747,8 +1747,12 @@ nnoremap <script> <Leader>b <SID>:<C-U>buffer<Space>
 nnoremap <script> <Leader>t <SID>:<C-U>tabm<Space>
 nnoremap <script> <Leader>g <SID>:<C-U>grep<Space>
 nnoremap <script><expr> <Leader>d
-  \ '<SID>:<C-U>lcd ' . expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??') . '/'
+  \ '<SID>:<C-U>lcd ' . fnamemodify(getcwd(), (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??') . '/'
 nnoremap <script><expr> <Leader>D
+  \ '<SID>:<C-U>cd ' . fnamemodify(getcwd(), (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??') . '/'
+nnoremap <script><expr> <Leader><M-d>
+  \ '<SID>:<C-U>lcd ' . expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??') . '/'
+nnoremap <script><expr> <Leader><M-D>
   \ '<SID>:<C-U>cd ' . expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??') . '/'
 
 " Paste
@@ -4379,6 +4383,29 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_source_menu_menus =
       \ get(g:, 'unite_source_menu_menus', {})
 
+    let g:unite_source_menu_menus.pwd = {
+      \ 'description' : 'Current directory.'}
+    let g:unite_source_menu_menus.pwd.candidates = {
+      \ './' : ''}
+    function! g:unite_source_menu_menus.pwd.map(key, value)
+      return {
+        \ 'word' : a:key,
+        \ 'kind' : 'directory',
+        \ 'action__directory' : getcwd()}
+    endfunction
+
+    let g:unite_source_menu_menus.cwd = {
+      \ 'description' : 'Working directory.'}
+    let g:unite_source_menu_menus.cwd.candidates = {
+      \ '%:~:.:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??' : ''}
+    function! g:unite_source_menu_menus.cwd.map(key, value)
+      let d = (expand('%') != '' ? expand(a:key) : '.') . '/'
+      return {
+        \ 'word' : d,
+        \ 'kind' : 'directory',
+        \ 'action__directory' : d}
+    endfunction
+
     let g:unite_source_menu_menus.set_ff = {
       \ 'description' : 'Change file format option.'}
     let g:unite_source_menu_menus.set_ff.command_candidates = [
@@ -4458,11 +4485,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   (":\<C-U>UniteWithCursorWord line:backward" .
       \    " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
   endfunction
-  function! s:unite_directory_expr(action)
-    let d = expand('%:~:.:h:gs?\\?/?:s?^.$??')
+  function! s:unite_cwd_expr(action)
+    let d = expand('%:~:.:h:' . (has('win32') ? 'gs?\\?/?' : '') . ':s?^.$??')
     return
       \ (":\<C-U>Unite" .
-      \  " directory_dot:" . d . " directory_mru" .
+      \  " menu:cwd directory_mru" .
       \  " directory:" . d . " directory/new:" . d .
       \  " -buffer-name=files -no-split -default-action=" .
       \  a:action . "\<CR>")
@@ -4491,9 +4518,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <Leader>t
     \ :<C-U>Unite tab
     \ -buffer-name=files -no-split<CR>
+  nnoremap <Leader>d
+    \ :<C-U>Unite menu:pwd directory_mru directory directory/new
+    \ -buffer-name=files -no-split -default-action=lcd<CR>
+  nnoremap <Leader>D
+    \ :<C-U>Unite menu:pwd directory_mru directory directory/new
+    \ -buffer-name=files -no-split -default-action=cd<CR>
 
-  nnoremap <expr> <Leader>d <SID>unite_directory_expr('lcd')
-  nnoremap <expr> <Leader>D <SID>unite_directory_expr('cd')
+  nnoremap <expr> <Leader><M-d> <SID>unite_cwd_expr('lcd')
+  nnoremap <expr> <Leader><M-D> <SID>unite_cwd_expr('cd')
 
   if &grepprg == 'internal'
     nnoremap <Leader>g<Leader>g
