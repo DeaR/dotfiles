@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-07 12:10:45 DeaR>
+" @timestamp   <2013-08-07 14:30:54 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1733,21 +1733,23 @@ noremap <expr> <SID>(split-nicely)
   \   '<C-W>v'
 
 " Semi-colon shortcut
-nnoremap          <Leader>!     :<C-U>shell<CR>
-nnoremap          <Leader>E     :<C-U>Explorer<CR>
-nnoremap          <Leader>w     :<C-U>confirm update<CR>
-nnoremap          <Leader>W     :<C-U>confirm wall<CR>
-nnoremap          <Leader>q     :<C-U>confirm bdelete<CR>
-nnoremap          <Leader>Q     :<C-U>confirm 1,$bdelete<CR>
-nnoremap          <Leader>j     :<C-U>jumps<CR>
-nnoremap          <Leader>J     :<C-U>changes<CR>
-nnoremap          <Leader><C-D> :<C-U>pwd<CR>
-nnoremap <script> <Leader>e     <SID>:<C-U>edit<Space>
-nnoremap <script> <Leader>b     <SID>:<C-U>buffer<Space>
-nnoremap <script> <Leader>t     <SID>:<C-U>tabm<Space>
-nnoremap <script> <Leader>g     <SID>:<C-U>grep<Space>
-nnoremap <script> <Leader><M-d> <SID>:<C-U>lcd<Space>
-nnoremap <script> <Leader><M-D> <SID>:<C-U>cd<Space>
+nnoremap <Leader>! :<C-U>shell<CR>
+nnoremap <Leader>E :<C-U>Explorer<CR>
+nnoremap <Leader>w :<C-U>confirm update<CR>
+nnoremap <Leader>W :<C-U>confirm wall<CR>
+nnoremap <Leader>q :<C-U>confirm bdelete<CR>
+nnoremap <Leader>Q :<C-U>confirm 1,$bdelete<CR>
+nnoremap <Leader>j :<C-U>jumps<CR>
+nnoremap <Leader>J :<C-U>changes<CR>
+nnoremap <Leader><C-D> :<C-U>pwd<CR>
+nnoremap <script> <Leader>e <SID>:<C-U>edit<Space>
+nnoremap <script> <Leader>b <SID>:<C-U>buffer<Space>
+nnoremap <script> <Leader>t <SID>:<C-U>tabm<Space>
+nnoremap <script> <Leader>g <SID>:<C-U>grep<Space>
+nnoremap <script><expr> <Leader>d
+  \ '<SID>:<C-U>lcd ' . expand(has('win32') ? '%:p:h:gs?\\?/?' : '%:p:h')
+nnoremap <script><expr> <Leader>D
+  \ '<SID>:<C-U>cd ' . expand(has('win32') ? '%:p:h:gs?\\?/?' : '%:p:h')
 
 " Paste
 NXnoremap <C-P> :<C-U>registers<CR>
@@ -2024,12 +2026,6 @@ endif
 
 "-----------------------------------------------------------------------------
 " From CmdEx: {{{
-command! -bar
-  \ CdCurrent
-  \ cd %:p:h
-command! -bar
-  \ LcdCurrent
-  \ lcd %:p:h
 command! -bar -nargs=1 -complete=file
   \ Diff
   \ vertical diffsplit <args>
@@ -2037,8 +2033,6 @@ command! -bar
   \ Undiff
   \ setlocal diff< scrollbind< wrap< cursorbind<
 
-nnoremap <Leader>D :<C-U>CdCurrent<CR>
-nnoremap <Leader>d :<C-U>LcdCurrent<CR>
 nnoremap <F8> :<C-U>Undiff<CR>
 "}}}
 
@@ -2943,7 +2937,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     autocmd CmdwinEnter *
       \ call s:cmdwin_enter_neocomplcache()
     autocmd CmdwinEnter :
-      \ let b:neocomplcache_sources_list = ['vim_complete']
+      \ let b:neocomplcache_sources_list = ['file_complete', 'vim_complete']
   augroup END
 
   function! s:check_back_space()
@@ -3050,7 +3044,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     autocmd CmdwinEnter *
       \ call s:cmdwin_enter_neocomplete()
     autocmd CmdwinEnter :
-      \ let b:neocomplete_sources = ['vim']
+      \ let b:neocomplete_sources = ['file', 'vim']
   augroup END
 
   function! s:check_back_space()
@@ -4487,12 +4481,12 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <Leader>t
     \ :<C-U>Unite tab
     \ -buffer-name=files -no-split<CR>
-  nnoremap <Leader><M-d>
-    \ :<C-U>Unite directory_mru directory directory/new
-    \ -buffer-name=files -no-split -default-action=lcd<CR>
-  nnoremap <Leader><M-D>
-    \ :<C-U>Unite directory_mru directory directory/new
-    \ -buffer-name=files -no-split -default-action=cd<CR>
+  " nnoremap <Leader>d
+  "   \ :<C-U>Unite directory_mru directory directory/new
+  "   \ -buffer-name=files -no-split -default-action=lcd<CR>
+  " nnoremap <Leader>D
+  "   \ :<C-U>Unite directory_mru directory directory/new
+  "   \ -buffer-name=files -no-split -default-action=cd<CR>
 
   if &grepprg == 'internal'
     nnoremap <Leader>g<Leader>g
