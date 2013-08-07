@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-07 12:03:13 DeaR>
+" @timestamp   <2013-08-07 12:10:45 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -20,13 +20,13 @@ if has('multi_byte')
   scriptencoding utf-8
 endif
 
-" Language
-if has('win32') && has('multi_lang')
-  language japanese
-  language time C
-endif
-
 if has('win32')
+  " Language
+  if has('multi_lang')
+    language japanese
+    language time C
+  endif
+
   " Shell
   let s:default_shell = [
     \ &shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
