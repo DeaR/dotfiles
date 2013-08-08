@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-08 15:54:59 DeaR>
+" @timestamp   <2013-08-08 16:22:39 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1494,11 +1494,13 @@ NXnoremap <M-J>  <C-W>J
 NXnoremap <M-K>  <C-W>K
 NXnoremap <M-H>  <C-W>H
 NXnoremap <M-L>  <C-W>L
-NXnoremap <M-+>  <C-W>+
+NXnoremap <M-=>  <C-W>=
 NXnoremap <M-->  <C-W>-
+NXnoremap <M-+>  <C-W>+
+NXnoremap <M-_>  <C-W>_
 NXnoremap <M-<>  <C-W><
 NXnoremap <M->>  <C-W>>
-NXnoremap <M-=>  <C-W>=
+NXnoremap <M-\|> <C-W>\|
 NXnoremap <C-W>Q :<C-U>confirm qall<CR>
 
 " Insert-mode & Command-line-mode
