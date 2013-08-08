@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-08 16:22:39 DeaR>
+" @timestamp   <2013-08-08 16:43:58 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2009,7 +2009,7 @@ nnoremap <F12> :<C-U>call <SID>toggle_line_number_style()<CR>
 
 "-----------------------------------------------------------------------------
 " Insert One Character: {{{
-function! s:insert_one_character()
+function! s:insert_one_char()
   echohl ModeMsg
   if v:lang =~? '^ja' && has('multi_lang')
     echo '-- 挿入 (1文字) --'
@@ -2017,12 +2017,13 @@ function! s:insert_one_character()
     echo '-- INSERT (one char) --'
   endif
   echohl None
-  return nr2char(getchar()) . "\<Esc>"
+  return nr2char(getchar())
 endfunction
-nnoremap <M-a> a<C-R>=<SID>insert_one_character()<CR>
-nnoremap <M-A> A<C-R>=<SID>insert_one_character()<CR>
-nnoremap <M-i> i<C-R>=<SID>insert_one_character()<CR>
-nnoremap <M-I> I<C-R>=<SID>insert_one_character()<CR>
+
+nnoremap <expr> <M-a> "a" . <SID>insert_one_char() . "\<Esc>"
+nnoremap <expr> <M-A> "A" . <SID>insert_one_char() . "\<Esc>"
+nnoremap <expr> <M-i> "i" . <SID>insert_one_char() . "\<Esc>"
+nnoremap <expr> <M-I> "I" . <SID>insert_one_char() . "\<Esc>"
 "}}}
 
 "-----------------------------------------------------------------------------
