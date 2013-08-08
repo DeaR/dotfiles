@@ -5,7 +5,7 @@
 #              Realforce101
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-08-01 13:55:17 DeaR>
+# @timestamp   <2013-08-08 17:18:58 DeaR>
 
 #-----------------------------------------------------------------------------
 # HHKB Professional: {{{
@@ -271,6 +271,14 @@ if(USEdefault)
    if(!ZXCV)
      key C-X = &Prefix(GeneralC-X)
    endif
+endif
+#}}}
+
+#-----------------------------------------------------------------------------
+# Vim: {{{
+if(USEdefault)
+  window Vim /vim\.exe/ : RAltIme
+  window GVim /gvim\.exe/ : RAltIme
 endif
 #}}}
 
