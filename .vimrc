@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-08 15:52:55 DeaR>
+" @timestamp   <2013-08-08 15:54:59 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1695,6 +1695,11 @@ inoremap <C-C> <Esc>
 
 " Insert Tab
 inoremap <C-T> <C-V><Tab>
+
+" For SmartInput
+inoremap <SID><CR>  <CR>
+inoremap <SID><BS>  <BS>
+inoremap <SID><C-H> <C-H>
 "}}}
 "}}}
 
@@ -3373,15 +3378,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ '<Plug>(smartinput-<C-H>)',
       \ '<C-H>',
       \ '<C-H>')
-
-    imap <SID><CR>  <Plug>(smartinput-<CR>)
-    imap <SID><BS>  <Plug>(smartinput-<BS>)
-    imap <SID><C-H> <Plug>(smartinput-<C-H>)
   endfunction
-else
-  inoremap <SID><CR>  <CR>
-  inoremap <SID><BS>  <BS>
-  inoremap <SID><C-H> <C-H>
+
+  imap <SID><CR>  <Plug>(smartinput-<CR>)
+  imap <SID><BS>  <Plug>(smartinput-<BS>)
+  imap <SID><C-H> <Plug>(smartinput-<C-H>)
 endif
 unlet! s:bundle
 "}}}
