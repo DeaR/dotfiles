@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-08 14:49:59 DeaR>
+" @timestamp   <2013-08-08 15:52:55 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2156,6 +2156,15 @@ autocmd MyVimrc BufRead *
 
 "=============================================================================
 " Plugins: {{{
+
+"-----------------------------------------------------------------------------
+" Alignta: {{{
+silent! let s:bundle = neobundle#get('alignta')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  xnoremap <script> <Leader>a <SID>:Alignta<Space>
+endif
+unlet! s:bundle
+"}}}
 
 "-----------------------------------------------------------------------------
 " AlterCommand: {{{
