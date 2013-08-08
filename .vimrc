@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-08 16:43:58 DeaR>
+" @timestamp   <2013-08-08 22:17:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -592,8 +592,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {'filetypes' : 'javascript'}}
 
   if has('clientserver')
-    NeoBundleLazy 'thinca/vim-singleton', {
-      \ 'sourced' : 1}
+    NeoBundleFetch 'thinca/vim-singleton'
   endif
 
   " NeoBundleLazy 'kana/vim-smartchr'
