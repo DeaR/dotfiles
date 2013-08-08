@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-08 22:17:33 DeaR>
+" @timestamp   <2013-08-09 00:49:49 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1029,6 +1029,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     {'name' : 'VimShellCreate',
     \      'complete' : 'customlist,vimshell#complete'},
     \     {'name' : 'VimShellTab',
+    \      'complete' : 'customlist,vimshell#complete'},
+    \     {'name' : 'VimShellPop',
     \      'complete' : 'customlist,vimshell#complete'},
     \     {'name' : 'VimShellCurrentDir',
     \      'complete' : 'customlist,vimshell#complete'},
@@ -4124,22 +4126,22 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_source_menu_menus =
       \ get(g:, 'unite_source_menu_menus', {})
 
-    let g:unite_source_menu_menus.pwd = {
+    let g:unite_source_menu_menus.directory_current = {
       \ 'description' : 'Current directory.'}
-    let g:unite_source_menu_menus.pwd.candidates = {
+    let g:unite_source_menu_menus.directory_current.candidates = {
       \ './' : ''}
-    function! g:unite_source_menu_menus.pwd.map(key, value)
+    function! g:unite_source_menu_menus.directory_current.map(key, value)
       return {
         \ 'word' : a:key,
         \ 'kind' : 'directory',
         \ 'action__directory' : getcwd()}
     endfunction
 
-    let g:unite_source_menu_menus.cwd = {
-      \ 'description' : 'Working directory.'}
-    let g:unite_source_menu_menus.cwd.candidates = {
+    let g:unite_source_menu_menus.directory_file = {
+      \ 'description' : 'File directory.'}
+    let g:unite_source_menu_menus.directory_file.candidates = {
       \ '%:~:.:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??' : ''}
-    function! g:unite_source_menu_menus.cwd.map(key, value)
+    function! g:unite_source_menu_menus.directory_file.map(key, value)
       let d = (expand('%') != '' ? expand(a:key) : '.') . '/'
       return {
         \ 'word' : d,
@@ -4222,10 +4224,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ (":\<C-U>UniteWithCursorWord line:backward" .
       \  " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
   endfunction
-  function! s:unite_cwd_expr(action)
+  function! s:unite_directory_file_expr(action)
     let d = expand('%:~:.:h:' . (has('win32') ? 'gs?\\?/?' : '') . ':s?^.$??')
     return (":\<C-U>Unite" .
-      \ " menu:cwd directory_mru" .
+      \ " menu:directory_file directory_mru" .
       \ " directory:" . d . " directory/new:" . d .
       \ " -buffer-name=files -no-split -default-action=" .
       \ a:action . "\<CR>")
@@ -4255,14 +4257,14 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ :<C-U>Unite tab
     \ -buffer-name=files -no-split<CR>
   nnoremap <Leader>d
-    \ :<C-U>Unite menu:pwd directory_mru directory directory/new
+    \ :<C-U>Unite menu:directory_current directory_mru directory directory/new
     \ -buffer-name=files -no-split -default-action=lcd<CR>
   nnoremap <Leader>D
-    \ :<C-U>Unite menu:pwd directory_mru directory directory/new
+    \ :<C-U>Unite menu:directory_current directory_mru directory directory/new
     \ -buffer-name=files -no-split -default-action=cd<CR>
 
-  nnoremap <expr> <Leader><M-d> <SID>unite_cwd_expr('lcd')
-  nnoremap <expr> <Leader><M-D> <SID>unite_cwd_expr('cd')
+  nnoremap <expr> <Leader><M-d> <SID>unite_directory_file_expr('lcd')
+  nnoremap <expr> <Leader><M-D> <SID>unite_directory_file_expr('cd')
 
   if &grepprg == 'internal'
     nnoremap <Leader>g<Leader>g
