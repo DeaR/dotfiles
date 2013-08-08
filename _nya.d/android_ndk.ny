@@ -4,7 +4,7 @@
 # @description Android NDK for NYAOS 3.x
 # @namespace   http://kuonn.mydns.jp/
 # @author      DeaR
-# @timestamp   <2013-06-27 20:13:35 DeaR>
+# @timestamp   <2013-08-08 17:48:23 DeaR>
 
 # Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -25,14 +25,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 android_ndk{
-  set NDK_TOP=C:\Apps\android-ndk-r8e
+  set NDK_TOP=C:\Apps\android-ndk-r9
 
-  set SYSROOT=%NDK_TOP%\platforms\android-14\arch-arm
+  set SYSROOT=%NDK_TOP%\platforms\android-18\arch-arm
   set CFLAGS=-march=armv6 -msoft-float
   if %PROGRAMFILES(X86).defined% -ne 0 then
-    set CC=%NDK_TOP%\toolchains\arm-linux-androideabi-4.7\prebuilt\windows-x86_64\bin\arm-linux-androideabi-gcc.exe -mandroid --sysroot=%SYSROOT%
+    set CC=%NDK_TOP%\toolchains\arm-linux-androideabi-4.8\prebuilt\windows-x86_64\bin\arm-linux-androideabi-gcc.exe -mandroid --sysroot=%SYSROOT%
   else
-    set CC=%NDK_TOP%\toolchains\arm-linux-androideabi-4.7\prebuilt\windows-x86\bin\arm-linux-androideabi-gcc.exe -mandroid --sysroot=%SYSROOT%
+    set CC=%NDK_TOP%\toolchains\arm-linux-androideabi-4.8\prebuilt\windows-x86\bin\arm-linux-androideabi-gcc.exe -mandroid --sysroot=%SYSROOT%
   endif
 
   set CXX=
