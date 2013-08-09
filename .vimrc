@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-09 21:08:42 DeaR>
+" @timestamp   <2013-08-10 00:41:10 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1488,6 +1488,8 @@ NXOnoremap gL L
 NXOnoremap <Space> %
 
 " Window Control
+NXnoremap <M-s>  <C-W>s
+NXnoremap <M-v>  <C-W>v
 NXnoremap <M-j>  <C-W>j
 NXnoremap <M-k>  <C-W>k
 NXnoremap <M-h>  <C-W>h
@@ -1548,16 +1550,16 @@ noremap <expr> <SID>(split-nicely)
   \ <SID>split_nicely_expr() ? '<C-W>s' : '<C-W>v'
 
 " Semi-colon shortcut
-NXnoremap <Leader>! :<C-U>shell<CR>
-NXnoremap <Leader>c <C-W>c
-NXnoremap <Leader>C <C-W>o
-NXnoremap <Leader>E :<C-U>Explorer<CR>
-NXnoremap <Leader>w :<C-U>confirm update<CR>
-NXnoremap <Leader>W :<C-U>confirm wall<CR>
-NXnoremap <Leader>q :<C-U>confirm bdelete<CR>
-NXnoremap <Leader>Q :<C-U>confirm 1,$bdelete<CR>
-NXnoremap <Leader>j :<C-U>jumps<CR>
-NXnoremap <Leader>J :<C-U>changes<CR>
+NXnoremap <Leader>c     <C-W>c
+NXnoremap <Leader>C     <C-W>o
+NXnoremap <Leader>!     :<C-U>shell<CR>
+NXnoremap <Leader>E     :<C-U>Explorer<CR>
+NXnoremap <Leader>w     :<C-U>confirm update<CR>
+NXnoremap <Leader>W     :<C-U>confirm wall<CR>
+NXnoremap <Leader>q     :<C-U>confirm bdelete<CR>
+NXnoremap <Leader>Q     :<C-U>confirm 1,$bdelete<CR>
+NXnoremap <Leader>j     :<C-U>jumps<CR>
+NXnoremap <Leader>J     :<C-U>changes<CR>
 NXnoremap <Leader><C-D> :<C-U>pwd<CR>
 NXnoremap <script> <Leader>e <SID>:<C-U>edit<Space>
 NXnoremap <script> <Leader>b <SID>:<C-U>buffer<Space>
