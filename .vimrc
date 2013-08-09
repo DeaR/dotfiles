@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-10 00:41:10 DeaR>
+" @timestamp   <2013-08-10 01:14:28 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1823,9 +1823,9 @@ if exists('$VCVARSALL')
     set isident+=( isident+=)
     try
       let env = system($VCVARSALL . ' ' . a:arch . ' & set')
-      for [key, value] in filter(map(split(env, '\n'),
-        \ 'matchlist(v:val, "\\([^=]\\+\\)=\\(.*\\)")'), 'len(v:val) > 2')
-        execute 'let $' . key . '=''' . value . ''''
+      for matches in filter(map(split(env, '\n'),
+        \ 'matchlist(v:val, ''\([^=]\+\)=\(.*\)'')'), 'len(v:val) > 1')
+        execute 'let $' . matches[1] . '=''' . matches[2] . ''''
       endfor
     finally
       call s:set_shell(save_shell)
