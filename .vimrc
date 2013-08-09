@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-09 00:49:49 DeaR>
+" @timestamp   <2013-08-09 14:21:02 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1401,13 +1401,10 @@ endif
 " Mappings: {{{
 
 "-----------------------------------------------------------------------------
-" Mapping Some Mode: {{{
+" Multi Mode Mapping: {{{
 command! -complete=mapping -nargs=*
   \ NVmap
   \ nmap <args>| vmap <args>
-command! -complete=mapping -nargs=*
-  \ NOmap
-  \ nmap <args>| omap <args>
 command! -complete=mapping -nargs=*
   \ NXmap
   \ nmap <args>| xmap <args>
@@ -1415,27 +1412,27 @@ command! -complete=mapping -nargs=*
   \ NSmap
   \ nmap <args>| smap <args>
 command! -complete=mapping -nargs=*
+  \ NOmap
+  \ nmap <args>| omap <args>
+command! -complete=mapping -nargs=*
   \ VOmap
   \ vmap <args>| omap <args>
 command! -complete=mapping -nargs=*
-  \ OXmap
-  \ omap <args>| xmap <args>
+  \ XOmap
+  \ xmap <args>| omap <args>
 command! -complete=mapping -nargs=*
-  \ OSmap
-  \ omap <args>| smap <args>
+  \ SOmap
+  \ smap <args>| omap <args>
 command! -complete=mapping -nargs=*
-  \ NOXmap
-  \ nmap <args>| omap <args>| xmap <args>
+  \ NXOmap
+  \ nmap <args>| xmap <args>| omap <args>
 command! -complete=mapping -nargs=*
-  \ NOSmap
-  \ nmap <args>| omap <args>| smap <args>
+  \ NSOmap
+  \ nmap <args>| smap <args>| omap <args>
 
 command! -complete=mapping -nargs=*
   \ NVnoremap
   \ nnoremap <args>| vnoremap <args>
-command! -complete=mapping -nargs=*
-  \ NOnoremap
-  \ nnoremap <args>| onoremap <args>
 command! -complete=mapping -nargs=*
   \ NXnoremap
   \ nnoremap <args>| xnoremap <args>
@@ -1443,35 +1440,38 @@ command! -complete=mapping -nargs=*
   \ NSnoremap
   \ nnoremap <args>| snoremap <args>
 command! -complete=mapping -nargs=*
+  \ NOnoremap
+  \ nnoremap <args>| onoremap <args>
+command! -complete=mapping -nargs=*
   \ VOnoremap
   \ vnoremap <args>| onoremap <args>
 command! -complete=mapping -nargs=*
-  \ OXnoremap
-  \ onoremap <args>| xnoremap <args>
+  \ XOnoremap
+  \ xnoremap <args>| onoremap <args>
 command! -complete=mapping -nargs=*
-  \ OSnoremap
-  \ onoremap <args>| snoremap <args>
+  \ SOnoremap
+  \ snoremap <args>| onoremap <args>
 command! -complete=mapping -nargs=*
-  \ NOXnoremap
-  \ nnoremap <args>| onoremap <args>| xnoremap <args>
+  \ NXOnoremap
+  \ nnoremap <args>| xnoremap <args>| onoremap <args>
 command! -complete=mapping -nargs=*
-  \ NOSnoremap
-  \ nnoremap <args>| onoremap <args>| snoremap <args>
+  \ NSOnoremap
+  \ nnoremap <args>| snoremap <args>| onoremap <args>
 "}}}
 
 "-----------------------------------------------------------------------------
 " Prefix: {{{
 " <Leader> <LocalLeader>
-NOXnoremap <Leader>      <Nop>
-NOXnoremap <LocalLeader> <Nop>
+NXOnoremap <Leader>      <Nop>
+NXOnoremap <LocalLeader> <Nop>
 
 " Useless
-NOXnoremap ;     <Nop>
-NOXnoremap ,     <Nop>
-NOXnoremap s     <Nop>
-NOXnoremap S     <Nop>
-NOXnoremap m     <Nop>
-NOXnoremap M     <Nop>
+NXOnoremap ;     <Nop>
+NXOnoremap ,     <Nop>
+NXOnoremap s     <Nop>
+NXOnoremap S     <Nop>
+NXOnoremap m     <Nop>
+NXOnoremap M     <Nop>
 NOnoremap  <C-G> <Nop>
 cnoremap   <C-G> <Nop>
 "}}}
@@ -1479,12 +1479,12 @@ cnoremap   <C-G> <Nop>
 "-----------------------------------------------------------------------------
 " Moving: {{{
 " Jump
-NOXnoremap ' `
-NOXnoremap ` '
-NOXnoremap gH H
-NOXnoremap gM M
-NOXnoremap gL L
-NOXnoremap <Space> %
+NXOnoremap ' `
+NXOnoremap ` '
+NXOnoremap gH H
+NXOnoremap gM M
+NXOnoremap gL L
+NXOnoremap <Space> %
 
 " Window Control
 NXnoremap <M-j>  <C-W>j
@@ -1533,8 +1533,8 @@ cnoremap <M-w> <S-Right>
 cnoremap <M-b> <S-Left>
 
 " Mark
-NOXnoremap mj ]`
-NOXnoremap mk [`
+NXOnoremap mj ]`
+NXOnoremap mk [`
 "}}}
 
 "-----------------------------------------------------------------------------
@@ -1602,7 +1602,7 @@ onoremap gv :<C-U>normal! gv<CR>
 
 " Start Visual-mode with the last changed area
 nnoremap  g[ `[v`]
-OXnoremap g[ :<C-U>normal g[<CR>
+XOnoremap g[ :<C-U>normal g[<CR>
 
 " Delete at Insert-mode
 inoremap <C-W> <C-G>u<C-W>
@@ -1665,11 +1665,11 @@ nnoremap <C-W>. :<C-U>cclose<CR>
 nnoremap <M-m> m
 
 " Repeat find
-NOXnoremap <M-;> ;
-NOXnoremap <M-,> ,
+NXOnoremap <M-;> ;
+NXOnoremap <M-,> ,
 
 " To Column
-NOXnoremap g\| \|
+NXOnoremap g\| \|
 
 " Rot13
 NXnoremap g13    g?
@@ -1978,8 +1978,8 @@ function! s:smart_eol()
   return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
 endfunction
 
-NOXnoremap <silent><expr> H <SID>smart_bol()
-NOXnoremap <silent><expr> L <SID>smart_eol()
+NXOnoremap <silent><expr> H <SID>smart_bol()
+NXOnoremap <silent><expr> L <SID>smart_eol()
 inoremap <silent><expr> <M-H> '<C-O>' . <SID>smart_bol()
 inoremap <silent><expr> <M-L> '<C-O>' . <SID>smart_eol()
 "}}}
@@ -2332,13 +2332,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     inoremap <script> <M-,> <C-O><SID>(clever-f-repeat-back)
   endfunction
 
-  NOXmap f     <Plug>(clever-f-f)
-  NOXmap F     <Plug>(clever-f-F)
-  NOXmap t     <Plug>(clever-f-t)
-  NOXmap T     <Plug>(clever-f-T)
-  NOXmap <M-.> <Plug>(clever-f-reset)
-  NOXmap <M-;> <Plug>(clever-f-repeat-forward)
-  NOXmap <M-,> <Plug>(clever-f-repeat-back)
+  NXOmap f     <Plug>(clever-f-f)
+  NXOmap F     <Plug>(clever-f-F)
+  NXOmap t     <Plug>(clever-f-t)
+  NXOmap T     <Plug>(clever-f-T)
+  NXOmap <M-.> <Plug>(clever-f-reset)
+  NXOmap <M-;> <Plug>(clever-f-repeat-forward)
+  NXOmap <M-,> <Plug>(clever-f-repeat-back)
 endif
 unlet! s:bundle
 "}}}
@@ -2422,8 +2422,8 @@ unlet! s:bundle
 " Grex: {{{
 silent! let s:bundle = neobundle#get('grex')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NOXmap sd <Plug>(operator-grex-delete)
-  NOXmap sy <Plug>(operator-grex-yank)
+  NXOmap sd <Plug>(operator-grex-delete)
+  NXOmap sy <Plug>(operator-grex-yank)
 
   nmap sdd sdsd
   nmap syy sysy
@@ -2884,9 +2884,9 @@ unlet! s:bundle
 " Operator Camelize: {{{
 silent! let s:bundle = neobundle#get('operator-camelize')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NOXmap sU <Plug>(operator-camelize)
-  NOXmap su <Plug>(operator-decamelize)
-  NOXmap s~ <Plug>(operator-camelize-toggle)
+  NXOmap sU <Plug>(operator-camelize)
+  NXOmap su <Plug>(operator-decamelize)
+  NXOmap s~ <Plug>(operator-camelize-toggle)
 
   nmap sUU sUsU
   nmap suu susu
@@ -2899,8 +2899,8 @@ unlet! s:bundle
 " Operator HTML Escape: {{{
 silent! let s:bundle = neobundle#get('operator-html-escape')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NOXmap sh <Plug>(operator-html-escape)
-  NOXmap sH <Plug>(operator-html-unescape)
+  NXOmap sh <Plug>(operator-html-escape)
+  NXOmap sH <Plug>(operator-html-unescape)
 
   nmap shh shsh
   nmap sHH sHsH
@@ -2912,7 +2912,7 @@ unlet! s:bundle
 " Operator Open Browser: {{{
 silent! let s:bundle = neobundle#get('operator-openbrowser')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NOXmap gx <Plug>(operator-openbrowser)
+  NXOmap gx <Plug>(operator-openbrowser)
 endif
 unlet! s:bundle
 "}}}
@@ -2921,7 +2921,7 @@ unlet! s:bundle
 " Operator Replace: {{{
 silent! let s:bundle = neobundle#get('operator-replace')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NOXmap p <Plug>(operator-replace)
+  NXOmap p <Plug>(operator-replace)
   nnoremap pp p
 endif
 unlet! s:bundle
@@ -2931,8 +2931,8 @@ unlet! s:bundle
 " Operator Reverse: {{{
 silent! let s:bundle = neobundle#get('operator-reverse')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NOXmap sv <Plug>(operator-reverse-text)
-  NOXmap sV <Plug>(operator-reverse-lines)
+  NXOmap sv <Plug>(operator-reverse-text)
+  NXOmap sV <Plug>(operator-reverse-lines)
 
   nmap svv svsv
   nmap sVV sVsV
@@ -2944,7 +2944,7 @@ unlet! s:bundle
 " Operator Sort: {{{
 silent! let s:bundle = neobundle#get('operator-sort')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NOXmap sS <Plug>(operator-sort)
+  NXOmap sS <Plug>(operator-sort)
 
   nmap sSS sSsS
 endif
@@ -3038,7 +3038,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call operator#user#define('grep', s:SID_PREFIX() . 'operator_grep')
   endfunction
 
-  NOXmap <Leader>g <Plug>(operator-grep)
+  NXOmap <Leader>g <Plug>(operator-grep)
 endif
 unlet! s:bundle
 "}}}
@@ -3120,8 +3120,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     return toupper(',' . &filetype . (&filetype != context ? (',' . context) : ''))
   endfunction
 
-  OXmap ax <Plug>(textobj-precious-i)
-  OXmap ix <Plug>(textobj-precious-i)
+  XOmap ax <Plug>(textobj-precious-i)
+  XOmap ix <Plug>(textobj-precious-i)
 
   autocmd MyVimrc FileType *
     \ NeoBundleSource precious
@@ -3246,9 +3246,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   if neobundle#get('precious') != {}
-    NOXmap sr <Plug>(precious-quickrun-op)
+    NXOmap sr <Plug>(precious-quickrun-op)
   else
-    NOXmap sr <Plug>(quickrun-op)
+    NXOmap sr <Plug>(quickrun-op)
   endif
 
   nmap srr srsr
@@ -3407,10 +3407,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     inoremap <script> <M-g><M-e> <C-O><SID>(smartword-ge)
   endfunction
 
-  NOXmap w  <Plug>(smartword-w)
-  NOXmap b  <Plug>(smartword-b)
-  NOXmap e  <Plug>(smartword-e)
-  NOXmap ge <Plug>(smartword-ge)
+  NXOmap w  <Plug>(smartword-w)
+  NXOmap b  <Plug>(smartword-b)
+  NXOmap e  <Plug>(smartword-e)
+  NXOmap ge <Plug>(smartword-ge)
 endif
 unlet! s:bundle
 "}}}
@@ -3638,8 +3638,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_between_no_default_key_mappings = 1
   endfunction
 
-  OXmap af <Plug>(textobj-between-a)
-  OXmap if <Plug>(textobj-between-i)
+  XOmap af <Plug>(textobj-between-a)
+  XOmap if <Plug>(textobj-between-i)
 endif
 unlet! s:bundle
 "}}}
@@ -3652,8 +3652,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_comment_no_default_key_mappings = 1
   endfunction
 
-  OXmap ac <Plug>(textobj-comment-a)
-  OXmap ic <Plug>(textobj-comment-i)
+  XOmap ac <Plug>(textobj-comment-a)
+  XOmap ic <Plug>(textobj-comment-i)
 endif
 unlet! s:bundle
 "}}}
@@ -3678,19 +3678,19 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_datetime_no_default_key_mappings = 1
   endfunction
 
-  OXnoremap ad <Nop>
-  OXmap ada <Plug>(textobj-datetime-auto)
-  OXmap add <Plug>(textobj-datetime-date)
-  OXmap adf <Plug>(textobj-datetime-full)
-  OXmap adt <Plug>(textobj-datetime-time)
-  OXmap adz <Plug>(textobj-datetime-tz)
+  XOnoremap ad <Nop>
+  XOmap ada <Plug>(textobj-datetime-auto)
+  XOmap add <Plug>(textobj-datetime-date)
+  XOmap adf <Plug>(textobj-datetime-full)
+  XOmap adt <Plug>(textobj-datetime-time)
+  XOmap adz <Plug>(textobj-datetime-tz)
 
-  OXnoremap id <Nop>
-  OXmap ida <Plug>(textobj-datetime-auto)
-  OXmap idd <Plug>(textobj-datetime-date)
-  OXmap idf <Plug>(textobj-datetime-full)
-  OXmap idt <Plug>(textobj-datetime-time)
-  OXmap idz <Plug>(textobj-datetime-tz)
+  XOnoremap id <Nop>
+  XOmap ida <Plug>(textobj-datetime-auto)
+  XOmap idd <Plug>(textobj-datetime-date)
+  XOmap idf <Plug>(textobj-datetime-full)
+  XOmap idt <Plug>(textobj-datetime-time)
+  XOmap idz <Plug>(textobj-datetime-tz)
 endif
 unlet! s:bundle
 "}}}
@@ -3703,25 +3703,25 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_diff_no_default_key_mappings = 1
   endfunction
 
-  NOXnoremap <Leader>f <Nop>
-  NOXmap <Leader>fj <Plug>(textobj-diff-file-n)
-  NOXmap <Leader>fk <Plug>(textobj-diff-file-p)
-  NOXmap <Leader>fJ <Plug>(textobj-diff-file-N)
-  NOXmap <Leader>fK <Plug>(textobj-diff-file-P)
+  NXOnoremap <Leader>f <Nop>
+  NXOmap <Leader>fj <Plug>(textobj-diff-file-n)
+  NXOmap <Leader>fk <Plug>(textobj-diff-file-p)
+  NXOmap <Leader>fJ <Plug>(textobj-diff-file-N)
+  NXOmap <Leader>fK <Plug>(textobj-diff-file-P)
 
-  NOXnoremap <Leader>h <Nop>
-  NOXmap <Leader>hj <Plug>(textobj-diff-hunk-n)
-  NOXmap <Leader>hk <Plug>(textobj-diff-hunk-p)
-  NOXmap <Leader>hJ <Plug>(textobj-diff-hunk-N)
-  NOXmap <Leader>hK <Plug>(textobj-diff-hunk-P)
+  NXOnoremap <Leader>h <Nop>
+  NXOmap <Leader>hj <Plug>(textobj-diff-hunk-n)
+  NXOmap <Leader>hk <Plug>(textobj-diff-hunk-p)
+  NXOmap <Leader>hJ <Plug>(textobj-diff-hunk-N)
+  NXOmap <Leader>hK <Plug>(textobj-diff-hunk-P)
 
-  OXnoremap ad <Nop>
-  OXmap adf <Plug>(textobj-diff-file)
-  OXmap adh <Plug>(textobj-diff-hunk)
+  XOnoremap ad <Nop>
+  XOmap adf <Plug>(textobj-diff-file)
+  XOmap adh <Plug>(textobj-diff-hunk)
 
-  OXnoremap id <Nop>
-  OXmap idf <Plug>(textobj-diff-file)
-  OXmap idh <Plug>(textobj-diff-hunk)
+  XOnoremap id <Nop>
+  XOmap idf <Plug>(textobj-diff-file)
+  XOmap idh <Plug>(textobj-diff-hunk)
 endif
 unlet! s:bundle
 "}}}
@@ -3734,8 +3734,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_entire_no_default_key_mappings = 1
   endfunction
 
-  OXmap ae <Plug>(textobj-entire-a)
-  OXmap ie <Plug>(textobj-entire-i)
+  XOmap ae <Plug>(textobj-entire-a)
+  XOmap ie <Plug>(textobj-entire-i)
 endif
 unlet! s:bundle
 "}}}
@@ -3759,8 +3759,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_fold_no_default_key_mappings = 1
   endfunction
 
-  OXmap az <Plug>(textobj-fold-a)
-  OXmap iz <Plug>(textobj-fold-i)
+  XOmap az <Plug>(textobj-fold-a)
+  XOmap iz <Plug>(textobj-fold-i)
 endif
 unlet! s:bundle
 "}}}
@@ -3795,10 +3795,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_indblock_no_default_key_mappings = 1
   endfunction
 
-  OXmap ao <Plug>(textobj-indblock-a)
-  OXmap io <Plug>(textobj-indblock-i)
-  OXmap aO <Plug>(textobj-indblock-same-a)
-  OXmap iO <Plug>(textobj-indblock-same-i)
+  XOmap ao <Plug>(textobj-indblock-a)
+  XOmap io <Plug>(textobj-indblock-i)
+  XOmap aO <Plug>(textobj-indblock-same-a)
+  XOmap iO <Plug>(textobj-indblock-same-i)
 endif
 unlet! s:bundle
 "}}}
@@ -3811,10 +3811,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_indent_no_default_key_mappings = 1
   endfunction
 
-  OXmap ai <Plug>(textobj-indent-a)
-  OXmap ii <Plug>(textobj-indent-i)
-  OXmap aI <Plug>(textobj-indent-same-a)
-  OXmap iI <Plug>(textobj-indent-same-i)
+  XOmap ai <Plug>(textobj-indent-a)
+  XOmap ii <Plug>(textobj-indent-i)
+  XOmap aI <Plug>(textobj-indent-same-a)
+  XOmap iI <Plug>(textobj-indent-same-i)
 endif
 unlet! s:bundle
 "}}}
@@ -3827,41 +3827,41 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_jabraces_no_default_key_mappings = 1
   endfunction
 
-  OXnoremap aj <Nop>
-  OXmap aj( <Plug>(textobj-jabraces-parens-a)
-  OXmap aj) <Plug>(textobj-jabraces-parens-a)
-  OXmap aj{ <Plug>(textobj-jabraces-braces-a)
-  OXmap aj} <Plug>(textobj-jabraces-braces-a)
-  OXmap aj[ <Plug>(textobj-jabraces-brackets-a)
-  OXmap aj] <Plug>(textobj-jabraces-brackets-a)
-  OXmap aj< <Plug>(textobj-jabraces-angles-a)
-  OXmap aj> <Plug>(textobj-jabraces-angles-a)
-  OXmap aja <Plug>(textobj-jabraces-angles-a)
-  OXmap ajA <Plug>(textobj-jabraces-double-angles-a)
-  OXmap ajk <Plug>(textobj-jabraces-kakko-a)
-  OXmap ajK <Plug>(textobj-jabraces-double-kakko-a)
-  OXmap ajy <Plug>(textobj-jabraces-yama-kakko-a)
-  OXmap ajY <Plug>(textobj-jabraces-double-yama-kakko-a)
-  OXmap ajt <Plug>(textobj-jabraces-kikkou-kakko-a)
-  OXmap ajs <Plug>(textobj-jabraces-sumi-kakko-a)
+  XOnoremap aj <Nop>
+  XOmap aj( <Plug>(textobj-jabraces-parens-a)
+  XOmap aj) <Plug>(textobj-jabraces-parens-a)
+  XOmap aj{ <Plug>(textobj-jabraces-braces-a)
+  XOmap aj} <Plug>(textobj-jabraces-braces-a)
+  XOmap aj[ <Plug>(textobj-jabraces-brackets-a)
+  XOmap aj] <Plug>(textobj-jabraces-brackets-a)
+  XOmap aj< <Plug>(textobj-jabraces-angles-a)
+  XOmap aj> <Plug>(textobj-jabraces-angles-a)
+  XOmap aja <Plug>(textobj-jabraces-angles-a)
+  XOmap ajA <Plug>(textobj-jabraces-double-angles-a)
+  XOmap ajk <Plug>(textobj-jabraces-kakko-a)
+  XOmap ajK <Plug>(textobj-jabraces-double-kakko-a)
+  XOmap ajy <Plug>(textobj-jabraces-yama-kakko-a)
+  XOmap ajY <Plug>(textobj-jabraces-double-yama-kakko-a)
+  XOmap ajt <Plug>(textobj-jabraces-kikkou-kakko-a)
+  XOmap ajs <Plug>(textobj-jabraces-sumi-kakko-a)
 
-  OXnoremap ij <Nop>
-  OXmap ij( <Plug>(textobj-jabraces-parens-i)
-  OXmap ij) <Plug>(textobj-jabraces-parens-i)
-  OXmap ij{ <Plug>(textobj-jabraces-braces-i)
-  OXmap ij} <Plug>(textobj-jabraces-braces-i)
-  OXmap ij[ <Plug>(textobj-jabraces-brackets-i)
-  OXmap ij] <Plug>(textobj-jabraces-brackets-i)
-  OXmap ij< <Plug>(textobj-jabraces-angles-i)
-  OXmap ij> <Plug>(textobj-jabraces-angles-i)
-  OXmap ija <Plug>(textobj-jabraces-angles-i)
-  OXmap ijA <Plug>(textobj-jabraces-double-angles-i)
-  OXmap ijk <Plug>(textobj-jabraces-kakko-i)
-  OXmap ijK <Plug>(textobj-jabraces-double-kakko-i)
-  OXmap ijy <Plug>(textobj-jabraces-yama-kakko-i)
-  OXmap ijY <Plug>(textobj-jabraces-double-yama-kakko-i)
-  OXmap ijt <Plug>(textobj-jabraces-kikkou-kakko-i)
-  OXmap ijs <Plug>(textobj-jabraces-sumi-kakko-i)
+  XOnoremap ij <Nop>
+  XOmap ij( <Plug>(textobj-jabraces-parens-i)
+  XOmap ij) <Plug>(textobj-jabraces-parens-i)
+  XOmap ij{ <Plug>(textobj-jabraces-braces-i)
+  XOmap ij} <Plug>(textobj-jabraces-braces-i)
+  XOmap ij[ <Plug>(textobj-jabraces-brackets-i)
+  XOmap ij] <Plug>(textobj-jabraces-brackets-i)
+  XOmap ij< <Plug>(textobj-jabraces-angles-i)
+  XOmap ij> <Plug>(textobj-jabraces-angles-i)
+  XOmap ija <Plug>(textobj-jabraces-angles-i)
+  XOmap ijA <Plug>(textobj-jabraces-double-angles-i)
+  XOmap ijk <Plug>(textobj-jabraces-kakko-i)
+  XOmap ijK <Plug>(textobj-jabraces-double-kakko-i)
+  XOmap ijy <Plug>(textobj-jabraces-yama-kakko-i)
+  XOmap ijY <Plug>(textobj-jabraces-double-yama-kakko-i)
+  XOmap ijt <Plug>(textobj-jabraces-kikkou-kakko-i)
+  XOmap ijs <Plug>(textobj-jabraces-sumi-kakko-i)
 endif
 unlet! s:bundle
 "}}}
@@ -3874,8 +3874,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_line_no_default_key_mappings = 1
   endfunction
 
-  OXmap al <Plug>(textobj-line-a)
-  OXmap il <Plug>(textobj-line-i)
+  XOmap al <Plug>(textobj-line-a)
+  XOmap il <Plug>(textobj-line-i)
 endif
 unlet! s:bundle
 "}}}
@@ -3888,8 +3888,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_multiblock_no_default_key_mappings = 1
   endfunction
 
-  OXmap ab <Plug>(textobj-multiblock-a)
-  OXmap ib <Plug>(textobj-multiblock-i)
+  XOmap ab <Plug>(textobj-multiblock-a)
+  XOmap ib <Plug>(textobj-multiblock-i)
 endif
 unlet! s:bundle
 "}}}
@@ -3927,11 +3927,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   "\<Plug>(textobj-jabraces-sumi-kakko-i)"]]}
   endfunction
 
-  OXmap <SID>(textobj-jabraces-a) <Plug>(textobj-multitextobj-A-a)
-  OXmap <SID>(textobj-jabraces-i) <Plug>(textobj-multitextobj-A-i)
+  XOmap <SID>(textobj-jabraces-a) <Plug>(textobj-multitextobj-A-a)
+  XOmap <SID>(textobj-jabraces-i) <Plug>(textobj-multitextobj-A-i)
 
-  OXmap aB <SID>(textobj-jabraces-a)
-  OXmap iB <SID>(textobj-jabraces-i)
+  XOmap aB <SID>(textobj-jabraces-a)
+  XOmap iB <SID>(textobj-jabraces-i)
 endif
 unlet! s:bundle
 "}}}
@@ -3944,8 +3944,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_motionmotion_no_default_key_mappings = 1
   endfunction
 
-  OXmap am <Plug>(textobj-motionmotion-a)
-  OXmap im <Plug>(textobj-motionmotion-i)
+  XOmap am <Plug>(textobj-motionmotion-a)
+  XOmap im <Plug>(textobj-motionmotion-i)
 endif
 unlet! s:bundle
 "}}}
@@ -3958,8 +3958,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_parameter_no_default_key_mappings = 1
   endfunction
 
-  OXmap a, <Plug>(textobj-parameter-a)
-  OXmap i, <Plug>(textobj-parameter-i)
+  XOmap a, <Plug>(textobj-parameter-a)
+  XOmap i, <Plug>(textobj-parameter-i)
 endif
 unlet! s:bundle
 "}}}
@@ -4017,8 +4017,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_space_no_default_key_mappings = 1
   endfunction
 
-  OXmap aS <Plug>(textobj-space-a)
-  OXmap iS <Plug>(textobj-space-i)
+  XOmap aS <Plug>(textobj-space-a)
+  XOmap iS <Plug>(textobj-space-i)
 endif
 unlet! s:bundle
 "}}}
@@ -4031,8 +4031,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_syntax_no_default_key_mappings = 1
   endfunction
 
-  OXmap ay <Plug>(textobj-syntax-a)
-  OXmap iy <Plug>(textobj-syntax-i)
+  XOmap ay <Plug>(textobj-syntax-a)
+  XOmap iy <Plug>(textobj-syntax-i)
 endif
 unlet! s:bundle
 "}}}
@@ -4045,8 +4045,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_url_no_default_key_mappings = 1
   endfunction
 
-  OXmap au <Plug>(textobj-url-a)
-  OXmap iu <Plug>(textobj-url-i)
+  XOmap au <Plug>(textobj-url-a)
+  XOmap iu <Plug>(textobj-url-i)
 endif
 unlet! s:bundle
 "}}}
@@ -4059,13 +4059,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:textobj_wiw_no_default_key_mappings = 1
   endfunction
 
-  NOXmap <M-w>      <Plug>(textobj-wiw-n)
-  NOXmap <M-b>      <Plug>(textobj-wiw-p)
-  NOXmap <M-e>      <Plug>(textobj-wiw-N)
-  NOXmap <M-g><M-e> <Plug>(textobj-wiw-P)
+  NXOmap <M-w>      <Plug>(textobj-wiw-n)
+  NXOmap <M-b>      <Plug>(textobj-wiw-p)
+  NXOmap <M-e>      <Plug>(textobj-wiw-N)
+  NXOmap <M-g><M-e> <Plug>(textobj-wiw-P)
 
-  OXmap a<M-w> <Plug>(textobj-wiw-a)
-  OXmap i<M-w> <Plug>(textobj-wiw-i)
+  XOmap a<M-w> <Plug>(textobj-wiw-a)
+  XOmap i<M-w> <Plug>(textobj-wiw-i)
 endif
 unlet! s:bundle
 "}}}
