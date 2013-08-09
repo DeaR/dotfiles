@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-09 14:21:02 DeaR>
+" @timestamp   <2013-08-09 17:02:45 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1223,7 +1223,8 @@ set iskeyword=a-z,A-Z,@,48-57,_
 if s:jvgrep_enable && s:executable('jvgrep')
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
 elseif s:executable('ag')
-  set grepprg=ag\ --nocolor\ --nogroup\ --hidden\ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
+  set grepprg=ag\ --line-numbers\ --nocolor\ --nogroup\ --hidden\
+    \ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
 elseif s:executable('grep')
   set grepprg=grep\ -Hn
 else
@@ -4116,7 +4117,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_default_opts  =
-        \ '--nocolor --nogroup --hidden --ignore .drive.r --ignore .hg --ignore .git --ignore .svn'
+        \ '--line-numbers --nocolor --nogroup --hidden --ignore .drive.r --ignore .hg --ignore .git --ignore .svn'
     elseif s:executable('grep')
       let g:unite_source_grep_command       = 'grep'
       let g:unite_source_grep_recursive_opt = '-r'
@@ -4129,10 +4130,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_source_menu_menus.directory_current = {
       \ 'description' : 'Current directory.'}
     let g:unite_source_menu_menus.directory_current.candidates = {
-      \ './' : ''}
+      \ '_' : ''}
     function! g:unite_source_menu_menus.directory_current.map(key, value)
       return {
-        \ 'word' : a:key,
+        \ 'word' : './',
         \ 'kind' : 'directory',
         \ 'action__directory' : getcwd()}
     endfunction
@@ -4140,11 +4141,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_source_menu_menus.directory_file = {
       \ 'description' : 'File directory.'}
     let g:unite_source_menu_menus.directory_file.candidates = {
-      \ '%:~:.:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??' : ''}
+      \ ':p:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??' : ''}
     function! g:unite_source_menu_menus.directory_file.map(key, value)
-      let d = (expand('%') != '' ? expand(a:key) : '.') . '/'
+      let d = expand('%') != '' ? expand('%') : getcwd()
       return {
-        \ 'word' : d,
+        \ 'word' : fnamemodify(d, a:key) . '/',
         \ 'kind' : 'directory',
         \ 'action__directory' : d}
     endfunction
@@ -4224,14 +4225,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ (":\<C-U>UniteWithCursorWord line:backward" .
       \  " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
   endfunction
-  function! s:unite_directory_file_expr(action)
-    let d = expand('%:~:.:h:' . (has('win32') ? 'gs?\\?/?' : '') . ':s?^.$??')
-    return (":\<C-U>Unite" .
-      \ " menu:directory_file directory_mru" .
-      \ " directory:" . d . " directory/new:" . d .
-      \ " -buffer-name=files -no-split -default-action=" .
-      \ a:action . "\<CR>")
-  endfunction
 
   nnoremap <Leader>u <Nop>
   nnoremap <script> <Leader>uu <SID>:<C-U>Unite<Space>
@@ -4262,9 +4255,12 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <Leader>D
     \ :<C-U>Unite menu:directory_current directory_mru directory directory/new
     \ -buffer-name=files -no-split -default-action=cd<CR>
-
-  nnoremap <expr> <Leader><M-d> <SID>unite_directory_file_expr('lcd')
-  nnoremap <expr> <Leader><M-D> <SID>unite_directory_file_expr('cd')
+  nnoremap <Leader><M-d>
+    \ :<C-U>UniteWithBufferDir menu:directory_file directory_mru directory directory/new
+    \ -buffer-name=files -no-split -default-action=lcd<CR>
+  nnoremap <Leader><M-D>
+    \ :<C-U>UniteWithBufferDir menu:directory_file directory_mru directory directory/new
+    \ -buffer-name=files -no-split -default-action=cd<CR>
 
   if &grepprg == 'internal'
     nnoremap <Leader>g<Leader>g
