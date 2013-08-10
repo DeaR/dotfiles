@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-10 01:14:28 DeaR>
+" @timestamp   <2013-08-11 02:00:41 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2048,33 +2048,6 @@ function! s:auto_mkdir(dir, force)
 endfunction
 autocmd MyVimrc BufWritePre *
   \ call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
-"}}}
-
-"-----------------------------------------------------------------------------
-" Windows Symlink Fix: {{{
-if has('win32') && !s:has_patch(703, 1182)
-  set backupcopy=yes
-  augroup MyVimrc
-    autocmd BufWritePre,FileWritePre,FileAppendPre *
-      \ if filewritable(expand('%')) |
-      \   let b:save_ar = &l:autoread |
-      \ endif
-    autocmd BufWritePost,FileWritePost,FileAppendPost *
-      \ if exists('b:save_ar') |
-      \   setlocal autoread |
-      \   if s:has_vimproc() |
-      \     call vimproc#cmd#system('attrib -R ' . expand('%:p')) |
-      \   else |
-      \     call system('attrib -R ' . expand('%:p')) |
-      \   endif |
-      \ endif
-    autocmd BufReadPost *
-      \ if exists('b:save_ar') |
-      \   let &l:autoread = b:save_ar |
-      \   unlet b:save_ar |
-      \ endif
-  augroup END
-endif
 "}}}
 
 "-----------------------------------------------------------------------------
