@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-12 16:11:34 DeaR>
+" @timestamp   <2013-08-12 20:54:34 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3297,7 +3297,6 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('savevers')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:savevers_max          = 99
     let g:savevers_dirs         = &backupdir
     let g:savevers_hierarchical = 1
     let g:versdiff_no_resize    = 1
