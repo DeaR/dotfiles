@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-12 12:09:46 DeaR>
+" @timestamp   <2013-08-12 16:11:34 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3554,7 +3554,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
-  nnoremap <C-A> :<C-U>all <SID>switch('+')<CR>
+  nnoremap <C-A> :<C-U>call <SID>switch('+')<CR>
   nnoremap <C-X> :<C-U>call <SID>switch('-')<CR>
 
   autocmd MyVimrc VimEnter,BufNewFile,BufRead *
