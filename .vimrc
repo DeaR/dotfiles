@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-11 02:00:41 DeaR>
+" @timestamp   <2013-08-12 11:59:43 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3147,9 +3147,18 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   function! s:bundle.hooks.on_post_source(bundle)
-    for c in ['B', 'b', 'V', 'v', 'E', 'e', 'F', 'f', 'rE', 're', 'rF', 'rf']
-      execute 'sunmap g,' . c
-    endfor
+    sunmap g,B
+    sunmap g,E
+    sunmap g,F
+    sunmap g,V
+    sunmap g,b
+    sunmap g,e
+    sunmap g,f
+    sunmap g,v
+    sunmap g,rE
+    sunmap g,rF
+    sunmap g,re
+    sunmap g,rf
   endfunction
 
   NXnoremap <C-W>, :<C-U>OpenQFixWin<CR>
