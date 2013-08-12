@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-12 11:59:43 DeaR>
+" @timestamp   <2013-08-12 12:09:46 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3614,10 +3614,12 @@ silent! let s:bundle = neobundle#get('textmanip')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXmap <M-p> <Plug>(textmanip-duplicate-down)
   NXmap <M-P> <Plug>(textmanip-duplicate-up)
-  xmap  <M-j> <Plug>(textmanip-move-down)
-  xmap  <M-k> <Plug>(textmanip-move-up)
-  xmap  <M-h> <Plug>(textmanip-move-left)
-  xmap  <M-l> <Plug>(textmanip-move-right)
+
+  xnoremap <Leader>m <nop>
+  xmap <leader>mj <Plug>(textmanip-move-down)
+  xmap <leader>mk <Plug>(textmanip-move-up)
+  xmap <leader>mh <Plug>(textmanip-move-left)
+  xmap <leader>ml <Plug>(textmanip-move-right)
 endif
 unlet! s:bundle
 "}}}
