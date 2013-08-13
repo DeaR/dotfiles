@@ -1,7 +1,7 @@
 ; Xyzzy settings
 ;
 ; Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-; Last Change:  13-Aug-201313-Aug-2013.
+; Last Change:  13-Aug-2013.
 ; License:      MIT License {{{
 ;     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 ;
@@ -35,7 +35,7 @@
 ; auto-time-stamp
 (require "auto-time-stamp")
 (setf *time-stamp-start* (compile-regexp "Last Change:[ \t]*" t))
-(setf *time-stamp-end* (compile-regexp "\." t))
+(setf *time-stamp-end* (compile-regexp "\\." t))
 (setf *time-stamp-format* "%d-%b-%Y")
 
 
