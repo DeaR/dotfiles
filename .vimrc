@@ -1260,9 +1260,16 @@ set completeopt=menu,menuone
 silent! set completeopt+=noselect
 
 " Format
+set textwidth=78
 set nrformats=hex
+set formatoptions+=c
+set formatoptions+=r
+set formatoptions+=o
+set formatoptions+=q
+set formatoptions+=l
 set formatoptions+=m
 set formatoptions+=B
+set formatoptions-=t
 
 " Free cursor
 set virtualedit=block
