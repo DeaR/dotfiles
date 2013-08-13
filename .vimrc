@@ -4148,9 +4148,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_source_menu_menus.directory_file = {
       \ 'description' : 'File directory.'}
     let g:unite_source_menu_menus.directory_file.candidates = {
-      \ ':p:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??' : ''}
+      \ (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??' : ''}
     function! g:unite_source_menu_menus.directory_file.map(key, value)
-      let d = expand('%') != '' ? expand('%') : getcwd()
+      let d = expand('%') != '' ? expand('%:p:h') : getcwd()
       return {
         \ 'word' : fnamemodify(d, a:key) . '/',
         \ 'kind' : 'directory',
