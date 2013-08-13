@@ -67,38 +67,38 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ nunmap <SID>(vimfiler_redraw_screen)|
-  \ xunmap <SID>(vimfiler_redraw_screen)|
+  \ silent! nunmap <SID>(vimfiler_redraw_screen)|
+  \ silent! xunmap <SID>(vimfiler_redraw_screen)|
   \
-  \ nunmap <C-W>=|
-  \ xunmap <C-W>=|
-  \ nunmap <C-W>-|
-  \ xunmap <C-W>-|
-  \ nunmap <C-W>+|
-  \ xunmap <C-W>+|
-  \ nunmap <C-W>_|
-  \ xunmap <C-W>_|
-  \ nunmap <C-W><|
-  \ xunmap <C-W><|
-  \ nunmap <C-W>>|
-  \ xunmap <C-W>>|
-  \ nunmap <C-W>\||
-  \ xunmap <C-W>\||
+  \ silent! nunmap <C-W>=|
+  \ silent! xunmap <C-W>=|
+  \ silent! nunmap <C-W>-|
+  \ silent! xunmap <C-W>-|
+  \ silent! nunmap <C-W>+|
+  \ silent! xunmap <C-W>+|
+  \ silent! nunmap <C-W>_|
+  \ silent! xunmap <C-W>_|
+  \ silent! nunmap <C-W><|
+  \ silent! xunmap <C-W><|
+  \ silent! nunmap <C-W>>|
+  \ silent! xunmap <C-W>>|
+  \ silent! nunmap <C-W>\||
+  \ silent! xunmap <C-W>\||
   \
-  \ nunmap <M-=>|
-  \ xunmap <M-=>|
-  \ nunmap <M-->|
-  \ xunmap <M-->|
-  \ nunmap <M-+>|
-  \ xunmap <M-+>|
-  \ nunmap <M-_>|
-  \ xunmap <M-_>|
-  \ nunmap <M-<>|
-  \ xunmap <M-<>|
-  \ nunmap <M->>|
-  \ xunmap <M->>|
-  \ nunmap <M-\|>|
-  \ xunmap <M-\|>'
+  \ silent! nunmap <M-=>|
+  \ silent! xunmap <M-=>|
+  \ silent! nunmap <M-->|
+  \ silent! xunmap <M-->|
+  \ silent! nunmap <M-+>|
+  \ silent! xunmap <M-+>|
+  \ silent! nunmap <M-_>|
+  \ silent! xunmap <M-_>|
+  \ silent! nunmap <M-<>|
+  \ silent! xunmap <M-<>|
+  \ silent! nunmap <M->>|
+  \ silent! xunmap <M->>|
+  \ silent! nunmap <M-\|>|
+  \ silent! xunmap <M-\|>'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
