@@ -13,6 +13,9 @@
 [submodule "_nya.d/complete_by"]
 	path = _nya.d/complete_by
 	url = https://gist.github.com/4647152.git
+[submodule "_nya.d/unix_env_expand"]
+	path = _nya.d/unix_env_expand
+	url = https://gist.github.com/4663369.git
 [submodule "_nya.d/shebang"]
 	path = _nya.d/shebang
 	url = https://gist.github.com/5047106.git
