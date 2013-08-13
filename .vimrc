@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-13 13:31:33 DeaR>
+" @timestamp   <2013-08-13 14:04:48 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -2455,7 +2455,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     autocmd ColorScheme *
       \ call s:set_indent_line_color(1)
     autocmd FileType *
-      \ if get(b:, 'indentLine_enabled', 1) && !&expandtab |
+      \ if get(b:, 'indentLine_enabled', 1) && !&l:expandtab |
       \   execute 'IndentLinesToggle' |
       \ endif
     autocmd Syntax *
@@ -2503,7 +2503,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('kwbdi')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:kwbd()
-    if &modified
+    if &l:modified
       if v:lang =~? '^ja' && has('multi_lang')
         let msg = '変更を "' . expand('%:t') . '" に保存しますか?'
         let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
@@ -3087,12 +3087,12 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   function! StatusLine_y()
-    if &filetype == ''
+    if &l:filetype == ''
       return ''
     endif
 
     let context = precious#context_filetype()
-    return '[' . &filetype . (&filetype != context ? (':' . context) : '') . ']'
+    return '[' . &l:filetype . (&l:filetype != context ? (':' . context) : '') . ']'
   endfunction
 
   XOmap ax <Plug>(textobj-precious-i)
