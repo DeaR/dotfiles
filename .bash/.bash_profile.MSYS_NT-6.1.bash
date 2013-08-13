@@ -1,7 +1,7 @@
 # Bash settings for MSYS
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  13-Aug-201313-Aug-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -25,7 +25,7 @@
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Environment Variable: {{{
 export MANPATH="${HOME}/share/man:${HOME}/man:/usr/local/share/man:/usr/local/man:/mingw/share/man:/mingw/man:/usr/share/man:/usr/man:${MANPATH}:${XYZZY}/man"
 export INFOPATH="${HOME}/share/info:${HOME}/info:usr/local/share/info:/usr/local/info:/mingw/share/info:/mingw/info:/usr/share/info:/usr/info:${INFOPATH}:${XYZZY}/info:${EMACS}/info"

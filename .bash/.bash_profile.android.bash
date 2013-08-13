@@ -1,7 +1,7 @@
 # Bash settings for Android
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  13-Aug-201313-Aug-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -25,7 +25,7 @@
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Environment Variable: {{{
 export TERM="xterm-256color"
 export LANG="ja_JP.UTF-8"
@@ -34,13 +34,13 @@ export PATH="/system/xbin:${PATH}"
 export TMPDIR="/data/local/tmp"
 #}}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Vim: {{{
 export TERMINFO="/system/etc/terminfo"
 export VIMRUNTIME="/system/etc/vimruntime"
 #}}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Curl: {{{
 export CURL_CA_BUNDLE="/system/ssl/certs/ca-bundle.crt"
 #}}}

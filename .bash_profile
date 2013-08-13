@@ -1,7 +1,7 @@
 # Bash settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  13-Aug-201313-Aug-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -25,7 +25,7 @@
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Environment Variable: {{{
 export SHELL="bash"
 export TZ="JST-09"
@@ -127,7 +127,7 @@ if [ -z "${GOPATH}" ]; then
 fi
 #}}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Source By Platform, Host, User: {{{
 if hash uname 2> /dev/null && [ -n "$(uname)" -a -f "${BASH_DIR}/.bash_profile.$(uname).bash" ]; then
   source "${BASH_DIR}/.bash_profile.$(uname).bash"
@@ -143,7 +143,7 @@ if [ -f "${LOCAL_DIR}/.bash_profile.local.bash" ]; then
 fi
 #}}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Source The Users Bashrc If It Exists: {{{
 if [ -f "${BASH_DIR}/.bashrc" ]; then
   source "${BASH_DIR}/.bashrc"

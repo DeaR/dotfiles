@@ -1,7 +1,7 @@
 # GNU screen settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  13-Aug-201313-Aug-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -25,7 +25,7 @@
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Option: {{{
 altscreen on
 attrcolor b ".I"
@@ -44,21 +44,21 @@ term screen-256color
 vbell off
 #}}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Termcapinfo: {{{
 termcapinfo xterm* "is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l"
 termcapinfo xterm* "hs:ts=\E]0;:fs=\007:ds=\E]0;\007"
 termcapinfo xterm* "ti@:te@"
 #}}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Hardstatus And Caption: {{{
 caption splitonly "%{= Kw}%?%F%? %?%h%:%t #%n%?"
 hardstatus alwayslastline "%{= .c}%? %-Lw%?%40L>%{+r} %n %t %{-}%+Lw%-015=%c %d-%M-%y%{-}"
 sorendition "= Kw"
 #}}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Keybind: {{{
 bind ^c screen 1
 bind ^z

@@ -1,7 +1,7 @@
 # Bash interactive settings for MSYS
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  13-Aug-201313-Aug-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -25,7 +25,7 @@
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Alias: {{{
 if hash grep 2> /dev/null; then
   unalias grep
@@ -48,7 +48,7 @@ elif hash mingw32-make; then
 fi
 #}}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Golang: {{{
 if hash go 2> /dev/null; then
   function go_windows_386 {

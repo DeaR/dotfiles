@@ -1,7 +1,7 @@
 # Zsh interactive settings for Cygwin
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  13-Aug-201313-Aug-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -25,7 +25,7 @@
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Alias: {{{
 if hash apt-cyg 2> /dev/null; then
   alias apt-cyg="apt-cyg -m http://ftp.iij.ad.jp/pub/cygwin/"
@@ -42,7 +42,7 @@ if hash vim; then
 fi
 #}}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Golang: {{{
 if hash go 2> /dev/null; then
   function go_windows_386 {

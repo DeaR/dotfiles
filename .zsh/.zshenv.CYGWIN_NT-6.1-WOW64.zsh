@@ -1,7 +1,7 @@
 # Zsh settings for Cygwin
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  13-Aug-201313-Aug-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -25,7 +25,7 @@
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Environment Variable: {{{
 export PATH=".:${PATH}"
 export MANPATH="${HOME}/share/man:${HOME}/man:${MANPATH}:${XYZZY}/man"

@@ -1,7 +1,7 @@
 ; Xyzzy settings
 ;
 ; Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-; Last Change:  13-Aug-2013.
+; Last Change:  13-Aug-201313-Aug-2013.
 ; License:      MIT License {{{
 ;     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 ;
@@ -25,13 +25,13 @@
 ;     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ; }}}
 
-;-----------------------------------------------------------------------------
+;------------------------------------------------------------------------------
 ; abbrev
 (require "abbrev")
 (quietly-read-abbrev-file)
 
 
-;-----------------------------------------------------------------------------
+;------------------------------------------------------------------------------
 ; auto-time-stamp
 (require "auto-time-stamp")
 (setf *time-stamp-start* (compile-regexp "Last Change:[ \t]*" t))
@@ -39,13 +39,13 @@
 (setf *time-stamp-format* "%d-%b-%Y")
 
 
-;-----------------------------------------------------------------------------
+;------------------------------------------------------------------------------
 ; auto-time-stamp-bottom
 (require "auto-time-stamp-bottom")
 (setf *time-stamp-alist* nil)
 
 
-;-----------------------------------------------------------------------------
+;------------------------------------------------------------------------------
 ; ffap
 (require "ffap")
 (setf *ffap-path-alist*
@@ -53,7 +53,7 @@
             (append '(lisp-interaction-mode) *load-path*)))
 
 
-;-----------------------------------------------------------------------------
+;------------------------------------------------------------------------------
 ; info
 (require "info")
 (setf *info-directory-list*

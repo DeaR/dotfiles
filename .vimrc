@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  13-Aug-201313-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -9,9 +9,9 @@
 "     copy of this software and associated documentation files (the
 "     "Software"), to deal in the Software without restriction, including
 "     without limitation the rights to use, copy, modify, merge, publish,
-"     distribute, sublicense, and/or sell copies of the Software, and to
-"     permit persons to whom the Software is furnished to do so, subject to
-"     the following conditions:
+"     distribute, sublicense, and/or sell copies of the Software, and to permit
+"     persons to whom the Software is furnished to do so, subject to the
+"     following conditions:
 "
 "     The above copyright notice and this permission notice shall be included
 "     in all copies or substantial portions of the Software.
@@ -20,15 +20,15 @@
 "     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 "     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 "     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-"     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-"     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-"     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+"     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+"     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
 set nocompatible
 scriptencoding utf-8
 
-"=============================================================================
+"==============================================================================
 " Pre Init: {{{
 " Encoding
 if has('multi_byte')
@@ -67,7 +67,7 @@ if isdirectory($HOME . '/.local/bundle/singleton')
   call singleton#enable()
 endif
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Common: {{{
 " Vimrc autocmd group
 augroup MyVimrc
@@ -111,7 +111,7 @@ let s:is_android = has('unix') &&
   \ ($HOSTNAME ==? 'android' || $VIM =~? 'net\.momodalo\.app\.vimtouch')
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Variable: {{{
 " <Leader> <LocalLeader>
 let g:mapleader      = ';'
@@ -153,7 +153,7 @@ if has('win32') && !exists('$VCVARSALL')
 endif
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " NeoBundle: {{{
 if isdirectory($HOME . '/.local/bundle/neobundle')
   set runtimepath+=~/.local/bundle/neobundle
@@ -1109,10 +1109,10 @@ endif
 "}}}
 "}}}
 
-"=============================================================================
+"==============================================================================
 " General Settings: {{{
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " System: {{{
 " GUI options
 if has('gui_running')
@@ -1183,7 +1183,7 @@ set nomousefocus
 set nomousehide
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Display: {{{
 " Don't redraw which macro executing
 set lazyredraw
@@ -1221,7 +1221,7 @@ if has('conceal')
 endif
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Search: {{{
 " Options
 set ignorecase
@@ -1253,7 +1253,7 @@ autocmd MyVimrc QuickFixCmdPost make,grep,vimgrep,helpgrep
   \ cwindow
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Editing: {{{
 " Complete
 set completeopt=menu,menuone
@@ -1318,7 +1318,7 @@ let g:vimsyn_folding      = 'af'
 let g:xml_syntax_folding  = 1
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Status Line: {{{
 set statusline=%<%f\ %m%r[
 if has('multi_byte')
@@ -1338,7 +1338,7 @@ else
 endif
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " File Encodings: {{{
 if has('multi_byte')
   let s:enc_jisx0213 = has('iconv') &&
@@ -1366,7 +1366,7 @@ if has('multi_byte')
 endif
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Plugins: {{{
 " Assembler
 let g:asmsyntax = 'masm'
@@ -1389,7 +1389,7 @@ endif
 filetype plugin indent on
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Colors: {{{
 " Cursor line & column
 if has('gui_running') || &t_Co > 255
@@ -1417,10 +1417,10 @@ endif
 "}}}
 "}}}
 
-"=============================================================================
+"==============================================================================
 " Mappings: {{{
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Multi Mode Mapping: {{{
 command! -complete=mapping -nargs=*
   \ NVmap
@@ -1479,7 +1479,7 @@ command! -complete=mapping -nargs=*
   \ nnoremap <args>| snoremap <args>| onoremap <args>
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Prefix: {{{
 " <Leader> <LocalLeader>
 NXOnoremap <Leader>      <Nop>
@@ -1496,7 +1496,7 @@ NOnoremap  <C-G> <Nop>
 cnoremap   <C-G> <Nop>
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Moving: {{{
 " Jump
 NXOnoremap ' `
@@ -1559,7 +1559,7 @@ NXOnoremap mj ]`
 NXOnoremap mk [`
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Useful: {{{
 " Split Nicely
 function! s:split_nicely_expr()
@@ -1683,7 +1683,7 @@ NXnoremap <C-W>, :<C-U>copen<CR>
 NXnoremap <C-W>. :<C-U>cclose<CR>
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Subrogation: {{{
 " Mark
 nnoremap <M-m> m
@@ -1730,10 +1730,10 @@ inoremap <SID><C-H> <C-H>
 "}}}
 "}}}
 
-"=============================================================================
+"==============================================================================
 " Commands: {{{
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Change File Format Option: {{{
 command! -bar
   \ FfUnix
@@ -1746,7 +1746,7 @@ command! -bar
   \ setlocal modified fileformat=mac
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Change File Encoding Option: {{{
 if has('multi_byte')
   command! -bar
@@ -1779,7 +1779,7 @@ if has('multi_byte')
 endif
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Open With A Specific Character Code Again: {{{
 if has('multi_byte')
   command! -bang -bar -complete=file -nargs=?
@@ -1812,7 +1812,7 @@ if has('multi_byte')
 endif
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Shell Setting: {{{
 if has('win32')
   function! s:get_shell()
@@ -1832,7 +1832,7 @@ if has('win32')
 endif
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " VC Vars: {{{
 if exists('$VCVARSALL')
   function! s:vcvarsall(arch)
@@ -1864,7 +1864,7 @@ if exists('$VCVARSALL')
 endif
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " From CmdEx: {{{
 command! -bar -nargs=1 -complete=file
   \ Diff
@@ -1876,7 +1876,7 @@ command! -bar
 nnoremap <F8> :<C-U>Undiff<CR>
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " From Example: {{{
 command! -bar
   \ DiffOrig
@@ -1887,10 +1887,10 @@ nnoremap <F6> :<C-U>DiffOrig<CR>
 "}}}
 "}}}
 
-"=============================================================================
+"==============================================================================
 " Vim Script: {{{
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Command Line Window: {{{
 function! s:cmdwin_enter()
   startinsert!
@@ -1932,7 +1932,7 @@ NXnoremap <expr> ;/ <SID>cmdline_enter('/')
 NXnoremap <expr> ;? <SID>cmdline_enter('?')
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Auto Mark: {{{
 let s:mark_char = [
   \ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
@@ -1992,7 +1992,7 @@ nnoremap <expr> mC <SID>clear_file_marks()
 nnoremap <expr> ml <SID>marks()
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Smart BOL: {{{
 function! s:smart_bol()
   let col = col('.')
@@ -2008,7 +2008,7 @@ inoremap <silent><expr> <M-H> '<C-O>' . <SID>smart_bol()
 inoremap <silent><expr> <M-L> '<C-O>' . <SID>smart_eol()
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Make Searching Directions Consistent: {{{
 function! s:search_forward_expr()
   return exists('v:searchforward') ? v:searchforward : 1
@@ -2020,7 +2020,7 @@ onoremap  <expr> n <SID>search_forward_expr() ? 'n' : 'N'
 onoremap  <expr> N <SID>search_forward_expr() ? 'N' : 'n'
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Line Number: {{{
 function! s:toggle_line_number_style()
   set relativenumber!
@@ -2032,7 +2032,7 @@ endfunction
 nnoremap <F12> :<C-U>call <SID>toggle_line_number_style()<CR>
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Insert One Character: {{{
 function! s:insert_one_char()
   echohl ModeMsg
@@ -2051,7 +2051,7 @@ nnoremap  <expr> <M-i> "i" . <SID>insert_one_char() . "\<Esc>"
 NXnoremap <expr> <M-I> "I" . <SID>insert_one_char() . "\<Esc>"
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Auto MkDir: {{{
 function! s:auto_mkdir(dir, force)
   if v:lang =~? '^ja' && has('multi_lang')
@@ -2069,7 +2069,7 @@ autocmd MyVimrc BufWritePre *
   \ call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Functions Of Highlight: {{{
 function! s:get_highlight(hi)
   redir => hl
@@ -2098,7 +2098,7 @@ function! s:reverse_highlight(hl)
 endfunction
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Reverse Status Line Color At Insert Mode: {{{
 function! s:set_status_line_color(is_enter, force)
   if !exists('s:hi_status_line') || !exists('s:hi_status_line_i') || a:force
@@ -2126,7 +2126,7 @@ augroup MyVimrc
 augroup END
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Highlight Ideographic Space: {{{
 if has('multi_byte')
   function! s:set_ideographic_space(force)
@@ -2150,7 +2150,7 @@ if has('multi_byte')
 endif
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " From Example: {{{
 autocmd MyVimrc BufRead *
   \ if line("'\"") > 1 && line("'\"") <= line('$') &&
@@ -2160,10 +2160,10 @@ autocmd MyVimrc BufRead *
 "}}}
 "}}}
 
-"=============================================================================
+"==============================================================================
 " Plugins: {{{
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Alignta: {{{
 silent! let s:bundle = neobundle#get('alignta')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2172,7 +2172,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " AlterCommand: {{{
 silent! let s:bundle = neobundle#get('altercmd')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2198,7 +2198,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Altr: {{{
 silent! let s:bundle = neobundle#get('altr')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2210,7 +2210,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " AutoDate: {{{
 silent! let s:bundle = neobundle#get('autodate')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2224,7 +2224,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " AutoFmt: {{{
 silent! let s:bundle = neobundle#get('autofmt')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2233,7 +2233,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Clang Complete: {{{
 silent! let s:bundle = neobundle#get('clang_complete')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2302,7 +2302,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Clever F: {{{
 silent! let s:bundle = neobundle#get('clever-f')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2337,7 +2337,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " ColumnJump: {{{
 silent! let s:bundle = neobundle#get('columnjump')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2357,7 +2357,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Emmet: {{{
 silent! let s:bundle = neobundle#get('emmet')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2384,7 +2384,7 @@ unlet! s:bundle
 "}}}
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Fugitive: {{{
 silent! let s:bundle = neobundle#get('fugitive')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2395,7 +2395,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Goto File: {{{
 silent! let s:bundle = neobundle#get('gf-user')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2414,7 +2414,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Grex: {{{
 silent! let s:bundle = neobundle#get('grex')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2427,7 +2427,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Hier: {{{
 silent! let s:bundle = neobundle#get('hier')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2436,7 +2436,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " HybridText: {{{
 silent! let s:bundle = neobundle#get('HybridText')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2446,7 +2446,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " IndentLine: {{{
 silent! let s:bundle = neobundle#get('indentLine')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2483,7 +2483,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Jedi: {{{
 silent! let s:bundle = neobundle#get('jedi')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2500,7 +2500,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " JsComplete: {{{
 silent! let s:bundle = neobundle#get('jscomplete')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2514,7 +2514,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Kwbdi: {{{
 silent! let s:bundle = neobundle#get('kwbdi')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2546,7 +2546,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Lua FtPlugin: {{{
 silent! let s:bundle = neobundle#get('ft_lua')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2568,7 +2568,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " MapList: {{{
 silent! let s:bundle = neobundle#get('maplist')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2581,7 +2581,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Narrow: {{{
 silent! let s:bundle = neobundle#get('narrow')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2591,7 +2591,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " NeoBundle: {{{
 silent! let s:bundle = neobundle#get('neobundle')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2632,7 +2632,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " NeoComplCache: {{{
 silent! let s:bundle = neobundle#get('neocomplcache')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2732,7 +2732,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " NeoComplete: {{{
 silent! let s:bundle = neobundle#get('neocomplete')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2830,7 +2830,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " NeoSnippet: {{{
 silent! let s:bundle = neobundle#get('neosnippet')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2851,7 +2851,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " OmniSharp: {{{
 silent! let s:bundle = neobundle#get('Omnisharp')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2867,7 +2867,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Open Browser: {{{
 silent! let s:bundle = neobundle#get('open-browser')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2877,7 +2877,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Operator Camelize: {{{
 silent! let s:bundle = neobundle#get('operator-camelize')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2892,7 +2892,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Operator HTML Escape: {{{
 silent! let s:bundle = neobundle#get('operator-html-escape')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2905,7 +2905,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Operator Open Browser: {{{
 silent! let s:bundle = neobundle#get('operator-openbrowser')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2914,7 +2914,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Operator Replace: {{{
 silent! let s:bundle = neobundle#get('operator-replace')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2924,7 +2924,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Operator Reverse: {{{
 silent! let s:bundle = neobundle#get('operator-reverse')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2937,7 +2937,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Operator Sort: {{{
 silent! let s:bundle = neobundle#get('operator-sort')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2948,7 +2948,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Operator Star: {{{
 silent! let s:bundle = neobundle#get('operator-star')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2989,7 +2989,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Operator User: {{{
 silent! let s:bundle = neobundle#get('operator-user')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3040,7 +3040,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " ParaJump: {{{
 silent! let s:bundle = neobundle#get('parajump')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3062,7 +3062,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " PerlOmni: {{{
 silent! let s:bundle = neobundle#get('perlomni')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3080,7 +3080,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " PHP Complete: {{{
 silent! let s:bundle = neobundle#get('phpcomplete')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3090,7 +3090,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Precious: {{{
 silent! let s:bundle = neobundle#get('precious')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3120,7 +3120,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " QFixHowm: {{{
 silent! let s:bundle = neobundle#get('qfixhowm')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3176,7 +3176,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " QuickRun: {{{
 silent! let s:bundle = neobundle#get('quickrun')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3257,7 +3257,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Reanimate: {{{
 silent! let s:bundle = neobundle#get('reanimate')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3274,7 +3274,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Ref: {{{
 silent! let s:bundle = neobundle#get('ref')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3288,7 +3288,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Ruby: {{{
 silent! let s:bundle = neobundle#get('ruby')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3300,7 +3300,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " SaveVers: {{{
 silent! let s:bundle = neobundle#get('savevers')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3320,7 +3320,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Scratch: {{{
 silent! let s:bundle = neobundle#get('scratch')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3331,7 +3331,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " SmartChr: {{{
 silent! let s:bundle = neobundle#get('smartchr')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3361,7 +3361,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " SmartInput: {{{
 silent! let s:bundle = neobundle#get('smartinput')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3390,7 +3390,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " SmartWord: {{{
 silent! let s:bundle = neobundle#get('smartword')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3414,7 +3414,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Surround: {{{
 silent! let s:bundle = neobundle#get('surround')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3437,7 +3437,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Switch: {{{
 silent! let s:bundle = neobundle#get('switch')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3570,7 +3570,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TComment: {{{
 silent! let s:bundle = neobundle#get('tcomment')
 if exists('s:bundle') && !get(s:bundle, 'disabled', )
@@ -3615,7 +3615,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextManipilate: {{{
 silent! let s:bundle = neobundle#get('textmanip')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3631,7 +3631,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Between: {{{
 silent! let s:bundle = neobundle#get('textobj-between')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3645,7 +3645,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Comment: {{{
 silent! let s:bundle = neobundle#get('textobj-comment')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3659,7 +3659,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Continuous Line: {{{
 silent! let s:bundle = neobundle#get('textobj-continuous-line')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3671,7 +3671,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj DateTime: {{{
 silent! let s:bundle = neobundle#get('textobj-datetime')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3696,7 +3696,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Diff: {{{
 silent! let s:bundle = neobundle#get('textobj-diff')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3727,7 +3727,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Entrie: {{{
 silent! let s:bundle = neobundle#get('textobj-entire')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3741,7 +3741,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj EnclosedSyntax: {{{
 silent! let s:bundle = neobundle#get('textobj-enclosedsyntax')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3752,7 +3752,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Fold: {{{
 silent! let s:bundle = neobundle#get('textobj-fold')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3766,7 +3766,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Function: {{{
 silent! let s:bundle = neobundle#get('textobj-function')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3777,7 +3777,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Ifdef: {{{
 silent! let s:bundle = neobundle#get('textobj-ifdef')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3788,7 +3788,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj IndentBlock: {{{
 silent! let s:bundle = neobundle#get('textobj-indblock')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3804,7 +3804,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Indent: {{{
 silent! let s:bundle = neobundle#get('textobj-indent')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3820,7 +3820,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj JaBraces: {{{
 silent! let s:bundle = neobundle#get('textobj-jabraces')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3867,7 +3867,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Line: {{{
 silent! let s:bundle = neobundle#get('textobj-line')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3881,7 +3881,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj MultiBlock: {{{
 silent! let s:bundle = neobundle#get('textobj-multiblock')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3895,7 +3895,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj MultiTextObj: {{{
 silent! let s:bundle = neobundle#get('textobj-multitextobj')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3937,7 +3937,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj MotionMotion: {{{
 silent! let s:bundle = neobundle#get('textobj-motionmotion')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3951,7 +3951,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Parameter: {{{
 silent! let s:bundle = neobundle#get('textobj-parameter')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3965,7 +3965,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj PHP: {{{
 silent! let s:bundle = neobundle#get('textobj-php')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3976,7 +3976,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Python: {{{
 silent! let s:bundle = neobundle#get('textobj-python')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3987,7 +3987,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Ruby: {{{
 silent! let s:bundle = neobundle#get('textobj-ruby')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3999,7 +3999,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Sigil: {{{
 silent! let s:bundle = neobundle#get('textobj-sigil')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4010,7 +4010,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Space: {{{
 silent! let s:bundle = neobundle#get('textobj-space')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4024,7 +4024,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Syntax: {{{
 silent! let s:bundle = neobundle#get('textobj-syntax')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4038,7 +4038,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj Url: {{{
 silent! let s:bundle = neobundle#get('textobj-url')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4052,7 +4052,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj WordInWord: {{{
 silent! let s:bundle = neobundle#get('textobj-wiw')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4071,7 +4071,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " TextObj XML Attribute: {{{
 silent! let s:bundle = neobundle#get('textobj-xml-attribute')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4082,7 +4082,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " UndoTree: {{{
 silent! let s:bundle = neobundle#get('undotree')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4095,7 +4095,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Unite: {{{
 silent! let s:bundle = neobundle#get('unite')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4311,7 +4311,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Unite Help: {{{
 silent! let s:bundle = neobundle#get('unite-help')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4325,7 +4325,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Unite Mark: {{{
 silent! let s:bundle = neobundle#get('unite-mark')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4342,7 +4342,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Unite Outline: {{{
 silent! let s:bundle = neobundle#get('unite-outline')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4353,7 +4353,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Unite QuickRun Config: {{{
 silent! let s:bundle = neobundle#get('unite-quickrun_config')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4364,7 +4364,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Unite SSH: {{{
 silent! let s:bundle = neobundle#get('unite-ssh')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4376,7 +4376,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Unite Sudo: {{{
 silent! let s:bundle = neobundle#get('unite-sudo')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4388,7 +4388,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Unite Tag: {{{
 silent! let s:bundle = neobundle#get('unite-tag')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4399,7 +4399,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " VerifyEnc: {{{
 silent! let s:bundle = neobundle#get('verifyenc')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4409,7 +4409,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " VimDoc Ja: {{{
 silent! let s:bundle = neobundle#get('vimdoc-ja')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4418,7 +4418,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " VimFiler: {{{
 silent! let s:bundle = neobundle#get('vimfiler')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4433,7 +4433,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " VimProc: {{{
 silent! let s:bundle = neobundle#get('vimproc')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4446,7 +4446,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " VimShell: {{{
 silent! let s:bundle = neobundle#get('vimshell')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4499,7 +4499,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " VisualStar: {{{
 silent! let s:bundle = neobundle#get('visualstar')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4525,7 +4525,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"-----------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " WatchDogs: {{{
 silent! let s:bundle = neobundle#get('watchdogs')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -4573,7 +4573,7 @@ endif
 unlet! s:bundle
 "}}}
 
-"=============================================================================
+"==============================================================================
 " Post Init: {{{
 if exists('#User#VimrcPost')
   execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')

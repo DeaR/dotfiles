@@ -1,7 +1,7 @@
 # Zsh settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  13-Aug-201313-Aug-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -25,7 +25,7 @@
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Environment Variable: {{{
 export SHELL="zsh"
 export LISTMAX="0"
@@ -129,7 +129,7 @@ if [ -z "${GOPATH}" ]; then
 fi
 #}}}
 
-#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Source By Platform, Host, User: {{{
 if hash uname 2> /dev/null && [ -n "$(uname)" -a -f "${ZDOTDIR}/.zshenv.$(uname).zsh" ]; then
   source "${ZDOTDIR}/.zshenv.$(uname).zsh"
