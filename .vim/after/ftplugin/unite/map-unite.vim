@@ -33,6 +33,8 @@ silent! iunmap <buffer> <S-Tab>
 
 nnoremap <buffer><silent><expr> dd
   \ unite#smart_map('d', unite#do_action('delete'))
+nnoremap <buffer><silent><expr> pp
+  \ unite#do_action('preview')
 nmap <buffer> <C-J> <Plug>(unite_choose_action)
 imap <buffer> <C-J> <Plug>(unite_choose_action)
 imap <buffer> <M-H> <Plug>(unite_move_head)
@@ -49,6 +51,7 @@ else
 endif
 let b:undo_ftplugin .= '
   \ silent! nunmap <buffer> dd|
+  \ silent! nunmap <buffer> pp|
   \ silent! nunmap <buffer> <C-J>|
   \ silent! iunmap <buffer> <C-J>|
   \ silent! iunmap <buffer> <M-H>|

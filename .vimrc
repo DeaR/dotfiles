@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  14-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -3017,7 +3017,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         execute
           \ (&grepprg == 'internal' ? 'Unite vimgrep::' : 'Unite grep:::') .
           \ escape(join(lines), s:operator_grep_escape) .
-          \ ' -buffer-name=grep -no-split -multi-line -auto-preview'
+          \ ' -buffer-name=grep -no-split -multi-line'
       else
         execute input(
           \ ':',
@@ -4196,28 +4196,28 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ (":\<C-U>Unite line/fast" .
       \  " -buffer-name=search -no-split -start-insert\<CR>") :
       \ (":\<C-U>Unite line" .
-      \  " -buffer-name=search -no-split -start-insert -auto-preview\<CR>")
+      \  " -buffer-name=search -no-split -start-insert\<CR>")
   endfunction
   function! s:unite_search_backward()
     return s:unite_search_expr() ?
       \ (":\<C-U>Unite line/fast:backward" .
       \  " -buffer-name=search -no-split -start-insert\<CR>") :
       \ (":\<C-U>Unite line:backward" .
-      \  " -buffer-name=search -no-split -start-insert -auto-preview\<CR>")
+      \  " -buffer-name=search -no-split -start-insert\<CR>")
   endfunction
   function! s:unite_search_cword_forward()
     return s:unite_search_expr() ?
       \ (":\<C-U>UniteWithCursorWord line/fast" .
       \  " -buffer-name=search -no-split -no-start-insert\<CR>") :
       \ (":\<C-U>UniteWithCursorWord line" .
-      \  " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
+      \  " -buffer-name=search -no-split -no-start-insert\<CR>")
   endfunction
   function! s:unite_search_cword_backward()
     return s:unite_search_expr() ?
       \ (":\<C-U>UniteWithCursorWord line/fast:backward" .
       \  " -buffer-name=search -no-split -no-start-insert\<CR>") :
       \ (":\<C-U>UniteWithCursorWord line:backward" .
-      \  " -buffer-name=search -no-split -no-start-insert -auto-preview\<CR>")
+      \  " -buffer-name=search -no-split -no-start-insert\<CR>")
   endfunction
 
   NXnoremap <Leader>u <Nop>
@@ -4259,22 +4259,22 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   if &grepprg == 'internal'
     nnoremap <Leader>g<Leader>g
       \ :<C-U>Unite vimgrep
-      \ -buffer-name=grep -no-split -multi-line -auto-preview<CR>
+      \ -buffer-name=grep -no-split -multi-line<CR>
   else
     nnoremap <Leader>g<Leader>g
       \ :<C-U>Unite grep
-      \ -buffer-name=grep -no-split -multi-line -auto-preview<CR>
+      \ -buffer-name=grep -no-split -multi-line<CR>
   endif
   NXnoremap <Leader>G
     \ :<C-U>UniteResume grep
-    \ -no-split -multi-line -no-start-insert -auto-preview<CR>
+    \ -no-split -multi-line -no-start-insert<CR>
 
   NXnoremap <Leader>j
     \ :<C-U>Unite jump
-    \ -buffer-name=register -no-split -multi-line<CR>
+    \ -buffer-name=register<CR>
   NXnoremap <Leader>J
     \ :<C-U>Unite change
-    \ -buffer-name=register -no-split -multi-line -auto-preview<CR>
+    \ -buffer-name=register<CR>
   nnoremap <C-P>
     \ :<C-U>Unite register history/yank
     \ -buffer-name=register -multi-line<CR>
@@ -4311,10 +4311,10 @@ silent! let s:bundle = neobundle#get('unite-help')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <Leader>u<F1>
     \ :<C-U>Unite help
-    \ -buffer-name=help -no-split -start-insert<CR>
+    \ -buffer-name=help -start-insert<CR>
   nnoremap <Leader>u<F2>
     \ :<C-U>UniteWithCursorWord help
-    \ -buffer-name=help -no-split -no-start-insert<CR>
+    \ -buffer-name=help -no-start-insert<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -4330,7 +4330,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nnoremap ml
     \ :<C-U>Unite mark bookmark
-    \ -buffer-name=register -no-split -multi-line -no-start-insert<CR>
+    \ -buffer-name=register -no-start-insert<CR>
   nnoremap mu :<C-U>UniteBookmarkAdd<CR>
 endif
 unlet! s:bundle
@@ -4342,7 +4342,7 @@ silent! let s:bundle = neobundle#get('unite-outline')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXnoremap <Leader>uo
     \ :<C-U>Unite outline
-    \ -buffer-name=outline -no-split -auto-preview -multi-line<CR>
+    \ -buffer-name=outline -no-split<CR>
 endif
 unlet! s:bundle
 "}}}
