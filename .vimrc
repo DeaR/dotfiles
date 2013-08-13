@@ -871,7 +871,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'akiyan/vim-textobj-xml-attribute', {
-    \ 'autoload' : {'filetypes' : ['html', 'xml']},
+    \ 'autoload' : {'filetypes' : ['cpp', 'cs', 'html', 'vbnet', 'xml']},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
