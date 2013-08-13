@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-13 11:47:26 DeaR>
+" @timestamp   <2013-08-13 12:00:04 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -3093,14 +3093,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     let context = precious#context_filetype()
     return '[' . &filetype . (&filetype != context ? (':' . context) : '') . ']'
-  endfunction
-  function! StatusLine_Y()
-    if &filetype == ''
-      return ''
-    endif
-
-    let context = precious#context_filetype()
-    return toupper(',' . &filetype . (&filetype != context ? (',' . context) : ''))
   endfunction
 
   XOmap ax <Plug>(textobj-precious-i)
