@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-13 14:04:48 DeaR>
+" @timestamp   <2013-08-13 14:12:43 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1626,13 +1626,13 @@ augroup END
 " Help
 inoremap <expr> <F1>
   \ <SID>split_nicely_expr() ?
-  \   '<C-O>:<C-U>help<Space>' :
-  \   '<C-O>:<C-U>vertical help<Space>'
+  \   '<Esc>:<C-U>help<Space>' :
+  \   '<Esc>:<C-U>vertical help<Space>'
 nnoremap <expr> <F1>
   \ <SID>split_nicely_expr() ?
   \   ':<C-U>help<Space>' :
   \   ':<C-U>vertical help<Space>'
-nnoremap <expr> g<F1>
+nnoremap <expr> <F2>
   \ <SID>split_nicely_expr() ?
   \   ':<C-U>help ' . expand('<cword>') . '<CR>' :
   \   ':<C-U>vertical help ' . expand('<cword>') . '<CR>'
@@ -4302,7 +4302,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <Leader>u<F1>
     \ :<C-U>Unite help
     \ -buffer-name=help -no-split -start-insert<CR>
-  nnoremap <Leader>ug<F1>
+  nnoremap <Leader>u<F2>
     \ :<C-U>UniteWithCursorWord help
     \ -buffer-name=help -no-split -no-start-insert<CR>
 endif
