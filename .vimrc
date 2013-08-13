@@ -2368,12 +2368,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ 'xml' : {'extends' : 'html'}}
   endfunction
 
-  function! s:bundle.hooks.on_post_source(bundle)
-    " https://github.com/mattn/emmet-vim/pull/127
-    nmap <C-Y>, <Plug>EmmetExpandNormal
-    nmap <C-Y>; <Plug>EmmetExpandWord
-  endfunction
-
   call extend(s:neocompl_omni_patterns, {
     \ 'css' : '.*', 'css.drupal' : '.*', 'haml' : '.*', 'html' : '.*',
     \ 'html.django_template' : '.*', 'htmldjango' : '.*', 'less' : '.*',
