@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-12 20:54:34 DeaR>
+" @timestamp   <2013-08-13 11:47:26 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1303,7 +1303,7 @@ let g:xml_syntax_folding  = 1
 " Status Line: {{{
 set statusline=%<%f\ %m%r[
 if has('multi_byte')
-  set statusline+=%{(&fenc!=''?&fenc:&enc)}:
+  set statusline+=%{&fenc!=''?&fenc:&enc}:
 endif
 set statusline+=%{&ff}]%y%=
 
