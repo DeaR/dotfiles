@@ -4,7 +4,7 @@
 " @description Vim settings
 " @namespace   http://kuonn.mydns.jp/
 " @author      DeaR
-" @timestamp   <2013-08-13 12:00:04 DeaR>
+" @timestamp   <2013-08-13 13:31:33 DeaR>
 
 set nocompatible
 scriptencoding utf-8
@@ -1852,7 +1852,7 @@ command! -bar -nargs=1 -complete=file
   \ vertical diffsplit <args>
 command! -bar
   \ Undiff
-  \ setlocal diff< scrollbind< wrap< cursorbind<
+  \ diffoff | setlocal scrollbind< cursorbind< wrap< foldmethod< foldcolumn< | doautocmd FileType
 
 nnoremap <F8> :<C-U>Undiff<CR>
 "}}}
@@ -1861,8 +1861,8 @@ nnoremap <F8> :<C-U>Undiff<CR>
 " From Example: {{{
 command! -bar
   \ DiffOrig
-  \ vertical new | setlocal buftype=nofile |
-  \ read # | 0d_ | diffthis | wincmd p | diffthis
+  \ let s:save_ft = &l:filetype | vertical new | setlocal buftype=nofile |
+  \ let &l:filetype = s:save_ft | unlet s:save_ft | read # | 0d_ | diffthis | wincmd p | diffthis
 
 nnoremap <F6> :<C-U>DiffOrig<CR>
 "}}}
@@ -3294,9 +3294,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:versdiff_no_resize    = 1
   endfunction
 
-  NXnoremap <F7>  :<C-U>VersDiff -<CR>
-  NXnoremap g<F7> :<C-U>VersDiff +<CR>
-  NXnoremap g<F8> :<C-U>VersDiff -c<CR>
+  NXnoremap <F6> :<C-U>VersDiff -<CR>
+  NXnoremap <F7> :<C-U>VersDiff +<CR>
+  NXnoremap <F8> :<C-U>execute 'VersDiff -c' \| Undiff<CR>
 
   autocmd MyVimrc BufNewFile,BufRead *
     \ NeoBundleSource savevers
