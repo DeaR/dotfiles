@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  17-Aug-2013.
+" Last Change:  18-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -288,6 +288,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'filetypes' : 'qf',
     \   'commands' : ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
 
+  NeoBundleLazy 'othree/html5.vim', {
+    \ 'autoload' : {'filetypes' : ['html', 'javascript']}}
+
   NeoBundleLazy 'HybridText', {
     \ 'autoload' : {'filetypes' : 'hybrid'}}
 
@@ -437,6 +440,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'NeoSnippetEdit'      : 'neosnippet#edit_complete',
     \ 'NeoSnippetMakeCache' : 'neosnippet#filetype_complete'})
 
+  NeoBundleLazy 'evanmiller/nginx-vim-syntax', {
+    \ 'autoload' : {'filetypes' : 'nginx'}}
+
   NeoBundleLazy 'Shougo/vim-nyaos', {
     \ 'autoload' : {'filetypes' : 'nyaos'}}
 
@@ -508,6 +514,17 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>(parajump-forward)', '<Plug>(parajump-backward)']],
     \   'insert' : 1}}
+
+  NeoBundleLazy 'thinca/vim-partedit', {
+    \ 'autoload' : {
+    \   'commands' : [
+    \     {'name' : 'Partedit',
+    \      'complete' : 'customlist,partedit#complete'}]}}
+  call extend(s:neocompl_vim_completefuncs, {
+    \ 'Partedit' : 'partedit#complete'})
+
+  NeoBundleLazy 'vim-perl/vim-perl', {
+    \ 'autoload' : {'filetypes' : ['perl', 'perl6', 'pod', 'tt2', 'tt2html', 'tt2js', 'xs']}}
 
   if s:executable('perl')
     NeoBundleLazy 'c9s/perlomni.vim', {
