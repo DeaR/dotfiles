@@ -1,7 +1,7 @@
 " Filetype detects for Ignored extensions
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  18-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -25,7 +25,7 @@
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-autocmd BufNewFile,BufRead ?\+.org
-  \ execute 'doautocmd filetypedetect BufRead' fnameescape(expand('<afile>:r'))
-autocmd BufNewFile,BufRead ?\+.clean
+autocmd BufNewFile,BufRead *.[0-9]\+.clean
   \ execute 'doautocmd filetypedetect BufRead' fnameescape(expand('<afile>:r:r'))
+autocmd BufNewFile,BufRead *.org,*.clean
+  \ execute 'doautocmd filetypedetect BufRead' fnameescape(expand('<afile>:r'))
