@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  14-Aug-2013.
+" Last Change:  17-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -229,7 +229,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     'css', 'css.drupal', 'haml', 'html', 'html.django_template', 'htmldjango',
     \     'less', 'mustache', 'sass', 'scss', 'slim', 'xhtml', 'xml', 'xsl', 'xslt'],
     \   'commands' : 'Emmet',
-    \   'mappings' : [['nvi', '<C-Y>']]}}
+    \   'mappings' : [['nvi', '<C-E>']]}}
 
   NeoBundleLazy 'thinca/vim-ft-clojure', {
     \ 'autoload' : {'filetypes' : 'clojure'}}
@@ -2362,7 +2362,8 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('emmet')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:user_emmet_settings = {
+    let g:user_emmet_leader_key = '<C-E>'
+    let g:user_emmet_settings   = {
       \ 'lang' : 'ja',
       \ 'indentation' : '  ',
       \ 'xml' : {'extends' : 'html'}}
