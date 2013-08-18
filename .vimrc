@@ -181,6 +181,23 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'kana/vim-altr', {
     \ 'autoload' : {'mappings' : [['nvoi', '<Plug>(altr-forward)', '<Plug>(altr-back)']]}}
 
+  NeoBundleLazy 'osyo-manga/vim-anzu', {
+    \ 'autoload' : {
+    \   'commands' : [
+    \     'AnzuClearSearchStatus', 'AnzuClearSearchCache',
+    \     'AnzuUpdateSearchStatus', 'AnzuUpdateSearchStatusOutput',
+    \     'AnzuSignMatchLine', 'AnzuClearSignMatchLine'],
+    \   'mappings' : [
+    \     ['n',
+    \      '<Plug>(anzu-n)', '<Plug>(anzu-n-with-echo)',
+    \      '<Plug>(anzu-N)', '<Plug>(anzu-N-with-echo)',
+    \      '<Plug>(anzu-star)', '<Plug>(anzu-star-with-echo)',
+    \      '<Plug>(anzu-sharp)', '<Plug>(anzu-sharp-with-echo)',
+    \      '<Plug>(anzu-update-search-status)', '<Plug>(anzu-update-search-status-with-echo)',
+    \      '<Plug>(anzu-clear-search-status)', '<Plug>(anzu-clear-search-cache)',
+    \      '<Plug>(anzu-echo-search-status)', '<Plug>(anzu-sign-matchline)',
+    \      '<Plug>(anzu-clear-sign-matchline)', '<Plug>(anzu-smart-sign-matchline)']]}}
+
   NeoBundleLazy 'gist:iori-yja/1615430', {
     \ 'name' : 'arm',
     \ 'autoload' : {'filetypes' : 'arm'},
@@ -2238,6 +2255,23 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap g<M-F>     <Plug>(altr-back)
   nmap <C-W><M-f> <SID>(split-nicely)<Plug>(altr-forward)
   nmap <C-W><M-F> <SID>(split-nicely)<Plug>(altr-back)
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Anzu: {{{
+silent! let s:bundle = neobundle#get('anzu')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  set shortmess+=s
+
+  nmap <SID>(anzu-n-with-echo) <Plug>(anzu-n-with-echo)
+  nmap <SID>(anzu-N-with-echo) <Plug>(anzu-N-with-echo)
+
+  nnoremap <script><expr> n
+    \ <SID>search_forward_expr() ? '<SID>(anzu-n-with-echo)zvzz' : '<SID>(anzu-N-with-echo)zvzz'
+  nnoremap <script><expr> N
+    \ <SID>search_forward_expr() ? '<SID>(anzu-N-with-echo)zvzz' : '<SID>(anzu-n-with-echo)zvzz'
 endif
 unlet! s:bundle
 "}}}
