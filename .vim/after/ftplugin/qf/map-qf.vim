@@ -1,7 +1,7 @@
 " Close mapping for QuickFix
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  18-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -45,30 +45,12 @@ function! s:jk(motion)
   endwhile
   return (pos + 1) . 'G'
 endfunction
-noremap <buffer><silent><expr> j <SID>jk(v:count1)
-noremap <buffer><silent><expr> k <SID>jk(-v:count1)
-
-function! s:del_entry() range
-  let qf = getqflist()
-  let history = get(w:, 'qf_history', [])
-  call add(history, copy(qf))
-  let w:qf_history = history
-  unlet! qf[a:firstline - 1 : a:lastline - 1]
-  call setqflist(qf, 'r')
-  execute a:firstline
-endfunction
-nnoremap <buffer><silent> dd :<C-U>call <SID>del_entry()<CR>
-nnoremap <buffer><silent> x  :<C-U>call <SID>del_entry()<CR>
-xnoremap <buffer><silent> d  :call <SID>del_entry()<CR>
-xnoremap <buffer><silent> x  :call <SID>del_entry()<CR>
-
-function! s:undo_entry()
-  let history = get(w:, 'qf_history', [])
-  if !empty(history)
-    call setqflist(remove(history, -1), 'r')
-  endif
-endfunction
-nnoremap <buffer><silent> u :<C-U>call <SID>undo_entry()<CR>
+nnoremap <buffer><silent><expr> j <SID>jk(v:count1)
+xnoremap <buffer><silent><expr> j <SID>jk(v:count1)
+onoremap <buffer><silent><expr> j <SID>jk(v:count1)
+nnoremap <buffer><silent><expr> k <SID>jk(-v:count1)
+xnoremap <buffer><silent><expr> k <SID>jk(-v:count1)
+onoremap <buffer><silent><expr> k <SID>jk(-v:count1)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
@@ -79,12 +61,11 @@ let b:undo_ftplugin .= '
   \ silent! nunmap <buffer> q|
   \ silent! nunmap <buffer> <S-CR>|
   \ silent! nunmap <buffer> j|
+  \ silent! xunmap <buffer> j|
+  \ silent! ounmap <buffer> j|
   \ silent! nunmap <buffer> k|
-  \ silent! nunmap <buffer> dd|
-  \ silent! nunmap <buffer> x|
-  \ silent! xunmap <buffer> d|
-  \ silent! xunmap <buffer> x|
-  \ silent! nunmap <buffer> u'
+  \ silent! xunmap <buffer> k|
+  \ silent! ounmap <buffer> k'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

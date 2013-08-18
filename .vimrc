@@ -1586,14 +1586,14 @@ noremap <expr> <SID>(split-nicely)
   \ <SID>split_nicely_expr() ? '<C-W>s' : '<C-W>v'
 
 " Semi-colon shortcut
-NXnoremap <Leader>c     <C-W>c
-NXnoremap <Leader>C     <C-W>o
-NXnoremap <Leader>!     :<C-U>shell<CR>
-NXnoremap <Leader>E     :<C-U>Explorer<CR>
+NXnoremap <Leader>c     :<C-U>confirm close<CR>
+NXnoremap <Leader>C     :<C-U>confirm only<CR>
 NXnoremap <Leader>w     :<C-U>confirm update<CR>
 NXnoremap <Leader>W     :<C-U>confirm wall<CR>
 NXnoremap <Leader>q     :<C-U>confirm bdelete<CR>
 NXnoremap <Leader>Q     :<C-U>confirm 1,$bdelete<CR>
+NXnoremap <Leader>!     :<C-U>shell<CR>
+NXnoremap <Leader>E     :<C-U>Explorer<CR>
 NXnoremap <Leader>j     :<C-U>jumps<CR>
 NXnoremap <Leader>J     :<C-U>changes<CR>
 NXnoremap <Leader><C-D> :<C-U>pwd<CR>
@@ -1726,10 +1726,11 @@ nnoremap <C-G>h     gh
 nnoremap <C-G>H     gH
 nnoremap <C-G><C-H> g<C-H>
 
-" Repeat command
-NXnoremap Q  @
-NXnoremap Q; @:
-NXnoremap QQ @@
+" Macro
+NXnoremap <M-q> q
+NXnoremap Q     @
+NXnoremap Q;    @:
+NXnoremap QQ    @@
 
 " Dangerous key
 nnoremap ZQ    <Nop>
@@ -2023,6 +2024,20 @@ NXOnoremap <silent><expr> H <SID>smart_bol()
 NXOnoremap <silent><expr> L <SID>smart_eol()
 inoremap <silent><expr> <M-H> '<C-O>' . <SID>smart_bol()
 inoremap <silent><expr> <M-L> '<C-O>' . <SID>smart_eol()
+"}}}
+
+"------------------------------------------------------------------------------
+" Smart Close: {{{
+function! s:smart_close()
+  if winnr('$') != 1
+    close
+  endif
+endfunction
+
+autocmd MyVimrc FileType *
+  \ if (&readonly || !&modifiable) && !hasmapto('q', 'n') |
+  \   nnoremap <buffer> q :<C-U>call <SID>smart_close()<CR>|
+  \ endif
 "}}}
 
 "------------------------------------------------------------------------------
