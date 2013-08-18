@@ -1899,7 +1899,7 @@ nnoremap <F8> :<C-U>Undiff<CR>
 command! -bar
   \ DiffOrig
   \ let s:save_ft = &l:filetype | vertical new | setlocal buftype=nofile |
-  \ let &l:filetype = s:save_ft | unlet s:save_ft | read # | 0d_ | diffthis | wincmd p | diffthis
+  \ read # | 0d_ | let &l:filetype = s:save_ft | unlet s:save_ft | diffthis | wincmd p | diffthis
 
 nnoremap <F6> :<C-U>DiffOrig<CR>
 "}}}
