@@ -1,7 +1,7 @@
 " Unite ftplugin for NeoComplCache
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -40,8 +40,8 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! iunmap <buffer> <SID>(unite_redraw)|
-  \ silent! iunmap <buffer> <C-L>'
+  \ execute ''iunmap <buffer> <SID>(unite_redraw)'' |
+  \ execute ''iunmap <buffer> <C-L>'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

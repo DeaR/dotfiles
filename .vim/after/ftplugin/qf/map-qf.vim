@@ -1,7 +1,7 @@
 " Close mapping for QuickFix
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -58,14 +58,14 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! nunmap <buffer> q|
-  \ silent! nunmap <buffer> <S-CR>|
-  \ silent! nunmap <buffer> j|
-  \ silent! xunmap <buffer> j|
-  \ silent! ounmap <buffer> j|
-  \ silent! nunmap <buffer> k|
-  \ silent! xunmap <buffer> k|
-  \ silent! ounmap <buffer> k'
+  \ execute ''nunmap <buffer> q'' |
+  \ execute ''nunmap <buffer> <S-CR>'' |
+  \ execute ''nunmap <buffer> j'' |
+  \ execute ''xunmap <buffer> j'' |
+  \ execute ''ounmap <buffer> j'' |
+  \ execute ''nunmap <buffer> k'' |
+  \ execute ''xunmap <buffer> k'' |
+  \ execute ''ounmap <buffer> k'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

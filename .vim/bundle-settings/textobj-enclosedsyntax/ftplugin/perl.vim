@@ -1,7 +1,7 @@
 " TextObj EnclosedSyntax ftplugin for Perl
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -39,10 +39,10 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! ounmap <buffer> aq|
-  \ silent! xunmap <buffer> aq|
-  \ silent! ounmap <buffer> iq|
-  \ silent! xunmap <buffer> iq'
+  \ execute ''ounmap <buffer> aq'' |
+  \ execute ''xunmap <buffer> aq'' |
+  \ execute ''ounmap <buffer> iq'' |
+  \ execute ''xunmap <buffer> iq'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

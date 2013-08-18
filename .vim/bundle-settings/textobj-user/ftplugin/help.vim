@@ -1,7 +1,7 @@
 " Text Object for Help
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -76,7 +76,7 @@ let b:undo_ftplugin .= '
   \ silent! unmap <buffer> <LocalLeader>D
   \ silent! unmap <buffer> <LocalLeader>E
   \ silent! unmap <buffer> J
-  \ silent! unmap <buffer> K'
+  \ execute ''unmap <buffer> K'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

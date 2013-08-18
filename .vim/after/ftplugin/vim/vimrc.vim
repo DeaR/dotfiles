@@ -1,7 +1,7 @@
 " QuickRun ftplugins for vimrc
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -40,7 +40,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! nunmap <buffer> <F5>'
+  \ execute ''nunmap <buffer> <F5>'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

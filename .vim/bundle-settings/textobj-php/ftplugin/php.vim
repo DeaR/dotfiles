@@ -1,7 +1,7 @@
 " TextObj PHP ftplugin for PHP
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -39,10 +39,10 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! ounmap <buffer> aa|
-  \ silent! xunmap <buffer> aa|
-  \ silent! ounmap <buffer> aa|
-  \ silent! xunmap <buffer> aa'
+  \ execute ''ounmap <buffer> aa'' |
+  \ execute ''xunmap <buffer> aa'' |
+  \ execute ''ounmap <buffer> aa'' |
+  \ execute ''xunmap <buffer> aa'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

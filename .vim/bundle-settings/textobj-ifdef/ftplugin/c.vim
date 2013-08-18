@@ -1,7 +1,7 @@
 " TextObj Ifdef ftplugin for C
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -43,14 +43,14 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! ounmap <buffer> a#|
-  \ silent! xunmap <buffer> a#|
-  \ silent! ounmap <buffer> a3|
-  \ silent! xunmap <buffer> a3|
-  \ silent! ounmap <buffer> i#|
-  \ silent! xunmap <buffer> i#|
-  \ silent! ounmap <buffer> i3|
-  \ silent! xunmap <buffer> i3'
+  \ execute ''ounmap <buffer> a#'' |
+  \ execute ''xunmap <buffer> a#'' |
+  \ execute ''ounmap <buffer> a3'' |
+  \ execute ''xunmap <buffer> a3'' |
+  \ execute ''ounmap <buffer> i#'' |
+  \ execute ''xunmap <buffer> i#'' |
+  \ execute ''ounmap <buffer> i3'' |
+  \ execute ''xunmap <buffer> i3'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

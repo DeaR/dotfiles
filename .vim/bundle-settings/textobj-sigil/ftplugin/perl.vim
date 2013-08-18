@@ -1,7 +1,7 @@
 " TextObj Sigil ftplugin for Perl
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -39,10 +39,10 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! ounmap <buffer> ag|
-  \ silent! xunmap <buffer> ag|
-  \ silent! ounmap <buffer> ig|
-  \ silent! xunmap <buffer> ig'
+  \ execute ''ounmap <buffer> ag'' |
+  \ execute ''xunmap <buffer> ag'' |
+  \ execute ''ounmap <buffer> ig'' |
+  \ execute ''xunmap <buffer> ig'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

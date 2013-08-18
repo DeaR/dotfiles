@@ -1,7 +1,7 @@
 " Mapping for VimFiler
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -67,38 +67,38 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! nunmap <SID>(vimfiler_redraw_screen)|
-  \ silent! xunmap <SID>(vimfiler_redraw_screen)|
+  \ execute ''nunmap <SID>(vimfiler_redraw_screen)'' |
+  \ execute ''xunmap <SID>(vimfiler_redraw_screen)'' |
   \
-  \ silent! nunmap <C-W>=|
-  \ silent! xunmap <C-W>=|
-  \ silent! nunmap <C-W>-|
-  \ silent! xunmap <C-W>-|
-  \ silent! nunmap <C-W>+|
-  \ silent! xunmap <C-W>+|
-  \ silent! nunmap <C-W>_|
-  \ silent! xunmap <C-W>_|
-  \ silent! nunmap <C-W><|
-  \ silent! xunmap <C-W><|
-  \ silent! nunmap <C-W>>|
-  \ silent! xunmap <C-W>>|
-  \ silent! nunmap <C-W>\||
-  \ silent! xunmap <C-W>\||
+  \ execute ''nunmap <C-W>='' |
+  \ execute ''xunmap <C-W>='' |
+  \ execute ''nunmap <C-W>-'' |
+  \ execute ''xunmap <C-W>-'' |
+  \ execute ''nunmap <C-W>+'' |
+  \ execute ''xunmap <C-W>+'' |
+  \ execute ''nunmap <C-W>_'' |
+  \ execute ''xunmap <C-W>_'' |
+  \ execute ''nunmap <C-W><'' |
+  \ execute ''xunmap <C-W><'' |
+  \ execute ''nunmap <C-W>>'' |
+  \ execute ''xunmap <C-W>>'' |
+  \ execute ''nunmap <C-W>\|'' |
+  \ execute ''xunmap <C-W>\|'' |
   \
-  \ silent! nunmap <M-=>|
-  \ silent! xunmap <M-=>|
-  \ silent! nunmap <M-->|
-  \ silent! xunmap <M-->|
-  \ silent! nunmap <M-+>|
-  \ silent! xunmap <M-+>|
-  \ silent! nunmap <M-_>|
-  \ silent! xunmap <M-_>|
-  \ silent! nunmap <M-<>|
-  \ silent! xunmap <M-<>|
-  \ silent! nunmap <M->>|
-  \ silent! xunmap <M->>|
-  \ silent! nunmap <M-\|>|
-  \ silent! xunmap <M-\|>'
+  \ execute ''nunmap <M-=>'' |
+  \ execute ''xunmap <M-=>'' |
+  \ execute ''nunmap <M-->'' |
+  \ execute ''xunmap <M-->'' |
+  \ execute ''nunmap <M-+>'' |
+  \ execute ''xunmap <M-+>'' |
+  \ execute ''nunmap <M-_>'' |
+  \ execute ''xunmap <M-_>'' |
+  \ execute ''nunmap <M-<>'' |
+  \ execute ''xunmap <M-<>'' |
+  \ execute ''nunmap <M->>'' |
+  \ execute ''xunmap <M->>'' |
+  \ execute ''nunmap <M-\|>'' |
+  \ execute ''xunmap <M-\'' |>'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

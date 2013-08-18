@@ -1,7 +1,7 @@
 " SmartChr ftplugin for C++
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -43,8 +43,8 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! iunmap <buffer> /|
-  \ silent! iunmap <buffer> :'
+  \ execute ''iunmap <buffer> /'' |
+  \ execute ''iunmap <buffer> :'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

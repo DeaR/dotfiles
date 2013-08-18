@@ -1,7 +1,7 @@
 " OmniSharp ftplugin for C#
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -50,21 +50,21 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! nunmap <buffer> <F5>|
-  \ silent! nunmap <buffer> <Space>|
-  \ silent! nunmap <buffer> gd|
-  \ silent! nunmap <buffer> gD|
+  \ execute ''nunmap <buffer> <F5>'' |
+  \ execute ''nunmap <buffer> <Space>'' |
+  \ execute ''nunmap <buffer> gd'' |
+  \ execute ''nunmap <buffer> gD'' |
   \
-  \ silent! nunmap <buffer> <LocalLeader>c|
-  \ silent! nunmap <buffer> <LocalLeader>g|
-  \ silent! nunmap <buffer> <LocalLeader>t|
-  \ silent! nunmap <buffer> <LocalLeader>r|
+  \ execute ''nunmap <buffer> <LocalLeader>c'' |
+  \ execute ''nunmap <buffer> <LocalLeader>g'' |
+  \ execute ''nunmap <buffer> <LocalLeader>t'' |
+  \ execute ''nunmap <buffer> <LocalLeader>r'' |
   \
-  \ silent! nunmap <buffer> <LocalLeader>a|
-  \ silent! nunmap <buffer> <LocalLeader>A|
-  \ silent! nunmap <buffer> <LocalLeader>s|
-  \ silent! nunmap <buffer> <LocalLeader>S|
-  \ silent! nunmap <buffer> <LocalLeader>R'
+  \ execute ''nunmap <buffer> <LocalLeader>a'' |
+  \ execute ''nunmap <buffer> <LocalLeader>A'' |
+  \ execute ''nunmap <buffer> <LocalLeader>s'' |
+  \ execute ''nunmap <buffer> <LocalLeader>S'' |
+  \ execute ''nunmap <buffer> <LocalLeader>R'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

@@ -1,7 +1,7 @@
 " Mapping for Unite
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -50,16 +50,16 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! nunmap <buffer> dd|
-  \ silent! nunmap <buffer> pp|
-  \ silent! nunmap <buffer> <C-J>|
-  \ silent! iunmap <buffer> <C-J>|
-  \ silent! iunmap <buffer> <M-H>|
+  \ execute ''nunmap <buffer> dd'' |
+  \ execute ''nunmap <buffer> pp'' |
+  \ execute ''nunmap <buffer> <C-J>'' |
+  \ execute ''iunmap <buffer> <C-J>'' |
+  \ execute ''iunmap <buffer> <M-H>'' |
   \
-  \ silent! nunmap <buffer> <C-S>|
-  \ silent! iunmap <buffer> <C-S>|
-  \ silent! nunmap <buffer> <C-V>|
-  \ silent! iunmap <buffer> <C-V>'
+  \ execute ''nunmap <buffer> <C-S>'' |
+  \ execute ''iunmap <buffer> <C-S>'' |
+  \ execute ''nunmap <buffer> <C-V>'' |
+  \ execute ''iunmap <buffer> <C-V>'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
