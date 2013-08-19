@@ -1407,9 +1407,6 @@ if &t_Co > 2
   set hlsearch
 endif
 
-" Keyword
-set iskeyword=a-z,A-Z,@,48-57,_
-
 " Grep
 if s:jvgrep_enable && s:executable('jvgrep')
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
