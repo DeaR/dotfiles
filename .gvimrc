@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  20-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -25,8 +25,16 @@
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
+" scriptencoding utf-8
+
 "==============================================================================
 " Pre Init: {{{
+
+"------------------------------------------------------------------------------
+" Variable: {{{
+" Direct Write
+let s:enable_directx = 0
+" }}}
 
 "------------------------------------------------------------------------------
 " Common: {{{
@@ -132,9 +140,9 @@ elseif has('mac')
 endif
 
 " Direct Write
-" if has('directx')
-"   set renderoptions=type:directx
-" endif
+if s:enable_directx && has('directx')
+  set renderoptions=type:directx
+endif
 
 " Full screen
 if has('win32')

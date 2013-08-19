@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  20-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -25,7 +25,6 @@
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-set nocompatible
 scriptencoding utf-8
 
 "==============================================================================
