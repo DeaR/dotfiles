@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -68,6 +68,49 @@ if isdirectory($HOME . '/.local/bundle/singleton')
 endif
 
 "------------------------------------------------------------------------------
+" Variable: {{{
+" <Leader> <LocalLeader>
+let g:mapleader      = ';'
+let g:maplocalleader = ','
+
+" Command line window
+let s:cmdwin_enable = 1
+
+" Grep
+let s:jvgrep_enable = 1
+let s:ag_enable     = 1
+
+" AlterCommand
+let s:altercmd_define = {}
+
+" NeoComplete or NeoComplCache
+let s:neocompl_force_omni_patterns = {}
+let s:neocompl_keyword_patterns = {}
+let s:neocompl_omni_patterns = {}
+let s:neocompl_dictionary_filetype_lists = {}
+let s:neocompl_vim_completefuncs = {}
+
+" VCvarsall.bat
+if has('win32') && !exists('$VCVARSALL')
+  let s:save_ssl = &shellslash
+  set noshellslash
+  if exists('$VS120COMNTOOLS')
+    let $VCVARSALL = shellescape($VS120COMNTOOLS . '..\..\VC\vcvarsall.bat')
+  elseif exists('$VS110COMNTOOLS')
+    let $VCVARSALL = shellescape($VS110COMNTOOLS . '..\..\VC\vcvarsall.bat')
+  elseif exists('$VS100COMNTOOLS')
+    let $VCVARSALL = shellescape($VS100COMNTOOLS . '..\..\VC\vcvarsall.bat')
+  elseif exists('$VS90COMNTOOLS')
+    let $VCVARSALL = shellescape($VS90COMNTOOLS  . '..\..\VC\vcvarsall.bat')
+  elseif exists('$VS80COMNTOOLS')
+    let $VCVARSALL = shellescape($VS80COMNTOOLS  . '..\..\VC\vcvarsall.bat')
+  endif
+  let &shellslash = s:save_ssl
+  unlet s:save_ssl
+endif
+"}}}
+
+"------------------------------------------------------------------------------
 " Common: {{{
 " Vimrc autocmd group
 augroup MyVimrc
@@ -109,48 +152,6 @@ endfunction
 " Check Android OS
 let s:is_android = has('unix') &&
   \ ($HOSTNAME ==? 'android' || $VIM =~? 'net\.momodalo\.app\.vimtouch')
-"}}}
-
-"------------------------------------------------------------------------------
-" Variable: {{{
-" <Leader> <LocalLeader>
-let g:mapleader      = ';'
-let g:maplocalleader = ','
-
-" Command line window
-let s:cmdwin_enable = 1
-
-" JvGrep
-let s:jvgrep_enable = 0
-
-" AlterCommand
-let s:altercmd_define = {}
-
-" NeoComplete or NeoComplCache
-let s:neocompl_force_omni_patterns = {}
-let s:neocompl_keyword_patterns = {}
-let s:neocompl_omni_patterns = {}
-let s:neocompl_dictionary_filetype_lists = {}
-let s:neocompl_vim_completefuncs = {}
-
-" VCvarsall.bat
-if has('win32') && !exists('$VCVARSALL')
-  let s:save_ssl = &shellslash
-  set noshellslash
-  if exists('$VS120COMNTOOLS')
-    let $VCVARSALL = shellescape($VS120COMNTOOLS . '..\..\VC\vcvarsall.bat')
-  elseif exists('$VS110COMNTOOLS')
-    let $VCVARSALL = shellescape($VS110COMNTOOLS . '..\..\VC\vcvarsall.bat')
-  elseif exists('$VS100COMNTOOLS')
-    let $VCVARSALL = shellescape($VS100COMNTOOLS . '..\..\VC\vcvarsall.bat')
-  elseif exists('$VS90COMNTOOLS')
-    let $VCVARSALL = shellescape($VS90COMNTOOLS  . '..\..\VC\vcvarsall.bat')
-  elseif exists('$VS80COMNTOOLS')
-    let $VCVARSALL = shellescape($VS80COMNTOOLS  . '..\..\VC\vcvarsall.bat')
-  endif
-  let &shellslash = s:save_ssl
-  unlet s:save_ssl
-endif
 "}}}
 
 "------------------------------------------------------------------------------
@@ -1275,7 +1276,7 @@ set iskeyword=a-z,A-Z,@,48-57,_
 " Grep
 if s:jvgrep_enable && s:executable('jvgrep')
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
-elseif s:executable('ag')
+elseif s:ag_enable && s:executable('ag')
   set grepprg=ag\ --line-numbers\ --nocolor\ --nogroup\ --hidden\
     \ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
 elseif s:executable('grep')
@@ -3057,7 +3058,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     if s:jvgrep_enable && s:executable('jvgrep')
       let s:operator_grep_escape = ' :\[](){}|.?+*^$'
-    elseif s:executable('ag')
+    elseif s:ag_enable && s:executable('ag')
       let s:operator_grep_escape = ' :\[](){}|.?+*^$'
     elseif s:executable('grep')
       let s:operator_grep_escape = ' :\[].*^$'
@@ -4174,7 +4175,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '-n --exclude .drive.r'
-    elseif s:executable('ag')
+    elseif s:ag_enable && s:executable('ag')
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_default_opts  =
