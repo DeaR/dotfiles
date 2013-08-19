@@ -38,19 +38,19 @@ omap <buffer> i3 <Plug>(textobj-ifdef-i)
 xmap <buffer> i3 <Plug>(textobj-ifdef-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''ounmap <buffer> a#'' |
-  \ execute ''xunmap <buffer> a#'' |
-  \ execute ''ounmap <buffer> a3'' |
-  \ execute ''xunmap <buffer> a3'' |
-  \ execute ''ounmap <buffer> i#'' |
-  \ execute ''xunmap <buffer> i#'' |
-  \ execute ''ounmap <buffer> i3'' |
-  \ execute ''xunmap <buffer> i3'''
+  \ silent! execute ''ounmap <buffer> a#'' |
+  \ silent! execute ''xunmap <buffer> a#'' |
+  \ silent! execute ''ounmap <buffer> a3'' |
+  \ silent! execute ''xunmap <buffer> a3'' |
+  \ silent! execute ''ounmap <buffer> i#'' |
+  \ silent! execute ''xunmap <buffer> i#'' |
+  \ silent! execute ''ounmap <buffer> i3'' |
+  \ silent! execute ''xunmap <buffer> i3'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

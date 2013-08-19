@@ -1,7 +1,7 @@
 " TextWidth is 0
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -31,7 +31,7 @@ set cpo&vim
 setlocal textwidth=0
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif

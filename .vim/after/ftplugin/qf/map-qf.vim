@@ -53,19 +53,19 @@ xnoremap <buffer><silent><expr> k <SID>jk(-v:count1)
 onoremap <buffer><silent><expr> k <SID>jk(-v:count1)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''nunmap <buffer> q'' |
-  \ execute ''nunmap <buffer> <S-CR>'' |
-  \ execute ''nunmap <buffer> j'' |
-  \ execute ''xunmap <buffer> j'' |
-  \ execute ''ounmap <buffer> j'' |
-  \ execute ''nunmap <buffer> k'' |
-  \ execute ''xunmap <buffer> k'' |
-  \ execute ''ounmap <buffer> k'''
+  \ silent! execute ''nunmap <buffer> q'' |
+  \ silent! execute ''nunmap <buffer> <S-CR>'' |
+  \ silent! execute ''nunmap <buffer> j'' |
+  \ silent! execute ''xunmap <buffer> j'' |
+  \ silent! execute ''ounmap <buffer> j'' |
+  \ silent! execute ''nunmap <buffer> k'' |
+  \ silent! execute ''xunmap <buffer> k'' |
+  \ silent! execute ''ounmap <buffer> k'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

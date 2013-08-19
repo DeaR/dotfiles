@@ -36,12 +36,12 @@ endfunction
 nnoremap <buffer> q :<C-U>call <SID>smart_close()<CR>
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''nunmap <buffer> q'''
+  \ silent! execute ''nunmap <buffer> q'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

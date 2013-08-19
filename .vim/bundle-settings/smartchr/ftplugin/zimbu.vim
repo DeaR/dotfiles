@@ -66,29 +66,29 @@ inoremap <buffer><expr> ,  smartchr#one_of(', ',   ',')
 inoremap <buffer><expr> .  smartchr#one_of('.',    ' .. ')
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''iunmap <buffer> ='' |
+  \ silent! execute ''iunmap <buffer> ='' |
   \
-  \ execute ''iunmap <buffer> :'' |
+  \ silent! execute ''iunmap <buffer> :'' |
   \
-  \ execute ''iunmap <buffer> +'' |
-  \ execute ''iunmap <buffer> -'' |
-  \ execute ''iunmap <buffer> *'' |
-  \ execute ''iunmap <buffer> /'' |
-  \ execute ''iunmap <buffer> %'' |
-  \ execute ''iunmap <buffer> ?'' |
-  \ execute ''iunmap <buffer> ^'' |
-  \ execute ''iunmap <buffer> &'' |
-  \ execute ''iunmap <buffer> \|'' |
-  \ execute ''iunmap <buffer> <'' |
-  \ execute ''iunmap <buffer> >'' |
+  \ silent! execute ''iunmap <buffer> +'' |
+  \ silent! execute ''iunmap <buffer> -'' |
+  \ silent! execute ''iunmap <buffer> *'' |
+  \ silent! execute ''iunmap <buffer> /'' |
+  \ silent! execute ''iunmap <buffer> %'' |
+  \ silent! execute ''iunmap <buffer> ?'' |
+  \ silent! execute ''iunmap <buffer> ^'' |
+  \ silent! execute ''iunmap <buffer> &'' |
+  \ silent! execute ''iunmap <buffer> \|'' |
+  \ silent! execute ''iunmap <buffer> <'' |
+  \ silent! execute ''iunmap <buffer> >'' |
   \
-  \ execute ''iunmap <buffer> ;'' |
-  \ execute ''iunmap <buffer> ,'''
+  \ silent! execute ''iunmap <buffer> ;'' |
+  \ silent! execute ''iunmap <buffer> ,'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

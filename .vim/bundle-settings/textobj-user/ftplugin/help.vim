@@ -58,7 +58,7 @@ map <buffer> J <Plug>(textobj-help-any-n)
 map <buffer> K <Plug>(textobj-help-any-p)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
@@ -76,7 +76,7 @@ let b:undo_ftplugin .= '
   \ silent! unmap <buffer> <LocalLeader>D
   \ silent! unmap <buffer> <LocalLeader>E
   \ silent! unmap <buffer> J
-  \ execute ''unmap <buffer> K'''
+  \ silent! execute ''unmap <buffer> K'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

@@ -35,13 +35,13 @@ inoremap <buffer><script><expr> <C-L>
   \   '<SID>(unite_redraw)'
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''iunmap <buffer> <SID>(unite_redraw)'' |
-  \ execute ''iunmap <buffer> <C-L>'''
+  \ silent! execute ''iunmap <buffer> <SID>(unite_redraw)'' |
+  \ silent! execute ''iunmap <buffer> <C-L>'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

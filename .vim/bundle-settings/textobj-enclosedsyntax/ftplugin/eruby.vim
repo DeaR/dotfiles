@@ -34,15 +34,15 @@ omap <buffer> iq <Plug>(textobj-enclosedsyntax-i)
 xmap <buffer> iq <Plug>(textobj-enclosedsyntax-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''ounmap <buffer> aq'' |
-  \ execute ''xunmap <buffer> aq'' |
-  \ execute ''ounmap <buffer> iq'' |
-  \ execute ''xunmap <buffer> iq'''
+  \ silent! execute ''ounmap <buffer> aq'' |
+  \ silent! execute ''xunmap <buffer> aq'' |
+  \ silent! execute ''ounmap <buffer> iq'' |
+  \ silent! execute ''xunmap <buffer> iq'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

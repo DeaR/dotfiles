@@ -45,26 +45,26 @@ nnoremap <buffer> <LocalLeader>S :<C-U>OmniSharpStopServer<CR>
 nnoremap <buffer> <LocalLeader>R :<C-U>OmniSharpReloadSolution<CR>
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''nunmap <buffer> <F5>'' |
-  \ execute ''nunmap <buffer> <Space>'' |
-  \ execute ''nunmap <buffer> gd'' |
-  \ execute ''nunmap <buffer> gD'' |
+  \ silent! execute ''nunmap <buffer> <F5>'' |
+  \ silent! execute ''nunmap <buffer> <Space>'' |
+  \ silent! execute ''nunmap <buffer> gd'' |
+  \ silent! execute ''nunmap <buffer> gD'' |
   \
-  \ execute ''nunmap <buffer> <LocalLeader>c'' |
-  \ execute ''nunmap <buffer> <LocalLeader>g'' |
-  \ execute ''nunmap <buffer> <LocalLeader>t'' |
-  \ execute ''nunmap <buffer> <LocalLeader>r'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>c'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>g'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>t'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>r'' |
   \
-  \ execute ''nunmap <buffer> <LocalLeader>a'' |
-  \ execute ''nunmap <buffer> <LocalLeader>A'' |
-  \ execute ''nunmap <buffer> <LocalLeader>s'' |
-  \ execute ''nunmap <buffer> <LocalLeader>S'' |
-  \ execute ''nunmap <buffer> <LocalLeader>R'''
+  \ silent! execute ''nunmap <buffer> <LocalLeader>a'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>A'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>s'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>S'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>R'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

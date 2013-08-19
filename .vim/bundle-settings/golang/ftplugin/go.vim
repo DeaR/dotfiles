@@ -31,12 +31,12 @@ set cpo&vim
 nmap <buffer> K <Plug>(godoc-keyword)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''nunmap <buffer> K'' |
+  \ silent! execute ''nunmap <buffer> K'' |
   \
   \ delcommand Fmt |
   \ silent! unlet b:did_ftplugin_go_fmt |
@@ -44,8 +44,8 @@ let b:undo_ftplugin .= '
   \ delcommand Drop |
   \ delcommand Import |
   \ delcommand ImportAs |
-  \ execute ''unmap <buffer> <LocalLeader>f'' |
-  \ execute ''unmap <buffer> <LocalLeader>F'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>f'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>F'' |
   \ unlet b:did_ftplugin_go_import'
 
 let &cpo = s:save_cpo

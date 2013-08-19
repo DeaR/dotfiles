@@ -34,15 +34,15 @@ omap <buffer> iF <Plug>(textobj-function-i)
 xmap <buffer> iF <Plug>(textobj-function-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''ounmap <buffer> aF'' |
-  \ execute ''xunmap <buffer> aF'' |
-  \ execute ''ounmap <buffer> iF'' |
-  \ execute ''xunmap <buffer> iF'''
+  \ silent! execute ''ounmap <buffer> aF'' |
+  \ silent! execute ''xunmap <buffer> aF'' |
+  \ silent! execute ''ounmap <buffer> iF'' |
+  \ silent! execute ''xunmap <buffer> iF'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

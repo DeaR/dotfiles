@@ -34,15 +34,15 @@ omap <buffer> iP  <Plug>(textobj-php-phptag-i)
 xmap <buffer> iP  <Plug>(textobj-php-phptag-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''ounmap <buffer> aP'' |
-  \ execute ''xunmap <buffer> aP'' |
-  \ execute ''ounmap <buffer> aP'' |
-  \ execute ''xunmap <buffer> aP'''
+  \ silent! execute ''ounmap <buffer> aP'' |
+  \ silent! execute ''xunmap <buffer> aP'' |
+  \ silent! execute ''ounmap <buffer> aP'' |
+  \ silent! execute ''xunmap <buffer> aP'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

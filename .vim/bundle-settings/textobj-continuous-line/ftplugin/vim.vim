@@ -34,15 +34,15 @@ omap <buffer> iv <Plug>(textobj-continuous-vim-i)
 xmap <buffer> iv <Plug>(textobj-continuous-vim-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''ounmap <buffer> av'' |
-  \ execute ''xunmap <buffer> av'' |
-  \ execute ''ounmap <buffer> iv'' |
-  \ execute ''xunmap <buffer> iv'''
+  \ silent! execute ''ounmap <buffer> av'' |
+  \ silent! execute ''xunmap <buffer> av'' |
+  \ silent! execute ''ounmap <buffer> iv'' |
+  \ silent! execute ''xunmap <buffer> iv'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

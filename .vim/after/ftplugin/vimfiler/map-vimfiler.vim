@@ -62,43 +62,43 @@ nmap <buffer> <M-\|> <C-W>\|
 xmap <buffer> <M-\|> <C-W>\|
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''nunmap <SID>(vimfiler_redraw_screen)'' |
-  \ execute ''xunmap <SID>(vimfiler_redraw_screen)'' |
+  \ silent! execute ''nunmap <SID>(vimfiler_redraw_screen)'' |
+  \ silent! execute ''xunmap <SID>(vimfiler_redraw_screen)'' |
   \
-  \ execute ''nunmap <C-W>='' |
-  \ execute ''xunmap <C-W>='' |
-  \ execute ''nunmap <C-W>-'' |
-  \ execute ''xunmap <C-W>-'' |
-  \ execute ''nunmap <C-W>+'' |
-  \ execute ''xunmap <C-W>+'' |
-  \ execute ''nunmap <C-W>_'' |
-  \ execute ''xunmap <C-W>_'' |
-  \ execute ''nunmap <C-W><'' |
-  \ execute ''xunmap <C-W><'' |
-  \ execute ''nunmap <C-W>>'' |
-  \ execute ''xunmap <C-W>>'' |
-  \ execute ''nunmap <C-W>\|'' |
-  \ execute ''xunmap <C-W>\|'' |
+  \ silent! execute ''nunmap <C-W>='' |
+  \ silent! execute ''xunmap <C-W>='' |
+  \ silent! execute ''nunmap <C-W>-'' |
+  \ silent! execute ''xunmap <C-W>-'' |
+  \ silent! execute ''nunmap <C-W>+'' |
+  \ silent! execute ''xunmap <C-W>+'' |
+  \ silent! execute ''nunmap <C-W>_'' |
+  \ silent! execute ''xunmap <C-W>_'' |
+  \ silent! execute ''nunmap <C-W><'' |
+  \ silent! execute ''xunmap <C-W><'' |
+  \ silent! execute ''nunmap <C-W>>'' |
+  \ silent! execute ''xunmap <C-W>>'' |
+  \ silent! execute ''nunmap <C-W>\|'' |
+  \ silent! execute ''xunmap <C-W>\|'' |
   \
-  \ execute ''nunmap <M-=>'' |
-  \ execute ''xunmap <M-=>'' |
-  \ execute ''nunmap <M-->'' |
-  \ execute ''xunmap <M-->'' |
-  \ execute ''nunmap <M-+>'' |
-  \ execute ''xunmap <M-+>'' |
-  \ execute ''nunmap <M-_>'' |
-  \ execute ''xunmap <M-_>'' |
-  \ execute ''nunmap <M-<>'' |
-  \ execute ''xunmap <M-<>'' |
-  \ execute ''nunmap <M->>'' |
-  \ execute ''xunmap <M->>'' |
-  \ execute ''nunmap <M-\|>'' |
-  \ execute ''xunmap <M-\'' |>'
+  \ silent! execute ''nunmap <M-=>'' |
+  \ silent! execute ''xunmap <M-=>'' |
+  \ silent! execute ''nunmap <M-->'' |
+  \ silent! execute ''xunmap <M-->'' |
+  \ silent! execute ''nunmap <M-+>'' |
+  \ silent! execute ''xunmap <M-+>'' |
+  \ silent! execute ''nunmap <M-_>'' |
+  \ silent! execute ''xunmap <M-_>'' |
+  \ silent! execute ''nunmap <M-<>'' |
+  \ silent! execute ''xunmap <M-<>'' |
+  \ silent! execute ''nunmap <M->>'' |
+  \ silent! execute ''xunmap <M->>'' |
+  \ silent! execute ''nunmap <M-\|>'' |
+  \ silent! execute ''xunmap <M-\'' |>'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

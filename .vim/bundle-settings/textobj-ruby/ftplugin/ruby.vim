@@ -34,15 +34,15 @@ omap <buffer> ir <Plug>(textobj-ruby-any-i)
 xmap <buffer> ir <Plug>(textobj-ruby-any-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''ounmap <buffer> ar'' |
-  \ execute ''xunmap <buffer> ar'' |
-  \ execute ''ounmap <buffer> ir'' |
-  \ execute ''xunmap <buffer> ir'''
+  \ silent! execute ''ounmap <buffer> ar'' |
+  \ silent! execute ''xunmap <buffer> ar'' |
+  \ silent! execute ''ounmap <buffer> ir'' |
+  \ silent! execute ''xunmap <buffer> ir'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

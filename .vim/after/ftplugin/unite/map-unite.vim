@@ -45,21 +45,21 @@ nnoremap <buffer><silent><expr> <C-V> unite#do_action('vsplit')
 inoremap <buffer><silent><expr> <C-V> unite#do_action('vsplit')
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''nunmap <buffer> dd'' |
-  \ execute ''nunmap <buffer> pp'' |
-  \ execute ''nunmap <buffer> <C-J>'' |
-  \ execute ''iunmap <buffer> <C-J>'' |
-  \ execute ''iunmap <buffer> <M-H>'' |
+  \ silent! execute ''nunmap <buffer> dd'' |
+  \ silent! execute ''nunmap <buffer> pp'' |
+  \ silent! execute ''nunmap <buffer> <C-J>'' |
+  \ silent! execute ''iunmap <buffer> <C-J>'' |
+  \ silent! execute ''iunmap <buffer> <M-H>'' |
   \
-  \ execute ''nunmap <buffer> <C-S>'' |
-  \ execute ''iunmap <buffer> <C-S>'' |
-  \ execute ''nunmap <buffer> <C-V>'' |
-  \ execute ''iunmap <buffer> <C-V>'''
+  \ silent! execute ''nunmap <buffer> <C-S>'' |
+  \ silent! execute ''iunmap <buffer> <C-S>'' |
+  \ silent! execute ''nunmap <buffer> <C-V>'' |
+  \ silent! execute ''iunmap <buffer> <C-V>'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

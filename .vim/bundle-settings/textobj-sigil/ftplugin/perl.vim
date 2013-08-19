@@ -34,15 +34,15 @@ omap <buffer> ig <Plug>(textobj-sigil-i)
 xmap <buffer> ig <Plug>(textobj-sigil-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''ounmap <buffer> ag'' |
-  \ execute ''xunmap <buffer> ag'' |
-  \ execute ''ounmap <buffer> ig'' |
-  \ execute ''xunmap <buffer> ig'''
+  \ silent! execute ''ounmap <buffer> ag'' |
+  \ silent! execute ''xunmap <buffer> ag'' |
+  \ silent! execute ''ounmap <buffer> ig'' |
+  \ silent! execute ''xunmap <buffer> ig'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

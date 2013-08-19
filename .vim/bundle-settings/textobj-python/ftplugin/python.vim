@@ -38,19 +38,19 @@ omap <buffer> iC <Plug>(textobj-python-class-i)
 xmap <buffer> iC <Plug>(textobj-python-class-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''ounmap <buffer> aF'' |
-  \ execute ''xunmap <buffer> aF'' |
-  \ execute ''ounmap <buffer> iC'' |
-  \ execute ''xunmap <buffer> iC'' |
-  \ execute ''ounmap <buffer> aF'' |
-  \ execute ''xunmap <buffer> aF'' |
-  \ execute ''ounmap <buffer> iC'' |
-  \ execute ''xunmap <buffer> iC'''
+  \ silent! execute ''ounmap <buffer> aF'' |
+  \ silent! execute ''xunmap <buffer> aF'' |
+  \ silent! execute ''ounmap <buffer> iC'' |
+  \ silent! execute ''xunmap <buffer> iC'' |
+  \ silent! execute ''ounmap <buffer> aF'' |
+  \ silent! execute ''xunmap <buffer> aF'' |
+  \ silent! execute ''ounmap <buffer> iC'' |
+  \ silent! execute ''xunmap <buffer> iC'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

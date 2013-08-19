@@ -31,12 +31,12 @@ set cpo&vim
 nnoremap <buffer> <CR> <C-]>
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
+  let b:undo_ftplugin .= ' | '
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ execute ''nunmap <buffer> <CR>'''
+  \ silent! execute ''nunmap <buffer> <CR>'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
