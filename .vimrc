@@ -47,7 +47,8 @@ if has('win32')
   endif
 
   " Shell
-  let s:default_shell = [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
+  let s:default_shell =
+    \ [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
   " set shell=sh
   " set shellslash
 
@@ -119,7 +120,8 @@ augroup END
 
 " Script ID
 function! s:SID_PREFIX()
-  let s:_SID_PREFIX = get(s:, '_SID_PREFIX', matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
+  let s:_SID_PREFIX = get(s:, '_SID_PREFIX',
+    \ matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
   return s:_SID_PREFIX
 endfunction
 
@@ -176,11 +178,15 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'tyru/vim-altercmd', {
     \ 'autoload' : {
     \   'commands' : [
-    \     'NAlterCommand', 'VAlterCommand', 'OAlterCommand', 'XAlterCommand', 'SAlterCommand',
-    \     'IAlterCommand', 'CAlterCommand', 'LAlterCommand', 'AlterCommand']}}
+    \     'AlterCommand',  'NAlterCommand', 'OAlterCommand',
+    \     'VAlterCommand', 'XAlterCommand', 'SAlterCommand',
+    \     'IAlterCommand', 'CAlterCommand', 'LAlterCommand']}}
 
   NeoBundleLazy 'kana/vim-altr', {
-    \ 'autoload' : {'mappings' : [['nvoi', '<Plug>(altr-forward)', '<Plug>(altr-back)']]}}
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['nvoi',
+    \      '<Plug>(altr-forward)', '<Plug>(altr-back)']]}}
 
   NeoBundleLazy 'osyo-manga/vim-anzu', {
     \ 'autoload' : {
@@ -190,14 +196,18 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     'AnzuSignMatchLine', 'AnzuClearSignMatchLine'],
     \   'mappings' : [
     \     ['n',
-    \      '<Plug>(anzu-n)', '<Plug>(anzu-n-with-echo)',
-    \      '<Plug>(anzu-N)', '<Plug>(anzu-N-with-echo)',
-    \      '<Plug>(anzu-star)', '<Plug>(anzu-star-with-echo)',
+    \      '<Plug>(anzu-n)',     '<Plug>(anzu-n-with-echo)',
+    \      '<Plug>(anzu-N)',     '<Plug>(anzu-N-with-echo)',
+    \      '<Plug>(anzu-star)',  '<Plug>(anzu-star-with-echo)',
     \      '<Plug>(anzu-sharp)', '<Plug>(anzu-sharp-with-echo)',
-    \      '<Plug>(anzu-update-search-status)', '<Plug>(anzu-update-search-status-with-echo)',
-    \      '<Plug>(anzu-clear-search-status)', '<Plug>(anzu-clear-search-cache)',
-    \      '<Plug>(anzu-echo-search-status)', '<Plug>(anzu-sign-matchline)',
-    \      '<Plug>(anzu-clear-sign-matchline)', '<Plug>(anzu-smart-sign-matchline)']]}}
+    \      '<Plug>(anzu-sign-matchline)',
+    \      '<Plug>(anzu-smart-sign-matchline)',
+    \      '<Plug>(anzu-echo-search-status)',
+    \      '<Plug>(anzu-update-search-status)',
+    \      '<Plug>(anzu-update-search-status-with-echo)',
+    \      '<Plug>(anzu-clear-search-status)',
+    \      '<Plug>(anzu-clear-search-cache)',
+    \      '<Plug>(anzu-clear-sign-matchline)']]}}
 
   NeoBundleLazy 'gist:iori-yja/1615430', {
     \ 'name' : 'arm',
@@ -222,14 +232,19 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo',
-    \      '<Plug>(clever-f-f)', '<Plug>(clever-f-F)', '<Plug>(clever-f-t)', '<Plug>(clever-f-T)',
-    \      '<Plug>(clever-f-repeat-forward)', '<Plug>(clever-f-repeat-back)', '<Plug>(clever-f-reset)']],
+    \      '<Plug>(clever-f-f)', '<Plug>(clever-f-F)',
+    \      '<Plug>(clever-f-t)', '<Plug>(clever-f-T)',
+    \      '<Plug>(clever-f-repeat-forward)',
+    \      '<Plug>(clever-f-repeat-back)',
+    \      '<Plug>(clever-f-reset)']],
     \   'insert' : 1}}
 
   NeoBundleLazy 'deris/columnjump', {
     \ 'autoload' : {
     \   'commands' : ['ColumnJumpForward', 'ColumnJumpBackward'],
-    \   'mappings' : [['nvo', '<Plug>(columnjump-forward)', '<Plug>(columnjump-backward)']],
+    \   'mappings' : [
+    \     ['nvo',
+    \      '<Plug>(columnjump-forward)', '<Plug>(columnjump-backward)']],
     \   'insert' : 1}}
 
   NeoBundleLazy 'vim-jp/cpp-vim', {
@@ -244,8 +259,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'mattn/emmet-vim', {
     \ 'autoload' : {
     \   'filetypes' : [
-    \     'css', 'css.drupal', 'haml', 'html', 'html.django_template', 'htmldjango',
-    \     'less', 'mustache', 'sass', 'scss', 'slim', 'xhtml', 'xml', 'xsl', 'xslt'],
+    \     'css', 'css.drupal', 'haml', 'html', 'html.django_template',
+    \     'htmldjango', 'less', 'mustache', 'sass', 'scss', 'slim',
+    \     'xhtml', 'xml', 'xsl', 'xslt'],
     \   'commands' : 'Emmet',
     \   'mappings' : [['nvi', '<C-E>']]}}
 
@@ -267,16 +283,22 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'tpope/vim-fugitive', {
     \ 'autoload' : {
     \   'commands' : [
-    \     'Git', 'Gcd', 'Glcd', 'Gstatus', 'Gcommit', 'Ggrep', 'Glgrep', 'Glog', 'Gllog', 'Ge', 'Gedit', 'Gpedit',
-    \     'Gsplit', 'Gvsplit', 'Gtabedit', 'Gread', 'Gwrite', 'Gw', 'Gwq', 'Gdiff', 'Gvdiff', 'Gsdiff', 'Gbrowse']}}
+    \     'Git', 'Gcd', 'Glcd', 'Gstatus', 'Gcommit', 'Ggrep', 'Glgrep',
+    \     'Glog', 'Gllog', 'Ge', 'Gedit', 'Gpedit', 'Gsplit', 'Gvsplit',
+    \     'Gtabedit', 'Gread', 'Gwrite', 'Gw', 'Gwq',
+    \     'Gdiff', 'Gvdiff', 'Gsdiff', 'Gbrowse']}}
 
   NeoBundleLazy 'kana/vim-gf-user', {
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nv',
-    \      '<Plug>(gf-user-gf)', '<Plug>(gf-user-<C-w>f)', '<Plug>(gf-user-<C-w>gf)',
-    \      '<Plug>(gf-user-gF)', '<Plug>(gf-user-<C-w>F)', '<Plug>(gf-user-<C-w>gF)', '<Plug>(gf-user-<C-w><C-f>)']]},
-    \ 'depends' : ['sgur/vim-gf-autoload', 'kana/vim-gf-diff']}
+    \      '<Plug>(gf-user-gf)',      '<Plug>(gf-user-gF)',
+    \      '<Plug>(gf-user-<C-w>f)',  '<Plug>(gf-user-<C-w>F)',
+    \      '<Plug>(gf-user-<C-w>gf)', '<Plug>(gf-user-<C-w>gF)',
+    \      '<Plug>(gf-user-<C-w><C-f>)']]},
+    \ 'depends' : [
+    \   'sgur/vim-gf-autoload',
+    \   'kana/vim-gf-diff']}
 
   NeoBundleLazy 'yomi322/vim-gitcomplete', {
     \ 'autoload' : {'filetypes' : 'vimshell'}}
@@ -298,7 +320,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'kana/vim-grex', {
     \ 'autoload' : {
     \   'commands' : ['Gred', 'Grey'],
-    \   'mappings' : [['nvo', '<Plug>(operator-grex-delete)', '<Plug>(operator-grex-yank)']]},
+    \   'mappings' : [
+    \     ['nvo',
+    \      '<Plug>(operator-grex-delete)', '<Plug>(operator-grex-yank)']]},
     \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'cohama/vim-hier', {
@@ -357,8 +381,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'name' : 'maplist',
     \ 'autoload' : {
     \   'commands' : [
-    \     'NMapList', 'VMapList', 'OMapList', 'XMapList', 'SMapList',
-    \     'IMapList', 'CMapList', 'LMapList', 'MapList']},
+    \     'MapList',  'NMapList', 'OMapList',
+    \     'VMapList', 'XMapList', 'SMapList',
+    \     'IMapList', 'CMapList', 'LMapList']},
     \ 'script_type' : 'plugin'}
 
   NeoBundle 'tomasr/molokai'
@@ -379,8 +404,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     NeoBundleLazy 'Shougo/neocomplete.vim', {
       \ 'autoload' : {
       \   'commands' : [
-      \     'NeoCompleteEnable', 'NeoCompleteDisable', 'NeoCompleteToggle',
-      \     'NeoCompleteLock', 'NeoCompleteUnlock', 'NeoCompleteClean', 'NeoCompleteTagMakeCache',
+      \     'NeoCompleteEnable', 'NeoCompleteDisable',
+      \     'NeoCompleteLock',   'NeoCompleteUnlock',
+      \     'NeoCompleteToggle', 'NeoCompleteClean',
+      \     'NeoCompleteTagMakeCache',
       \     {'name' : 'NeoCompleteSetFileType',
       \      'complete' : 'filetype'},
       \     {'name' : 'NeoCompleteBufferMakeCache',
@@ -394,7 +421,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \   'unite_sources' : ['file_include', 'neocomplete'],
       \   'insert' : 1},
       \ 'depends' : [
-      \   'Shougo/context_filetype.vim', 'hrsh7th/vim-neco-calc', 'ujihisa/neco-look', 'Shougo/neosnippet.vim']}
+      \   'Shougo/context_filetype.vim',
+      \   'hrsh7th/vim-neco-calc',
+      \   'ujihisa/neco-look',
+      \   'Shougo/neosnippet.vim']}
     call extend(s:neocompl_vim_completefuncs, {
       \ 'NeoCompleteDictionaryMakeCache' : 'neocomplete#filetype_complete',
       \ 'NeoCompleteSyntaxMakeCache'     : 'neocomplete#filetype_complete'})
@@ -402,9 +432,11 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     NeoBundleLazy 'Shougo/neocomplcache.vim', {
       \ 'autoload' : {
       \   'commands' : [
-      \     'NeoComplCacheEnable', 'NeoComplCacheDisable', 'NeoComplCacheToggle',
-      \     'NeoComplCacheLock', 'NeoComplCacheUnlock', 'NeoComplCacheCachingTags',
-      \     'NeoComplCacheLockSource', 'NeoComplCacheUnlockSource', 'NeoComplCacheClean',
+      \     'NeoComplCacheEnable', 'NeoComplCacheDisable',
+      \     'NeoComplCacheLock',   'NeoComplCacheLockSource',
+      \     'NeoComplCacheUnlock', 'NeoComplCacheUnlockSource',
+      \     'NeoComplCacheToggle', 'NeoComplCacheClean',
+      \     'NeoComplCacheCachingTags',
       \     {'name' : 'NeoComplCacheSetFileType',
       \      'complete' : 'filetype'},
       \     {'name' : 'NeoComplCacheCachingBuffer',
@@ -425,7 +457,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \      'complete' : 'customlist,neocomplcache#filetype_complete'}],
       \   'unite_sources' : ['file_include', 'neocomplcache'],
       \   'insert' : 1},
-      \ 'depends' : ['hrsh7th/vim-neco-calc', 'ujihisa/neco-look', 'Shougo/neosnippet.vim']}
+      \ 'depends' : [
+      \   'hrsh7th/vim-neco-calc',
+      \   'ujihisa/neco-look',
+      \   'Shougo/neosnippet.vim']}
     call extend(s:neocompl_vim_completefuncs, {
       \ 'NeoComplCacheCachingDictionary' : 'neocomplcache#filetype_complete',
       \ 'NeoComplCacheCachingSyntax'     : 'neocomplcache#filetype_complete'})
@@ -446,8 +481,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(neosnippet_expand_or_jump)', '<Plug>(neosnippet_expand)',
     \      '<Plug>(neosnippet_jump_or_expand)', '<Plug>(neosnippet_jump)'],
     \     ['x',
-    \      '<Plug>(neosnippet_expand_target)',     '<Plug>(neosnippet_start_unite_snippet_target)',
-    \      '<Plug>(neosnippet_get_selected_text)', '<Plug>(neosnippet_register_oneshot_snippet)'],
+    \      '<Plug>(neosnippet_expand_target)',
+    \      '<Plug>(neosnippet_start_unite_snippet_target)',
+    \      '<Plug>(neosnippet_get_selected_text)',
+    \      '<Plug>(neosnippet_register_oneshot_snippet)'],
     \     ['i',
     \      '<Plug>(neosnippet_start_unite_snippet)']],
     \   'unite_sources' : [
@@ -470,7 +507,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \ 'depends' : 'tpope/vim-dispatch',
       \ 'build' : {
       \   'windows' :
-      \     $VCVARSALL . ' ' . $PROCESSOR_ARCHITECTURE . ' & ' . 'msbuild server/OmniSharp.sln /p:Platform="Any CPU"',
+      \     $VCVARSALL . ' ' . $PROCESSOR_ARCHITECTURE . ' & ' .
+      \     'msbuild server/OmniSharp.sln /p:Platform="Any CPU"',
       \   'others'  :
       \     'xbuild server/OmniSharp.sln /p:Platform="Any CPU"'}}
   endif
@@ -484,7 +522,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     {'name' : 'OpenBrowserSmartSearch',
     \      'complete' : 'customlist,openbrowser#_cmd_complete'}],
     \   'mappings' : [
-    \     ['nv', '<Plug>(openbrowser-open)', '<Plug>(openbrowser-search)', '<Plug>(openbrowser-smart-search)']]}}
+    \     ['nv',
+    \      '<Plug>(openbrowser-open)', '<Plug>(openbrowser-search)',
+    \      '<Plug>(openbrowser-smart-search)']]}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'OpenBrowserSearch'      : 'openbrowser#_cmd_complete',
     \ 'OpenBrowserSmartSearch' : 'openbrowser#_cmd_complete'})
@@ -492,13 +532,16 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'tyru/operator-camelize.vim', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nvo', '<Plug>(operator-camelize)', '<Plug>(operator-decamelize)', '<Plug>(operator-camelize-toggle)']]},
+    \     ['nvo',
+    \      '<Plug>(operator-camelize)', '<Plug>(operator-decamelize)',
+    \      '<Plug>(operator-camelize-toggle)']]},
     \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'tyru/operator-html-escape.vim', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nvo', '<Plug>(operator-html-escape)', '<Plug>(operator-html-unescape)']]},
+    \     ['nvo',
+    \      '<Plug>(operator-html-escape)', '<Plug>(operator-html-unescape)']]},
     \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'kana/vim-operator-replace', {
@@ -510,7 +553,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'depends' : ['kana/vim-operator-user', 'tyru/open-browser.vim']}
 
   NeoBundleLazy 'tyru/operator-reverse.vim', {
-    \ 'autoload' : {'mappings' : [['nvo', '<Plug>(operator-reverse-text)', '<Plug>(operator-reverse-lines)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['nvo',
+    \      '<Plug>(operator-reverse-text)', '<Plug>(operator-reverse-lines)']]},
     \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'emonkak/vim-operator-sort', {
@@ -520,8 +566,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'tyru/operator-star.vim', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nvo', '<Plug>(operator-*)', '<Plug>(operator-g*)', '<Plug>(operator-#)', '<Plug>(operator-g#)']]},
-    \ 'depends' : ['kana/vim-operator-user', 'thinca/vim-visualstar']}
+    \     ['nvo',
+    \      '<Plug>(operator-*)', '<Plug>(operator-g*)',
+    \      '<Plug>(operator-#)', '<Plug>(operator-g#)']]},
+    \ 'depends' : [
+    \   'kana/vim-operator-user',
+    \   'thinca/vim-visualstar']}
 
   NeoBundleLazy 'kana/vim-operator-user', {
     \ 'autoload' : {
@@ -530,7 +580,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'deris/parajump', {
     \ 'autoload' : {
-    \   'mappings' : [['nvo', '<Plug>(parajump-forward)', '<Plug>(parajump-backward)']],
+    \   'mappings' : [
+    \     ['nvo',
+    \      '<Plug>(parajump-forward)', '<Plug>(parajump-backward)']],
     \   'insert' : 1}}
 
   NeoBundleLazy 'thinca/vim-partedit', {
@@ -542,7 +594,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'Partedit' : 'partedit#complete'})
 
   NeoBundleLazy 'vim-perl/vim-perl', {
-    \ 'autoload' : {'filetypes' : ['perl', 'perl6', 'pod', 'tt2', 'tt2html', 'tt2js', 'xs']}}
+    \ 'autoload' : {
+    \   'filetypes' : [
+    \     'perl', 'perl6', 'pod', 'tt2', 'tt2html', 'tt2js', 'xs']}}
 
   if s:executable('perl')
     NeoBundleLazy 'c9s/perlomni.vim', {
@@ -562,8 +616,11 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \    'mappings' : [
     \      ['vo', '<Plug>(textobj-precious-i)'],
     \      ['n',  '<Plug>(precious-quickrun-op)']]},
-    \ 'depends' : ['DeaR/vim-textobj-user', 'Shougo/context_filetype.vim', 'thinca/vim-quickrun']}
-    " \ 'depends' : ['kana/vim-textobj-user', 'Shougo/context_filetype.vim', 'thinca/vim-quickrun']}
+    \ 'depends' : [
+    \   'DeaR/vim-textobj-user',
+    \   'Shougo/context_filetype.vim',
+    \   'thinca/vim-quickrun']}
+    " \   'kana/vim-textobj-user',
 
   NeoBundleLazy 'thinca/vim-prettyprint', {
     \ 'autoload' : {
@@ -582,10 +639,13 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   "   \ 'autoload' : {
   "   \   'filetypes' : 'qf',
   "   \   'commands' : [
-  "   \     'Grep',  'Grepadd',  'RGrep',  'RGrepadd',  'EGrep', 'EGrepadd', 'REGrep', 'REGrepadd',
-  "   \     'FGrep', 'FGrepadd', 'RFGrep', 'RFGrepadd', 'BGrep', 'BGrepadd', 'VGrep',  'VGrepadd',
-  "   \     'Vimgrep', 'Vimgrepadd', 'ToggleLocationListMode', 'MyGrepWriteResult', 'MyGrepReadResult',
-  "   \     'FList', 'OpenQFixWin', 'CloseQFixWin', 'ToggleQFixWin', 'MoveToQFixWin'],
+  "   \     'Grep',  'Grepadd',  'RGrep',  'RGrepadd',
+  "   \     'EGrep', 'EGrepadd', 'REGrep', 'REGrepadd',
+  "   \     'FGrep', 'FGrepadd', 'RFGrep', 'RFGrepadd',
+  "   \     'BGrep', 'BGrepadd', 'VGrep',  'VGrepadd',
+  "   \     'Vimgrep', 'Vimgrepadd', 'ToggleLocationListMode',
+  "   \     'MyGrepWriteResult', 'MyGrepReadResult', 'FList',
+  "   \     'OpenQFixWin', 'CloseQFixWin', 'ToggleQFixWin', 'MoveToQFixWin'],
   "   \   'mappings' : [['nv', 'g,']]},
   "   \   'explorer' : 1}
 
@@ -605,15 +665,18 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [
     \     ['nv', '<Plug>(quickrun)'],
     \     ['n',  '<Plug>(quickrun-op)']]},
-    \ 'depends' : ['osyo-manga/quickrun-hook-vcvarsall', 'osyo-manga/shabadou.vim']}
+    \ 'depends' : [
+    \   'osyo-manga/quickrun-hook-vcvarsall',
+    \   'osyo-manga/shabadou.vim']}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'QuickRun' : 'quickrun#complete'})
 
   NeoBundleLazy 'osyo-manga/vim-reanimate', {
     \ 'autoload' : {
     \   'commands' : [
-    \     'ReanimateSave', 'ReanimateSaveInput', 'ReanimateSaveCursorHold', 'ReanimateSwitch',
-    \     'ReanimateLoad', 'ReanimateLoadInput', 'ReanimateLoadLatest', 'ReanimateUnload', 'ReanimateEditVimrcLocal'],
+    \     'ReanimateSave', 'ReanimateSaveInput', 'ReanimateSaveCursorHold',
+    \     'ReanimateLoad', 'ReanimateLoadInput', 'ReanimateLoadLatest',
+    \     'ReanimateSwitch', 'ReanimateUnload', 'ReanimateEditVimrcLocal'],
     \   'unite_sources' : 'reanimate'}}
 
   NeoBundleLazy 'thinca/vim-ref', {
@@ -658,7 +721,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'DeaR/vim-smartword', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nvo', '<Plug>(smartword-w)', '<Plug>(smartword-b)', '<Plug>(smartword-e)', '<Plug>(smartword-ge)']],
+    \     ['nvo',
+    \      '<Plug>(smartword-w)', '<Plug>(smartword-b)',
+    \      '<Plug>(smartword-e)', '<Plug>(smartword-ge)']],
     \   'insert' : 1}}
 
   NeoBundleLazy 'tpope/vim-surround', {
@@ -704,23 +769,31 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nv',
-    \      '<Plug>(textmanip-duplicate-down)', '<Plug>(textmanip-duplicate-up)'],
+    \      '<Plug>(textmanip-duplicate-down)',
+    \      '<Plug>(textmanip-duplicate-up)'],
     \     ['v',
     \      '<Plug>(textmanip-move-left)',  '<Plug>(textmanip-move-down)',
     \      '<Plug>(textmanip-move-right)', '<Plug>(textmanip-move-up)']]}}
 
   NeoBundleLazy 'thinca/vim-textobj-between', {
-    \ 'autoload' : {'mappings' : [['vo', '<Plug>(textobj-between-a)', '<Plug>(textobj-between-i)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-between-a)', '<Plug>(textobj-between-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'thinca/vim-textobj-comment', {
-    \ 'autoload' : {'mappings' : [['vo', '<Plug>(textobj-comment-a)', '<Plug>(textobj-comment-i)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-comment-a)', '<Plug>(textobj-comment-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'rhysd/vim-textobj-continuous-line', {
-    \ 'autoload' : {'filetypes' : ['c', 'cpp', 'objc', 'objcpp', 'sh', 'vim', 'zsh']},
+    \ 'autoload' : {
+    \   'filetypes' : ['c', 'cpp', 'objc', 'objcpp', 'sh', 'vim', 'zsh']},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
@@ -729,7 +802,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [
     \     ['vo',
     \      '<Plug>(textobj-datetime-auto)', '<Plug>(textobj-datetime-date)',
-    \      '<Plug>(textobj-datetime-full)', '<Plug>(textobj-datetime-time)', '<Plug>(textobj-datetime-tz)']]},
+    \      '<Plug>(textobj-datetime-full)', '<Plug>(textobj-datetime-time)',
+    \      '<Plug>(textobj-datetime-tz)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
@@ -752,12 +826,18 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-entire', {
-    \ 'autoload' : {'mappings' : [['vo', '<Plug>(textobj-entire-a)', '<Plug>(textobj-entire-i)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-entire-a)', '<Plug>(textobj-entire-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-fold', {
-    \ 'autoload' : {'mappings' : [['vo', '<Plug>(textobj-fold-a)', '<Plug>(textobj-fold-i)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-fold-a)', '<Plug>(textobj-fold-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
@@ -768,18 +848,24 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'thinca/vim-textobj-function-javascript', {
     \ 'autoload' : {'filetypes' : 'javascript'},
-    \ 'depends' : ['DeaR/vim-textobj-user', 'kana/vim-textobj-function']}
-    " \ 'depends' : ['kana/vim-textobj-user', 'kana/vim-textobj-function']}
+    \ 'depends' : [
+    \   'DeaR/vim-textobj-user',
+    \   'kana/vim-textobj-function']}
+    " \   'kana/vim-textobj-user',
 
   NeoBundleLazy 'thinca/vim-textobj-function-perl', {
     \ 'autoload' : {'filetypes' : 'perl'},
-    \ 'depends' : ['DeaR/vim-textobj-user', 'kana/vim-textobj-function']}
-    " \ 'depends' : ['kana/vim-textobj-user', 'kana/vim-textobj-function']}
+    \ 'depends' : [
+    \   'DeaR/vim-textobj-user',
+    \   'kana/vim-textobj-function']}
+    " \   'kana/vim-textobj-user',
 
   NeoBundleLazy 't9md/vim-textobj-function-ruby', {
     \ 'autoload' : {'filetypes' : ['eruby', 'ruby']},
-    \ 'depends' : ['DeaR/vim-textobj-user', 'kana/vim-textobj-function']}
-    " \ 'depends' : ['kana/vim-textobj-user', 'kana/vim-textobj-function']}
+    \ 'depends' : [
+    \   'DeaR/vim-textobj-user',
+    \   'kana/vim-textobj-function']}
+    " \   'kana/vim-textobj-user',
 
   NeoBundleLazy 'anyakichi/vim-textobj-ifdef', {
     \ 'autoload' : {'filetypes' : ['c', 'cpp', 'cs', 'objc', 'objcpp']},
@@ -808,27 +894,44 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [
     \     ['vo',
-    \      '<Plug>(textobj-jabraces-parens-a)',            '<Plug>(textobj-jabraces-parens-i)',
-    \      '<Plug>(textobj-jabraces-braces-a)',            '<Plug>(textobj-jabraces-braces-i)',
-    \      '<Plug>(textobj-jabraces-brackets-a)',          '<Plug>(textobj-jabraces-brackets-i)',
-    \      '<Plug>(textobj-jabraces-angles-a)',            '<Plug>(textobj-jabraces-angles-i)',
-    \      '<Plug>(textobj-jabraces-double-angles-a)',     '<Plug>(textobj-jabraces-double-angles-i)',
-    \      '<Plug>(textobj-jabraces-kakko-a)',             '<Plug>(textobj-jabraces-kakko-i)',
-    \      '<Plug>(textobj-jabraces-double-kakko-a)',      '<Plug>(textobj-jabraces-double-kakko-i)',
-    \      '<Plug>(textobj-jabraces-yama-kakko-a)',        '<Plug>(textobj-jabraces-yama-kakko-i)',
-    \      '<Plug>(textobj-jabraces-double-yama-kakko-a)', '<Plug>(textobj-jabraces-double-yama-kakko-i)',
-    \      '<Plug>(textobj-jabraces-kikkou-kakko-a)',      '<Plug>(textobj-jabraces-kikkou-kakko-i)',
-    \      '<Plug>(textobj-jabraces-sumi-kakko-a)',        '<Plug>(textobj-jabraces-sumi-kakko-i)']]},
+    \      '<Plug>(textobj-jabraces-parens-a)',
+    \      '<Plug>(textobj-jabraces-parens-i)',
+    \      '<Plug>(textobj-jabraces-braces-a)',
+    \      '<Plug>(textobj-jabraces-braces-i)',
+    \      '<Plug>(textobj-jabraces-brackets-a)',
+    \      '<Plug>(textobj-jabraces-brackets-i)',
+    \      '<Plug>(textobj-jabraces-angles-a)',
+    \      '<Plug>(textobj-jabraces-angles-i)',
+    \      '<Plug>(textobj-jabraces-double-angles-a)',
+    \      '<Plug>(textobj-jabraces-double-angles-i)',
+    \      '<Plug>(textobj-jabraces-kakko-a)',
+    \      '<Plug>(textobj-jabraces-kakko-i)',
+    \      '<Plug>(textobj-jabraces-double-kakko-a)',
+    \      '<Plug>(textobj-jabraces-double-kakko-i)',
+    \      '<Plug>(textobj-jabraces-yama-kakko-a)',
+    \      '<Plug>(textobj-jabraces-yama-kakko-i)',
+    \      '<Plug>(textobj-jabraces-double-yama-kakko-a)',
+    \      '<Plug>(textobj-jabraces-double-yama-kakko-i)',
+    \      '<Plug>(textobj-jabraces-kikkou-kakko-a)',
+    \      '<Plug>(textobj-jabraces-kikkou-kakko-i)',
+    \      '<Plug>(textobj-jabraces-sumi-kakko-a)',
+    \      '<Plug>(textobj-jabraces-sumi-kakko-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-line', {
-    \ 'autoload' : {'mappings' : [['vo', '<Plug>(textobj-line-a)', '<Plug>(textobj-line-i)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-line-a)', '<Plug>(textobj-line-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {
-    \ 'autoload' : {'mappings' : [['vo', '<Plug>(textobj-multiblock-a)', '<Plug>(textobj-multiblock-i)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-multiblock-a)', '<Plug>(textobj-multiblock-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
@@ -836,22 +939,37 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [
     \     ['vo',
-    \      '<Plug>(textobj-multitextobj-a)',   '<Plug>(textobj-multitextobj-i)',
-    \      '<Plug>(textobj-multitextobj-A-a)', '<Plug>(textobj-multitextobj-A-i)',
-    \      '<Plug>(textobj-multitextobj-B-a)', '<Plug>(textobj-multitextobj-B-i)',
-    \      '<Plug>(textobj-multitextobj-C-a)', '<Plug>(textobj-multitextobj-C-i)',
-    \      '<Plug>(textobj-multitextobj-D-a)', '<Plug>(textobj-multitextobj-D-i)',
-    \      '<Plug>(textobj-multitextobj-E-a)', '<Plug>(textobj-multitextobj-E-i)']]},
-    \ 'depends' : ['DeaR/vim-textobj-user', 'kana/vim-textobj-jabraces']}
-    " \ 'depends' : ['kana/vim-textobj-user', 'kana/vim-textobj-jabraces']}
+    \      '<Plug>(textobj-multitextobj-a)',
+    \      '<Plug>(textobj-multitextobj-i)',
+    \      '<Plug>(textobj-multitextobj-A-a)',
+    \      '<Plug>(textobj-multitextobj-A-i)',
+    \      '<Plug>(textobj-multitextobj-B-a)',
+    \      '<Plug>(textobj-multitextobj-B-i)',
+    \      '<Plug>(textobj-multitextobj-C-a)',
+    \      '<Plug>(textobj-multitextobj-C-i)',
+    \      '<Plug>(textobj-multitextobj-D-a)',
+    \      '<Plug>(textobj-multitextobj-D-i)',
+    \      '<Plug>(textobj-multitextobj-E-a)',
+    \      '<Plug>(textobj-multitextobj-E-i)']]},
+    \ 'depends' : [
+    \   'DeaR/vim-textobj-user',
+    \   'kana/vim-textobj-jabraces']}
+    " \   'kana/vim-textobj-user',
 
   NeoBundleLazy 'hchbaw/textobj-motionmotion.vim', {
-    \ 'autoload' : {'mappings' : [['vo', '<Plug>(textobj-motionmotion-a)', '<Plug>(textobj-motionmotion-i)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-motionmotion-a)',
+    \      '<Plug>(textobj-motionmotion-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'sgur/vim-textobj-parameter', {
-    \ 'autoload' : {'mappings' : [['vo', '<Plug>(textobj-parameter-a)', '<Plug>(textobj-parameter-i)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-parameter-a)', '<Plug>(textobj-parameter-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
@@ -876,17 +994,26 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'saihoooooooo/vim-textobj-space', {
-    \ 'autoload' : {'mappings' : [['vo', '<Plug>(textobj-space-a)', '<Plug>(textobj-space-i)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-space-a)', '<Plug>(textobj-space-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'kana/vim-textobj-syntax', {
-    \ 'autoload' : {'mappings' : [['vo', '<Plug>(textobj-syntax-a)', '<Plug>(textobj-syntax-i)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-syntax-a)', '<Plug>(textobj-syntax-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
   NeoBundleLazy 'mattn/vim-textobj-url', {
-    \ 'autoload' : {'mappings' : [['vo', '<Plug>(textobj-url-a)', '<Plug>(textobj-url-i)']]},
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['vo',
+    \      '<Plug>(textobj-url-a)', '<Plug>(textobj-url-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
@@ -899,7 +1026,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo',
-    \      '<Plug>(textobj-wiw-n)', '<Plug>(textobj-wiw-p)', '<Plug>(textobj-wiw-N)', '<Plug>(textobj-wiw-P)'],
+    \      '<Plug>(textobj-wiw-n)', '<Plug>(textobj-wiw-p)',
+    \      '<Plug>(textobj-wiw-N)', '<Plug>(textobj-wiw-P)'],
     \     ['vo',
     \      '<Plug>(textobj-wiw-a)', '<Plug>(textobj-wiw-i)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
@@ -1007,7 +1135,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'rbtnn/vimconsole.vim', {
     \ 'autoload' : {
     \   'commands' : [
-    \     'VimConsole', 'VimConsoleOpen', 'VimConsoleToggle', 'VimConsoleLog', 'VimConsoleWarn', 'VimConsoleError']},
+    \     'VimConsole',    'VimConsoleOpen', 'VimConsoleToggle',
+    \     'VimConsoleLog', 'VimConsoleWarn', 'VimConsoleError']},
     \ 'depends' : 'thinca/vim-prettyprint'}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'VimConsoleLog'   : 'expression',
@@ -1049,7 +1178,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     {'name' : 'Write',
     \      'complete' : 'customlist,vimfiler#complete'}],
     \   'unite_sources' : [
-    \     'vimfiler/drive', 'vimfiler/execute', 'vimfiler/history', 'vimfiler/mask', 'vimfiler/popd', 'vimfiler/sort'],
+    \     'vimfiler/drive', 'vimfiler/execute', 'vimfiler/history',
+    \     'vimfiler/mask',  'vimfiler/popd',    'vimfiler/sort'],
     \   'explorer' : 1}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'VimFiler'           : 'vimfiler#complete',
@@ -1071,7 +1201,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundle 'Shougo/vimproc.vim', {
     \ 'build' : {
-    \   'windows' : $VCVARSALL . ' ' . $PROCESSOR_ARCHITECTURE . ' & ' . 'nmake -f Make_msvc.mak nodebug=1',
+    \   'windows' : $VCVARSALL . ' ' . $PROCESSOR_ARCHITECTURE . ' & ' .
+    \     'nmake -f Make_msvc.mak nodebug=1',
     \   'others'  : 'make'}}
 
   NeoBundleLazy 'Shougo/vimshell.vim', {
@@ -1131,15 +1262,21 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo',
-    \      '<Plug>(visualstar-*)', '<Plug>(visualstar-#)', '<Plug>(visualstar-g*)', '<Plug>(visualstar-g#)']]}}
+    \      '<Plug>(visualstar-*)', '<Plug>(visualstar-g*)',
+    \      '<Plug>(visualstar-#)', '<Plug>(visualstar-g#)']]}}
 
   NeoBundle 'vim-jp/vital.vim'
 
   NeoBundleLazy 'osyo-manga/vim-watchdogs', {
-    \ 'autoload' : {'commands' : ['WatchdogsRun', 'WatchdogsRunSilent', 'WatchdogsRunSweep']},
+    \ 'autoload' : {
+    \   'commands' : [
+    \     'WatchdogsRun', 'WatchdogsRunSilent', 'WatchdogsRunSweep']},
     \ 'depends' : [
-    \   'thinca/vim-quickrun', 'osyo-manga/shabadou.vim', 'osyo-manga/quickrun-hook-vcvarsall',
-    \   'syngan/vim-vimlint', 'dbakker/vim-lint']}
+    \   'thinca/vim-quickrun',
+    \   'osyo-manga/shabadou.vim',
+    \   'osyo-manga/quickrun-hook-vcvarsall',
+    \   'syngan/vim-vimlint',
+    \   'dbakker/vim-lint']}
 endif
 "}}}
 "}}}
@@ -1175,9 +1312,10 @@ set history=100
 set backup
 set nowritebackup
 set backupdir^=~/.bak
-set backupskip+=*.clean,*/.drive.r/*,*/.hg/*,*/.git/*,*/.svn/*
 set patchmode=.clean
 set suffixes+=.clean
+set backupskip+=*.clean,*/.drive.r/*,*/.hg/*,*/.git/*,*/.svn/*
+let s:skip_regexp = '\.clean$\|[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
 
 " Swap
 set swapfile
@@ -1191,7 +1329,7 @@ endif
 set undofile
 set undodir^=~/.bak
 autocmd MyVimrc BufNewFile,BufRead *
-  \ let &l:undofile = (expand('%:p') !~? '\.clean$\|[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]')
+  \ let &l:undofile = (expand('%:p') !~? s:skip_regexp)
 
 " ClipBoard
 set clipboard=unnamed
@@ -1434,7 +1572,8 @@ if has('gui_running') || &t_Co > 255
   " No cursor line & column at other window
   augroup MyVimrc
     autocmd BufWinEnter,WinEnter *
-      \ let [&l:cursorline, &l:cursorcolumn] = [!get(b:, 'nocursorline'), !get(b:, 'nocursorcolumn')]
+      \ let [&l:cursorline, &l:cursorcolumn] =
+      \   [!get(b:, 'nocursorline'), !get(b:, 'nocursorcolumn')]
     autocmd BufWinLeave,WinLeave *
       \ setlocal nocursorline nocursorcolumn
     autocmd CmdwinEnter *
@@ -1620,13 +1759,21 @@ NXnoremap <script> <Leader>b <SID>:<C-U>buffer<Space>
 NXnoremap <script> <Leader>t <SID>:<C-U>tabm<Space>
 NXnoremap <script> <Leader>g <SID>:<C-U>grep<Space>
 NXnoremap <script><expr> <Leader>d
-  \ '<SID>:<C-U>lcd ' . fnamemodify(getcwd(), (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??') . '/'
+  \ '<SID>:<C-U>lcd ' .
+  \ fnamemodify(getcwd(), (has('win32') ? ':gs?\\?/?' : '') .
+  \ ':s?/$??') . '/'
 NXnoremap <script><expr> <Leader>D
-  \ '<SID>:<C-U>cd ' . fnamemodify(getcwd(), (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??') . '/'
+  \ '<SID>:<C-U>cd ' .
+  \ fnamemodify(getcwd(), (has('win32') ? ':gs?\\?/?' : '') .
+  \ ':s?/$??') . '/'
 NXnoremap <script><expr> <Leader><M-d>
-  \ '<SID>:<C-U>lcd ' . expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??') . '/'
+  \ '<SID>:<C-U>lcd ' .
+  \ expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '') .
+  \ ':s?/$??') . '/'
 NXnoremap <script><expr> <Leader><M-D>
-  \ '<SID>:<C-U>cd ' . expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??') . '/'
+  \ '<SID>:<C-U>cd ' .
+  \ expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '') .
+  \ ':s?/$??') . '/'
 
 " Paste
 NXnoremap <C-P> :<C-U>registers<CR>
@@ -1895,7 +2042,9 @@ if exists('$VCVARSALL')
   if exists('$PROGRAMFILES(x86)')
     command! -bar
       \ VCVars64
-      \ call s:vcvarsall(exists('PROCESSOR_ARCHITEW6432') ? $PROCESSOR_ARCHITEW6432 : $PROCESSOR_ARCHITECTURE)
+      \ call s:vcvarsall(exists('PROCESSOR_ARCHITEW6432') ?
+      \   $PROCESSOR_ARCHITEW6432 :
+      \   $PROCESSOR_ARCHITECTURE)
   endif
 endif
 "}}}
@@ -1907,7 +2056,9 @@ command! -bar -nargs=1 -complete=file
   \ vertical diffsplit <args>
 command! -bar
   \ Undiff
-  \ diffoff | setlocal scrollbind< cursorbind< wrap< foldmethod< foldcolumn< | doautocmd FileType
+  \ diffoff |
+  \ setlocal scrollbind< cursorbind< wrap< foldmethod< foldcolumn< |
+  \ doautocmd FileType
 
 nnoremap <F8> :<C-U>Undiff<CR>
 "}}}
@@ -1917,7 +2068,8 @@ nnoremap <F8> :<C-U>Undiff<CR>
 command! -bar
   \ DiffOrig
   \ let s:save_ft = &l:filetype | vertical new | setlocal buftype=nofile |
-  \ read # | 0d_ | let &l:filetype = s:save_ft | unlet s:save_ft | diffthis | wincmd p | diffthis
+  \ read # | 0d_ | let &l:filetype = s:save_ft | unlet s:save_ft |
+  \ diffthis | wincmd p | diffthis
 
 nnoremap <F6> :<C-U>DiffOrig<CR>
 "}}}
@@ -2013,7 +2165,8 @@ function! s:auto_file_mark()
 endfunction
 function! s:clear_file_marks()
   let s:file_mark_pos = -1
-  return (":\<C-U>rviminfo | delmarks " . toupper(join(s:mark_char, '')) . " | wviminfo!\<CR>")
+  return (":\<C-U>rviminfo | delmarks " .
+    \ toupper(join(s:mark_char, '')) . " | wviminfo!\<CR>")
 endfunction
 
 function! s:marks()
@@ -2111,8 +2264,11 @@ function! s:auto_mkdir(dir, force)
     let msg = '"' . a:dir . '" does not exist. Create?'
     let choices = "&Yes\n&No"
   endif
-  if !isdirectory(a:dir) && (a:force || confirm(msg, choices, 1, 'Question') == 1)
-    call mkdir(has('iconv') ? iconv(a:dir, &encoding, &termencoding) : a:dir, 'p')
+  if !isdirectory(a:dir) &&
+    \ (a:force || confirm(msg, choices, 1, 'Question') == 1)
+    let dir = (has('iconv') && &termencoding != '') ?
+      \ iconv(a:dir, &encoding, &termencoding) : a:dir
+    call mkdir(dir, 'p')
   endif
 endfunction
 autocmd MyVimrc BufWritePre *
@@ -2132,7 +2288,8 @@ endfunction
 function! s:_reverse_highlight(hl, name)
   let s = matchstr(a:hl, a:name . '=\zs\S\+')
   if s =~ '\%(re\|in\)verse'
-    return substitute(s, '\%(\%(re\|in\)verse,\?\|,\%(re\|in\)verse\)', '', 'g')
+    return substitute(
+      \ s, '\%(\%(re\|in\)verse,\?\|,\%(re\|in\)verse\)', '', 'g')
   elseif s != '' && s != 'NONE'
     return s . ',reverse'
   else
@@ -2204,7 +2361,7 @@ endif
 " From Example: {{{
 autocmd MyVimrc BufRead *
   \ if line("'\"") > 1 && line("'\"") <= line('$') &&
-  \   expand('%:p') !~? '\.clean$\|[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]' |
+  \   expand('%:p') !~? s:skip_regexp |
   \   execute 'normal! g`"' |
   \ endif
 "}}}
@@ -2270,9 +2427,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap <SID>(anzu-N-with-echo) <Plug>(anzu-N-with-echo)
 
   nnoremap <script><expr> n
-    \ <SID>search_forward_expr() ? '<SID>(anzu-n-with-echo)zvzz' : '<SID>(anzu-N-with-echo)zvzz'
+    \ <SID>search_forward_expr() ?
+    \   '<SID>(anzu-n-with-echo)zvzz' :
+    \   '<SID>(anzu-N-with-echo)zvzz'
   nnoremap <script><expr> N
-    \ <SID>search_forward_expr() ? '<SID>(anzu-N-with-echo)zvzz' : '<SID>(anzu-n-with-echo)zvzz'
+    \ <SID>search_forward_expr() ?
+    \   '<SID>(anzu-N-with-echo)zvzz' :
+    \   '<SID>(anzu-n-with-echo)zvzz'
 endif
 unlet! s:bundle
 "}}}
@@ -2520,7 +2681,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   function! s:set_indent_line_color(force)
-    if !exists('g:indentLine_color_term') || !exists('g:indentLine_color_gui') || a:force
+    if !exists('g:indentLine_color_term') ||
+      \ !exists('g:indentLine_color_gui') || a:force
       let hi_special_key          = s:get_highlight('SpecialKey')
       let g:indentLine_color_term = matchstr(hi_special_key, 'ctermfg=\zs\S\+')
       let g:indentLine_color_gui  = matchstr(hi_special_key, 'guifg=\zs\S\+')
@@ -2659,15 +2821,12 @@ silent! let s:bundle = neobundle#get('neobundle')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:neobundle_git_gc(names)
     let names   = split(a:names)
-    let bundles = empty(names) ? neobundle#config#get_neobundles() : neobundle#config#search(names)
+    let bundles = empty(names) ?
+      \ neobundle#config#get_neobundles() :
+      \ neobundle#config#search(names)
 
     let cwd = getcwd()
-    let System = function(
-      \ s:has_vimproc() ?
-      \   has('win32') ?
-      \     'vimproc#cmd#system' :
-      \     'vimproc#system' :
-      \   'system')
+    let System = function(s:has_vimproc() ? 'vimproc#system' : 'system')
     try
       for bundle in bundles
         if bundle.type != 'git'
@@ -2706,13 +2865,19 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplcache_enable_underbar_completion   = 0
     let g:neocomplcache_enable_fuzzy_completion      = 0
     let g:neocomplcache_force_overwrite_completefunc = 1
-    let g:neocomplcache_temporary_dir                = $HOME . '/.local/.neocomplcache'
+    let g:neocomplcache_temporary_dir                =
+      \ $HOME . '/.local/.neocomplcache'
 
-    let g:neocomplcache_force_omni_patterns       = s:neocompl_force_omni_patterns
-    let g:neocomplcache_keyword_patterns          = s:neocompl_keyword_patterns
-    let g:neocomplcache_omni_patterns             = s:neocompl_omni_patterns
-    let g:neocomplcache_dictionary_filetype_lists = s:neocompl_dictionary_filetype_lists
-    let g:neocomplcache_vim_completefuncs         = s:neocompl_vim_completefuncs
+    let g:neocomplcache_force_omni_patterns       =
+      \ s:neocompl_force_omni_patterns
+    let g:neocomplcache_keyword_patterns          =
+      \ s:neocompl_keyword_patterns
+    let g:neocomplcache_omni_patterns             =
+      \ s:neocompl_omni_patterns
+    let g:neocomplcache_dictionary_filetype_lists =
+      \ s:neocompl_dictionary_filetype_lists
+    let g:neocomplcache_vim_completefuncs         =
+      \ s:neocompl_vim_completefuncs
 
     call neocomplcache#custom_source('syntax_complete',   'rank',  9)
     call neocomplcache#custom_source('snippets_complete', 'rank', 80)
@@ -2803,13 +2968,19 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplete#enable_auto_delimiter        = 1
     " let g:neocomplete#enable_insert_char_pre       = 1
     let g:neocomplete#force_overwrite_completefunc = 1
-    let g:neocomplete#data_directory               = $HOME . '/.local/.neocomplete'
+    let g:neocomplete#data_directory               =
+      \ $HOME . '/.local/.neocomplete'
 
-    let g:neocomplete#force_omni_input_patterns        = s:neocompl_force_omni_patterns
-    let g:neocomplete#keyword_patterns                 = s:neocompl_keyword_patterns
-    let g:neocomplete#sources#omni#input_patterns      = s:neocompl_omni_patterns
-    let g:neocomplete#sources#dictionary#dictionaryies = s:neocompl_dictionary_filetype_lists
-    let g:neocomplete#sources#vim#complete_functions   = s:neocompl_vim_completefuncs
+    let g:neocomplete#force_omni_input_patterns        =
+      \ s:neocompl_force_omni_patterns
+    let g:neocomplete#keyword_patterns                 =
+      \ s:neocompl_keyword_patterns
+    let g:neocomplete#sources#omni#input_patterns      =
+      \ s:neocompl_omni_patterns
+    let g:neocomplete#sources#dictionary#dictionaryies =
+      \ s:neocompl_dictionary_filetype_lists
+    let g:neocomplete#sources#vim#complete_functions   =
+      \ s:neocompl_vim_completefuncs
 
     call neocomplete#custom#source('_', 'matchers', ['matcher_head'])
     call neocomplete#custom#source('syntax_complete',   'rank',  9)
@@ -3170,7 +3341,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
 
     let context = precious#context_filetype()
-    return '[' . &l:filetype . (&l:filetype != context ? (':' . context) : '') . ']'
+    return '[' . &l:filetype .
+      \ (&l:filetype != context ? (':' . context) : '') . ']'
   endfunction
 
   XOmap ax <Plug>(textobj-precious-i)
@@ -3192,7 +3364,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:MyGrep_MenuBar                 = 0
     let g:MyGrep_MultiEncodingGrepScript = 1
     let g:MyGrep_Resultfile              = $HOME . '/.local/.qfgrep.txt'
-    let g:MyGrep_ExcludeReg              = '[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
+    let g:MyGrep_ExcludeReg              =
+      \ '[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
 
     let g:howm_dir                = $HOME . '/howm'
     let g:howm_filename           = '%Y/%m/%Y-%m-%d-%H%M%S.howm'
@@ -3572,14 +3745,18 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     call extend(g:switch_increment_definitions, [{
       \ '\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
-      \   '\=toupper(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) + 1]))',
+      \   '\=toupper(call(''' . s:SID_PREFIX() .
+      \   'ordinal'', [submatch(1) + 1]))',
       \ '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
-      \   '\=tolower(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) + 1]))'}])
+      \   '\=tolower(call(''' . s:SID_PREFIX() .
+      \   'ordinal'', [submatch(1) + 1]))'}])
     call extend(g:switch_decrement_definitions, [{
       \ '\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
-      \   '\=toupper(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) - 1]))',
+      \   '\=toupper(call(''' . s:SID_PREFIX() .
+      \   'ordinal'', [submatch(1) - 1]))',
       \ '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
-      \   '\=tolower(call(''' . s:SID_PREFIX() . 'ordinal'', [submatch(1) - 1]))'}])
+      \   '\=tolower(call(''' . s:SID_PREFIX() .
+      \   'ordinal'', [submatch(1) - 1]))'}])
   endfunction
 
   function! s:switch(direction)
@@ -4179,7 +4356,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_default_opts  =
-        \ '--line-numbers --nocolor --nogroup --hidden --ignore .drive.r --ignore .hg --ignore .git --ignore .svn'
+        \ '--line-numbers --nocolor --nogroup --hidden --ignore .drive.r ' .
+        \ '--ignore .hg --ignore .git --ignore .svn'
     elseif s:executable('grep')
       let g:unite_source_grep_command       = 'grep'
       let g:unite_source_grep_recursive_opt = '-r'
@@ -4312,16 +4490,20 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ :<C-U>Unite tab
     \ -buffer-name=files -no-split<CR>
   NXnoremap <Leader>d
-    \ :<C-U>Unite menu:directory_current directory_mru directory directory/new
+    \ :<C-U>Unite
+    \ menu:directory_current directory_mru directory directory/new
     \ -buffer-name=files -no-split -default-action=lcd<CR>
   NXnoremap <Leader>D
-    \ :<C-U>Unite menu:directory_current directory_mru directory directory/new
+    \ :<C-U>Unite
+    \ menu:directory_current directory_mru directory directory/new
     \ -buffer-name=files -no-split -default-action=cd<CR>
   NXnoremap <Leader><M-d>
-    \ :<C-U>UniteWithBufferDir menu:directory_file directory_mru directory directory/new
+    \ :<C-U>UniteWithBufferDir
+    \ menu:directory_file directory_mru directory directory/new
     \ -buffer-name=files -no-split -default-action=lcd<CR>
   NXnoremap <Leader><M-D>
-    \ :<C-U>UniteWithBufferDir menu:directory_file directory_mru directory directory/new
+    \ :<C-U>UniteWithBufferDir
+    \ menu:directory_file directory_mru directory directory/new
     \ -buffer-name=files -no-split -default-action=cd<CR>
 
   if &grepprg == 'internal'
@@ -4520,17 +4702,20 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:vimshell_scrollback_limit         = 500
     let g:vimshell_prompt                   = '$ '
     let g:vimshell_secondary_prompt         = '> '
-    let g:vimshell_right_prompt             = 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
+    let g:vimshell_right_prompt             =
+      \ 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
 
     if has('win32')
       if filereadable('C:/Apps/ckw/ckw.exe')
         let g:vimshell_use_terminal_command = 'C:/Apps/ckw/ckw.exe -e'
       endif
       let g:vimshell_environment_term     = 'cygwin'
-      let g:vimshell_user_prompt          = '$USERNAME . "@" . hostname() . " " . getcwd()'
+      let g:vimshell_user_prompt          =
+        \ '$USERNAME . "@" . hostname() . " " . getcwd()'
     else
       let g:vimshell_environment_term     = 'xterm-256color'
-      let g:vimshell_user_prompt          = '$USER . "@" . hostname() . " " . getcwd()'
+      let g:vimshell_user_prompt          =
+        \ '$USER . "@" . hostname() . " " . getcwd()'
     endif
 
     if s:executable('grep')

@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  19-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -37,7 +37,8 @@ augroup END
 
 " Script ID
 function! s:SID_PREFIX()
-  let s:_SID_PREFIX = get(s:, '_SID_PREFIX', matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
+  let s:_SID_PREFIX = get(s:, '_SID_PREFIX',
+    \ matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
   return s:_SID_PREFIX
 endfunction
 
