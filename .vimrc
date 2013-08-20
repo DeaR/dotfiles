@@ -4352,6 +4352,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_cursor_line_highlight      = 'CursorLine'
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
+    let g:unite_source_file_mru_limit      = 50
+    let g:unite_source_directory_mru_limit = 50
     " let g:unite_source_directory_mru_filename_format = ':p'
 
     if s:jvgrep_enable && s:executable('jvgrep')
