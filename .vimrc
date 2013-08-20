@@ -634,20 +634,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {'filetypes' : 'markdown'},
     \ 'depends' : 'tyru/open-browser.vim'}
 
-  " NeoBundleLazy 'fuenor/qfixhowm', {
-  "   \ 'autoload' : {
-  "   \   'filetypes' : 'qf',
-  "   \   'commands' : [
-  "   \     'Grep',  'Grepadd',  'RGrep',  'RGrepadd',
-  "   \     'EGrep', 'EGrepadd', 'REGrep', 'REGrepadd',
-  "   \     'FGrep', 'FGrepadd', 'RFGrep', 'RFGrepadd',
-  "   \     'BGrep', 'BGrepadd', 'VGrep',  'VGrepadd',
-  "   \     'Vimgrep', 'Vimgrepadd', 'ToggleLocationListMode',
-  "   \     'MyGrepWriteResult', 'MyGrepReadResult', 'FList',
-  "   \     'OpenQFixWin', 'CloseQFixWin', 'ToggleQFixWin', 'MoveToQFixWin'],
-  "   \   'mappings' : [['nv', 'g,']]},
-  "   \   'explorer' : 1}
-
   NeoBundleLazy 'thinca/vim-qfreplace', {
     \ 'autoload' : {'filetypes' : ['qf', 'unite']}}
 
@@ -1078,10 +1064,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'Shougo/unite-outline', {
     \ 'autoload' : {'unite_sources' : 'outline'}}
-
-  " NeoBundleLazy 'osyo-manga/unite-qfixhowm', {
-  "   \ 'autoload' : {'unite_sources' : 'qfixhowm'},
-  "   \ 'depends' : 'fuenor/qfixhowm'}
 
   NeoBundleLazy 'osyo-manga/unite-quickfix', {
     \ 'autoload' : {'unite_sources' : ['location_list', 'quickfix']}}
@@ -3356,63 +3338,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   autocmd MyVimrc FileType *
     \ NeoBundleSource precious
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" QFixHowm: {{{
-silent! let s:bundle = neobundle#get('qfixhowm')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:QFix_Height                    = 20
-    let g:QFix_PreviewHeight             = 20
-    let g:MyGrep_MenuBar                 = 0
-    let g:MyGrep_MultiEncodingGrepScript = 1
-    let g:MyGrep_Resultfile              = $HOME . '/.local/.qfgrep.txt'
-    let g:MyGrep_ExcludeReg              =
-      \ '[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
-
-    let g:howm_dir                = $HOME . '/howm'
-    let g:howm_filename           = '%Y/%m/%Y-%m-%d-%H%M%S.howm'
-    let g:howm_fileformat         = 'unix'
-    let g:qfixmemo_menubar        = 0
-    let g:QFixHowm_Menufile       = '0000-00-01-000000.howm'
-    let g:QFixHowm_MenuHeight     = 20
-    let g:QFixHowm_keywordfile    = $HOME . '/howm/.howm-keys'
-    let g:QFixHowm_RandomWalkFile = $HOME . '/.local/.howm-random'
-    let g:QFixHowm_VimEnterFile   = $HOME . '/.local/.vimenter.qf'
-    let g:QFixMRU_Filename        = $HOME . '/.local/.qfixmru'
-
-    if s:executable('jvgrep')
-      let g:mygrepprg = 'jvgrep'
-    else
-      let g:mygrepprg   = 'internal'
-      let g:myjpgrepprg = 'agrep.vim'
-    endif
-    if has('multi_byte')
-      let g:howm_fileencoding = 'cp932'
-    endif
-  endfunction
-
-  function! s:bundle.hooks.on_post_source(bundle)
-    sunmap g,B
-    sunmap g,E
-    sunmap g,F
-    sunmap g,V
-    sunmap g,b
-    sunmap g,e
-    sunmap g,f
-    sunmap g,v
-    sunmap g,rE
-    sunmap g,rF
-    sunmap g,re
-    sunmap g,rf
-  endfunction
-
-  NXnoremap <C-W>, :<C-U>OpenQFixWin<CR>
-  NXnoremap <C-W>. :<C-U>CloseToQFixWin<CR>
-  NXnoremap <C-W>0 :<C-U>ToggleLocationListMode<CR>
 endif
 unlet! s:bundle
 "}}}
