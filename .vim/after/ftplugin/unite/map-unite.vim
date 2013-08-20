@@ -1,7 +1,7 @@
 " Mapping for Unite
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  20-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -38,6 +38,8 @@ nnoremap <buffer><silent><expr> pp
 nmap <buffer> <C-J> <Plug>(unite_choose_action)
 imap <buffer> <C-J> <Plug>(unite_choose_action)
 imap <buffer> <M-H> <Plug>(unite_move_head)
+imap <buffer> <M-j> <Plug>(unite_select_next_line)
+imap <buffer> <M-k> <Plug>(unite_select_previous_line)
 
 nnoremap <buffer><silent><expr> <C-S> unite#do_action('split')
 inoremap <buffer><silent><expr> <C-S> unite#do_action('split')
@@ -55,6 +57,8 @@ let b:undo_ftplugin .= '
   \ silent! execute ''nunmap <buffer> <C-J>'' |
   \ silent! execute ''iunmap <buffer> <C-J>'' |
   \ silent! execute ''iunmap <buffer> <M-H>'' |
+  \ silent! execute ''iunmap <buffer> <M-j>'' |
+  \ silent! execute ''iunmap <buffer> <M-k>'' |
   \
   \ silent! execute ''nunmap <buffer> <C-S>'' |
   \ silent! execute ''iunmap <buffer> <C-S>'' |

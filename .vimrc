@@ -1084,7 +1084,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   "   \ 'depends' : 'fuenor/qfixhowm'}
 
   NeoBundleLazy 'osyo-manga/unite-quickfix', {
-    \ 'autoload' : {'unite_sources' : 'quickfix'}}
+    \ 'autoload' : {'unite_sources' : ['location_list', 'quickfix']}}
 
   NeoBundleLazy 'osyo-manga/unite-quickrun_config', {
     \ 'autoload' : {'unite_sources' : 'quickrun_config'},
@@ -1418,8 +1418,6 @@ elseif s:executable('grep')
 else
   set grepprg=internal
 endif
-autocmd MyVimrc QuickFixCmdPost make,grep,vimgrep,helpgrep
-  \ cwindow
 "}}}
 
 "------------------------------------------------------------------------------
@@ -1857,8 +1855,15 @@ NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
 
 " QuickFix
-NXnoremap <C-W>, :<C-U>copen<CR>
-NXnoremap <C-W>. :<C-U>cclose<CR>
+NXnoremap <C-W>, :<C-U>cwindow<CR>
+NXnoremap <C-W>. :<C-U>lwindow<CR>
+
+augroup MyVimrc
+  autocmd QuickFixCmdPost [^l]*
+    \ cwindow
+  autocmd QuickFixCmdPost l*
+    \ lwindow
+augroup END
 "}}}
 
 "------------------------------------------------------------------------------
@@ -4522,16 +4527,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   NXnoremap <Leader>j
     \ :<C-U>Unite jump
-    \ -buffer-name=register<CR>
+    \ -buffer-name=register -no-empty<CR>
   NXnoremap <Leader>J
     \ :<C-U>Unite change
-    \ -buffer-name=register<CR>
+    \ -buffer-name=register -no-empty<CR>
   nnoremap <C-P>
     \ :<C-U>Unite register history/yank
-    \ -buffer-name=register -multi-line<CR>
+    \ -buffer-name=register -no-empty -multi-line<CR>
   xnoremap <C-P>
     \ d:<C-U>Unite register history/yank
-    \ -buffer-name=register -multi-line<CR>
+    \ -buffer-name=register -no-empty -multi-line<CR>
   inoremap <expr> <C-P>
     \ unite#start_complete(['register', 'history/yank'], {
     \   'buffer_name': 'register',
@@ -4581,7 +4586,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nnoremap ml
     \ :<C-U>Unite mark bookmark
-    \ -buffer-name=register -no-start-insert<CR>
+    \ -buffer-name=register -no-start-insert -no-empty<CR>
   nnoremap mu :<C-U>UniteBookmarkAdd<CR>
 endif
 unlet! s:bundle
@@ -4599,12 +4604,26 @@ unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
+" Unite QuickFix: {{{
+silent! let s:bundle = neobundle#get('unite-quickfix')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXnoremap <Leader>u,
+    \ :<C-U>Unite quickfix
+    \ -buffer-name=register -no-empty<CR>
+  NXnoremap <Leader>u.
+    \ :<C-U>Unite location_list
+    \ -buffer-name=register -no-empty<CR>
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
 " Unite QuickRun Config: {{{
 silent! let s:bundle = neobundle#get('unite-quickrun_config')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXnoremap <Leader>ur
     \ :<C-U>Unite quickrun_config
-    \ -buffer-name=register<CR>
+    \ -buffer-name=register -no-empty<CR>
 endif
 unlet! s:bundle
 "}}}
