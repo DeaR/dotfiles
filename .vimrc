@@ -741,7 +741,14 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     {'name' : 'TCommentInline',
     \      'complete' : 'customlist,tcomment#CompleteArgs'},
     \     {'name' : 'TCommentMaybeInline',
-    \      'complete' : 'customlist,tcomment#CompleteArgs'}]}}
+    \      'complete' : 'customlist,tcomment#CompleteArgs'}],
+    \   'mappings' : [
+    \     ['nvo',
+    \      '<Plug>(operator-tcomment)',
+    \      '<Plug>(operator-tcomment-col=1)',
+    \      '<Plug>(operator-tcomment-block)',
+    \      '<Plug>(operator-tcomment-block-col=1)']]},
+    \ 'depends' : 'kana/vim-operator-user'}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'TComment'            : 'tcomment#CompleteArgs',
     \ 'TCommentAs'          : 'tcomment#Complete',
@@ -1859,12 +1866,6 @@ NXOnoremap <M-,> ,
 
 " To Column
 NXOnoremap g\| \|
-
-" Rot13
-NXnoremap g13    g?
-nnoremap  g13g13 g?g?
-nnoremap  g1313  g??
-nnoremap  g133   g??
 
 " FileInfo
 nnoremap <C-G><C-G> <C-G>
@@ -3747,7 +3748,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
   function! s:bundle.hooks.on_source(bundle)
     let g:tcommentMaps = 0
 
-    call tcomment#DefineType('c',         '// %s')
+    call tcomment#DefineType('c',         '// %s', {}, 1)
     call tcomment#DefineType('d',         '// %s')
     call tcomment#DefineType('d_inline',  g:tcommentInlineC)
     call tcomment#DefineType('d_block',   g:tcommentBlockC)
@@ -3765,22 +3766,50 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
     call tcomment#DefineType('z80',       '; %s')
     call tcomment#DefineType('zimbu',     '# %s')
     call tcomment#DefineType('zsh',       '# %s')
+
+    call operator#user#define(
+      \ 'tcomment',
+      \ 'tcomment#Operator',
+      \ 'call ' . s:SID_PREFIX() .
+      \ 'tcomment_operator_setup({})')
+    call operator#user#define(
+      \ 'tcomment-col=1',
+      \ 'tcomment#Operator',
+      \ 'call ' . s:SID_PREFIX() .
+      \ 'tcomment_operator_setup({"col" : 1})')
+    call operator#user#define(
+      \ 'tcomment-block',
+      \ s:SID_PREFIX() . 'tcomment_operator_block',
+      \ 'call ' . s:SID_PREFIX() .
+      \ 'tcomment_operator_setup({})')
+    call operator#user#define(
+      \ 'tcomment-block-col=1',
+      \ s:SID_PREFIX() . 'tcomment_operator_block',
+      \ 'call ' . s:SID_PREFIX() .
+      \ 'tcomment_operator_setup({"col" : 1})')
   endfunction
 
-  nnoremap gc
-    \ :<C-U>let w:tcommentPos = getpos('.') \|
-    \  set opfunc=tcomment#Operator<CR>g@
-  nnoremap gcgc
-    \ :<C-U>let w:tcommentPos = getpos('.') \|
-    \  set opfunc=tcomment#OperatorLine<CR>g@$
-  nnoremap gC
-    \ :<C-U>let w:tcommentPos = getpos('.') \|
-    \  call tcomment#SetOption('mode_extra', 'B') \|
-    \  set opfunc=tcomment#OperatorLine<CR>g@
-  nmap gcc gcgc
+  function! s:tcomment_operator_setup(options)
+    let w:tcommentPos = getpos('.')
+    call tcomment#SetOption('count', v:count)
+    for [key, value] in items(a:options)
+      call tcomment#SetOption(key, value)
+    endfor
+  endfunction
 
-  xnoremap gc :TComment<CR>
-  xnoremap gC :TCommentBlock<CR>
+  function! s:tcomment_operator_block(type)
+    call tcomment#Operator(a:type, 'B')
+  endfunction
+
+  NXOmap gc     <Plug>(operator-tcomment)
+  NXOmap gC     <Plug>(operator-tcomment-block)
+  NXOmap g<M-c> <Plug>(operator-tcomment-col=1)
+  NXOmap g<M-C> <Plug>(operator-tcomment-block-col=1)
+
+  nmap gcc         gcgc
+  nmap gCC         gCgC
+  nmap g<M-c><M-c> g<M-c>g<M-c>
+  nmap g<M-C><M-C> g<M-C>g<M-C>
 endif
 unlet! s:bundle
 "}}}
