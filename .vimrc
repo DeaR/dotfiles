@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  20-Aug-2013.
+" Last Change:  21-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1184,7 +1184,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'Source'             : 'vimfiler#complete',
     \ 'Write'              : 'vimfiler#complete'})
 
-  NeoBundleLazy 'syngan/vim-vimlint', {
+  NeoBundleFetch 'syngan/vim-vimlint', {
     \ 'depends' : 'ynkdir/vim-vimlparser'}
 
   NeoBundle 'Shougo/vimproc.vim', {
