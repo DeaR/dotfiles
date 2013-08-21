@@ -1,4 +1,4 @@
-" Mapping for Unite
+" Mapping for VimFiler
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
 " Last Change:  21-Aug-2013.
