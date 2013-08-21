@@ -28,19 +28,8 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-silent! iunmap <buffer> <Tab>
-silent! iunmap <buffer> <S-Tab>
-
-nmap <buffer> <C-J> <Plug>(unite_choose_action)
-imap <buffer> <C-J> <Plug>(unite_choose_action)
-imap <buffer> <M-H> <Plug>(unite_move_head)
-imap <buffer> <M-j> <Plug>(unite_select_next_line)
-imap <buffer> <M-k> <Plug>(unite_select_previous_line)
-
-nnoremap <buffer><silent><expr> <C-S> unite#do_action('split')
-inoremap <buffer><silent><expr> <C-S> unite#do_action('split')
-nnoremap <buffer><silent><expr> <C-V> unite#do_action('vsplit')
-inoremap <buffer><silent><expr> <C-V> unite#do_action('vsplit')
+nmap <buffer> cc <Plug>(vimfiler_copy_file)
+nmap <buffer> dd <Plug>(vimfiler_delete_file)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
@@ -48,16 +37,8 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> <C-J>'' |
-  \ silent! execute ''iunmap <buffer> <C-J>'' |
-  \ silent! execute ''iunmap <buffer> <M-H>'' |
-  \ silent! execute ''iunmap <buffer> <M-j>'' |
-  \ silent! execute ''iunmap <buffer> <M-k>'' |
-  \
-  \ silent! execute ''nunmap <buffer> <C-S>'' |
-  \ silent! execute ''iunmap <buffer> <C-S>'' |
-  \ silent! execute ''nunmap <buffer> <C-V>'' |
-  \ silent! execute ''iunmap <buffer> <C-V>'''
+  \ silent! execute ''nunmap <buffer> dd'' |
+  \ silent! execute ''nunmap <buffer> cc'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
