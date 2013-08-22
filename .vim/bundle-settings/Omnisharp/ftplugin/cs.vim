@@ -1,7 +1,7 @@
 " OmniSharp ftplugin for C#
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  22-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,21 +28,21 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <buffer> <F5>    :<C-U>wall!<CR>:OmniSharpBuild<CR>
-nnoremap <buffer> <Space> :<C-U>OmniSharpGetCodeActions<CR>
+nnoremap <buffer> <F5>    :<C-U>wall!<CR>:OmniSharpBuildAsync<CR>
 nnoremap <buffer> gd      :<C-U>OmniSharpGotoDefinition<CR>
 nnoremap <buffer> gD      :<C-U>OmniSharpFindImplementations<CR>
+nnoremap <buffer> g<M-d>  :<C-U>OmniSharpFindMembers<CR>
+nnoremap <buffer> g<M-D>  :<C-U>OmniSharpFindUsages<CR>
 
-nnoremap <buffer> <LocalLeader>c :<C-U>OmniSharpCodeFormat<CR>
-nnoremap <buffer> <LocalLeader>g :<C-U>OmniSharpFindUsages<CR>
-nnoremap <buffer> <LocalLeader>t :<C-U>OmniSharpTypeLookup<CR>
-nnoremap <buffer> <LocalLeader>r :<C-U>OmniSharpRename<CR>
-
-nnoremap <buffer> <LocalLeader>a :<C-U>OmniSharpAddToProject<CR>
-nnoremap <buffer> <LocalLeader>A :<C-U>OmniSharpAddReference<Space>
-nnoremap <buffer> <LocalLeader>s :<C-U>OmniSharpStartServer<CR>
-nnoremap <buffer> <LocalLeader>S :<C-U>OmniSharpStopServer<CR>
-nnoremap <buffer> <LocalLeader>R :<C-U>OmniSharpReloadSolution<CR>
+nnoremap <buffer> <LocalLeader>a       :<C-U>OmniSharpAddToProject<CR>
+nnoremap <buffer> <LocalLeader>A       :<C-U>OmniSharpAddReference<CR>
+nnoremap <buffer> <LocalLeader>f       :<C-U>OmniSharpCodeFormat<CR>
+nnoremap <buffer> <LocalLeader>h       :<C-U>OmniSharpHighlightTypes<CR>
+nnoremap <buffer> <LocalLeader>l       :<C-U>OmniSharpReloadSolution<CR>
+nnoremap <buffer> <LocalLeader>t       :<C-U>OmniSharpTypeLookup<CR>
+nnoremap <buffer> <LocalLeader>r       :<C-U>OmniSharpRename<CR>
+nnoremap <buffer> <LocalLeader>R       :<C-U>OmniSharpRenameTo<CR>
+nnoremap <buffer> <LocalLeader><Space> :<C-U>OmniSharpGetCodeActions<CR>
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
@@ -54,17 +54,18 @@ let b:undo_ftplugin .= '
   \ silent! execute ''nunmap <buffer> <Space>'' |
   \ silent! execute ''nunmap <buffer> gd'' |
   \ silent! execute ''nunmap <buffer> gD'' |
-  \
-  \ silent! execute ''nunmap <buffer> <LocalLeader>c'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>g'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>t'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>r'' |
+  \ silent! execute ''nunmap <buffer> g<M-d>'' |
+  \ silent! execute ''nunmap <buffer> g<M-D>'' |
   \
   \ silent! execute ''nunmap <buffer> <LocalLeader>a'' |
   \ silent! execute ''nunmap <buffer> <LocalLeader>A'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>s'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>S'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>R'''
+  \ silent! execute ''nunmap <buffer> <LocalLeader>f'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>h'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>l'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>t'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>r'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader>R'' |
+  \ silent! execute ''nunmap <buffer> <LocalLeader><Space>'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

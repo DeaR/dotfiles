@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  21-Aug-2013.
+" Last Change:  22-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -3081,6 +3081,12 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:OmniSharp_typeLookupInPreview    = 0
     let g:OmniSharp_timeout                = 5
     let g:OmniSharp_BufWritePreSyntaxCheck = 1
+    let g:Omnisharp_stop_server            = 0
+
+    autocmd MyVimrc VimLeavePre *
+      \ if OmniSharp#ServerIsRunning() |
+      \   call OmniSharp#StopServer() |
+      \ endif
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
