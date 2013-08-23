@@ -1185,8 +1185,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'Source'             : 'vimfiler#complete',
     \ 'Write'              : 'vimfiler#complete'})
 
-  NeoBundleFetch 'syngan/vim-vimlint', {
-    \ 'depends' : 'ynkdir/vim-vimlparser'}
+  NeoBundleFetch 'syngan/vim-vimlint'
+  NeoBundleFetch 'ynkdir/vim-vimlparser'
 
   NeoBundle 'Shougo/vimproc.vim', {
     \ 'build' : {
