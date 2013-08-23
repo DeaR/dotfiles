@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  22-Aug-2013.
+" Last Change:  23-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1681,7 +1681,13 @@ NXnoremap <M-_>  <C-W>_
 NXnoremap <M-<>  <C-W><
 NXnoremap <M->>  <C-W>>
 NXnoremap <M-\|> <C-W>\|
-NXnoremap <C-W>Q :<C-U>confirm qall<CR>
+
+" Confirm Close Window
+NXnoremap <C-W><C-Q> :<C-U>confirm quit<CR>
+NXnoremap <C-W>q     :<C-U>confirm quit<CR>
+NXnoremap <C-W>c     :<C-U>confirm close<CR>
+NXnoremap <C-W><C-O> :<C-U>confirm only<CR>
+NXnoremap <C-W>o     :<C-U>confirm only<CR>
 
 " Insert-mode & Command-line-mode
 noremap! <M-j> <Down>
