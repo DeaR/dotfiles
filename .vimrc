@@ -159,14 +159,12 @@ let s:is_android = has('unix') &&
 " NeoBundle: {{{
 if isdirectory($HOME . '/.local/bundle/neobundle')
   set runtimepath+=~/.local/bundle/neobundle
-  if has('win32')
-    let g:neobundle#rm_command = 'rm -rf'
-  elseif s:is_android
+  let g:neobundle#enable_name_conversion = 1
+  let g:neobundle#enable_tail_path       = 1
+  if s:is_android
     let g:neobundle#types#git#default_protocol = 'ssh'
     let g:neobundle#types#hg#default_protocol  = 'ssh'
   endif
-  let g:neobundle#enable_name_conversion = 1
-  let g:neobundle#enable_tail_path       = 1
   call neobundle#rc($HOME . '/.local/bundle')
 
   NeoBundleLazy 'h1mesuke/vim-alignta', {
