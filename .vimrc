@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  23-Aug-2013.
+" Last Change:  25-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -3776,25 +3776,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
   function! s:bundle.hooks.on_source(bundle)
     let g:tcommentMaps = 0
 
-    call tcomment#DefineType('c',         '// %s', {}, 1)
-    call tcomment#DefineType('d',         '// %s')
-    call tcomment#DefineType('d_inline',  g:tcommentInlineC)
-    call tcomment#DefineType('d_block',   g:tcommentBlockC)
-    call tcomment#DefineType('gitconfig', '# %s')
-    call tcomment#DefineType('lua',       '-- %s')
-    call tcomment#DefineType('lua_block', '--[[%s]]')
-    call tcomment#DefineType('mayu',      '# %s')
-    call tcomment#DefineType('nyaos',     '# %s')
-    call tcomment#DefineType('screen',    '# %s')
-    call tcomment#DefineType('snippet',   '# %s')
-    call tcomment#DefineType('tmux',      '# %s')
-    call tcomment#DefineType('vbnet',     "' %s")
-    call tcomment#DefineType('vimshrc',   '# %s')
-    call tcomment#DefineType('wsh',       "' %s")
-    call tcomment#DefineType('z80',       '; %s')
-    call tcomment#DefineType('zimbu',     '# %s')
-    call tcomment#DefineType('zsh',       '# %s')
-
     call operator#user#define(
       \ 'tcomment',
       \ 'tcomment#Operator',
@@ -3815,6 +3796,27 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
       \ s:SID_PREFIX() . 'tcomment_operator_block',
       \ 'call ' . s:SID_PREFIX() .
       \ 'tcomment_operator_setup({"col" : 1})')
+  endfunction
+
+  function! s:bundle.hooks.on_post_source(bundle)
+    call tcomment#DefineType('c',         '// %s', {}, 1)
+    call tcomment#DefineType('d',         '// %s')
+    call tcomment#DefineType('d_inline',  g:tcommentInlineC)
+    call tcomment#DefineType('d_block',   g:tcommentBlockC)
+    call tcomment#DefineType('gitconfig', '# %s')
+    call tcomment#DefineType('lua',       '-- %s')
+    call tcomment#DefineType('lua_block', '--[[%s]]')
+    call tcomment#DefineType('mayu',      '# %s')
+    call tcomment#DefineType('nyaos',     '# %s')
+    call tcomment#DefineType('screen',    '# %s')
+    call tcomment#DefineType('snippet',   '# %s')
+    call tcomment#DefineType('tmux',      '# %s')
+    call tcomment#DefineType('vbnet',     "' %s")
+    call tcomment#DefineType('vimshrc',   '# %s')
+    call tcomment#DefineType('wsh',       "' %s")
+    call tcomment#DefineType('z80',       '; %s')
+    call tcomment#DefineType('zimbu',     '# %s')
+    call tcomment#DefineType('zsh',       '# %s')
   endfunction
 
   function! s:tcomment_operator_setup(options)
