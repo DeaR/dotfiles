@@ -1338,6 +1338,8 @@ set ambiwidth=double
 " Wild menu
 set wildmenu
 set wildignore+=*.clean,.drive.r,.hg,.git,.svn
+set wildignore+=*.o,*.a,*.so,*.obj,*.lib,*.dll,*.exe
+set wildignore+=*.lc,*.elc,*.fas,*.pyc,*.luac
 
 " Mouse
 set mouse=a
