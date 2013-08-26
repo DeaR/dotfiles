@@ -3444,13 +3444,14 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   if neobundle#get('precious') != {}
-    NXOmap <Leader>r <Plug>(precious-quickrun-op)
+    NXOmap sr <Plug>(precious-quickrun-op)
   else
-    NXOmap <Leader>r <Plug>(quickrun-op)
+    NXOmap sr <Plug>(quickrun-op)
   endif
+  nmap srr srsr
 
-  nmap <Leader>rr <Plug>(quickrun)
-  NXmap <F5> <Plug>(quickrun)
+  nmap  <Leader>r <Plug>(quickrun)
+  NXmap <F5>      <Plug>(quickrun)
 
   call add(s:neobundle_timer_source, 'quickrun')
 endif
