@@ -1,6 +1,5 @@
 " Vim settings
 "
-"
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
 " Last Change:  26-Aug-2013.
 " License:      MIT License {{{
