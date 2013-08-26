@@ -80,9 +80,6 @@ let s:cmdwin_enable = 1
 let s:jvgrep_enable = 1
 let s:ag_enable     = 1
 
-" NeoBundle
-let s:neobundle_timer_source =[]
-
 " AlterCommand
 let s:altercmd_define = {}
 
@@ -2839,22 +2836,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ NeoBundleGitGc
     \ :call s:neobundle_git_gc(<q-args>)
 
-  function! s:neobundle_timer()
-    if s:neobundle_timer_source == []
-      return
-    endif
-
-    call neobundle#source(s:neobundle_timer_source[0])
-    call remove(s:neobundle_timer_source, 0)
-    call feedkeys(mode() ==# 'i' ? "\<C-G>\<Esc>" : "g\<Esc>", 'n')
-  endfunction
-
-  augroup MyVimrc
-    autocmd CursorHold,CursorHoldI *
-      \ call s:neobundle_timer()
-    autocmd User VimrcPost
-      \ call neobundle#call_hook('on_source')
-  augroup END
+  autocmd MyVimrc User VimrcPost
+    \ call neobundle#call_hook('on_source')
 endif
 unlet! s:bundle
 "}}}
@@ -2959,7 +2942,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   call extend(s:neocompl_keyword_patterns, {
     \ '_' : '[a-zA-Z@0-9_]\+'})
 
-  call add(s:neobundle_timer_source, 'neocomplcache')
+  autocmd MyVimrc CursorHold *
+    \ NeoBundleSource neocomplcache
 endif
 unlet! s:bundle
 "}}}
@@ -3062,7 +3046,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   call extend(s:neocompl_keyword_patterns, {
     \ '_' : '[a-zA-Z@0-9_]\+'})
 
-  call add(s:neobundle_timer_source, 'neocomplete')
+  autocmd MyVimrc CursorHold *
+    \ NeoBundleSource neocomplete
 endif
 unlet! s:bundle
 "}}}
@@ -3087,7 +3072,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   smap <C-J> <Plug>(neosnippet_expand_or_jump)
   xmap <C-J> <Plug>(neosnippet_expand_target)
 
-  call add(s:neobundle_timer_source, 'neosnippet')
+  autocmd MyVimrc CursorHold *
+    \ NeoBundleSource neosnippet
 endif
 unlet! s:bundle
 "}}}
@@ -3367,8 +3353,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   autocmd MyVimrc FileType *
     \ NeoBundleSource precious
-
-  call add(s:neobundle_timer_source, 'precious')
 endif
 unlet! s:bundle
 "}}}
@@ -3451,8 +3435,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nmap  <Leader>r <Plug>(quickrun)
   NXmap <F5>      <Plug>(quickrun)
-
-  call add(s:neobundle_timer_source, 'quickrun')
 endif
 unlet! s:bundle
 "}}}
@@ -4683,8 +4665,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   NXnoremap <Leader>E     :<C-U>VimFiler<CR>
   NXnoremap <Leader><C-E> :<C-U>VimFilerExplorer<CR>
-
-  call add(s:neobundle_timer_source, 'vimfiler')
 endif
 unlet! s:bundle
 "}}}
@@ -4828,8 +4808,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   autocmd MyVimrc FileType *
     \ NeoBundleSource watchdogs
-
-  call add(s:neobundle_timer_source, 'watchdogs')
 endif
 unlet! s:bundle
 "}}}
