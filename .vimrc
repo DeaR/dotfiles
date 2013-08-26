@@ -1750,7 +1750,6 @@ NXnoremap <Leader><C-D> :<C-U>pwd<CR>
 NXnoremap <script> <Leader>e <SID>:<C-U>edit<Space>
 NXnoremap <script> <Leader>b <SID>:<C-U>buffer<Space>
 NXnoremap <script> <Leader>t <SID>:<C-U>tabm<Space>
-NXnoremap <script> <Leader>g <SID>:<C-U>grep<Space>
 NXnoremap <script><expr> <Leader>d
   \ '<SID>:<C-U>lcd ' .
   \ fnamemodify(getcwd(), (has('win32') ? ':gs?\\?/?' : '') .
@@ -3284,7 +3283,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     call operator#user#define('grep', s:SID_PREFIX() . 'operator_grep')
   endfunction
 
-  NXOmap <Leader>g <Plug>(operator-grep)
+  NXOmap sg <Plug>(operator-grep)
+  nnoremap <script> sgsg <SID>:<C-U>grep<Space>
+
+  nmap sgg sgsg
 endif
 unlet! s:bundle
 "}}}
@@ -4502,15 +4504,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ -buffer-name=files -no-split -default-action=cd<CR>
 
   if &grepprg == 'internal'
-    nnoremap <Leader>g<Leader>g
+    nnoremap sgsg
       \ :<C-U>Unite vimgrep
       \ -buffer-name=grep -no-split -multi-line<CR>
   else
-    nnoremap <Leader>g<Leader>g
+    nnoremap sgsg
       \ :<C-U>Unite grep
       \ -buffer-name=grep -no-split -multi-line<CR>
   endif
-  NXnoremap <Leader>G
+  NXnoremap sG
     \ :<C-U>UniteResume grep
     \ -no-split -multi-line -no-start-insert<CR>
 
@@ -4540,7 +4542,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXnoremap <expr> <Leader>u* <SID>unite_search_cword_forward()
   NXnoremap <expr> <Leader>u# <SID>unite_search_cword_backward()
 
-  nmap  <Leader>gg  <Leader>g<Leader>g
   NXmap <Leader>ug/ <Leader>u*
   NXmap <Leader>ug? <Leader>u#
 
