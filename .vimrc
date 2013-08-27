@@ -1528,9 +1528,9 @@ let g:asmsyntax = 'masm'
 " Shell Script
 let g:is_bash = 1
 
-" Runtimepath by bundle
+" User runtime by bundle
 if isdirectory($HOME . '/.local/bundle/neobundle')
-  for s:bundle in filter(split(glob('~/.vim/bundle-settings/*'), '\n'),
+  for s:bundle in filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
     \ 'neobundle#get(fnamemodify(v:val, ":t")) != {}')
     execute 'set runtimepath+=' . s:bundle
   endfor
