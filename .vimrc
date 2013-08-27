@@ -84,11 +84,23 @@ let s:ag_enable     = 1
 let s:altercmd_define = {}
 
 " NeoComplete or NeoComplCache
-let s:neocompl_force_omni_patterns = {}
 let s:neocompl_keyword_patterns = {}
-let s:neocompl_omni_patterns = {}
-let s:neocompl_dictionary_filetype_lists = {}
 let s:neocompl_vim_completefuncs = {}
+let s:neocompl_dictionary_filetype_lists = {}
+let s:neocompl_force_omni_patterns = {}
+let s:neocompl_omni_patterns = {
+  \ 'ada'          : '.*',
+  \ 'clojure'      : '.*',
+  \ 'css'          : '.*',
+  \ 'cucumber'     : '.*',
+  \ 'debchangelog' : '.*',
+  \ 'html'         : '.*',
+  \ 'javascript'   : '.*',
+  \ 'php'          : '.*',
+  \ 'python'       : '.*',
+  \ 'ruby'         : '.*',
+  \ 'sass'         : '.*',
+  \ 'sql'          : '.*'}
 
 " VCvarsall.bat
 if has('win32') && !exists('$VCVARSALL')
@@ -2506,11 +2518,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ call s:clang_complete_init('<amatch>')
   endfunction
 
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'c'      : '[^.[:digit:] *\t]\%(\.\|->\)',
-    \ 'objc'   : '[^.[:digit:] *\t]\%(\.\|->\)',
-    \ 'cpp'    : '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::',
-    \ 'objcpp' : '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'})
+  call extend(s:neocompl_omni_patterns, {
+    \ 'c'      : '.*',
+    \ 'objc'   : '.*',
+    \ 'cpp'    : '.*',
+    \ 'objcpp' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2696,9 +2708,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:jedi#popup_on_dot           = 0
     let g:jedi#auto_close_doc         = 0
   endfunction
-
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'python' : '[^.[:digit:] *\t]\.'})
 endif
 unlet! s:bundle
 "}}}
@@ -2710,9 +2719,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:jscomplete_use = ['dom', 'moz', 'xpcom', 'es6th']
   endfunction
-
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'javascript' : '[^.[:digit:] *\t]\.'})
 endif
 unlet! s:bundle
 "}}}
@@ -2765,8 +2771,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'lua' : '[^.[:digit:] *\t]\.\|\h\w*:'})
+  call extend(s:neocompl_omni_patterns, {
+    \ 'lua' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -3084,8 +3090,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ endif
   endfunction
 
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'cs' : '[^.[:digit:] *\t]\.'})
+  call extend(s:neocompl_omni_patterns, {
+    \ 'cs' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -3300,18 +3306,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'perl' : '[^.[:digit:] *\t]->\|\h\w*::'})
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" PHP Complete: {{{
-silent! let s:bundle = neobundle#get('phpcomplete')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'php' : '[^.[:digit:] *\t]->\|\h\w*::'})
+  call extend(s:neocompl_omni_patterns, {
+    \ 'perl' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -3456,18 +3452,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   NXmap K <Plug>(ref-keyword)
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" Ruby: {{{
-silent! let s:bundle = neobundle#get('ruby')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  if has('ruby')
-    call extend(s:neocompl_force_omni_patterns, {
-      \ 'ruby' : '[^.[:digit:] *\t]\.\|\h\w*::'})
-  endif
 endif
 unlet! s:bundle
 "}}}
