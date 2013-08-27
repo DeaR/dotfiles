@@ -1,7 +1,7 @@
 " Golang ftplugin for Go
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  27-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -36,17 +36,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> K'' |
-  \
-  \ delcommand Fmt |
-  \ silent! unlet b:did_ftplugin_go_fmt |
-  \
-  \ delcommand Drop |
-  \ delcommand Import |
-  \ delcommand ImportAs |
-  \ silent! execute ''unmap <buffer> <LocalLeader>f'' |
-  \ silent! execute ''unmap <buffer> <LocalLeader>F'' |
-  \ unlet b:did_ftplugin_go_import'
+  \ silent! execute ''nunmap <buffer> K'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

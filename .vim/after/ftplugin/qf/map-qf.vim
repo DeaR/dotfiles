@@ -1,7 +1,7 @@
 " Close mapping for QuickFix
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  27-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,7 +28,6 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <buffer> q      :<C-U>cclose<CR>
 nnoremap <buffer> <S-CR> <CR>zz<C-W>p
 
 function! s:jk(motion)
@@ -58,7 +57,6 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> q'' |
   \ silent! execute ''nunmap <buffer> <S-CR>'' |
   \ silent! execute ''nunmap <buffer> j'' |
   \ silent! execute ''xunmap <buffer> j'' |

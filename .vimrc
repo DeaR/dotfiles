@@ -88,19 +88,7 @@ let s:neocompl_keyword_patterns = {}
 let s:neocompl_vim_completefuncs = {}
 let s:neocompl_dictionary_filetype_lists = {}
 let s:neocompl_force_omni_patterns = {}
-let s:neocompl_omni_patterns = {
-  \ 'ada'          : '.*',
-  \ 'clojure'      : '.*',
-  \ 'css'          : '.*',
-  \ 'cucumber'     : '.*',
-  \ 'debchangelog' : '.*',
-  \ 'html'         : '.*',
-  \ 'javascript'   : '.*',
-  \ 'php'          : '.*',
-  \ 'python'       : '.*',
-  \ 'ruby'         : '.*',
-  \ 'sass'         : '.*',
-  \ 'sql'          : '.*'}
+let s:neocompl_omni_patterns = {}
 
 " VCvarsall.bat
 if has('win32') && !exists('$VCVARSALL')
@@ -1532,14 +1520,6 @@ endif
 
 "------------------------------------------------------------------------------
 " Plugins: {{{
-" Assembler
-let g:asmsyntax = 'masm'
-" let g:asmsyntax = 'arm'
-" let g:asmsyntax = 'z80'
-
-" Shell Script
-let g:is_bash = 1
-
 " User runtime by bundle
 if isdirectory($HOME . '/.local/bundle/neobundle')
   for s:bundle in filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
@@ -1856,10 +1836,6 @@ NXnoremap <script> <C-W>g# <SID>(split-nicely)#zvzz
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
 
-" QuickFix
-NXnoremap <C-W>, :<C-U>cwindow<CR>
-NXnoremap <C-W>. :<C-U>lwindow<CR>
-
 augroup MyVimrc
   autocmd QuickFixCmdPost [^l]*
     \ cwindow
@@ -2047,6 +2023,34 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
+" QuickFix Toggle: {{{
+function! s:toggle_quickfix(height)
+  let w = winnr('$')
+  cclose
+  if w == winnr('$')
+    execute 'copen' a:height
+  endif
+endfunction
+command! -bar -nargs=?
+  \ CToggle
+  \ call s:toggle_quickfix(<q-args>)
+
+function! s:toggle_location(height)
+  let w = winnr('$')
+  lclose
+  if w == winnr('$')
+    execute 'lopen' a:height
+  endif
+endfunction
+command! -bar -nargs=?
+  \ LToggle
+  \ call s:toggle_location(<q-args>)
+
+NXnoremap <C-W>, :<C-U>CToggle<CR>
+NXnoremap <C-W>. :<C-U>LToggle<CR>
+"}}}
+
+"------------------------------------------------------------------------------
 " From CmdEx: {{{
 command! -bar -nargs=1 -complete=file
   \ Diff
@@ -2203,7 +2207,7 @@ function! s:smart_close()
 endfunction
 
 autocmd MyVimrc FileType *
-  \ if (&readonly || !&modifiable) && !hasmapto('q', 'n') |
+  \ if (&readonly || !&modifiable) && maparg('q', 'n') == '' |
   \   nnoremap <buffer> q :<C-U>call <SID>smart_close()<CR>|
   \ endif
 "}}}
@@ -2368,6 +2372,44 @@ autocmd MyVimrc BufRead *
 " Plugins: {{{
 
 "------------------------------------------------------------------------------
+" Built In: {{{
+" Assembler
+let g:asmsyntax = 'masm'
+" let g:asmsyntax = 'z80'
+
+" Shell Script
+let g:is_bash = 1
+
+" Omni
+call extend(s:neocompl_omni_patterns, {
+  \ 'ada'          : '.*',
+  \ 'aspvbs'       : '.*',
+  \ 'clojure'      : '.*',
+  \ 'css'          : '.*',
+  \ 'cucumber'     : '.*',
+  \ 'debchangelog' : '.*',
+  \ 'eruby'        : '.*',
+  \ 'haml'         : '.*',
+  \ 'html'         : '.*',
+  \ 'htmldjango'   : '.*',
+  \ 'jsp'          : '.*',
+  \ 'javascript'   : '.*',
+  \ 'kwt'          : '.*',
+  \ 'liquid'       : '.*',
+  \ 'markdown'     : '.*',
+  \ 'php'          : '.*',
+  \ 'python'       : '.*',
+  \ 'pyrex'        : '.*',
+  \ 'ruby'         : '.*',
+  \ 'sass'         : '.*',
+  \ 'scss'         : '.*',
+  \ 'sql'          : '.*',
+  \ 'tt2html'      : '.*',
+  \ 'xhtml'        : '.*',
+  \ 'xslt'         : '.*'})
+"}}}
+
+"------------------------------------------------------------------------------
 " Alignta: {{{
 silent! let s:bundle = neobundle#get('alignta')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2431,6 +2473,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ <SID>search_forward_expr() ?
     \   '<SID>(anzu-N-with-echo)zvzz' :
     \   '<SID>(anzu-n-with-echo)zvzz'
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Arm: {{{
+silent! let s:bundle = neobundle#get('arm')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  " let g:asmsyntax = 'arm'
 endif
 unlet! s:bundle
 "}}}
