@@ -3275,13 +3275,13 @@ silent! let s:bundle = neobundle#get('operator-user')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     if s:jvgrep_enable && s:executable('jvgrep')
-      let s:operator_grep_escape = ' :\[](){}|.?+*^$'
+      let s:operator_grep_escape = '\[](){}|.?+*^$'
     elseif s:ag_enable && s:executable('ag')
-      let s:operator_grep_escape = ' :\[](){}|.?+*^$'
+      let s:operator_grep_escape = '\[](){}|.?+*^$'
     elseif s:executable('grep')
-      let s:operator_grep_escape = ' :\[].*^$'
+      let s:operator_grep_escape = '\[].*^$'
     else
-      let s:operator_grep_escape = ' :\[].*^$'
+      let s:operator_grep_escape = '\[].*^$'
     endif
 
     function! s:operator_grep(motion_wise)
@@ -3302,7 +3302,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       if neobundle#get('unite') != {}
         execute
           \ (&grepprg == 'internal' ? 'Unite vimgrep::' : 'Unite grep:::') .
-          \ escape(join(lines), s:operator_grep_escape) .
+          \ escape(join(lines), s:operator_grep_escape . ' :') .
           \ ' -buffer-name=grep -no-split -multi-line'
       else
         execute input(
