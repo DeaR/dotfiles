@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  26-Aug-2013.
+" Last Change:  27-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -255,10 +255,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'mattn/emmet-vim', {
     \ 'autoload' : {
-    \   'filetypes' : [
-    \     'css', 'css.drupal', 'haml', 'html', 'html.django_template',
-    \     'htmldjango', 'less', 'mustache', 'sass', 'scss', 'slim',
-    \     'xhtml', 'xml', 'xsl', 'xslt'],
     \   'commands' : 'Emmet',
     \   'mappings' : [['nvi', '<C-E>']]}}
 
@@ -2585,12 +2581,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ 'indentation' : '  ',
       \ 'xml' : {'extends' : 'html'}}
   endfunction
-
-  call extend(s:neocompl_omni_patterns, {
-    \ 'css' : '.*', 'css.drupal' : '.*', 'haml' : '.*', 'html' : '.*',
-    \ 'html.django_template' : '.*', 'htmldjango' : '.*', 'less' : '.*',
-    \ 'mustache' : '.*', 'sass' : '.*', 'scss' : '.*', 'slim' : '.*',
-    \ 'xhtml' : '.*', 'xml' : '.*', 'xsl' : '.*', 'xslt' : '.*'})
 endif
 unlet! s:bundle
 "}}}
