@@ -1,7 +1,7 @@
 " TextObj EnclosedSyntax ftplugin for Perl
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  28-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,10 +28,10 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-omap <buffer> aq <Plug>(textobj-enclosedsyntax-a)
 xmap <buffer> aq <Plug>(textobj-enclosedsyntax-a)
-omap <buffer> iq <Plug>(textobj-enclosedsyntax-i)
+omap <buffer> aq <Plug>(textobj-enclosedsyntax-a)
 xmap <buffer> iq <Plug>(textobj-enclosedsyntax-i)
+omap <buffer> iq <Plug>(textobj-enclosedsyntax-i)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
@@ -39,10 +39,10 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''ounmap <buffer> aq'' |
   \ silent! execute ''xunmap <buffer> aq'' |
-  \ silent! execute ''ounmap <buffer> iq'' |
-  \ silent! execute ''xunmap <buffer> iq'''
+  \ silent! execute ''ounmap <buffer> aq'' |
+  \ silent! execute ''xunmap <buffer> iq'' |
+  \ silent! execute ''ounmap <buffer> iq'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

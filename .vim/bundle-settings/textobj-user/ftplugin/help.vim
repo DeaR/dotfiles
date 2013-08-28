@@ -1,7 +1,7 @@
 " Text Object for Help
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  28-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -63,19 +63,19 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! unmap <buffer> <LocalLeader>j
-  \ silent! unmap <buffer> <LocalLeader>k
-  \ silent! unmap <buffer> <LocalLeader>J
-  \ silent! unmap <buffer> <LocalLeader>K
-  \ silent! unmap <buffer> <LocalLeader>f
-  \ silent! unmap <buffer> <LocalLeader>r
-  \ silent! unmap <buffer> <LocalLeader>F
-  \ silent! unmap <buffer> <LocalLeader>R
-  \ silent! unmap <buffer> <LocalLeader>d
-  \ silent! unmap <buffer> <LocalLeader>e
-  \ silent! unmap <buffer> <LocalLeader>D
-  \ silent! unmap <buffer> <LocalLeader>E
-  \ silent! unmap <buffer> J
+  \ silent! execute ''unmap <buffer> <LocalLeader>j'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>k'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>J'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>K'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>f'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>r'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>F'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>R'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>d'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>e'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>D'' |
+  \ silent! execute ''unmap <buffer> <LocalLeader>E'' |
+  \ silent! execute ''unmap <buffer> J'' |
   \ silent! execute ''unmap <buffer> K'''
 
 let &cpo = s:save_cpo

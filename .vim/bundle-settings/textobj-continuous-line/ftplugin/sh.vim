@@ -1,7 +1,7 @@
 " TextObj Continuous Line ftplugin for Shell
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  28-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,10 +28,10 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-omap <buffer> av <Plug>(textobj-continuous-cpp-a)
 xmap <buffer> av <Plug>(textobj-continuous-cpp-a)
-omap <buffer> iv <Plug>(textobj-continuous-cpp-i)
+omap <buffer> av <Plug>(textobj-continuous-cpp-a)
 xmap <buffer> iv <Plug>(textobj-continuous-cpp-i)
+omap <buffer> iv <Plug>(textobj-continuous-cpp-i)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
@@ -39,10 +39,10 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''ounmap <buffer> av'' |
   \ silent! execute ''xunmap <buffer> av'' |
-  \ silent! execute ''ounmap <buffer> iv'' |
-  \ silent! execute ''xunmap <buffer> iv'''
+  \ silent! execute ''ounmap <buffer> av'' |
+  \ silent! execute ''xunmap <buffer> iv'' |
+  \ silent! execute ''ounmap <buffer> iv'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

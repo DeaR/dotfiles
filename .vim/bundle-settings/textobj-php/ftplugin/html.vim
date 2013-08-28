@@ -1,7 +1,7 @@
 " TextObj PHP ftplugin for HTML
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  28-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,10 +28,10 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-omap <buffer> aP  <Plug>(textobj-php-phptag-a)
 xmap <buffer> aP  <Plug>(textobj-php-phptag-a)
-omap <buffer> iP  <Plug>(textobj-php-phptag-i)
+omap <buffer> aP  <Plug>(textobj-php-phptag-a)
 xmap <buffer> iP  <Plug>(textobj-php-phptag-i)
+omap <buffer> iP  <Plug>(textobj-php-phptag-i)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
@@ -39,10 +39,10 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''ounmap <buffer> aP'' |
   \ silent! execute ''xunmap <buffer> aP'' |
   \ silent! execute ''ounmap <buffer> aP'' |
-  \ silent! execute ''xunmap <buffer> aP'''
+  \ silent! execute ''xunmap <buffer> aP'' |
+  \ silent! execute ''ounmap <buffer> aP'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
