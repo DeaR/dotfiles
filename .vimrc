@@ -3819,6 +3819,18 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
   function! s:bundle.hooks.on_source(bundle)
     let g:tcommentMaps = 0
 
+    function! s:tcomment_operator_setup(options)
+      let w:tcommentPos = getpos('.')
+      call tcomment#SetOption('count', v:count)
+      for [key, value] in items(a:options)
+        call tcomment#SetOption(key, value)
+      endfor
+    endfunction
+
+    function! s:tcomment_operator_block(type)
+      call tcomment#Operator(a:type, 'B')
+    endfunction
+
     call operator#user#define(
       \ 'tcomment',
       \ 'tcomment#Operator',
@@ -3829,6 +3841,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
       \ 'tcomment#Operator',
       \ 'call ' . s:SID_PREFIX() .
       \ 'tcomment_operator_setup({"col" : 1})')
+
     call operator#user#define(
       \ 'tcomment-block',
       \ s:SID_PREFIX() . 'tcomment_operator_block',
@@ -3858,18 +3871,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
     call tcomment#DefineType('z80',       '; %s')
     call tcomment#DefineType('zimbu',     '# %s')
     call tcomment#DefineType('zsh',       '# %s')
-  endfunction
-
-  function! s:tcomment_operator_setup(options)
-    let w:tcommentPos = getpos('.')
-    call tcomment#SetOption('count', v:count)
-    for [key, value] in items(a:options)
-      call tcomment#SetOption(key, value)
-    endfor
-  endfunction
-
-  function! s:tcomment_operator_block(type)
-    call tcomment#Operator(a:type, 'B')
   endfunction
 
   NXOmap gc     <Plug>(operator-tcomment)
