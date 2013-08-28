@@ -530,6 +530,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(operator-camelize-toggle)']]},
     \ 'depends' : 'kana/vim-operator-user'}
 
+  NeoBundleLazy 'rhysd/vim-operator-clang-format', {
+    \ 'autoload' : {'filetypes' : ['c', 'cpp', 'objc', 'objcpp']},
+    \ 'depends' : 'kana/vim-operator-user'}
+
   NeoBundleLazy 'tyru/operator-html-escape.vim', {
     \ 'autoload' : {
     \   'mappings' : [
