@@ -3338,13 +3338,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
           \ escape(join(lines), s:operator_grep_escape . ' :') .
           \ ' -buffer-name=grep -no-split -multi-line'
       else
-        execute input(
-          \ ':',
-          \ ('grep "' .
-          \  escape(join(lines), s:operator_grep_escape) .
-          \  '" '))
+        execute input(':',
+          \ 'grep "' . escape(join(lines), s:operator_grep_escape) . '" '))
       endif
     endfunction
+
     call operator#user#define('grep', s:SID_PREFIX() . 'operator_grep')
   endfunction
 
