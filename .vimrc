@@ -170,7 +170,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'h1mesuke/vim-alignta', {
     \ 'autoload' : {
     \   'commands' : ['Align', 'Alignta'],
-    \   'unite_sources' : 'alignta'}}
+    \   'mappings' : [['nvo', '<Plug>(operator-alignta)']],
+    \   'unite_sources' : 'alignta'},
+    \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'tyru/vim-altercmd', {
     \ 'autoload' : {
@@ -2417,7 +2419,34 @@ call extend(s:neocompl_omni_patterns, {
 " Alignta: {{{
 silent! let s:bundle = neobundle#get('alignta')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  xnoremap <script> <Leader>a <SID>:Alignta<Space>
+  function! s:bundle.hooks.on_source(bundle)
+    function! s:operator_alignta(motion_wise)
+      try
+        let sel_save = &l:selection
+        let &l:selection = "inclusive"
+
+        if a:motion_wise == 'char'
+            let ex = '`[v`]'
+        elseif a:motion_wise == 'line'
+            let ex = '`[V`]'
+        elseif a:motion_wise == 'block'
+            let ex = '`[' . "\<C-v>" . '`]'
+        else
+            echoerr 'internal error, sorry: this block never be reached'
+        endif
+        execute 'silent normal!' ex
+        execute input(':', 'Alignta ')
+      finally
+        let &l:selection = sel_save
+      endtry
+    endfunction
+
+    call operator#user#define('alignta', s:SID_PREFIX() . 'operator_alignta')
+  endfunction
+
+  NXOmap s= <Plug>(operator-alignta)
+
+  nmap s== s=s=
 endif
 unlet! s:bundle
 "}}}
