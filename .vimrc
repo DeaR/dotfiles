@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-Aug-2013.
+" Last Change:  28-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -3816,8 +3816,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
     call tcomment#DefineType('d_inline',  g:tcommentInlineC)
     call tcomment#DefineType('d_block',   g:tcommentBlockC)
     call tcomment#DefineType('gitconfig', '# %s')
-    call tcomment#DefineType('lua',       '-- %s')
-    call tcomment#DefineType('lua_block', '--[[%s]]')
     call tcomment#DefineType('mayu',      '# %s')
     call tcomment#DefineType('nyaos',     '# %s')
     call tcomment#DefineType('screen',    '# %s')
