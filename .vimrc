@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Aug-2013.
+" Last Change:  29-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1786,11 +1786,17 @@ nnoremap <M-r> g+
 nnoremap <M-U> :<C-U>undolist<CR>
 
 " New line
-nnoremap <M-o> o<Esc>0"_Dk
-nnoremap <M-O> O<Esc>0"_Dj
+nnoremap <M-o>
+  \ :<C-U>call append(line('.'), repeat([''], v:count1))<CR>
+nnoremap <M-O>
+  \ :<C-U>call append(line('.') - 1, repeat([''], v:count1))<CR>
 
-" Back jump
-nnoremap <S-Tab> <C-O>
+" jump
+NXnoremap <M-(>   (zvzz
+NXnoremap <M-)>   )zvzz
+NXnoremap <M-{>   {zvzz
+NXnoremap <M-}>   }zvzz
+nnoremap  <S-Tab> <C-O>
 
 " Paste toggle
 set pastetoggle=<F11>
@@ -3513,6 +3519,20 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   NXmap K <Plug>(ref-keyword)
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Repeat: {{{
+silent! let s:bundle = neobundle#get('repeat')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  nnoremap <M-o>
+    \ :<C-U>call append(line('.'), repeat([''], v:count1)) \|
+    \  call repeat#set('<M-o>', v:count1)<CR>
+  nnoremap <M-O>
+    \ :<C-U>call append(line('.') - 1, repeat([''], v:count1)) \|
+    \  call repeat#set('<M-O>', v:count1)<CR>
 endif
 unlet! s:bundle
 "}}}
