@@ -3896,16 +3896,17 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         let &l:selection = 'inclusive'
 
         if a:motion_wise == 'char'
-          let ex = '`[v`]'
+          let resel = '`[v`]'
         elseif a:motion_wise == 'line'
-          let ex = '`[V`]'
+          let resel = '`[V`]'
         elseif a:motion_wise == 'block'
-          let ex = '`[' . "\<C-v>" . '`]'
+          let resel = '`[' . "\<C-v>" . '`]'
         else
           echoerr 'internal error, sorry: this block never be reached'
+          return
         endif
 
-        execute 'normal!' ex . ":\<C-U>call " . a:function . "\<CR>\<Esc>"
+        execute 'normal!' resel . ":\<C-U>call " . a:function . "\<CR>\<Esc>"
       finally
         let &l:selection = save_sel
       endtry
