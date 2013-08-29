@@ -717,7 +717,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'tpope/vim-surround', {
     \ 'autoload' : {
     \   'mappings' : [
-    \     ['nx',
+    \     ['n',
+    \      '<Plug>SurroundRepeat',
     \      '<Plug>Dsurround', '<Plug>Csurround',  '<Plug>Ysurround',
     \      '<Plug>YSurround', '<Plug>Yssurround', '<Plug>YSsurround'],
     \     ['v',
