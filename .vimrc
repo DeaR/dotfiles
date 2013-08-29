@@ -3886,11 +3886,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXmap <M-p> <Plug>(textmanip-duplicate-down)
   NXmap <M-P> <Plug>(textmanip-duplicate-up)
 
-  xnoremap <Leader>m <nop>
-  xmap <leader>mj <Plug>(textmanip-move-down)
-  xmap <leader>mk <Plug>(textmanip-move-up)
-  xmap <leader>mh <Plug>(textmanip-move-left)
-  xmap <leader>ml <Plug>(textmanip-move-right)
+  xmap <C-J> <Plug>(textmanip-move-down)
+  xmap <C-K> <Plug>(textmanip-move-up)
+  xmap <C-H> <Plug>(textmanip-move-left)
+  xmap <C-L> <Plug>(textmanip-move-right)
 endif
 unlet! s:bundle
 "}}}
