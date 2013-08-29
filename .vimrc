@@ -2887,11 +2887,8 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('narrow')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    function! s:operator_narrow(motion_wise)
-      call narrow#Narrow(line("'["), line("']"))
-    endfunction
-
-    call operator#user#define('narrow', s:SID_PREFIX() . 'operator_narrow')
+    call operator#user#define_ex_command(
+      \ 'narrow', 'Narrow')
   endfunction
 
   NXOmap sn <Plug>(operator-narrow)
