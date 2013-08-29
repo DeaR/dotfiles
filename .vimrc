@@ -2663,17 +2663,22 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('columnjump')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    inoremap <script> <M-K> <C-O><SID>(columnjump-backward)
-    inoremap <script> <M-J> <C-O><SID>(columnjump-forward)
+    inoremap <script> <M-(> <C-O><SID>(columnjump-backward)
+    inoremap <script> <M-)> <C-O><SID>(columnjump-forward)
   endfunction
 
   map <SID>(columnjump-backward) <Plug>(columnjump-backward)
   map <SID>(columnjump-forward)  <Plug>(columnjump-forward)
 
-  NXnoremap <script> <C-K> <SID>(columnjump-backward)zvzz
-  onoremap  <script> <C-K> <SID>(columnjump-backward)
-  NXnoremap <script> <C-J> <SID>(columnjump-forward)zvzz
-  onoremap  <script> <C-J> <SID>(columnjump-forward)
+  NXnoremap <script> ( <SID>(columnjump-backward)zvzz
+  onoremap  <script> ( <SID>(columnjump-backward)
+  NXnoremap <script> ) <SID>(columnjump-forward)zvzz
+  onoremap  <script> ) <SID>(columnjump-forward)
+
+  NXnoremap <M-(> (zvzz
+  onoremap  <M-(> (
+  NXnoremap <M-)> )zvzz
+  onoremap  <M-)> )
 endif
 unlet! s:bundle
 "}}}
