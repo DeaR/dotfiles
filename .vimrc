@@ -3357,6 +3357,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   onoremap  <script> { <SID>(parajump-backward)
   NXnoremap <script> } <SID>(parajump-forward)zvzz
   onoremap  <script> } <SID>(parajump-forward)
+
+  NXnoremap <M-{> {zvzz
+  onoremap  <M-{> {
+  NXnoremap <M-}> }zvzz
+  onoremap  <M-}> }
 endif
 unlet! s:bundle
 "}}}
