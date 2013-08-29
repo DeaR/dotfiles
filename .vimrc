@@ -597,6 +597,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'filetypes' : [
     \     'perl', 'perl6', 'pod', 'tt2', 'tt2html', 'tt2js', 'xs']}}
 
+  NeoBundleLazy 'y-uuki/perl-local-lib-path.vim', {
+    \ 'autoload' : {'commands' : 'PerlLocalLibPath'}}
+
   if s:executable('perl')
     NeoBundleLazy 'c9s/perlomni.vim', {
       \ 'autoload' : {'filetypes' : 'perl'}}
@@ -1054,6 +1057,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'osyo-manga/unite-filetype', {
     \ 'autoload' : {'unite_sources' : 'filetype'}}
 
+  NeoBundleLazy 'osyo-manga/unite-fold', {
+    \ 'autoload' : {'unite_sources' : 'fold'}}
+
   NeoBundleLazy 'tsukkee/unite-help', {
     \ 'autoload' : {'unite_sources' : 'help'}}
 
@@ -1071,6 +1077,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'Shougo/unite-outline', {
     \ 'autoload' : {'unite_sources' : 'outline'}}
+
+  NeoBundleLazy 'y-uuki/unite-perl-module.vim', {
+    \ 'autoload' : {'unite_sources' : ['perl/global', 'perl/local']}}
 
   NeoBundleLazy 'osyo-manga/unite-quickfix', {
     \ 'autoload' : {'unite_sources' : ['location_list', 'quickfix']}}
