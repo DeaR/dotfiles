@@ -807,10 +807,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo',
-    \      '<Plug>(textobj-diff-file-n)', '<Plug>(textobj-diff-file-p)',
-    \      '<Plug>(textobj-diff-file-N)', '<Plug>(textobj-diff-file-P)',
-    \      '<Plug>(textobj-diff-hunk-n)', '<Plug>(textobj-diff-hunk-p)',
-    \      '<Plug>(textobj-diff-hunk-N)', '<Plug>(textobj-diff-hunk-P)'],
+    \      '<Plug>(textobj-diff-file-n)', '<Plug>(textobj-diff-file-N)',
+    \      '<Plug>(textobj-diff-file-p)', '<Plug>(textobj-diff-file-P)',
+    \      '<Plug>(textobj-diff-hunk-n)', '<Plug>(textobj-diff-hunk-N)',
+    \      '<Plug>(textobj-diff-hunk-p)', '<Plug>(textobj-diff-hunk-P)'],
     \     ['vo',
     \      '<Plug>(textobj-diff-file)', '<Plug>(textobj-diff-hunk)']]},
     \ 'depends' : 'DeaR/vim-textobj-user'}
@@ -2365,7 +2365,8 @@ if has('multi_byte')
   function! s:set_ideographic_space(force)
     if !exists('s:hi_ideographic_space') || a:force
       silent! let s:hi_ideographic_space =
-        \ s:get_highlight('SpecialKey') . ' term=underline cterm=underline gui=underline'
+        \ s:get_highlight('SpecialKey') .
+        \ ' term=underline cterm=underline gui=underline'
     endif
 
     if exists('s:hi_ideographic_space')
@@ -2440,24 +2441,7 @@ silent! let s:bundle = neobundle#get('alignta')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     function! s:operator_alignta(motion_wise)
-      try
-        let sel_save = &l:selection
-        let &l:selection = "inclusive"
-
-        if a:motion_wise == 'char'
-            let ex = '`[v`]'
-        elseif a:motion_wise == 'line'
-            let ex = '`[V`]'
-        elseif a:motion_wise == 'block'
-            let ex = '`[' . "\<C-v>" . '`]'
-        else
-            echoerr 'internal error, sorry: this block never be reached'
-        endif
-        execute 'silent normal!' ex
-        execute input(':', 'Alignta ')
-      finally
-        let &l:selection = sel_save
-      endtry
+      execute input(':', line("'[") . ',' . line("']") . 'Alignta ')
     endfunction
 
     call operator#user#define('alignta', s:SID_PREFIX() . 'operator_alignta')
