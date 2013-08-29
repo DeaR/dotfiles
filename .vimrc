@@ -329,7 +329,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {'filetypes' : ['html', 'javascript']}}
 
   NeoBundleLazy 'HybridText', {
-    \ 'autoload' : {'filetypes' : 'hybrid'}}
+    \ 'autoload' : {'filetypes' : ['hybrid', 'text']}}
 
   if has('conceal')
     NeoBundle 'Yggdroot/indentLine'
@@ -2753,16 +2753,6 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('hier')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <Esc><Esc> :<C-U>nohlsearch \| HierClear<CR><Esc>
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" HybridText: {{{
-silent! let s:bundle = neobundle#get('HybridText')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  autocmd MyVimrc FileType text
-    \ setlocal syntax=hybrid
 endif
 unlet! s:bundle
 "}}}
