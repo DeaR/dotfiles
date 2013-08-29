@@ -384,7 +384,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundle 'tomasr/molokai'
 
   NeoBundleLazy 'kana/vim-narrow', {
-    \ 'autoload' : {'commands' : ['Narrow', 'Widen']}}
+    \ 'autoload' : {
+    \   'commands' : ['Narrow', 'Widen'],
+    \   'mappings' : [['nvo', '<Plug>(operator-narrow)']]},
+    \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleFetch 'Shougo/neobundle.vim'
   call extend(s:neocompl_vim_completefuncs, {
@@ -2875,8 +2878,18 @@ unlet! s:bundle
 " Narrow: {{{
 silent! let s:bundle = neobundle#get('narrow')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  xnoremap <Leader>n :Narrow<CR>
-  nnoremap <Leader>n :Widen<CR>
+  function! s:bundle.hooks.on_source(bundle)
+    function! s:operator_narrow(motion_wise)
+      call narrow#Narrow(line("'["), line("']"))
+    endfunction
+
+    call operator#user#define('narrow', s:SID_PREFIX() . 'operator_narrow')
+  endfunction
+
+  NXOmap sn <Plug>(operator-narrow)
+  NXnoremap sN :<C-U>Widen<CR>
+
+  nmap snn snsn
 endif
 unlet! s:bundle
 "}}}
