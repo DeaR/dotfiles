@@ -1533,6 +1533,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     execute 'set runtimepath+=' . s:bundle
   endfor
   unlet! s:bundle
+
+  autocmd MyVimrc User VimrcPost
+    \ call neobundle#call_hook('on_source')
 endif
 
 " Enable plugin
@@ -2880,44 +2883,6 @@ silent! let s:bundle = neobundle#get('narrow')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   xnoremap <Leader>n :Narrow<CR>
   nnoremap <Leader>n :Widen<CR>
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" NeoBundle: {{{
-silent! let s:bundle = neobundle#get('neobundle')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:neobundle_git_gc(names)
-    let names   = split(a:names)
-    let bundles = empty(names) ?
-      \ neobundle#config#get_neobundles() :
-      \ neobundle#config#search(names)
-
-    let cwd = getcwd()
-    let System = function(s:has_vimproc() ? 'vimproc#system' : 'system')
-    try
-      for bundle in bundles
-        if bundle.type != 'git'
-          continue
-        endif
-        if isdirectory(bundle.path)
-          lcd `=bundle.path`
-        endif
-        call call(System, ['git gc'])
-      endfor
-    finally
-      if isdirectory(cwd)
-        lcd `=cwd`
-      endif
-    endtry
-  endfunction
-  command! -bar -complete=customlist,neobundle#complete_bundles -nargs=?
-    \ NeoBundleGitGc
-    \ :call s:neobundle_git_gc(<q-args>)
-
-  autocmd MyVimrc User VimrcPost
-    \ call neobundle#call_hook('on_source')
 endif
 unlet! s:bundle
 "}}}
