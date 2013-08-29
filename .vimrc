@@ -190,9 +190,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'osyo-manga/vim-anzu', {
     \ 'autoload' : {
     \   'commands' : [
-    \     'AnzuClearSearchStatus', 'AnzuClearSearchCache',
+    \     'AnzuClearSearchStatus',  'AnzuClearSearchCache',
     \     'AnzuUpdateSearchStatus', 'AnzuUpdateSearchStatusOutput',
-    \     'AnzuSignMatchLine', 'AnzuClearSignMatchLine'],
+    \     'AnzuSignMatchLine',      'AnzuClearSignMatchLine'],
     \   'mappings' : [
     \     ['n',
     \      '<Plug>(anzu-n)',     '<Plug>(anzu-n-with-echo)',
