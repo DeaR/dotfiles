@@ -258,7 +258,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'mattn/emmet-vim', {
     \ 'autoload' : {
     \   'commands' : 'Emmet',
-    \   'mappings' : [['nvi', '<C-E>']]}}
+    \   'mappings' : [['nvi', '<C-Y>']]}}
 
   NeoBundleLazy 'thinca/vim-ft-clojure', {
     \ 'autoload' : {'filetypes' : 'clojure'}}
@@ -2694,7 +2694,6 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('emmet')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:user_emmet_leader_key = '<C-E>'
     let g:user_emmet_settings   = {
       \ 'lang' : 'ja',
       \ 'indentation' : '  ',
