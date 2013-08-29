@@ -3891,19 +3891,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       let save_sel = &l:selection
       try
         let &l:selection = 'inclusive'
-
-        if a:motion_wise == 'char'
-          let resel = '`[v`]'
-        elseif a:motion_wise == 'line'
-          let resel = '`[V`]'
-        elseif a:motion_wise == 'block'
-          let resel = '`[' . "\<C-v>" . '`]'
-        else
-          echoerr 'internal error, sorry: this block never be reached'
-          return
-        endif
-
-        execute 'normal!' resel . ":\<C-U>call " . a:function . "\<CR>\<Esc>"
+        execute 'normal! `[' .
+          \ operator#user#visual_command_from_wise_name(a:motion_wise) .
+          \ "`]:\<C-U>call " . a:function . "\<CR>\<Esc>"
       finally
         let &l:selection = save_sel
       endtry
@@ -3954,13 +3944,19 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ s:SID_PREFIX() . 'operator_textmanip_move_up')
   endfunction
 
-  NXOmap <M-p> <Plug>(operator-textmanip-duplicate-down)
-  NXOmap <M-P> <Plug>(operator-textmanip-duplicate-up)
+  NOmap <M-p> <Plug>(operator-textmanip-duplicate-down)
+  NOmap <M-P> <Plug>(operator-textmanip-duplicate-up)
+  xmap  <M-p> <Plug>(textmanip-duplicate-down)
+  xmap  <M-P> <Plug>(textmanip-duplicate-up)
 
-  NXOmap sj <Plug>(operator-textmanip-move-down)
-  NXOmap sk <Plug>(operator-textmanip-move-up)
-  NXOmap sh <Plug>(operator-textmanip-move-left)
-  NXOmap sl <Plug>(operator-textmanip-move-right)
+  NOmap sj <Plug>(operator-textmanip-move-down)
+  NOmap sk <Plug>(operator-textmanip-move-up)
+  NOmap sh <Plug>(operator-textmanip-move-left)
+  NOmap sl <Plug>(operator-textmanip-move-right)
+  xmap  sj <Plug>(textmanip-move-down)
+  xmap  sk <Plug>(textmanip-move-up)
+  xmap  sh <Plug>(textmanip-move-left)
+  xmap  sl <Plug>(textmanip-move-right)
 
   nmap sjj sjsj
   nmap skk sksk
