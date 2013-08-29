@@ -2216,10 +2216,10 @@ function! s:smart_eol()
   return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
 endfunction
 
-NXOnoremap <silent><expr> H <SID>smart_bol()
-NXOnoremap <silent><expr> L <SID>smart_eol()
-inoremap <silent><expr> <M-H> '<C-O>' . <SID>smart_bol()
-inoremap <silent><expr> <M-L> '<C-O>' . <SID>smart_eol()
+NXOnoremap <expr> H <SID>smart_bol()
+NXOnoremap <expr> L <SID>smart_eol()
+inoremap <expr> <M-H> '<C-O>' . <SID>smart_bol()
+inoremap <expr> <M-L> '<C-O>' . <SID>smart_eol()
 "}}}
 
 "------------------------------------------------------------------------------
