@@ -3189,11 +3189,11 @@ unlet! s:bundle
 " Operator HTML Escape: {{{
 silent! let s:bundle = neobundle#get('operator-html-escape')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXOmap sh <Plug>(operator-html-escape)
-  NXOmap sH <Plug>(operator-html-unescape)
+  NXOmap se <Plug>(operator-html-escape)
+  NXOmap sE <Plug>(operator-html-unescape)
 
-  nmap shh shsh
-  nmap sHH sHsH
+  nmap see sese
+  nmap sEE sEsE
 endif
 unlet! s:bundle
 "}}}
