@@ -767,12 +767,20 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 't9md/vim-textmanip', {
     \ 'autoload' : {
     \   'mappings' : [
+    \     ['nvo',
+    \      '<Plug>(operator-textmanip-duplicate-down)',
+    \      '<Plug>(operator-textmanip-duplicate-up)',
+    \      '<Plug>(operator-textmanip-move-left)',
+    \      '<Plug>(operator-textmanip-move-right)',
+    \      '<Plug>(operator-textmanip-move-down)',
+    \      '<Plug>(operator-textmanip-move-up)'],
     \     ['nv',
     \      '<Plug>(textmanip-duplicate-down)',
     \      '<Plug>(textmanip-duplicate-up)'],
     \     ['v',
     \      '<Plug>(textmanip-move-left)',  '<Plug>(textmanip-move-down)',
-    \      '<Plug>(textmanip-move-right)', '<Plug>(textmanip-move-up)']]}}
+    \      '<Plug>(textmanip-move-right)', '<Plug>(textmanip-move-up)']]},
+    \ 'depends' : 'kana/vim-operator-user'}
 
   NeoBundleLazy 'thinca/vim-textobj-between', {
     \ 'autoload' : {
@@ -3881,13 +3889,85 @@ unlet! s:bundle
 " TextManipilate: {{{
 silent! let s:bundle = neobundle#get('textmanip')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXmap <M-p> <Plug>(textmanip-duplicate-down)
-  NXmap <M-P> <Plug>(textmanip-duplicate-up)
+  function! s:bundle.hooks.on_source(bundle)
+    function! s:operator_textmanip(function, motion_wise)
+      let save_sel = &l:selection
+      try
+        let &l:selection = 'inclusive'
 
-  xmap <C-J> <Plug>(textmanip-move-down)
-  xmap <C-K> <Plug>(textmanip-move-up)
-  xmap <C-H> <Plug>(textmanip-move-left)
-  xmap <C-L> <Plug>(textmanip-move-right)
+        if a:motion_wise == 'char'
+          let ex = '`[v`]'
+        elseif a:motion_wise == 'line'
+          let ex = '`[V`]'
+        elseif a:motion_wise == 'block'
+          let ex = '`[' . "\<C-v>" . '`]'
+        else
+          echoerr 'internal error, sorry: this block never be reached'
+        endif
+
+        execute 'normal!' ex . ":\<C-U>call " . a:function . "\<CR>\<Esc>"
+      finally
+        let &l:selection = save_sel
+      endtry
+    endfunction
+
+    function! s:operator_textmanip_duplicate_down(motion_wise)
+      call s:operator_textmanip(
+        \ 'textmanip#duplicate("down", "v")', a:motion_wise)
+    endfunction
+    function! s:operator_textmanip_duplicate_up(motion_wise)
+      call s:operator_textmanip(
+        \ 'textmanip#duplicate("up", "v")', a:motion_wise)
+    endfunction
+    function! s:operator_textmanip_move_left(motion_wise)
+      call s:operator_textmanip(
+        \ 'textmanip#move("left")', a:motion_wise)
+    endfunction
+    function! s:operator_textmanip_move_right(motion_wise)
+      call s:operator_textmanip(
+        \ 'textmanip#move("right")', a:motion_wise)
+    endfunction
+    function! s:operator_textmanip_move_down(motion_wise)
+      call s:operator_textmanip(
+        \ 'textmanip#move("down")', a:motion_wise)
+    endfunction
+    function! s:operator_textmanip_move_up(motion_wise)
+      call s:operator_textmanip(
+        \ 'textmanip#move("up")', a:motion_wise)
+    endfunction
+
+    call operator#user#define(
+      \ 'textmanip-duplicate-down',
+      \ s:SID_PREFIX() . 'operator_textmanip_duplicate_down')
+    call operator#user#define(
+      \ 'textmanip-duplicate-up',
+      \ s:SID_PREFIX() . 'operator_textmanip_duplicate_up')
+    call operator#user#define(
+      \ 'textmanip-move-left',
+      \ s:SID_PREFIX() . 'operator_textmanip_move_left')
+    call operator#user#define(
+      \ 'textmanip-move-right',
+      \ s:SID_PREFIX() . 'operator_textmanip_move_right')
+    call operator#user#define(
+      \ 'textmanip-move-down',
+      \ s:SID_PREFIX() . 'operator_textmanip_move_down')
+    call operator#user#define(
+      \ 'textmanip-move-up',
+      \ s:SID_PREFIX() . 'operator_textmanip_move_up')
+  endfunction
+
+  NXOmap <M-p> <Plug>(operator-textmanip-duplicate-down)
+  NXOmap <M-P> <Plug>(operator-textmanip-duplicate-up)
+
+  NXOmap sj <Plug>(operator-textmanip-move-down)
+  NXOmap sk <Plug>(operator-textmanip-move-up)
+  NXOmap sh <Plug>(operator-textmanip-move-left)
+  NXOmap sl <Plug>(operator-textmanip-move-right)
+
+  nmap sjj sjsj
+  nmap skk sksk
+  nmap shh shsh
+  nmap sll slsl
 endif
 unlet! s:bundle
 "}}}
