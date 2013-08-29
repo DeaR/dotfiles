@@ -3118,13 +3118,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ get(g:, 'neosnippet#disable_runtime_snippets', {})
     let g:neosnippet#disable_runtime_snippets._ = 1
 
-    imap <C-J> <Plug>(neosnippet_expand_or_jump)
+    imap <C-E> <Plug>(neosnippet_expand_or_jump)
 
     call neosnippet#initialize()
   endfunction
 
-  smap <C-J> <Plug>(neosnippet_expand_or_jump)
-  xmap <C-J> <Plug>(neosnippet_expand_target)
+  smap <C-E> <Plug>(neosnippet_expand_or_jump)
+  xmap <C-E> <Plug>(neosnippet_expand_target)
 
   autocmd MyVimrc CursorHold *
     \ NeoBundleSource neosnippet
