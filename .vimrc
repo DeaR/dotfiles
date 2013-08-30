@@ -352,7 +352,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'kwbdi.vim', {
     \ 'autoload' : {'mappings' : [['nvo', '<Plug>Kwbd']]}}
 
-  NeoBundle 'thinca/vim-localrc'
+  NeoBundleLazy 'thinca/vim-localrc'
 
   if has('lua') || s:executable('lua')
     NeoBundleLazy 'xolox/vim-lua-ftplugin', {
@@ -2846,6 +2846,28 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   NXnoremap <Leader>q :<C-U>call <SID>kwbd()<CR>
   map <SID>Kwbd <Plug>Kwbd
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Localrc: {{{
+silent! let s:bundle = neobundle#get('localrc')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_post_source(bundle)
+    call localrc#load(g:localrc_filename)
+
+    if &filetype != ''
+      call localrc#load(
+        \ map(type(g:localrc_filetype) == type([]) ?
+        \   copy(g:localrc_filetype) :
+        \   [g:localrc_filetype],
+        \ 'printf(v:val, &filetype)'))
+    endif
+  endfunction
+
+  autocmd MyVimrc BufNewFile,BufRead,FileType *
+    \ NeoBundleSource localrc
 endif
 unlet! s:bundle
 "}}}
