@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  29-Aug-2013.
+" Last Change:  30-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2887,8 +2887,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('narrow')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    call operator#user#define_ex_command(
-      \ 'narrow', 'Narrow')
+    call operator#user#define_ex_command('narrow', 'Narrow')
   endfunction
 
   NXOmap sn <Plug>(operator-narrow)
