@@ -2848,7 +2848,7 @@ unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
-" Lua FtPlugin: {{{
+" FT_Lua: {{{
 silent! let s:bundle = neobundle#get('ft_lua')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
