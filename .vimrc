@@ -2444,6 +2444,9 @@ call extend(s:neocompl_omni_patterns, {
   \ 'tt2html'      : '.*',
   \ 'xhtml'        : '.*',
   \ 'xslt'         : '.*'})
+if !has('ruby')
+  call remove(s:neocompl_omni_patterns, 'ruby')
+endif
 "}}}
 
 "------------------------------------------------------------------------------
