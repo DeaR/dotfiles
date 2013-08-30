@@ -799,7 +799,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'rhysd/vim-textobj-continuous-line', {
     \ 'autoload' : {
-    \   'filetypes' : ['c', 'cpp', 'objc', 'objcpp', 'sh', 'vim', 'zsh']},
+    \   'filetypes' : [
+    \     'c', 'cpp', 'mayu', 'objc', 'objcpp', 'sh', 'vim', 'zsh']},
     \ 'depends' : 'DeaR/vim-textobj-user'}
     " \ 'depends' : 'kana/vim-textobj-user'}
 
