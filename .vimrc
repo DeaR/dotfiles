@@ -41,7 +41,6 @@ endif
 if has('win32')
   " Language
   if has('multi_lang')
-    language japanese
     language time C
   endif
 
