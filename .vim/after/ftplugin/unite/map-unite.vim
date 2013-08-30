@@ -1,7 +1,7 @@
 " Mapping for Unite
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  21-Aug-2013.
+" Last Change:  30-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -31,6 +31,7 @@ set cpo&vim
 silent! iunmap <buffer> <Tab>
 silent! iunmap <buffer> <S-Tab>
 
+nmap <buffer> QQ    <Plug>(unite_all_exit)
 nmap <buffer> <C-J> <Plug>(unite_choose_action)
 imap <buffer> <C-J> <Plug>(unite_choose_action)
 imap <buffer> <M-H> <Plug>(unite_move_head)
@@ -48,6 +49,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
+  \ silent! execute ''nunmap <buffer> QQ'' |
   \ silent! execute ''nunmap <buffer> <C-J>'' |
   \ silent! execute ''iunmap <buffer> <C-J>'' |
   \ silent! execute ''iunmap <buffer> <M-H>'' |
