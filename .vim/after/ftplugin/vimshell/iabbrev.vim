@@ -1,7 +1,7 @@
 " Abbreviations for VimShell
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  30-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,20 +28,20 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-iabbrev <buffer> L \| less
+inoreabbrev <buffer> L \| less
 if executable('head')
-  iabbrev <buffer> H \| head
+  inoreabbrev <buffer> H \| head
 endif
 if executable('tailf')
-  iabbrev <buffer> T \| tailf
+  inoreabbrev <buffer> T \| tailf
 elseif executable('tail')
-  iabbrev <buffer> T \| tail
+  inoreabbrev <buffer> T \| tail
 endif
 if executable('grep')
-  iabbrev <buffer> G \| grep
+  inoreabbrev <buffer> G \| grep
 endif
 if executable('sort')
-  iabbrev <buffer> S \| sort
+  inoreabbrev <buffer> S \| sort
 endif
 
 if exists('b:undo_ftplugin')
@@ -50,11 +50,11 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ iabbrev L|
-  \ iabbrev H|
-  \ iabbrev T|
-  \ iabbrev G|
-  \ iabbrev S'
+  \ silent! execute ''iunabbrev L'' |
+  \ silent! execute ''iunabbrev H'' ||
+  \ silent! execute ''iunabbrev T'' ||
+  \ silent! execute ''iunabbrev G'' ||
+  \ silent! execute ''iunabbrev S'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
