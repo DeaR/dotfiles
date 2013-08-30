@@ -1,7 +1,7 @@
 " Mapping for VimFiler
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  30-Aug-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -27,6 +27,9 @@
 
 let s:save_cpo = &cpo
 set cpo&vim
+
+nmap <buffer> QQ <Plug>(vimfiler_exit)
+nmap <buffer> mm <Plug>(vimfiler_move)
 
 nmap <buffer> <SID>(vimfiler_redraw_screen) <Plug>(vimfiler_redraw_screen)
 xmap <buffer> <SID>(vimfiler_redraw_screen) <Plug>(vimfiler_redraw_screen)
@@ -67,6 +70,9 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
+  \ silent! execute ''nunmap QQ'' |
+  \ silent! execute ''nunmap mm'' |
+  \
   \ silent! execute ''nunmap <SID>(vimfiler_redraw_screen)'' |
   \ silent! execute ''xunmap <SID>(vimfiler_redraw_screen)'' |
   \
