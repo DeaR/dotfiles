@@ -277,6 +277,17 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : 'Emmet',
     \   'mappings' : [['nvi', '<C-Y>']]}}
 
+  " NeoBundleLazy 'tyru/eskk.vim', {
+  "   \ 'autoload' : {
+  "   \   'filetypes' : 'skkdict',
+  "   \   'commands' : [
+  "   \     'EskkMap', 'EskkForgetRegisteredWords',
+  "   \     'EskkReload', 'EskkUpdateDictionary',
+  "   \     {'name' : 'EskkFixDictionary',
+  "   \      'complete' : 'file'}],
+  "   \   'mappings' : [['n', '<Plug>(eskk:save-dictionary)']],
+  "   \   'insert' : 1}}
+
   NeoBundleLazy 'kana/vim-filetype-haskell', {
     \ 'autoload' : {'filetypes' : 'haskell'}}
 
@@ -294,6 +305,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'thinca/vim-ft-vim_fold', {
     \ 'autoload' : {'filetypes' : 'vim'}}
+
+  if has('lua') || s:executable('lua')
+    NeoBundleLazy 'xolox/vim-lua-ftplugin', {
+      \ 'name' : 'ft_lua',
+      \ 'autoload' : {'filetypes' : 'lua'}}
+  endif
 
   NeoBundleLazy 'tpope/vim-fugitive', {
     \ 'autoload' : {
@@ -360,6 +377,21 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     NeoBundle 'Yggdroot/indentLine'
   endif
 
+  NeoBundleLazy 'basyura/J6uil.vim', {
+    \ 'autoload' : {
+    \   'commands' : [
+    \     'J6uilReconnect', 'J6uilDisconnect',
+    \     {'name' : 'J6uil',
+    \      'complete' : 'custom,J6uil#complete#room'}],
+    \   'mappings' : [
+    \     ['n',
+    \      '<Plug>(J6uil_open_say_buffer)',
+    \      '<Plug>(J6uil_reconnect)',    '<Plug>(J6uil_disconnect)',
+    \      '<Plug>(J6uil_unite_rooms)',  '<Plug>(J6uil_unite_members)',
+    \      '<Plug>(J6uil_action_enter)', '<Plug>(J6uil_action_open_links)']],
+    \   'function_prefix' : 'J6uil',
+    \   'unite_sources' : ['J6uil/rooms', 'J6uil/members']}}
+
   NeoBundleLazy 'jelera/vim-javascript-syntax', {
     \ 'autoload' : {'filetypes' : 'javascript'}}
 
@@ -378,12 +410,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {'mappings' : [['nvo', '<Plug>Kwbd']]}}
 
   NeoBundleLazy 'thinca/vim-localrc'
-
-  if has('lua') || s:executable('lua')
-    NeoBundleLazy 'xolox/vim-lua-ftplugin', {
-      \ 'name' : 'ft_lua',
-      \ 'autoload' : {'filetypes' : 'lua'}}
-  endif
 
   NeoBundleLazy 'https://raw.github.com/januswel/dotfiles/master/.vim/syntax/mayu.vim', {
     \ 'name' : 'mayu',
@@ -1234,6 +1260,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'syngan/vim-vimlint',
     \   'ynkdir/vim-vimlparser',
     \   'dbakker/vim-lint']}
+
+  NeoBundleLazy 'mattn/webapi-vim'
 endif
 "}}}
 "}}}
@@ -2729,6 +2757,31 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   execute 'IndentLinesReset' |
       \ endif
   augroup END
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" J6uil: {{{
+silent! let s:bundle = neobundle#get('J6uil')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:J6uil_config_dir             = $HOME . '/.local/.J6uil'
+    let g:J6uil_display_interval       = 0
+    let g:J6uil_open_buffer_cmd        = 'tabedit'
+    let g:J6uil_no_default_keymappings = 1
+
+    if has('win32') && isdirectory($PROGRAMFILES . '/ImageMagick-6.8.6-Q16')
+      let g:J6uil_display_icon = 1
+      let $PATH = $PROGRAMFILES . '\ImageMagick-6.8.6-Q16;' . $PATH
+    elseif !has('win32') && s:executable('convert')
+      let g:J6uil_display_icon = 1
+    endif
+
+    if filereadable($HOME . '/.vim/J6uil_config.vim')
+      source ~/.vim/j6uil_config.vim
+    endif
+  endfunction
 endif
 unlet! s:bundle
 "}}}

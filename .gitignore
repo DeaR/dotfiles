@@ -4,6 +4,7 @@
 .hgrc
 .scratch
 .zcompdump
+J6uil_config.vim
 
 /.source-highlight/
 /bin/
