@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  30-Aug-2013.
+" Last Change:  02-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -259,6 +259,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : 'Emmet',
     \   'mappings' : [['nvi', '<C-Y>']]}}
 
+  NeoBundleLazy 'kana/vim-filetype-haskell', {
+    \ 'autoload' : {'filetypes' : 'haskell'}}
+
   NeoBundleLazy 'thinca/vim-ft-clojure', {
     \ 'autoload' : {'filetypes' : 'clojure'}}
 
@@ -293,6 +296,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'depends' : [
     \   'sgur/vim-gf-autoload',
     \   'kana/vim-gf-diff']}
+
+  NeoBundleLazy 'eagletmt/ghcmod-vim', {
+    \ 'autoload' : {'filetypes' : 'haskell'}}
 
   NeoBundleLazy 'yomi322/vim-gitcomplete', {
     \ 'autoload' : {'filetypes' : 'vimshell'}}
@@ -420,6 +426,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \ 'depends' : [
       \   'Shougo/context_filetype.vim',
       \   'hrsh7th/vim-neco-calc',
+      \   'ujihisa/neco-ghc',
       \   'ujihisa/neco-look',
       \   'Shougo/neosnippet.vim']}
     call extend(s:neocompl_vim_completefuncs, {
@@ -456,6 +463,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \   'insert' : 1},
       \ 'depends' : [
       \   'hrsh7th/vim-neco-calc',
+      \   'ujihisa/neco-ghc',
       \   'ujihisa/neco-look',
       \   'Shougo/neosnippet.vim']}
     call extend(s:neocompl_vim_completefuncs, {
@@ -675,7 +683,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     {'name' : 'Ref',
     \      'complete' : 'customlist,ref#complete'}],
     \   'mappings' : [['nv', '<Plug>(ref-keyword)']],
-    \   'unite_sources' : 'ref'}}
+    \   'unite_sources' : 'ref'},
+    \ 'depends' : 'ujihisa/ref-hoogle'}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'Ref' : 'ref#complete'})
 
@@ -1071,6 +1080,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'osyo-manga/unite-fold', {
     \ 'autoload' : {'unite_sources' : 'fold'}}
+
+  NeoBundleLazy 'ujihisa/unite-haskellimport', {
+    \ 'autoload' : {'unite_sources' : 'haskellimport'}}
 
   NeoBundleLazy 'tsukkee/unite-help', {
     \ 'autoload' : {'unite_sources' : 'help'}}
