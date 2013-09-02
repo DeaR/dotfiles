@@ -2425,6 +2425,7 @@ autocmd MyVimrc BufRead *
 " Assembler
 let g:asmsyntax = 'masm'
 " let g:asmsyntax = 'z80'
+" let g:asmsyntax = 'arm'
 
 " Shell Script
 let g:is_bash = 1
@@ -2535,15 +2536,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ <SID>search_forward_expr() ?
     \   '<SID>(anzu-N-with-echo)zvzz' :
     \   '<SID>(anzu-n-with-echo)zvzz'
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" Arm: {{{
-silent! let s:bundle = neobundle#get('arm')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  " let g:asmsyntax = 'arm'
 endif
 unlet! s:bundle
 "}}}
