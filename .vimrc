@@ -244,6 +244,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(columnjump-forward)', '<Plug>(columnjump-backward)']],
     \   'insert' : 1}}
 
+  NeoBundleLazy 'Shougo/context_filetype.vim'
+
   NeoBundleLazy 'vim-jp/cpp-vim', {
     \ 'autoload' : {'filetypes' : ['c', 'cpp']}}
 
@@ -252,6 +254,23 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'JesseKPhillips/d.vim', {
     \ 'autoload' : {'filetypes' : 'd'}}
+
+  NeoBundleLazy 'tpope/vim-dispatch', {
+    \ 'autoload' : {
+    \   'commands' : [
+    \     {'name' : 'Dispatch',
+    \      'complete' : 'custom,dispatch#command_complete'},
+    \     {'name' : 'FocusDispatch',
+    \      'complete' : 'custom,dispatch#command_complete'},
+    \     {'name' : 'Start',
+    \      'complete' : 'custom,dispatch#command_complete'},
+    \     {'name' : 'Make',
+    \      'complete' : 'file'},
+    \     'Copen']}}
+  call extend(s:neocompl_vim_completefuncs, {
+    \ 'Dispatch'      : 'dispatch#command_complete',
+    \ 'FocusDispatch' : 'dispatch#command_complete',
+    \ 'Start'         : 'dispatch#command_complete'})
 
   NeoBundleLazy 'mattn/emmet-vim', {
     \ 'autoload' : {
@@ -320,6 +339,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['nvo',
     \      '<Plug>(operator-grex-delete)', '<Plug>(operator-grex-yank)']]}}
 
+  NeoBundleLazy 'rbtnn/hexript.vim', {
+    \ 'autoload' : {
+    \   'commands' : [
+    \     {'name' : 'HexriptToBinaryFile',
+    \      'complete' : 'file'}]}}
+
   NeoBundleLazy 'cohama/vim-hier', {
     \ 'autoload' : {
     \   'filetypes' : 'qf',
@@ -357,8 +382,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   if has('lua') || s:executable('lua')
     NeoBundleLazy 'xolox/vim-lua-ftplugin', {
       \ 'name' : 'ft_lua',
-      \ 'autoload' : {'filetypes' : 'lua'},
-      \ 'depends' : 'xolox/vim-misc'}
+      \ 'autoload' : {'filetypes' : 'lua'}}
   endif
 
   NeoBundleLazy 'https://raw.github.com/januswel/dotfiles/master/.vim/syntax/mayu.vim', {
@@ -380,6 +404,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     'VMapList', 'XMapList', 'SMapList',
     \     'IMapList', 'CMapList', 'LMapList']},
     \ 'script_type' : 'plugin'}
+
+  NeoBundleLazy 'xolox/vim-misc', {
+    \ 'autoload' : {'function_prefix' : 'xolox'}}
 
   NeoBundle 'tomasr/molokai'
 
@@ -418,7 +445,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \   'unite_sources' : ['file_include', 'neocomplete'],
       \   'insert' : 1},
       \ 'depends' : [
-      \   'Shougo/context_filetype.vim',
       \   'hrsh7th/vim-neco-calc',
       \   'ujihisa/neco-ghc',
       \   'ujihisa/neco-look',
@@ -488,8 +514,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(neosnippet_start_unite_snippet)']],
     \   'unite_sources' : [
     \     'snippet', 'snippet/target',
-    \     'neosnippet/user', 'neosnippet/runtime']},
-    \ 'depends' : 'Shougo/context_filetype.vim'}
+    \     'neosnippet/user', 'neosnippet/runtime']}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'NeoSnippetEdit'      : 'neosnippet#edit_complete',
     \ 'NeoSnippetMakeCache' : 'neosnippet#filetype_complete'})
@@ -503,7 +528,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   if has('python') && (exists('$VCVARSALL') || s:executable('xbuild'))
     NeoBundleLazy 'nosami/Omnisharp', {
       \ 'autoload' : {'filetypes' : 'cs'},
-      \ 'depends' : 'tpope/vim-dispatch',
       \ 'build' : {
       \   'windows' :
       \     $VCVARSALL . ' ' . $PROCESSOR_ARCHITECTURE . ' & ' .
@@ -528,6 +552,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'OpenBrowserSearch'      : 'openbrowser#_cmd_complete',
     \ 'OpenBrowserSmartSearch' : 'openbrowser#_cmd_complete'})
 
+  NeoBundleLazy 'thinca/vim-openbuf'
+
   NeoBundleLazy 'tyru/operator-camelize.vim', {
     \ 'autoload' : {
     \   'mappings' : [
@@ -548,8 +574,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {'mappings' : [['nvo', '<Plug>(operator-replace)']]}}
 
   NeoBundleLazy 'sgur/vim-operator-openbrowser', {
-    \ 'autoload' : {'mappings' : [['nvo', '<Plug>(operator-openbrowser)']]},
-    \ 'depends' : 'tyru/open-browser.vim'}
+    \ 'autoload' : {'mappings' : [['nvo', '<Plug>(operator-openbrowser)']]}}
 
   NeoBundleLazy 'tyru/operator-reverse.vim', {
     \ 'autoload' : {
@@ -613,10 +638,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \    'commands' : 'PreciousSwitch',
     \    'mappings' : [
     \      ['vo', '<Plug>(textobj-precious-i)'],
-    \      ['n',  '<Plug>(precious-quickrun-op)']]},
-    \ 'depends' : [
-    \   'Shougo/context_filetype.vim',
-    \   'thinca/vim-quickrun']}
+    \      ['n',  '<Plug>(precious-quickrun-op)']]}}
 
   NeoBundleLazy 'thinca/vim-prettyprint', {
     \ 'autoload' : {
@@ -628,8 +650,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'functions': ['PrettyPrint', 'PP']}}
 
   NeoBundleLazy 'kannokanno/previm', {
-    \ 'autoload' : {'filetypes' : 'markdown'},
-    \ 'depends' : 'tyru/open-browser.vim'}
+    \ 'autoload' : {'filetypes' : 'markdown'}}
 
   NeoBundleLazy 'thinca/vim-qfreplace', {
     \ 'autoload' : {'filetypes' : ['qf', 'unite']}}
@@ -671,6 +692,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'depends' : 'ujihisa/ref-hoogle'}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'Ref' : 'ref#complete'})
+
+  NeoBundleLazy 'tpope/vim-repeat'
 
   NeoBundleLazy 'vim-ruby/vim-ruby', {
     \ 'autoload' : {'filetypes' : ['eruby', 'ruby']}}
@@ -716,11 +739,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['v',
     \      '<Plug>VSurround', '<Plug>VgSurround'],
     \     ['i',
-    \      '<Plug>Isurround', '<Plug>ISurround']]},
-    \ 'depends' : 'tpope/vim-repeat'}
+    \      '<Plug>Isurround', '<Plug>ISurround']]}}
 
-  NeoBundleLazy 'AndrewRadev/switch.vim', {
-    \ 'depends' : 'tpope/vim-repeat'}
+  NeoBundleLazy 'AndrewRadev/switch.vim'
 
   NeoBundleLazy 'tomtom/tcomment_vim', {
     \ 'name' : 'tcomment',
@@ -1061,8 +1082,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'commands' : [
     \     {'name' : 'Vcs',
-    \      'complete' : 'customlist,vcs#complete'}]},
-    \ 'depends' : 'thinca/vim-openbuf'}
+    \      'complete' : 'customlist,vcs#complete'}]}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'Vcs' : 'vcs#complete'})
 
@@ -1070,8 +1090,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'commands' : [
     \     'VimConsole',    'VimConsoleOpen', 'VimConsoleToggle',
-    \     'VimConsoleLog', 'VimConsoleWarn', 'VimConsoleError']},
-    \ 'depends' : 'thinca/vim-prettyprint'}
+    \     'VimConsoleLog', 'VimConsoleWarn', 'VimConsoleError']}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'VimConsoleLog'   : 'expression',
     \ 'VimConsoleWarn'  : 'expression',
@@ -1130,8 +1149,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'Source'             : 'vimfiler#complete',
     \ 'Write'              : 'vimfiler#complete'})
 
-  NeoBundleLazy 'syngan/vim-vimlint', {
-    \ 'depends' : 'ynkdir/vim-vimlparser'}
+  NeoBundleLazy 'syngan/vim-vimlint'
+
+  NeoBundleLazy 'ynkdir/vim-vimlparser'
 
   NeoBundle 'Shougo/vimproc.vim', {
     \ 'build' : {
@@ -1212,6 +1232,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'osyo-manga/shabadou.vim',
     \   'osyo-manga/quickrun-hook-vcvarsall',
     \   'syngan/vim-vimlint',
+    \   'ynkdir/vim-vimlparser',
     \   'dbakker/vim-lint']}
 endif
 "}}}
