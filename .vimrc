@@ -1682,7 +1682,6 @@ NXnoremap <Leader>C     :<C-U>confirm only<CR>
 NXnoremap <Leader>w     :<C-U>confirm update<CR>
 NXnoremap <Leader>W     :<C-U>confirm wall<CR>
 NXnoremap <Leader>q     :<C-U>confirm bdelete<CR>
-NXnoremap <Leader>Q     :<C-U>confirm 1,$bdelete<CR>
 NXnoremap <Leader>!     :<C-U>shell<CR>
 NXnoremap <Leader>E     :<C-U>Explorer<CR>
 NXnoremap <Leader>j     :<C-U>jumps<CR>
@@ -1691,6 +1690,8 @@ NXnoremap <Leader><C-D> :<C-U>pwd<CR>
 NXnoremap <script> <Leader>e <SID>:<C-U>edit<Space>
 NXnoremap <script> <Leader>b <SID>:<C-U>buffer<Space>
 NXnoremap <script> <Leader>t <SID>:<C-U>tabm<Space>
+NXnoremap <expr>   <Leader>Q
+  \ ':<C-U>confirm 1,' . bufnr('$') . 'bdelete<CR>'
 NXnoremap <script><expr> <Leader>d
   \ '<SID>:<C-U>lcd ' .
   \ fnamemodify(getcwd(), (has('win32') ? ':gs?\\?/?' : '') .
