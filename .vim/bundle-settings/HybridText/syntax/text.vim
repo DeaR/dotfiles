@@ -1,7 +1,7 @@
-" Hybrid Text ftplugin for Go
+" Hybrid Text Syntax for Text
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  29-Aug-2013.
+" Last Change:  02-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,15 +28,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-setlocal syntax=hybrid
-
-if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
-else
-  let b:undo_ftplugin = ''
-endif
-let b:undo_ftplugin .= '
-  \ setlocal syntax<'
+runtime! syntax/hybrid.vim
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
