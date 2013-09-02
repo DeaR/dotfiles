@@ -299,9 +299,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'eagletmt/ghcmod-vim', {
     \ 'autoload' : {'filetypes' : 'haskell'}}
 
-  NeoBundleLazy 'yomi322/vim-gitcomplete', {
-    \ 'autoload' : {'filetypes' : 'vimshell'}}
-
   NeoBundleLazy 'gregsexton/gitv', {
     \ 'autoload' : {'commands' : 'Gitv'},
     \ 'depends' : 'tpope/vim-fugitive'}
@@ -1165,7 +1162,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     {'name' : 'VimShellTerminal',
     \      'complete' : 'customlist,vimshell#vimshell_execute_complete'}],
     \   'unite_sources' : ['vimshell/external_history', 'vimshell/history']},
-    \ 'depends' : 'ujihisa/vimshell-ssh'}
+    \ 'depends' : [
+    \   'yomi322/vim-gitcomplete',
+    \   'ujihisa/vimshell-ssh']}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'VimShell'            : 'vimshell#complete',
     \ 'VimShellCreate'      : 'vimshell#complete',
