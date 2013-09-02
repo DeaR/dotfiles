@@ -1676,38 +1676,33 @@ endfunction
 noremap <expr> <SID>(split-nicely)
   \ <SID>split_nicely_expr() ? '<C-W>s' : '<C-W>v'
 
-" Semi-colon shortcut
+" Leader keys
 NXnoremap <Leader>c     :<C-U>confirm close<CR>
 NXnoremap <Leader>C     :<C-U>confirm only<CR>
 NXnoremap <Leader>w     :<C-U>confirm update<CR>
 NXnoremap <Leader>W     :<C-U>confirm wall<CR>
 NXnoremap <Leader>q     :<C-U>confirm bdelete<CR>
+NXnoremap <Leader>Q     :<C-U>bufdo confirm bdelete<CR>
 NXnoremap <Leader>!     :<C-U>shell<CR>
+NXnoremap <Leader>B     :<C-U>buffers<CR>
 NXnoremap <Leader>E     :<C-U>Explorer<CR>
+NXnoremap <Leader>T     :<C-U>tabs<CR>
 NXnoremap <Leader>j     :<C-U>jumps<CR>
 NXnoremap <Leader>J     :<C-U>changes<CR>
 NXnoremap <Leader><C-D> :<C-U>pwd<CR>
 NXnoremap <script> <Leader>e <SID>:<C-U>edit<Space>
 NXnoremap <script> <Leader>b <SID>:<C-U>buffer<Space>
 NXnoremap <script> <Leader>t <SID>:<C-U>tabm<Space>
-NXnoremap <expr>   <Leader>Q
-  \ ':<C-U>confirm 1,' . bufnr('$') . 'bdelete<CR>'
-NXnoremap <script><expr> <Leader>d
-  \ '<SID>:<C-U>lcd ' .
-  \ fnamemodify(getcwd(), (has('win32') ? ':gs?\\?/?' : '') .
-  \ ':s?/$??') . '/'
-NXnoremap <script><expr> <Leader>D
-  \ '<SID>:<C-U>cd ' .
-  \ fnamemodify(getcwd(), (has('win32') ? ':gs?\\?/?' : '') .
-  \ ':s?/$??') . '/'
+NXnoremap <script> <Leader>d <SID>:<C-U>lcd<Space>
+NXnoremap <script> <Leader>D <SID>:<C-U>cd<Space>
 NXnoremap <script><expr> <Leader><M-d>
   \ '<SID>:<C-U>lcd ' .
-  \ expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '') .
-  \ ':s?/$??') . '/'
+  \ expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '')) .
+  \ '/'
 NXnoremap <script><expr> <Leader><M-D>
   \ '<SID>:<C-U>cd ' .
-  \ expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '') .
-  \ ':s?/$??') . '/'
+  \ expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '')) .
+  \ '/'
 
 " Paste
 NXnoremap <C-P> :<C-U>registers<CR>
@@ -1731,11 +1726,13 @@ nnoremap <M-o>
 nnoremap <M-O>
   \ :<C-U>call append(line('.') - 1, repeat([''], v:count1))<CR>
 
+" Motion
+NXnoremap <M-(> (zvzz
+NXnoremap <M-)> )zvzz
+NXnoremap <M-{> {zvzz
+NXnoremap <M-}> }zvzz
+
 " jump
-NXnoremap <M-(>   (zvzz
-NXnoremap <M-)>   )zvzz
-NXnoremap <M-{>   {zvzz
-NXnoremap <M-}>   }zvzz
 nnoremap  <S-Tab> <C-O>
 
 " Paste toggle
@@ -1778,16 +1775,18 @@ nnoremap <expr> <F2>
   \   ':<C-U>help ' . expand('<cword>') . '<CR>' :
   \   ':<C-U>vertical help ' . expand('<cword>') . '<CR>'
 
-" Search
-NXmap g/ *
-NXmap g? #
+" Buffer Grep
 nnoremap <C-N> :<C-U>global//print<CR>
 xnoremap <C-N> :global//print<CR>
+
+" Search
 nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
 NXnoremap *  *zvzz
 NXnoremap #  #zvzz
 NXnoremap g* g*zvzz
 NXnoremap g# g#zvzz
+NXmap g/ *
+NXmap g? #
 
 " Search Split Window
 NXnoremap <script> <C-W>/  <SID>(split-nicely)<SID>/
@@ -1796,10 +1795,10 @@ NXnoremap <script> <C-W>*  <SID>(split-nicely)*zvzz
 NXnoremap <script> <C-W>#  <SID>(split-nicely)#zvzz
 NXnoremap <script> <C-W>g* <SID>(split-nicely)*zvzz
 NXnoremap <script> <C-W>g# <SID>(split-nicely)#zvzz
-
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
 
+" QuickFix
 augroup MyVimrc
   autocmd QuickFixCmdPost [^l]*
     \ cwindow
