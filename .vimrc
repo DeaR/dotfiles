@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  02-Sep-2013.
+" Last Change:  03-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -277,16 +277,21 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : 'Emmet',
     \   'mappings' : [['nvi', '<C-Y>']]}}
 
-  " NeoBundleLazy 'tyru/eskk.vim', {
-  "   \ 'autoload' : {
-  "   \   'filetypes' : 'skkdict',
-  "   \   'commands' : [
-  "   \     'EskkMap', 'EskkForgetRegisteredWords',
-  "   \     'EskkReload', 'EskkUpdateDictionary',
-  "   \     {'name' : 'EskkFixDictionary',
-  "   \      'complete' : 'file'}],
-  "   \   'mappings' : [['n', '<Plug>(eskk:save-dictionary)']],
-  "   \   'insert' : 1}}
+  NeoBundleLazy 'tyru/eskk.vim', {
+    \ 'autoload' : {
+    \   'filetypes' : 'skkdict',
+    \   'commands' : [
+    \     'EskkMap', 'EskkForgetRegisteredWords',
+    \     'EskkReload', 'EskkUpdateDictionary',
+    \     {'name' : 'EskkFixDictionary',
+    \      'complete' : 'file'}],
+    \   'mappings' : [
+    \     ['n',
+    \      '<Plug>(eskk:save-dictionary)'],
+    \     ['i',
+    \      '<Plug>(eskk:enable)', '<Plug>(eskk:disable)',
+    \      '<Plug>(eskk:toggle)']],
+    \   'insert' : 1}}
 
   NeoBundleLazy 'kana/vim-filetype-haskell', {
     \ 'autoload' : {'filetypes' : 'haskell'}}
@@ -2666,6 +2671,29 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ 'indentation' : '  ',
       \ 'xml' : {'extends' : 'html'}}
   endfunction
+endif
+unlet! s:bundle
+"}}}
+"}}}
+
+"------------------------------------------------------------------------------
+" Eskk: {{{
+silent! let s:bundle = neobundle#get('eskk')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:eskk#directory        = $HOME . '/.local/.eskk'
+    let g:eskk#dictionary       = {
+      \ 'path' : $HOME . '/.skk/jisyo',
+      \ 'sorted' : 0,
+      \ 'encoding' : 'utf-8'}
+    let g:eskk#large_dictionary = {
+      \ 'path' : $HOME . '/.skk/SKK-JISYO.L',
+      \ 'sorted' : 1,
+      \ 'encoding' : 'euc-jp'}
+  endfunction
+
+  autocmd MyVimrc User CmdlineEnter
+    \ NeoBundleSource eskk
 endif
 unlet! s:bundle
 "}}}

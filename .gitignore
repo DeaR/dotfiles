@@ -1,15 +1,18 @@
 *.lc
 
-.gitconfig
-.hgrc
-.scratch
-.zcompdump
-J6uil_config.vim
-
+/.skk/
 /.source-highlight/
 /bin/
 /bin64/
 /go/
 /howm/
 
+/.gitconfig
+/.hgrc
+
+/.vim/J6uil_config.vim
+
 /.xyzzy.d/projects.lisp
+/.xyzzy.d/.scratch
+
+/.zsh/.zcompdump
