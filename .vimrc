@@ -3173,9 +3173,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   smap <C-E> <Plug>(neosnippet_expand_or_jump)
   xmap <C-E> <Plug>(neosnippet_expand_target)
-
-  autocmd MyVimrc CursorHold *
-    \ NeoBundleSource neosnippet
 endif
 unlet! s:bundle
 "}}}
