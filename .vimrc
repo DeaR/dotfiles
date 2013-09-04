@@ -2625,6 +2625,18 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_post_source(bundle)
     call fugitive#detect(expand('%') == '' ? getcwd() : expand('%:p'))
   endfunction
+
+  NXnoremap <Leader>g <Nop>
+  NXnoremap <Leader>gd :<C-U>Gdiff<CR>
+  NXnoremap <Leader>gs :<C-U>Gstatus<CR>
+  NXnoremap <Leader>ga :<C-U>Gwrite<CR>
+  NXnoremap <Leader>gc :<C-U>Gcommit<CR>
+  NXnoremap <Leader>gC :<C-U>Gcommit --amend<CR>
+  NXnoremap <Leader>gb :<C-U>Gblame<CR>
+  NXnoremap <expr> <Leader>gl
+    \ exists(':Gitv') ? ':<C-U>Gitv<CR>' : ':<C-U>Glog<CR>'
+
+  NXnoremap <script> <Leader>gg <SID>:<C-U>Git<Space>
 endif
 unlet! s:bundle
 "}}}
