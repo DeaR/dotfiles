@@ -1,4 +1,4 @@
-" Mapping for J6uil
+" No folding
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
 " Last Change:  04-Sep-2013.
@@ -28,13 +28,8 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-nmap <buffer> <Space> <Plug>(J6uil_open_say_buffer)
-nmap <buffer> R       <Plug>(J6uil_reconnect)
-nmap <buffer> D       <Plug>(J6uil_disconnect)
-nmap <buffer> r       <Plug>(J6uil_unite_rooms)
-nmap <buffer> u       <Plug>(J6uil_unite_members)
-nmap <buffer> <CR>    <Plug>(J6uil_action_enter)
-nmap <buffer> o       <Plug>(J6uil_action_open_links)
+setlocal nofoldenable
+setlocal foldcolumn=0
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
@@ -42,13 +37,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> <Space>'' |
-  \ silent! execute ''nunmap <buffer> R'' |
-  \ silent! execute ''nunmap <buffer> D'' |
-  \ silent! execute ''nunmap <buffer> r'' |
-  \ silent! execute ''nunmap <buffer> u'' |
-  \ silent! execute ''nunmap <buffer> <CR>'' |
-  \ silent! execute ''nunmap <buffer> o'''
+  \ setlocal foldenable< foldcolumn<'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
