@@ -2339,15 +2339,14 @@ call extend(s:neocompl_omni_patterns, {
   \ 'php'          : '.*',
   \ 'python'       : '.*',
   \ 'pyrex'        : '.*',
-  \ 'ruby'         : '.*',
   \ 'sass'         : '.*',
   \ 'scss'         : '.*',
   \ 'sql'          : '.*',
   \ 'tt2html'      : '.*',
   \ 'xhtml'        : '.*',
   \ 'xslt'         : '.*'})
-if !has('ruby')
-  call remove(s:neocompl_omni_patterns, 'ruby')
+if has('ruby')
+  call extend(s:neocompl_omni_patterns, {'ruby' : '.*'})
 endif
 "}}}
 
