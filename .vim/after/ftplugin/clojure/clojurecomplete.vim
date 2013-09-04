@@ -1,7 +1,7 @@
-" Clojure ftplugin for FT_Clojure
+" Clojure complete
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  30-Aug-2013.
+" Last Change:  04-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
