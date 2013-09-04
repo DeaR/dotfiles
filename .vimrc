@@ -729,12 +729,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     NeoBundleFetch 'thinca/vim-singleton'
   endif
 
-  " NeoBundleLazy 'kana/vim-smartchr'
-
-  " NeoBundleLazy 'kana/vim-smartinput', {
-  "   \ 'autoload' : {
-  "   \   'insert' : 1}}
-
   NeoBundleLazy 'DeaR/vim-smartword', {
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>(smartword-']],
@@ -1815,11 +1809,6 @@ inoremap <C-C> <Esc>
 
 " Insert Tab
 inoremap <C-T> <C-V><Tab>
-
-" For SmartInput
-inoremap <SID><CR>  <CR>
-inoremap <SID><BS>  <BS>
-inoremap <SID><C-H> <C-H>
 "}}}
 "}}}
 
@@ -2023,9 +2012,9 @@ function! s:cmdwin_enter()
   nnoremap <buffer><silent> q :<C-U>quit<CR>
 
   inoremap <buffer><silent><script><expr> <C-H>
-    \ col('.') == 1 ? '<Esc>:quit<CR>' : '<SID><C-H>'
+    \ col('.') == 1 ? '<Esc>:quit<CR>' : '<C-H>'
   inoremap <buffer><silent><script><expr> <BS>
-    \ col('.') == 1 ? '<Esc>:quit<CR>' : '<SID><BS>'
+    \ col('.') == 1 ? '<Esc>:quit<CR>' : '<BS>'
 endfunction
 autocmd MyVimrc CmdwinEnter *
   \ call s:cmdwin_enter()
@@ -2490,21 +2479,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       silent! iunmap <buffer> .
       silent! iunmap <buffer> >
       silent! iunmap <buffer> :
-
-      if neobundle#get('smartchr') != {}
-        " from ~/.vim/bundle-settings/vim-smartchr/*.vim
-        inoremap <buffer><expr> >
-          \ search('\V ->\? \%#', 'bcn') ?
-          \   smartchr#one_of(' - ', '->', ' -> ') :
-          \   search('\V-\%#', 'bcn') ?
-          \     smartchr#one_of('-', '->', ' -> ') :
-          \     smartchr#one_of(' > ', ' >> ', '>')
-        if a:ext =~? 'cpp$'
-          inoremap <buffer><expr> : smartchr#one_of(' : ', '::', ':')
-        else
-          inoremap <buffer><expr> : smartchr#one_of(' : ', ':')
-        endif
-      endif
     endfunction
 
     autocmd MyVimrc FileType c,cpp,objc,objcpp
@@ -2929,11 +2903,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   neocomplcache#start_manual_complete()
 
     inoremap <script><expr> <CR>
-      \ neocomplcache#smart_close_popup() . '<SID><CR>'
+      \ neocomplcache#smart_close_popup() . '<CR>'
     inoremap <script><expr> <C-H>
-      \ neocomplcache#smart_close_popup() . '<SID><C-H>'
+      \ neocomplcache#smart_close_popup() . '<C-H>'
     inoremap <script><expr> <BS>
-      \ neocomplcache#smart_close_popup() . '<SID><BS>'
+      \ neocomplcache#smart_close_popup() . '<BS>'
 
     call neocomplcache#initialize()
   endfunction
@@ -2955,11 +2929,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     inoremap <buffer><script><silent><expr> <C-H>
       \ col('.') == 1 ?
       \   '<Esc>:quit<CR>' :
-      \   (neocomplcache#smart_close_popup() . '<SID><C-H>')
+      \   (neocomplcache#smart_close_popup() . '<C-H>')
     inoremap <buffer><script><silent><expr> <BS>
       \ col('.') == 1 ?
       \   '<Esc>:quit<CR>' :
-      \   (neocomplcache#smart_close_popup() . '<SID><BS>')
+      \   (neocomplcache#smart_close_popup() . '<BS>')
   endfunction
   augroup MyVimrc
     autocmd CmdwinEnter *
@@ -3033,11 +3007,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   neocomplete#start_manual_complete()
 
     inoremap <script><expr> <CR>
-      \ neocomplete#smart_close_popup() . '<SID><CR>'
+      \ neocomplete#smart_close_popup() . '<CR>'
     inoremap <script><expr> <C-H>
-      \ neocomplete#smart_close_popup() . '<SID><C-H>'
+      \ neocomplete#smart_close_popup() . '<C-H>'
     inoremap <script><expr> <BS>
-      \ neocomplete#smart_close_popup() . '<SID><BS>'
+      \ neocomplete#smart_close_popup() . '<BS>'
 
     call neocomplete#initialize()
   endfunction
@@ -3059,11 +3033,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     inoremap <buffer><silent><script><expr> <C-H>
       \ col('.') == 1 ?
       \   '<Esc>:quit<CR>' :
-      \   (neocomplete#smart_close_popup() . '<SID><C-H>')
+      \   (neocomplete#smart_close_popup() . '<C-H>')
     inoremap <buffer><silent><script><expr> <BS>
       \ col('.') == 1 ?
       \   '<Esc>:quit<CR>' :
-      \   (neocomplete#smart_close_popup() . '<SID><BS>')
+      \   (neocomplete#smart_close_popup() . '<BS>')
   endfunction
   augroup MyVimrc
     autocmd CmdwinEnter *
@@ -3537,65 +3511,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:scratch_buffer_name = '[scratch]'
   endfunction
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" SmartChr: {{{
-silent! let s:bundle = neobundle#get('smartchr')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:cmdwin_enter_smartchr()
-    silent! iunmap <buffer> =
-    silent! iunmap <buffer> ~
-    silent! iunmap <buffer> ?
-    silent! iunmap <buffer> #
-
-    silent! iunmap <buffer> +
-    silent! iunmap <buffer> -
-    silent! iunmap <buffer> *
-    silent! iunmap <buffer> /
-    silent! iunmap <buffer> %
-    silent! iunmap <buffer> :
-    silent! iunmap <buffer> .
-    silent! iunmap <buffer> &
-    silent! iunmap <buffer> \|
-    silent! iunmap <buffer> <
-    silent! iunmap <buffer> >
-
-    silent! iunmap <buffer> ,
-  endfunction
-  autocmd MyVimrc CmdwinEnter *
-    \ call s:cmdwin_enter_smartchr()
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" SmartInput: {{{
-silent! let s:bundle = neobundle#get('smartinput')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    call smartinput#map_to_trigger(
-      \ 'i',
-      \ '<Plug>(smartinput-<CR>)',
-      \ '<CR>',
-      \ '<CR>')
-    call smartinput#map_to_trigger(
-      \ 'i',
-      \ '<Plug>(smartinput-<BS>)',
-      \ '<BS>',
-      \ '<BS>')
-    call smartinput#map_to_trigger(
-      \ 'i',
-      \ '<Plug>(smartinput-<C-H>)',
-      \ '<C-H>',
-      \ '<C-H>')
-  endfunction
-
-  imap <SID><CR>  <Plug>(smartinput-<CR>)
-  imap <SID><BS>  <Plug>(smartinput-<BS>)
-  imap <SID><C-H> <Plug>(smartinput-<C-H>)
 endif
 unlet! s:bundle
 "}}}
