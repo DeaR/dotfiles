@@ -3274,10 +3274,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       endif
 
       if neobundle#get('unite') != {}
-        execute
-          \ (&grepprg == 'internal' ? 'Unite vimgrep::' : 'Unite grep:::') .
-          \ escape(join(lines), s:operator_grep_escape . ' :') .
-          \ ' -buffer-name=grep -no-split -multi-line'
+        execute 'Unite'
+          \ (&grepprg == 'internal' ? 'vimgrep::' : 'grep:::') .
+          \ escape(join(lines), s:operator_grep_escape . ' :')
+          \ '-buffer-name=grep -no-split -multi-line'
       else
         execute input(':',
           \ 'grep "' . escape(join(lines), s:operator_grep_escape) . '" '))
@@ -3288,7 +3288,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   NXOmap sg <Plug>(operator-grep)
-  nnoremap <script> sgsg <SID>:<C-U>grep<Space>
+  nnoremap <script> sgsg :<C-U>execute input(':', 'grep ')<CR>
 
   nmap sgg sgsg
 endif
