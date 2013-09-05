@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Sep-2013.
+" Last Change:  05-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1718,6 +1718,12 @@ XOnoremap g[ :<C-U>normal g[<CR>
 " Delete at Insert-mode
 inoremap <C-W> <C-G>u<C-W>
 inoremap <C-U> <C-G>u<C-U>
+
+" Auto exit at Command-mode
+cnoremap <expr> <C-H>
+  \ getcmdtype() == '@' && getcmdpos() == 1 ? '<Esc>' : '<C-H>'
+cnoremap <expr> <BS>
+  \ getcmdtype() == '@' && getcmdpos() == 1 ? '<Esc>' : '<BS>'
 
 " Auto escape at Command-mode
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
