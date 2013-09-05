@@ -1173,12 +1173,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : [
     \     'WatchdogsRun', 'WatchdogsRunSilent', 'WatchdogsRunSweep']},
     \ 'depends' : [
+    \   'dbakker/vim-lint',
     \   'thinca/vim-quickrun',
-    \   'osyo-manga/shabadou.vim',
-    \   'osyo-manga/quickrun-hook-vcvarsall',
     \   'syngan/vim-vimlint',
-    \   'ynkdir/vim-vimlparser',
-    \   'dbakker/vim-lint']}
+    \   'ynkdir/vim-vimlparser']}
 
   NeoBundleLazy 'mattn/webapi-vim'
 endif
