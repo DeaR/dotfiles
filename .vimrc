@@ -4341,7 +4341,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:unite_source_grep_encoding       = 'utf-8'
     let g:unite_source_file_mru_limit      = 50
     let g:unite_source_directory_mru_limit = 50
-    " let g:unite_source_directory_mru_filename_format = ':p'
+
+    let g:unite_source_directory_mru_ignore_pattern =
+      \ '\%(^\|[/\\]\)\.\%(hg\|git\|bzr\|svn\)\%($\|[/\\]\)' .
+      \ '\|^\%(\\\\\|/mnt/\|/media/\|/temp/\|/tmp/\|\%(/private\)\=/var/folders/\)'
+    let g:unite_source_file_mru_ignore_pattern =
+      \ '\~$\|\.\%(o\|exe\|dll\|bak\|zwc\|pyc\|sw[po]\)$' .
+      \ '\|\%(^\|[/\\]\)\.\%(hg\|git\|bzr\|svn\)\%($\|[/\\]\)' .
+      \ '\|^\%(\\\\\|/mnt/\|/media/\|/temp/\|/tmp/\|\%(/private\)\=/var/folders/\)' .
+      \ '\|\%(^\%(fugitive\):\%(//\|\\\\\)\)'
 
     if s:jvgrep_enable && s:executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
