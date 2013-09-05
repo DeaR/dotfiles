@@ -373,6 +373,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [['n', '<Plug>(J6uil_']],
     \   'function_prefix' : 'J6uil',
     \   'unite_sources' : ['J6uil/rooms', 'J6uil/members']}}
+  call extend(s:neocompl_vim_completefuncs, {
+    \ 'J6uil' : 'J6uil#complete#room'})
 
   NeoBundleLazy 'jelera/vim-javascript-syntax', {
     \ 'autoload' : {
@@ -452,7 +454,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \     {'name' : 'NeoCompleteBufferMakeCache',
       \      'complete' : 'file'},
       \     {'name' : 'NeoCompleteDictionaryMakeCache',
-      \      'compelte' : 'customlist,neocomplete#filetype_complete'},
+      \      'complete' : 'customlist,neocomplete#filetype_complete'},
       \     {'name' : 'NeoCompleteIncludeMakeCache',
       \      'complete' : 'buffer'},
       \     {'name' : 'NeoCompleteSyntaxMakeCache',
@@ -513,7 +515,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     {'name' : 'NeoSnippetEdit',
     \      'complete' : 'customlist,neosnippet#edit_complete'},
     \     {'name' : 'NeoSnippetMakeCache',
-    \      'compelte' : 'customlist,neosnippet#filetype_complete'},
+    \      'complete' : 'customlist,neosnippet#filetype_complete'},
     \     {'name' : 'NeoSnippetSource',
     \      'complete' : 'file'}],
     \   'mappings' : [['vi', '<Plug>(neosnippet_']],
