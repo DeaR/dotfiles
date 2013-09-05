@@ -1699,7 +1699,10 @@ NXnoremap <M-{> {zvzz
 NXnoremap <M-}> }zvzz
 
 " jump
-nnoremap  <S-Tab> <C-O>
+" nnoremap <Tab>   <Tab>zvzz
+" nnoremap <C-O>   <C-O>zvzz
+" nnoremap <S-Tab> <C-O>zvzz
+nnoremap <S-Tab> <C-O>
 
 " Paste toggle
 set pastetoggle=<F11>
@@ -2016,9 +2019,9 @@ function! s:cmdwin_enter()
   nnoremap <buffer><silent> q :<C-U>quit<CR>
 
   inoremap <buffer><silent><script><expr> <C-H>
-    \ col('.') == 1 ? '<Esc>:quit<CR>' : '<C-H>'
+    \ col('.') == 1 ? '<Esc>:<C-U>quit<CR>' : '<C-H>'
   inoremap <buffer><silent><script><expr> <BS>
-    \ col('.') == 1 ? '<Esc>:quit<CR>' : '<BS>'
+    \ col('.') == 1 ? '<Esc>:<C-U>quit<CR>' : '<BS>'
 endfunction
 autocmd MyVimrc CmdwinEnter *
   \ call s:cmdwin_enter()
@@ -2932,11 +2935,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     inoremap <buffer><script><silent><expr> <C-H>
       \ col('.') == 1 ?
-      \   '<Esc>:quit<CR>' :
+      \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplcache#smart_close_popup() . '<C-H>')
     inoremap <buffer><script><silent><expr> <BS>
       \ col('.') == 1 ?
-      \   '<Esc>:quit<CR>' :
+      \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplcache#smart_close_popup() . '<BS>')
   endfunction
   augroup MyVimrc
@@ -3036,11 +3039,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     inoremap <buffer><silent><script><expr> <C-H>
       \ col('.') == 1 ?
-      \   '<Esc>:quit<CR>' :
+      \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplete#smart_close_popup() . '<C-H>')
     inoremap <buffer><silent><script><expr> <BS>
       \ col('.') == 1 ?
-      \   '<Esc>:quit<CR>' :
+      \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplete#smart_close_popup() . '<BS>')
   endfunction
   augroup MyVimrc
