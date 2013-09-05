@@ -3725,12 +3725,12 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
     endfunction
 
     call operator#user#define(
-      \ 'tcomment-normal',
+      \ 'tcomment',
       \ 'tcomment#Operator',
       \ 'call ' . s:SID_PREFIX() .
       \ 'tcomment_operator_setup({})')
     call operator#user#define(
-      \ 'tcomment-normal-col=1',
+      \ 'tcomment-col=1',
       \ 'tcomment#Operator',
       \ 'call ' . s:SID_PREFIX() .
       \ 'tcomment_operator_setup({"col" : 1})')
