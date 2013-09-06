@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  05-Sep-2013.
+" Last Change:  06-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2021,9 +2021,9 @@ function! s:cmdwin_enter()
   nnoremap <buffer><silent> q :<C-U>quit<CR>
 
   inoremap <buffer><silent><script><expr> <C-H>
-    \ col('.') == 1 ? '<Esc>:<C-U>quit<CR>' : '<C-H>'
+    \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<C-H>'
   inoremap <buffer><silent><script><expr> <BS>
-    \ col('.') == 1 ? '<Esc>:<C-U>quit<CR>' : '<BS>'
+    \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<BS>'
 endfunction
 autocmd MyVimrc CmdwinEnter *
   \ call s:cmdwin_enter()
@@ -2936,11 +2936,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   neocomplcache#start_manual_complete()
 
     inoremap <buffer><script><silent><expr> <C-H>
-      \ col('.') == 1 ?
+      \ col('.') == 1 && getline('.') == '' ?
       \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplcache#smart_close_popup() . '<C-H>')
     inoremap <buffer><script><silent><expr> <BS>
-      \ col('.') == 1 ?
+      \ col('.') == 1 && getline('.') == '' ?
       \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplcache#smart_close_popup() . '<BS>')
   endfunction
@@ -3040,11 +3040,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   neocomplete#start_manual_complete()
 
     inoremap <buffer><silent><script><expr> <C-H>
-      \ col('.') == 1 ?
+      \ col('.') == 1 && getline('.') == '' ?
       \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplete#smart_close_popup() . '<C-H>')
     inoremap <buffer><silent><script><expr> <BS>
-      \ col('.') == 1 ?
+      \ col('.') == 1 && getline('.') == '' ?
       \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplete#smart_close_popup() . '<BS>')
   endfunction

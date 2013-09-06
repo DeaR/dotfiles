@@ -1,7 +1,7 @@
 " Mapping for J6uil
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Sep-2013.
+" Last Change:  06-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,9 +34,9 @@ silent! nunmap <buffer> <C-J>
 nnoremap <buffer> q :<C-U>bdelete!<CR>
 
 inoremap <buffer><expr> <C-H>
-  \ col('.') == 1 ? '<Esc>:bdelete!<CR>' : '<C-H>'
+  \ col('.') == 1 && !search('.', 'nw') ? '<Esc>:bdelete!<CR>' : '<C-H>'
 inoremap <buffer><expr> <BS>
-  \ col('.') == 1 ? '<Esc>:bdelete!<CR>' : '<BS>'
+  \ col('.') == 1 && !search('.', 'nw') ? '<Esc>:bdelete!<CR>' : '<BS>'
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
