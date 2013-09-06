@@ -1,7 +1,7 @@
 " Close mapping for QuickFix
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-Aug-2013.
+" Last Change:  06-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -30,6 +30,18 @@ set cpo&vim
 
 nnoremap <buffer> <S-CR> <CR>zz<C-W>p
 
+function! s:del_count()
+  if v:count == 0
+    return ''
+  endif
+
+  let ret = ''
+  for i in range(len(v:count))
+    let ret .= "\<Del>"
+  endfor
+  return ret
+endfunction
+
 function! s:jk(motion)
   let max = line('$')
   let list = getloclist(0)
@@ -42,7 +54,7 @@ function! s:jk(motion)
   while cur != pos && list[pos].bufnr == 0
     let pos = (pos + m + max) % max
   endwhile
-  return (pos + 1) . 'G'
+  return s:del_count() . (pos + 1) . 'G'
 endfunction
 nnoremap <buffer><silent><expr> j <SID>jk(v:count1)
 xnoremap <buffer><silent><expr> j <SID>jk(v:count1)
