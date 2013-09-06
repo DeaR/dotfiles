@@ -1,7 +1,7 @@
 " Mapping for J6uil
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Sep-2013.
+" Last Change:  06-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -36,6 +36,46 @@ nmap <buffer> u       <Plug>(J6uil_unite_members)
 nmap <buffer> <CR>    <Plug>(J6uil_action_enter)
 nmap <buffer> o       <Plug>(J6uil_action_open_links)
 
+function! s:del_count()
+  if v:count == 0
+    return ''
+  endif
+
+  let ret = ''
+  for i in range(len(v:count))
+    let ret .= "\<Del>"
+  endfor
+  return ret
+endfunction
+
+function! s:j()
+  let max = line('$')
+  let cur = line('.')
+  let pos = cur + v:count1
+  let pos = pos > max ? max : pos
+  while pos < max && getline(pos) =~# '^-\+$'
+    let pos = pos + 1
+  endwhile
+  return s:del_count() . pos . 'G'
+endfunction
+nnoremap <buffer><silent><expr> j <SID>j()
+xnoremap <buffer><silent><expr> j <SID>j()
+onoremap <buffer><silent><expr> j <SID>j()
+
+function! s:k()
+  let min = 1
+  let cur = line('.')
+  let pos = cur - v:count1
+  let pos = pos < min ? min : pos
+  while pos > min && getline(pos) =~# '^-\+$'
+    let pos = pos - 1
+  endwhile
+  return s:del_count() . pos . 'G'
+endfunction
+nnoremap <buffer><silent><expr> k <SID>k()
+xnoremap <buffer><silent><expr> k <SID>k()
+onoremap <buffer><silent><expr> k <SID>k()
+
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
 else
@@ -48,7 +88,13 @@ let b:undo_ftplugin .= '
   \ silent! execute ''nunmap <buffer> r'' |
   \ silent! execute ''nunmap <buffer> u'' |
   \ silent! execute ''nunmap <buffer> <CR>'' |
-  \ silent! execute ''nunmap <buffer> o'''
+  \ silent! execute ''nunmap <buffer> o'' |
+  \ silent! execute ''nunmap <buffer> j'' |
+  \ silent! execute ''xunmap <buffer> j'' |
+  \ silent! execute ''ounmap <buffer> j'' |
+  \ silent! execute ''nunmap <buffer> k'' |
+  \ silent! execute ''xunmap <buffer> k'' |
+  \ silent! execute ''ounmap <buffer> k'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
