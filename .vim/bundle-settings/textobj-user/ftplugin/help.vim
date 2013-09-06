@@ -1,7 +1,7 @@
 " Text Object for Help
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Aug-2013.
+" Last Change:  06-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -54,8 +54,8 @@ call textobj#user#plugin('help', {
   \   'move-N': '<buffer> <LocalLeader>D',
   \   'move-P': '<buffer> <LocalLeader>E'}})
 
-map <buffer> J <Plug>(textobj-help-any-n)
-map <buffer> K <Plug>(textobj-help-any-p)
+map <buffer> <C-J> <Plug>(textobj-help-any-n)
+map <buffer> <C-K> <Plug>(textobj-help-any-p)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
