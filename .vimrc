@@ -2004,7 +2004,7 @@ function! s:toggle_quickfix(height)
   let w = winnr('$')
   cclose
   if w == winnr('$')
-    execute 'copen' a:height
+    execute 'cwindow' a:height
   endif
 endfunction
 command! -bar -nargs=?
@@ -2015,7 +2015,7 @@ function! s:toggle_location(height)
   let w = winnr('$')
   lclose
   if w == winnr('$')
-    execute 'lopen' a:height
+    execute 'lwindow' a:height
   endif
 endfunction
 command! -bar -nargs=?
