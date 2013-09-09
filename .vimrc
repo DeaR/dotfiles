@@ -1794,8 +1794,7 @@ nnoremap <expr> <F2>
   \   ':<C-U>vertical help ' . expand('<cword>') . '<CR>'
 
 " Buffer Grep
-nnoremap <C-N> :<C-U>global//print<CR>
-xnoremap <C-N> :global//print<CR>
+NXnoremap <C-N> :<C-U>vimgrep // %<CR>
 
 " Search
 nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
