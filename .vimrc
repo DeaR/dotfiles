@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  06-Sep-2013.
+" Last Change:  09-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -326,6 +326,15 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : 'Gitv'},
     \ 'depends' : 'tpope/vim-fugitive'}
 
+  if s:executable('go')
+    NeoBundleLazy 'nsf/gocode', {
+      \ 'rtp' : 'vim',
+      \ 'autoload' : {
+      \   'filetypes' : 'go'},
+      \ 'build' : {
+      \   'others' : 'go get -u github.com/nsf/gocode'}}
+  endif
+
   NeoBundleLazy 'jnwhiteh/vim-golang', {
     \ 'autoload' : {
     \   'filetypes' : 'go',
@@ -335,6 +344,16 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [['n', '<Plug>(godoc-keyword)']]}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'Godoc' : 'go#complete#Package'})
+
+  if s:executable('go')
+    NeoBundleLazy 'golang/lint', {
+      \ 'name' : 'golint',
+      \ 'rtp' : 'misc/vim',
+      \ 'autoload' : {
+      \   'filetypes' : 'go'},
+      \ 'build' : {
+      \   'others' : 'go get -u github.com/golang/lint/golint'}}
+  endif
 
   NeoBundleLazy 'kana/vim-grex', {
     \ 'autoload' : {
@@ -386,13 +405,15 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \   'filetypes' : 'python'}}
   endif
 
-  NeoBundleLazy 'teramako/jscomplete-vim', {
-    \ 'autoload' : {
-    \   'filetypes' : 'javascript'}}
-
   NeoBundleLazy 'elzr/vim-json', {
     \ 'autoload' : {
     \   'filetypes' : 'json'}}
+
+  if s:jvgrep_enable && s:executable('go')
+    NeoBundleFetch 'mattn/jvgrep', {
+      \ 'build' : {
+      \   'others' : 'go get -u github.com/mattn/jvgrep'}}
+  endif
 
   NeoBundleLazy 'kwbdi.vim', {
     \ 'autoload' : {
@@ -750,6 +771,19 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'AndrewRadev/switch.vim'
 
+  if has('python') && s:executable('node')
+    NeoBundleFetch 'marijnh/tern'
+
+    NeoBundleLazy 'marijnh/tern_for_vim', {
+      \ 'name' : 'tern_for_vim',
+      \ 'autoload' : {
+      \   'filetypes' : 'javascript'}}
+  else
+    NeoBundleLazy 'teramako/jscomplete-vim', {
+      \ 'autoload' : {
+      \   'filetypes' : 'javascript'}}
+  endif
+
   NeoBundleLazy 'tomtom/tcomment_vim', {
     \ 'name' : 'tcomment',
     \ 'autoload' : {
@@ -910,6 +944,13 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'akiyan/vim-textobj-xml-attribute', {
     \ 'autoload' : {
     \   'filetypes' : ['cpp', 'cs', 'html', 'vbnet', 'xml']}}
+
+  if s:ag_enable
+    NeoBundleFetch 'ggreer/the_silver_searcher', {
+      \ 'build' : {
+      \   'windows' : 'echo Please build manually.',
+      \   'others'  : './build.sh && sudo make install'}}
+  endif
 
   NeoBundleLazy 'zaiste/tmux.vim', {
     \ 'autoload' : {
@@ -3778,6 +3819,18 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
   nmap gCC         gCgC
   nmap g<M-c><M-c> g<M-c>g<M-c>
   nmap g<M-C><M-C> g<M-C>g<M-C>
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Tern: {{{
+silent! let s:bundle = neobundle#get('tern_for_vim')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:tern#command = ['node',
+      \ neobundle#get('tern').path . '/bin/tern']
+  endfunction
 endif
 unlet! s:bundle
 "}}}
