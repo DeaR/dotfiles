@@ -299,7 +299,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     NeoBundleLazy 'xolox/vim-lua-ftplugin', {
       \ 'name' : 'ft_lua',
       \ 'autoload' : {
-      \   'filetypes' : 'lua'}}
+      \   'filetypes' : 'lua'},
+      \ 'depends' : 'xolox/vim-misc'}
   endif
 
   NeoBundleLazy 'tpope/vim-fugitive', {
