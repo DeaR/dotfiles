@@ -774,7 +774,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'AndrewRadev/switch.vim'
 
   if has('python') && s:executable('node')
-    NeoBundleFetch 'marijnh/tern'
+    NeoBundleFetch 'marijnh/tern', {
+      \ 'build' : {
+      \   'others' : 'npm install'}}
 
     NeoBundleLazy 'marijnh/tern_for_vim', {
       \ 'name' : 'tern_for_vim',
