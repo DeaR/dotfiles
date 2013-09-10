@@ -950,8 +950,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   if s:ag_enable
     NeoBundleFetch 'ggreer/the_silver_searcher', {
       \ 'build' : {
-      \   'windows' : 'echo Please build manually.',
-      \   'others'  : './build.sh && sudo make install'}}
+      \   'windows' :
+      \     'mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32',
+      \   'others'  :
+      \     './build.sh && sudo make install'}}
   endif
 
   NeoBundleLazy 'zaiste/tmux.vim', {

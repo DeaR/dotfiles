@@ -1,0 +1,29 @@
+SRCS = \
+	src/decompress.c \
+	src/ignore.c \
+	src/log.c \
+	src/main.c \
+	src/options.c \
+	src/print.c \
+	src/scandir.c \
+	src/search.c \
+	src/util.c
+OBJS = $(subst .c,.o,$(SRCS))
+
+VERSION=
+CFLAGS = -O2 -Isrc/win32 -DPACKAGE_VERSION=\"0.16\" -I$(HOME)/.vim/tools/the_silver_searcher
+LDFLAGS = -static -static-libgcc
+LIBS = -lz -lpthread $(HOME)/bin/libpcre.dll -llzma -lshlwapi
+TARGET = ag.exe
+
+all : $(TARGET)
+	mv $(TARGET) $(HOME)/bin/
+
+$(TARGET) : $(OBJS)
+	gcc $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
+
+.c.o :
+	gcc -c $(CFLAGS) -Isrc $< -o $@
+
+clean :
+	rm -f src/*.o $(TARGET)

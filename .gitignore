@@ -11,6 +11,7 @@
 /.hgrc
 
 /.vim/J6uil_config.vim
+/.vim/tools/the_silver_searcher/pcre.h
 
 /.xyzzy.d/projects.lisp
 /.xyzzy.d/.scratch
