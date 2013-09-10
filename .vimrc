@@ -607,7 +607,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'tyru/operator-reverse.vim', {
     \ 'autoload' : {
-    \   'mappings' : [['nvo', '<Plug>(operator-reverse-']]}}
+    \   'mappings' : [['nvo', '<Plug>(operator-reverse-']],
+    \   'commands' : 'OperatorReverseLines'}}
 
   NeoBundleLazy 'emonkak/vim-operator-sort', {
     \ 'autoload' : {
