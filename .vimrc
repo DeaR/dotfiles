@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Sep-2013.
+" Last Change:  11-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1388,9 +1388,9 @@ if &t_Co > 2
 endif
 
 " Grep
-if s:jvgrep_enable && s:executable('jvgrep')
+if s:jvgrep_enable && s:executable('go')
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
-elseif s:ag_enable && s:executable('ag')
+elseif s:ag_enable
   set grepprg=ag\ --line-numbers\ --nocolor\ --nogroup\ --hidden\
     \ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
 elseif s:executable('grep')
@@ -1459,7 +1459,7 @@ let g:javaScript_fold     = 1
 let g:perl_fold           = 1
 let g:php_folding         = 1
 let g:ruby_fold           = 1
-let g:sh_fold_enabled     = 1
+let g:sh_fold_enable_enabled     = 1
 let g:vbnet_no_code_folds = 1
 let g:vimsyn_folding      = 'af'
 let g:xml_syntax_folding  = 1
@@ -3327,9 +3327,9 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('operator-user')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    if s:jvgrep_enable && s:executable('jvgrep')
+    if s:jvgrep_enable && s:executable('go')
       let s:operator_grep_escape = '\[](){}|.?+*^$'
-    elseif s:ag_enable && s:executable('ag')
+    elseif s:ag_enable
       let s:operator_grep_escape = '\[](){}|.?+*^$'
     elseif s:executable('grep')
       let s:operator_grep_escape = '\[].*^$'
@@ -4450,11 +4450,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ '\|^\%(\\\\\|/mnt/\|/media/\|/temp/\|/tmp/\|\%(/private\)\=/var/folders/\)' .
       \ '\|\%(^\%(fugitive\):\%(//\|\\\\\)\)'
 
-    if s:jvgrep_enable && s:executable('jvgrep')
+    if s:jvgrep_enable && s:executable('go')
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '-n --exclude .drive.r'
-    elseif s:ag_enable && s:executable('ag')
+    elseif s:ag_enable
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_default_opts  =
