@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-Sep-2013.
+" Last Change:  10-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -4597,6 +4597,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   NXnoremap <Leader>un
     \ :<C-U>UniteResume search -start-insert<CR>
+  NXnoremap <C-N>
+    \ :<C-U>execute 'Unite vimgrep:%:' . escape(@/, '\[].*^$ :')
+    \ '-buffer-name=search'<CR>
 
   NXnoremap <expr> <Leader>u/ <SID>unite_search_forward()
   NXnoremap <expr> <Leader>u? <SID>unite_search_backward()
