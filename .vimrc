@@ -4603,7 +4603,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ :<C-U>UniteResume search -start-insert<CR>
   NXnoremap <C-N>
     \ :<C-U>execute 'Unite vimgrep:%:' . escape(@/, ' :')
-    \ '-buffer-name=search'<CR>
+    \ '-buffer-name=search -no-split -multi-line'<CR>
 
   NXnoremap <expr> <Leader>u/ <SID>unite_search_forward()
   NXnoremap <expr> <Leader>u? <SID>unite_search_backward()
