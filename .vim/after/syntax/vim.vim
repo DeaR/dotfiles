@@ -1,7 +1,7 @@
 " Syntax settings for Vim 7.3 Script
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  10-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -33,6 +33,8 @@ syntax keyword vimMap XOmap SOmap NXOmap NSOmap       skipwhite nextgroup=vimMap
 syntax keyword vimMap NVnoremap NXnoremap NSnoremap   skipwhite nextgroup=vimMapBang,vimMapMod,vimMapLhs
 syntax keyword vimMap NOnoremap VOnoremap XOnoremap   skipwhite nextgroup=vimMapBang,vimMapMod,vimMapLhs
 syntax keyword vimMap SOnoremap NXOnoremap NSOnoremap skipwhite nextgroup=vimMapBang,vimMapMod,vimMapLhs
+
+syntax keyword vimMap EskkMap skipwhite nextgroup=vimMapBang,vimMapMod,vimMapLhs
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

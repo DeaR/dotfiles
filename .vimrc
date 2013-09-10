@@ -2667,6 +2667,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ 'path' : $HOME . '/.skk/SKK-JISYO.L',
       \ 'sorted' : 1,
       \ 'encoding' : 'euc-jp'}
+    let g:eskk#mapped_keys      =
+      \ filter(eskk#get_default_mapped_keys(), 'v:val !=? "<Tab>"')
+  endfunction
+
+  function! s:bundle.hooks.on_post_source(bundle)
+    EskkMap <expr> <Tab>
+      \ pumvisible() ? '<C-N>' : '<Tab>'
+    EskkMap <expr> <S-Tab>
+      \ pumvisible() ? '<C-P>' : '<S-Tab>'
   endfunction
 
   autocmd MyVimrc User CmdlineEnter
