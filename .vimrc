@@ -197,7 +197,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'filetypes' : 'arm'},
     \ 'script_type' : 'syntax'}
 
-  NeoBundleLazy 'autodate.vim'
+  NeoBundleLazy 'autodate.vim', {
+    \ 'autoload' : {
+    \   'commands' : ['Autodate', 'AutodateON', 'AutodateOFF']}}
 
   NeoBundleLazy 'vim-jp/autofmt'
 
@@ -299,7 +301,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     NeoBundleLazy 'xolox/vim-lua-ftplugin', {
       \ 'name' : 'ft_lua',
       \ 'autoload' : {
-      \   'filetypes' : 'lua'},
+      \   'filetypes' : 'lua',
+      \   'commands' : ['LuaCheckSyntax', 'LuaCheckGlobals']},
       \ 'depends' : 'xolox/vim-misc'}
   endif
 
@@ -313,6 +316,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'kana/vim-gf-user', {
     \ 'autoload' : {
+    \   'commands' : 'GfUserDefaultKeyMappings',
     \   'mappings' : [['nv', '<Plug>(gf-user-']]},
     \ 'depends' : [
     \   'sgur/vim-gf-autoload',
@@ -403,7 +407,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   if has('python') || has('python3')
     NeoBundleLazy 'davidhalter/jedi-vim', {
       \ 'autoload' : {
-      \   'filetypes' : 'python'}}
+      \   'filetypes' : 'python',
+      \   'commands' : [
+      \     {'name' : 'Pyimport',
+      \      'complete' : 'custom,jedi#py_import_completions'}]}}
+    call extend(s:neocompl_vim_completefuncs, {
+      \ 'Pyimport' : 'jedi#py_import_completions'})
   endif
 
   NeoBundleLazy 'elzr/vim-json', {
@@ -667,7 +676,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'osyo-manga/vim-precious', {
     \ 'autoload' : {
-    \    'commands' : 'PreciousSwitch',
+    \    'commands' : [
+    \      {'name' : 'PreciousSwitch',
+    \       'complete' : 'filetype'},
+    \      {'name' : 'PreciousSwitchAutcmd',
+    \       'complete' : 'filetype'},
+    \      'PreciousSetContextLocal', 'PreciousReset'],
     \    'mappings' : [
     \      ['vo', '<Plug>(textobj-precious-i)'],
     \      ['n',  '<Plug>(precious-quickrun-op)']]}}
@@ -771,7 +785,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['i',
     \      '<Plug>Isurround', '<Plug>ISurround']]}}
 
-  NeoBundleLazy 'AndrewRadev/switch.vim'
+  NeoBundleLazy 'AndrewRadev/switch.vim', {
+    \ 'autoload' : {
+    \   'commands' : 'Switch'}}
 
   if has('python') && s:executable('node')
     NeoBundleFetch 'marijnh/tern', {
@@ -991,6 +1007,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'ujihisa/unite-haskellimport', {
     \ 'autoload' : {
+    \   'commands' : 'Haskellimport',
     \   'unite_sources' : 'haskellimport'}}
 
   NeoBundleLazy 'tsukkee/unite-help', {
@@ -1067,7 +1084,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'filetypes' : 'vbnet'}}
 
   if has('iconv')
-    NeoBundleLazy 'koron/verifyenc-vim'
+    NeoBundleLazy 'koron/verifyenc-vim', {
+      \ 'autoload' : {
+      \   'commands' : 'VerifyEnc'}}
   endif
 
   NeoBundleLazy 'Shougo/vim-vcs', {
@@ -1083,8 +1102,15 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : [
     \     'VimConsoleOpen', 'VimConsoleClose', 'VimConsoleToggle',
     \     'VimConsoleTest', 'VimConsoleClear', 'VimConsoleRedraw',
-    \     'VimConsoleDump', 'VimConsole',
-    \     'VimConsoleLog',  'VimConsoleWarn',  'VimConsoleError']}}
+    \     'VimConsoleDump',
+    \     {'name' : 'VimConsole',
+    \      'complete' : 'expression'},
+    \     {'name' : 'VimConsoleLog',
+    \      'complete' : 'expression'},
+    \     {'name' : 'VimConsoleWarn',
+    \      'complete' : 'expression'},
+    \     {'name' : 'VimConsoleError',
+    \      'complete' : 'expression'}]}}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'VimConsoleLog'   : 'expression',
     \ 'VimConsoleWarn'  : 'expression',
@@ -2447,6 +2473,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap g<M-F>     <Plug>(altr-back)
   nmap <C-W><M-f> <SID>(split-nicely)<Plug>(altr-forward)
   nmap <C-W><M-F> <SID>(split-nicely)<Plug>(altr-back)
+
+  autocmd MyVimrc User CmdlineEnter
+    \ NeoBundleSource altr
 endif
 unlet! s:bundle
 "}}}
