@@ -2811,6 +2811,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       source ~/.vim/j6uil_config.vim
     endif
   endfunction
+
+  call extend(s:altercmd_define, {
+    \ 'j[6uil]' : 'J6uil'})
 endif
 unlet! s:bundle
 "}}}
