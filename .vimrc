@@ -231,11 +231,17 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'vim-jp/cpp-vim', {
     \ 'autoload' : {
-    \   'filetypes' : ['c', 'cpp']}}
+    \   'filetypes' : [
+    \     'c', 'ch', 'cpp', 'cuda', 'cynlib', 'cynpp', 'dtrace', 'esqlc',
+    \     'kwt', 'objc', 'objcpp', 'rpcgen', 'splint', 'xs']}}
 
   NeoBundleLazy 'hail2u/vim-css3-syntax', {
     \ 'autoload' : {
-    \   'filetypes' : ['css', 'html', 'scss']}}
+    \   'filetypes' : [
+    \     'aspperl', 'aspvbs', 'cf', 'css', 'dtml', 'groovy', 'gsp', 'haml',
+    \     'html', 'htmlcheetah', 'htmldjango', 'htmlm4', 'htmlos', 'jsp',
+    \     'markdown', 'mason', 'msql', 'php', 'plp', 'phtml', 'sass', 'scss',
+    \     'smarty', 'spyce', 'tt2html', 'webmacro', 'wml', 'xhtml']}}
 
   NeoBundleLazy 'JesseKPhillips/d.vim', {
     \ 'autoload' : {
@@ -379,7 +385,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'othree/html5.vim', {
     \ 'autoload' : {
-    \   'filetypes' : ['html', 'javascript']}}
+    \   'filetypes' : [
+    \     'aspperl', 'aspvbs', 'cf', 'dtml', 'eruby',  'groovy', 'gsp',
+    \     'haml', 'html', 'htmlcheetah', 'htmldjango', 'htmlm4', 'htmlos',
+    \     'javascript', 'jsp', 'liquid', 'markdown', 'mason', 'msql',
+    \     'php', 'phtml', 'plp', 'smarty', 'spyce', 'tt2html', 'tt2js',
+    \     'webmacro', 'wml', 'xhtml']}}
 
   NeoBundleLazy 'HybridText', {
     \ 'autoload' : {
@@ -403,12 +414,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'jelera/vim-javascript-syntax', {
     \ 'autoload' : {
-    \   'filetypes' : 'javascript'}}
+    \   'filetypes' : ['javascript', 'tt2js']}}
 
   if has('python') || has('python3')
     NeoBundleLazy 'davidhalter/jedi-vim', {
       \ 'autoload' : {
-      \   'filetypes' : 'python',
+      \   'filetypes' : ['pyrex', 'python'],
       \   'commands' : [
       \     {'name' : 'Pyimport',
       \      'complete' : 'custom,jedi#py_import_completions'}]}}
@@ -428,7 +439,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'kwbdi.vim', {
     \ 'autoload' : {
-    \   'mappings' : [['nvo', '<Plug>Kwbd']]}}
+    \   'mappings' : [['nvo', '<Plug>Kwbd']],
+    \   'commands' : 'Kwbd'}}
 
   NeoBundleLazy 'thinca/vim-localrc'
 
@@ -602,7 +614,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'rhysd/vim-operator-clang-format', {
     \ 'autoload' : {
-    \   'filetypes' : ['c', 'cpp', 'objc', 'objcpp']}}
+    \   'mappings' : [['nvo', '<Plug>(operator-clang-format)']]}}
 
   NeoBundleLazy 'tyru/operator-html-escape.vim', {
     \ 'autoload' : {
@@ -618,8 +630,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'tyru/operator-reverse.vim', {
     \ 'autoload' : {
-    \   'mappings' : [['nvo', '<Plug>(operator-reverse-']],
-    \   'commands' : 'OperatorReverseLines'}}
+    \   'commands' : 'OperatorReverseLines',
+    \   'mappings' : [['nvo', '<Plug>(operator-reverse-']]}}
 
   NeoBundleLazy 'emonkak/vim-operator-sort', {
     \ 'autoload' : {
@@ -635,7 +647,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'kana/vim-operator-user', {
     \ 'autoload' : {
-    \ 'mappings' : [['nvo', '<Plug>(operator-grep)']],
+    \   'mappings' : [['nvo', '<Plug>(operator-grep)']],
     \ 'function_prefix' : 'operator'}}
 
   NeoBundleLazy 'deris/parajump', {
@@ -677,15 +689,16 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'osyo-manga/vim-precious', {
     \ 'autoload' : {
-    \    'commands' : [
-    \      {'name' : 'PreciousSwitch',
-    \       'complete' : 'filetype'},
-    \      {'name' : 'PreciousSwitchAutcmd',
-    \       'complete' : 'filetype'},
-    \      'PreciousSetContextLocal', 'PreciousReset'],
-    \    'mappings' : [
-    \      ['vo', '<Plug>(textobj-precious-i)'],
-    \      ['n',  '<Plug>(precious-quickrun-op)']]}}
+    \   'commands' : [
+    \     {'name' : 'PreciousSwitch',
+    \      'complete' : 'filetype'},
+    \     {'name' : 'PreciousSwitchAutcmd',
+    \      'complete' : 'filetype'},
+    \     'PreciousSetContextLocal', 'PreciousReset',
+    \     'TextobjPreciousDefaultKeyMappings'],
+    \   'mappings' : [
+    \     ['vo', '<Plug>(textobj-precious-i)'],
+    \     ['n',  '<Plug>(precious-quickrun-op)']]}}
 
   NeoBundleLazy 'thinca/vim-prettyprint', {
     \ 'autoload' : {
@@ -746,7 +759,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'vim-ruby/vim-ruby', {
     \ 'autoload' : {
-    \   'filetypes' : ['eruby', 'ruby']}}
+    \   'filetypes' : ['eruby', 'haml', 'ruby']}}
 
   NeoBundleLazy 'DeaR/savevers.vim', {
     \ 'autoload' : {
@@ -788,7 +801,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'AndrewRadev/switch.vim', {
     \ 'autoload' : {
-    \   'commands' : 'Switch'}}
+    \   'commands' : ['Switch', 'SwitchIncrement', 'SwitchDecrement']}}
 
   if has('python') && s:executable('node')
     NeoBundleFetch 'marijnh/tern', {
@@ -839,119 +852,132 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'thinca/vim-textobj-between', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjBetweenDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-between-']]}}
 
   NeoBundleLazy 'thinca/vim-textobj-comment', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjCommentDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-comment-']]}}
 
   NeoBundleLazy 'rhysd/vim-textobj-continuous-line', {
     \ 'autoload' : {
-    \   'filetypes' : [
-    \     'c', 'cpp', 'mayu', 'objc', 'objcpp', 'sh', 'vim', 'zsh']}}
+    \   'commands' : 'TextobjContinuousDefaultKeyMappings',
+    \   'mappings' : [['vo', '<Plug>(textobj-continuous-']]}}
 
   NeoBundleLazy 'kana/vim-textobj-datetime', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjDatetimeDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-datetime-']]}}
 
   NeoBundleLazy 'kana/vim-textobj-diff', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjDiffDefaultKeyMappings',
     \   'mappings' : [['nvo', '<Plug>(textobj-diff-']]}}
 
   NeoBundleLazy 'deris/vim-textobj-enclosedsyntax', {
     \ 'autoload' : {
-    \   'filetypes' : ['perl', 'ruby', 'eruby']}}
+    \   'commands' : 'TextobjEnclosedsyntaxDefaultKeyMappings',
+    \   'mappings' : [['nvo', '<Plug>(textobj-enclosedsyntax-']]}}
 
   NeoBundleLazy 'kana/vim-textobj-entire', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjEntireDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-entire-']]}}
 
   NeoBundleLazy 'kana/vim-textobj-fold', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjFoldDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-fold-']]}}
 
   NeoBundleLazy 'kana/vim-textobj-function', {
     \ 'autoload' : {
-    \   'filetypes' : ['c', 'cpp', 'objc', 'objcpp', 'vim']}}
-
-  NeoBundleLazy 'thinca/vim-textobj-function-javascript', {
-    \ 'autoload' : {
-    \   'filetypes' : 'javascript'},
-    \ 'depends' : 'kana/vim-textobj-function'}
-
-  NeoBundleLazy 'thinca/vim-textobj-function-perl', {
-    \ 'autoload' : {
-    \   'filetypes' : 'perl'},
-    \ 'depends' : 'kana/vim-textobj-function'}
-
-  NeoBundleLazy 't9md/vim-textobj-function-ruby', {
-    \ 'autoload' : {
-    \   'filetypes' : ['eruby', 'ruby']},
-    \ 'depends' : 'kana/vim-textobj-function'}
+    \   'commands' : 'TextobjFunctionDefaultKeyMappings',
+    \   'mappings' : [['vo', '<Plug>(textobj-function-']]},
+    \ 'depends' : [
+    \   'thinca/vim-textobj-function-javascript',
+    \   'thinca/vim-textobj-function-perl',
+    \   't9md/vim-textobj-function-ruby']}
 
   NeoBundleLazy 'anyakichi/vim-textobj-ifdef', {
     \ 'autoload' : {
-    \   'filetypes' : ['c', 'cpp', 'cs', 'objc', 'objcpp']}}
+    \   'commands' : 'TextobjIfdefDefaultKeyMappings',
+    \   'mappings' : [['vo', '<Plug>(textobj-ifdef-']]}}
 
   NeoBundleLazy 'glts/vim-textobj-indblock', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjIndblockDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-indblock-']]}}
 
   NeoBundleLazy 'kana/vim-textobj-indent', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjIndentDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-indent-']]}}
 
   NeoBundleLazy 'kana/vim-textobj-jabraces', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjJabracesDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-jabraces-']]}}
 
   NeoBundleLazy 'kana/vim-textobj-line', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjLineDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-line-']]}}
+
+  NeoBundleLazy 'hchbaw/textobj-motionmotion.vim', {
+    \ 'autoload' : {
+    \   'commands' : 'TextobjMotionmotionDefaultKeyMappings',
+    \   'mappings' : [['vo', '<Plug>(textobj-motionmotion-']]}}
 
   NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjMultiblockDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-multiblock-']]}}
 
   NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjMultitextobjDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-multitextobj-']]},
     \ 'depends' : 'kana/vim-textobj-jabraces'}
 
-  NeoBundleLazy 'hchbaw/textobj-motionmotion.vim', {
-    \ 'autoload' : {
-    \   'mappings' : [['vo', '<Plug>(textobj-motionmotion-']]}}
-
   NeoBundleLazy 'sgur/vim-textobj-parameter', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjParameterDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-parameter-']]}}
 
   NeoBundleLazy 'akiyan/vim-textobj-php', {
     \ 'autoload' : {
-    \   'filetypes' : 'php'}}
+    \   'commands' : 'TextobjPhpDefaultKeyMappings',
+    \   'mappings' : [['vo', '<Plug>(textobj-php-']]}}
 
   NeoBundleLazy 'bps/vim-textobj-python', {
     \ 'autoload' : {
-    \   'filetypes' : 'python'}}
+    \   'commands' : 'TextobjPythonDefaultKeyMappings',
+    \   'mappings' : [['vo', '<Plug>(textobj-python-']]}}
 
   NeoBundleLazy 'rhysd/vim-textobj-ruby', {
     \ 'autoload' : {
-    \   'filetypes' : 'ruby'}}
+    \   'commands' : 'TextobjRubyDefaultKeyMappings',
+    \   'mappings' : [['vo', '<Plug>(textobj-ruby-']]}}
 
   NeoBundleLazy 'vimtaku/vim-textobj-sigil', {
     \ 'autoload' : {
-    \   'filetypes' : 'perl'}}
+    \   'commands' : 'TextobjSigilDefaultKeyMappings',
+    \   'mappings' : [['vo', '<Plug>(textobj-sigil-']]}}
 
   NeoBundleLazy 'saihoooooooo/vim-textobj-space', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjSpaceDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-space-']]}}
 
   NeoBundleLazy 'kana/vim-textobj-syntax', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjSyntaxDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-syntax-']]}}
 
   NeoBundleLazy 'mattn/vim-textobj-url', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjUrlDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-url-']]}}
 
   NeoBundleLazy 'DeaR/vim-textobj-user', {
@@ -960,11 +986,13 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'DeaR/textobj-wiw', {
     \ 'autoload' : {
+    \   'commands' : 'TextobjWiwDefaultKeyMappings',
     \   'mappings' : [['nvo', '<Plug>(textobj-wiw-']]}}
 
   NeoBundleLazy 'akiyan/vim-textobj-xml-attribute', {
     \ 'autoload' : {
-    \   'filetypes' : ['cpp', 'cs', 'html', 'vbnet', 'xml']}}
+    \   'commands' : 'TextobjXmlattributeDefaultKeyMappings',
+    \   'mappings' : [['vo', '<Plug>(textobj-xmlattribute-']]}}
 
   if s:ag_enable
     NeoBundleFetch 'ggreer/the_silver_searcher', {
@@ -1272,6 +1300,7 @@ endif
 " Message
 set shortmess+=a
 set title
+set confirm
 
 " Use beep
 set errorbells
@@ -1669,13 +1698,6 @@ NXnoremap <M-<>  <C-W><
 NXnoremap <M->>  <C-W>>
 NXnoremap <M-\|> <C-W>\|
 
-" Confirm Close Window
-NXnoremap <C-W><C-Q> :<C-U>confirm quit<CR>
-NXnoremap <C-W>q     :<C-U>confirm quit<CR>
-NXnoremap <C-W>c     :<C-U>confirm close<CR>
-NXnoremap <C-W><C-O> :<C-U>confirm only<CR>
-NXnoremap <C-W>o     :<C-U>confirm only<CR>
-
 " Insert-mode & Command-line-mode
 noremap! <M-j> <Down>
 noremap! <M-k> <Up>
@@ -1719,12 +1741,12 @@ noremap <expr> <SID>(split-nicely)
   \ <SID>split_nicely_expr() ? '<C-W>s' : '<C-W>v'
 
 " Leader keys
-NXnoremap <Leader>c     :<C-U>confirm close<CR>
-NXnoremap <Leader>C     :<C-U>confirm only<CR>
-NXnoremap <Leader>w     :<C-U>confirm update<CR>
-NXnoremap <Leader>W     :<C-U>confirm wall<CR>
-NXnoremap <Leader>q     :<C-U>confirm bdelete<CR>
-NXnoremap <Leader>Q     :<C-U>bufdo confirm bdelete<CR>
+NXnoremap <Leader>c     :<C-U>close<CR>
+NXnoremap <Leader>C     :<C-U>only<CR>
+NXnoremap <Leader>w     :<C-U>update<CR>
+NXnoremap <Leader>W     :<C-U>wall<CR>
+NXnoremap <Leader>q     :<C-U>bdelete<CR>
+NXnoremap <Leader>Q     :<C-U>bufdo bdelete<CR>
 NXnoremap <Leader>!     :<C-U>shell<CR>
 NXnoremap <Leader>B     :<C-U>buffers<CR>
 NXnoremap <Leader>E     :<C-U>Explorer<CR>
@@ -2682,6 +2704,28 @@ unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
+" FT_Lua: {{{
+silent! let s:bundle = neobundle#get('ft_lua')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:lua_complete_omni = 1
+    let g:lua_check_syntax  = 0
+    let g:lua_check_globals = 0
+
+    if s:executable('luac')
+      let g:lua_compiler_name = 'luac'
+    elseif s:executable('luac52')
+      let g:lua_compiler_name = 'luac52'
+    endif
+  endfunction
+
+  call extend(s:neocompl_omni_patterns, {
+    \ 'xolox#lua#omnifunc' : '.*'})
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
 " Fugitive: {{{
 silent! let s:bundle = neobundle#get('fugitive')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -2858,6 +2902,12 @@ unlet! s:bundle
 " Kwbdi: {{{
 silent! let s:bundle = neobundle#get('kwbdi')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    command! -bar
+      \ Kwbd
+      \ call s:kwbd()
+  endfunction
+
   function! s:kwbd()
     if &l:modified
       if v:lang =~? '^ja' && has('multi_lang')
@@ -2875,13 +2925,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
         return
       endif
     endif
-
-    NeoBundleSource kwbdi
     silent execute "normal \<Plug>Kwbd"
   endfunction
 
-  NXnoremap <Leader>q :<C-U>call <SID>kwbd()<CR>
+  NXnoremap <Leader>q :<C-U>Kwbd<CR>
   map <SID>Kwbd <Plug>Kwbd
+
+  call extend(s:altercmd_define, {
+    \ 'bd[elete]' : 'Kwbd',
+    \
+    \ '_bd[elete]' : 'bdelete'})
 endif
 unlet! s:bundle
 "}}}
@@ -2904,28 +2957,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   autocmd MyVimrc BufNewFile,BufRead,FileType *
     \ NeoBundleSource localrc
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" FT_Lua: {{{
-silent! let s:bundle = neobundle#get('ft_lua')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:lua_complete_omni = 1
-    let g:lua_check_syntax  = 0
-    let g:lua_check_globals = 0
-
-    if s:executable('luac')
-      let g:lua_compiler_name = 'luac'
-    elseif s:executable('luac52')
-      let g:lua_compiler_name = 'luac52'
-    endif
-  endfunction
-
-  call extend(s:neocompl_omni_patterns, {
-    \ 'xolox#lua#omnifunc' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -3059,9 +3090,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ '_' : ''})
   call extend(s:neocompl_keyword_patterns, {
     \ '_' : '[a-zA-Z@0-9_]\+'})
-
-  autocmd MyVimrc CursorHold *
-    \ NeoBundleSource neocomplcache
 endif
 unlet! s:bundle
 "}}}
@@ -3163,9 +3191,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ '_' : ''})
   call extend(s:neocompl_keyword_patterns, {
     \ '_' : '[a-zA-Z@0-9_]\+'})
-
-  autocmd MyVimrc CursorHold *
-    \ NeoBundleSource neocomplete
 endif
 unlet! s:bundle
 "}}}
@@ -3755,11 +3780,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
       \   '\=tolower(call(''' . s:SID_PREFIX() .
       \   'ordinal'', [submatch(1) - 1]))'}])
+
+    command! -bar
+      \ SwitchIncrement
+      \ call s:switch('+')
+    command! -bar
+      \ SwitchDecrement
+      \ call s:switch('-')
   endfunction
 
   function! s:switch(direction)
-    NeoBundleSource switch
-
     let definitions = []
     if !exists('g:switch_no_builtins')
       let definitions = extend(definitions, g:switch_definitions)
@@ -3798,8 +3828,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
-  nnoremap <C-A> :<C-U>call <SID>switch('+')<CR>
-  nnoremap <C-X> :<C-U>call <SID>switch('-')<CR>
+  nnoremap <C-A> :<C-U>SwitchIncrement<CR>
+  nnoremap <C-X> :<C-U>SwitchDecrement<CR>
 
   autocmd MyVimrc VimEnter,BufNewFile,BufRead *
     \ let b:switch_no_builtins = 1
