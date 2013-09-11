@@ -2392,32 +2392,27 @@ let g:is_bash = 1
 
 " Omni
 call extend(s:neocompl_omni_patterns, {
-  \ 'ada'          : '.*',
-  \ 'aspvbs'       : '.*',
-  \ 'clojure'      : '.*',
-  \ 'css'          : '.*',
-  \ 'cucumber'     : '.*',
-  \ 'debchangelog' : '.*',
-  \ 'eruby'        : '.*',
-  \ 'haml'         : '.*',
-  \ 'html'         : '.*',
-  \ 'htmldjango'   : '.*',
-  \ 'jsp'          : '.*',
-  \ 'javascript'   : '.*',
-  \ 'kwt'          : '.*',
-  \ 'liquid'       : '.*',
-  \ 'markdown'     : '.*',
-  \ 'php'          : '.*',
-  \ 'python'       : '.*',
-  \ 'pyrex'        : '.*',
-  \ 'sass'         : '.*',
-  \ 'scss'         : '.*',
-  \ 'sql'          : '.*',
-  \ 'tt2html'      : '.*',
-  \ 'xhtml'        : '.*',
-  \ 'xslt'         : '.*'})
+  \ 'CucumberComplete'              : '.*',
+  \ 'adacomplete#Complete'          : '.*',
+  \ 'ccomplete#Complete'            : '.*',
+  \ 'clojurecomplete#Complete'      : '.*',
+  \ 'csscomplete#CompleteCSS'       : '.*',
+  \ 'htmlcomplete#CompleteTags'     : '.*',
+  \ 'javascriptcomplete#CompleteJS' : '.*',
+  \ 'phpcomplete#CompletePHP'       : '.*',
+  \ 'sqlcomplete#Complete'          : '.*',
+  \ 'xmlcomplete#CompleteTags'      : '.*'})
+if has('python3')
+  call extend(s:neocompl_omni_patterns, {
+    \ 'python3complete#Complete' : '.*'})
+endif
+if has('python')
+  call extend(s:neocompl_omni_patterns, {
+    \ 'pythoncomplete#Complete' : '.*'})
+endif
 if has('ruby')
-  call extend(s:neocompl_omni_patterns, {'ruby' : '.*'})
+  call extend(s:neocompl_omni_patterns, {
+    \ 'rubycomplete#Complete' : '.*'})
 endif
 "}}}
 
@@ -2571,10 +2566,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'c'      : '.*',
-    \ 'objc'   : '.*',
-    \ 'cpp'    : '.*',
-    \ 'objcpp' : '.*'})
+    \ 'ClangComplete' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2649,6 +2641,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ 'indentation' : '  ',
       \ 'xml' : {'extends' : 'html'}}
   endfunction
+
+  call extend(s:neocompl_omni_patterns, {
+    \ 'emmet#CompleteTag' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2724,6 +2719,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXmap <C-W>gf    <Plug>(gf-user-<C-w>gf)
   NXmap <C-W>gF    <Plug>(gf-user-<C-w>gF)
   NXmap <C-W><C-F> <Plug>(gf-user-<C-w><C-f>)
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Gocode: {{{
+silent! let s:bundle = neobundle#get('gocode')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  call extend(s:neocompl_omni_patterns, {
+    \ 'gocomplete#Complete' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2828,6 +2833,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:jedi#popup_on_dot           = 0
     let g:jedi#auto_close_doc         = 0
   endfunction
+
+  call extend(s:neocompl_omni_patterns, {
+    \ 'jedi#completions' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2839,6 +2847,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:jscomplete_use = ['dom', 'moz', 'xpcom', 'es6th']
   endfunction
+
+  call extend(s:neocompl_omni_patterns, {
+    \ 'jscomplete#CompleteJS' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2914,7 +2925,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'lua' : '.*'})
+    \ 'xolox#lua#omnifunc' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -3199,7 +3210,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'cs' : '.*'})
+    \ 'OmniSharp#Complete' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -3418,7 +3429,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'perl' : '.*'})
+    \ 'PerlComplete' : '.*'})
 endif
 unlet! s:bundle
 "}}}
@@ -3878,6 +3889,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:tern#command = ['node',
       \ neobundle#get('tern').path . '/bin/tern']
   endfunction
+
+  call extend(s:neocompl_omni_patterns, {
+    \ 'tern#Complete' : '.*'})
 endif
 unlet! s:bundle
 "}}}
