@@ -1317,7 +1317,6 @@ set history=100
 
 " Backup
 set backup
-set nowritebackup
 set backupdir^=~/.bak
 set patchmode=.clean
 set suffixes+=.clean
@@ -1410,7 +1409,6 @@ set ignorecase
 set smartcase
 set incsearch
 set wrapscan
-set magic
 
 " Highlight
 if &t_Co > 2
@@ -1443,17 +1441,6 @@ set formatoptions+=B
 
 " Free cursor
 set virtualedit=block
-
-" Cursor can move to bol & eol
-set whichwrap=b,s,h,l,<,>,[,]
-set backspace=indent,eol,start
-augroup MyVimrc
-  autocmd CmdwinEnter *
-    \ let s:save_bs = &backspace |
-    \ set backspace=start
-  autocmd CmdwinLeave *
-    \ let &backspace = s:save_bs
-augroup END
 
 " Ctags
 set showfulltag
