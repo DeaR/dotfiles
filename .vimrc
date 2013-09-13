@@ -1421,7 +1421,7 @@ if &t_Co > 2
 endif
 
 " Grep
-if s:jvgrep_enable && s:executable('go')
+if s:jvgrep_enable
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
 elseif s:ag_enable
   set grepprg=ag\ --line-numbers\ --nocolor\ --nogroup\ --hidden\
@@ -3381,7 +3381,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('operator-user')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    if s:jvgrep_enable && s:executable('go')
+    if s:jvgrep_enable
       let s:operator_grep_escape = '\[](){}|.?+*^$'
     elseif s:ag_enable
       let s:operator_grep_escape = '\[](){}|.?+*^$'
@@ -4512,7 +4512,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ '\|^\%(\\\\\|/mnt/\|/media/\|/temp/\|/tmp/\|\%(/private\)\=/var/folders/\)' .
       \ '\|\%(^\%(fugitive\):\%(//\|\\\\\)\)'
 
-    if s:jvgrep_enable && s:executable('go')
+    if s:jvgrep_enable
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '-n --exclude .drive.r'
