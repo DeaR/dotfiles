@@ -161,6 +161,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   set runtimepath+=~/.local/bundle/neobundle
   let g:neobundle#enable_name_conversion = 1
   let g:neobundle#enable_tail_path       = 1
+  let g:neobundle#install_max_processes  =
+    \ has('win32') ? str2nr($NUMBER_OF_PROCESSORS) : 1
   if s:is_android
     let g:neobundle#types#git#default_protocol = 'ssh'
     let g:neobundle#types#hg#default_protocol  = 'ssh'
