@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  11-Sep-2013.
+" Last Change:  13-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1441,6 +1441,16 @@ set formatoptions+=B
 
 " Free cursor
 set virtualedit=block
+
+" Cursor can move to bol & eol
+set backspace=indent,eol,start
+augroup MyVimrc
+  autocmd CmdwinEnter *
+    \ let s:save_bs = &backspace |
+    \ set backspace=
+  autocmd CmdwinLeave *
+    \ let &backspace = s:save_bs
+augroup END
 
 " Ctags
 set showfulltag
