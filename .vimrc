@@ -73,6 +73,9 @@ endif
 let g:mapleader      = ';'
 let g:maplocalleader = ','
 
+" Gips
+let s:gips_enable = 0
+
 " Command line window
 let s:cmdwin_enable = 1
 
@@ -1670,6 +1673,18 @@ cnoremap   <C-G> <Nop>
 
 "------------------------------------------------------------------------------
 " Moving: {{{
+" Gips
+if s:gips_enable
+  noremap <Up>       <Nop>
+  noremap <Down>     <Nop>
+  noremap <Right>    <Nop>
+  noremap <Left>     <Nop>
+  noremap <Home>     <Nop>
+  noremap <End>      <Nop>
+  noremap <PageUp>   <Nop>
+  noremap <PageDown> <Nop>
+endif
+
 " Jump
 NXOnoremap ' `
 NXOnoremap ` '
