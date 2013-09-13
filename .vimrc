@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Sep-2013.
+" Last Change:  14-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1288,6 +1288,14 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'ynkdir/vim-vimlparser']}
 
   NeoBundleLazy 'mattn/webapi-vim'
+
+  for s:bundle in filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
+    \ 'neobundle#get(fnamemodify(v:val, ":t")) != {}')
+    execute 'set runtimepath+=' . s:bundle
+  endfor
+  unlet! s:bundle
+  autocmd MyVimrc User VimrcPost
+    \ call neobundle#call_hook('on_source')
 endif
 "}}}
 "}}}
@@ -1473,9 +1481,6 @@ set smartindent
 set copyindent
 set cinoptions=:0,l1,g0,(0,U1,Ws,j1,J1,)20
 
-" Indent By FileType
-let g:vim_indent_cont = 2
-
 " Folding
 set foldenable
 set foldmethod=marker
@@ -1483,18 +1488,6 @@ set foldcolumn=2
 set foldlevelstart=99
 autocmd MyVimrc CmdwinEnter *
   \ setlocal nofoldenable foldcolumn=0
-
-" Folding By FileType
-let g:c_no_comment_fold   = 1
-let g:c_no_block_fold     = 1
-let g:javaScript_fold     = 1
-let g:perl_fold           = 1
-let g:php_folding         = 1
-let g:ruby_fold           = 1
-let g:sh_fold_enable_enabled     = 1
-let g:vbnet_no_code_folds = 1
-let g:vimsyn_folding      = 'af'
-let g:xml_syntax_folding  = 1
 "}}}
 
 "------------------------------------------------------------------------------
@@ -1546,24 +1539,6 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
-" Plugins: {{{
-" User runtime by bundle
-if isdirectory($HOME . '/.local/bundle/neobundle')
-  for s:bundle in filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
-    \ 'neobundle#get(fnamemodify(v:val, ":t")) != {}')
-    execute 'set runtimepath+=' . s:bundle
-  endfor
-  unlet! s:bundle
-
-  autocmd MyVimrc User VimrcPost
-    \ call neobundle#call_hook('on_source')
-endif
-
-" Enable plugin
-filetype plugin indent on
-"}}}
-
-"------------------------------------------------------------------------------
 " Colors: {{{
 " Cursor line & column
 if has('gui_running') || &t_Co > 255
@@ -1581,6 +1556,9 @@ if has('gui_running') || &t_Co > 255
       \ setlocal nocursorcolumn
   augroup END
 endif
+
+" Enable plugin
+filetype plugin indent on
 
 " Syntax highlight
 syntax on
@@ -1673,6 +1651,13 @@ cnoremap   <C-G> <Nop>
 
 "------------------------------------------------------------------------------
 " Moving: {{{
+" Split Nicely
+function! s:split_nicely_expr()
+  return &columns < 160
+endfunction
+noremap <expr> <SID>(split-nicely)
+  \ <SID>split_nicely_expr() ? '<C-W>s' : '<C-W>v'
+
 " Gips
 if s:gips_enable
   noremap <Up>       <Nop>
@@ -1685,32 +1670,24 @@ if s:gips_enable
   noremap <PageDown> <Nop>
 endif
 
-" Jump
-NXOnoremap ' `
-NXOnoremap ` '
-NXOnoremap gH H
-NXOnoremap gM M
-NXOnoremap gL L
-NXOnoremap <Space> %
-
 " Window Control
-NXnoremap <M-s>  <C-W>s
-NXnoremap <M-v>  <C-W>v
-NXnoremap <M-j>  <C-W>j
-NXnoremap <M-k>  <C-W>k
-NXnoremap <M-h>  <C-W>h
-NXnoremap <M-l>  <C-W>l
-NXnoremap <M-J>  <C-W>J
-NXnoremap <M-K>  <C-W>K
-NXnoremap <M-H>  <C-W>H
-NXnoremap <M-L>  <C-W>L
-NXnoremap <M-=>  <C-W>=
-NXnoremap <M-->  <C-W>-
-NXnoremap <M-+>  <C-W>+
-NXnoremap <M-_>  <C-W>_
-NXnoremap <M-<>  <C-W><
-NXnoremap <M->>  <C-W>>
-NXnoremap <M-\|> <C-W>\|
+NXnoremap <M-s>   <C-W>s
+NXnoremap <M-v>   <C-W>v
+NXnoremap <M-j>   <C-W>j
+NXnoremap <M-k>   <C-W>k
+NXnoremap <M-h>   <C-W>h
+NXnoremap <M-l>   <C-W>l
+NXnoremap <M-J>   <C-W>J
+NXnoremap <M-K>   <C-W>K
+NXnoremap <M-H>   <C-W>H
+NXnoremap <M-L>   <C-W>L
+NXnoremap <M-=>   <C-W>=
+NXnoremap <M-->   <C-W>-
+NXnoremap <M-+>   <C-W>+
+NXnoremap <M-_>   <C-W>_
+NXnoremap <M-<>   <C-W><
+NXnoremap <M->>   <C-W>>
+NXnoremap <M-Bar> <C-W><Bar>
 
 " Insert-mode & Command-line-mode
 noremap! <M-j> <Down>
@@ -1733,6 +1710,10 @@ inoremap <M-t>      <C-O>t
 inoremap <M-T>      <C-O>T
 inoremap <M-;>      <C-O>;
 inoremap <M-,>      <C-O>,
+inoremap <M-(>      <C-O>(
+inoremap <M-)>      <C-O>)
+inoremap <M-{>      <C-O>{
+inoremap <M-}>      <C-O>}
 
 " Command-line-mode
 cnoremap <M-H> <Home>
@@ -1740,20 +1721,44 @@ cnoremap <M-L> <End>
 cnoremap <M-w> <S-Right>
 cnoremap <M-b> <S-Left>
 
+" Jump
+NXOnoremap ' `
+NXOnoremap ` '
+
+" Paren
+NXOnoremap <Space> %
+
 " Mark
 NXOnoremap mj ]`
 NXOnoremap mk [`
+
+" Motion
+NXnoremap ( (zvzz
+NXnoremap ) )zvzz
+NXnoremap { {zvzz
+NXnoremap } }zvzz
+
+" Search
+NXnoremap *  *zvzz
+NXnoremap #  #zvzz
+NXnoremap g* g*zvzz
+NXnoremap g# g#zvzz
+NXmap g/ *
+NXmap g? #
+
+" Search Split Window
+NXnoremap <script> <C-W>/  <SID>(split-nicely)<SID>/
+NXnoremap <script> <C-W>?  <SID>(split-nicely)<SID>?
+NXnoremap <script> <C-W>*  <SID>(split-nicely)*zvzz
+NXnoremap <script> <C-W>#  <SID>(split-nicely)#zvzz
+NXnoremap <script> <C-W>g* <SID>(split-nicely)g*zvzz
+NXnoremap <script> <C-W>g# <SID>(split-nicely)g#zvzz
+NXmap <C-W>g/ <C-W>*
+NXmap <C-W>g? <C-W>#
 "}}}
 
 "------------------------------------------------------------------------------
 " Useful: {{{
-" Split Nicely
-function! s:split_nicely_expr()
-  return &columns < 160
-endfunction
-noremap <expr> <SID>(split-nicely)
-  \ <SID>split_nicely_expr() ? '<C-W>s' : '<C-W>v'
-
 " Leader keys
 NXnoremap <Leader>c     :<C-U>close<CR>
 NXnoremap <Leader>C     :<C-U>only<CR>
@@ -1793,6 +1798,15 @@ nnoremap <BS> X
 " Yank at end of line
 nnoremap Y y$
 
+" Jump
+nnoremap <S-Tab> <C-O>
+
+" Buffer Grep
+NXnoremap <C-N> :<C-U>vimgrep // %<CR>
+
+" Search highlight
+nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
+
 " Undo branch
 nnoremap <M-u> g-
 nnoremap <M-r> g+
@@ -1803,18 +1817,6 @@ nnoremap <M-o>
   \ :<C-U>call append(line('.'), repeat([''], v:count1))<CR>
 nnoremap <M-O>
   \ :<C-U>call append(line('.') - 1, repeat([''], v:count1))<CR>
-
-" Motion
-NXnoremap <M-(> (zvzz
-NXnoremap <M-)> )zvzz
-NXnoremap <M-{> {zvzz
-NXnoremap <M-}> }zvzz
-
-" jump
-" nnoremap <Tab>   <Tab>zvzz
-" nnoremap <C-O>   <C-O>zvzz
-" nnoremap <S-Tab> <C-O>zvzz
-nnoremap <S-Tab> <C-O>
 
 " Paste toggle
 set pastetoggle=<F11>
@@ -1834,9 +1836,11 @@ inoremap <C-U> <C-G>u<C-U>
 
 " Auto exit at Command-mode
 cnoremap <expr> <C-H>
-  \ getcmdtype() == '@' && getcmdpos() == 1 ? '<Esc>' : '<C-H>'
+  \ getcmdtype() == '@' && getcmdpos() == 1 && getcmdline() == '' ?
+  \   '<Esc>' : '<C-H>'
 cnoremap <expr> <BS>
-  \ getcmdtype() == '@' && getcmdpos() == 1 ? '<Esc>' : '<BS>'
+  \ getcmdtype() == '@' && getcmdpos() == 1 && getcmdline() == '' ?
+  \   '<Esc>' : '<BS>'
 
 " Auto escape at Command-mode
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
@@ -1862,28 +1866,6 @@ nnoremap <expr> <F2>
   \   ':<C-U>help ' . expand('<cword>') . '<CR>' :
   \   ':<C-U>vertical help ' . expand('<cword>') . '<CR>'
 
-" Buffer Grep
-NXnoremap <C-N> :<C-U>vimgrep // %<CR>
-
-" Search
-nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
-NXnoremap *  *zvzz
-NXnoremap #  #zvzz
-NXnoremap g* g*zvzz
-NXnoremap g# g#zvzz
-NXmap g/ *
-NXmap g? #
-
-" Search Split Window
-NXnoremap <script> <C-W>/  <SID>(split-nicely)<SID>/
-NXnoremap <script> <C-W>?  <SID>(split-nicely)<SID>?
-NXnoremap <script> <C-W>*  <SID>(split-nicely)*zvzz
-NXnoremap <script> <C-W>#  <SID>(split-nicely)#zvzz
-NXnoremap <script> <C-W>g* <SID>(split-nicely)*zvzz
-NXnoremap <script> <C-W>g# <SID>(split-nicely)#zvzz
-NXmap <C-W>g/ <C-W>*
-NXmap <C-W>g? <C-W>#
-
 " QuickFix
 augroup MyVimrc
   autocmd QuickFixCmdPost [^l]*
@@ -1902,8 +1884,10 @@ nnoremap <M-m> m
 NXOnoremap <M-;> ;
 NXOnoremap <M-,> ,
 
-" To Column
-NXOnoremap g\| \|
+" Jump
+NXOnoremap gH H
+NXOnoremap gM M
+NXOnoremap gL L
 
 " FileInfo
 nnoremap <C-G><C-G> <C-G>
@@ -1927,6 +1911,10 @@ inoremap <C-C> <Esc>
 
 " Insert Tab
 inoremap <C-T> <C-V><Tab>
+
+" Rot13
+NXOnoremap s?  g?
+nnoremap   s?? g??
 "}}}
 "}}}
 
@@ -2060,35 +2048,26 @@ if exists('$VCVARSALL')
     command! -bar
       \ VCVars64
       \ call s:vcvarsall(exists('PROCESSOR_ARCHITEW6432') ?
-      \   $PROCESSOR_ARCHITEW6432 :
-      \   $PROCESSOR_ARCHITECTURE)
+      \   $PROCESSOR_ARCHITEW6432 : $PROCESSOR_ARCHITECTURE)
   endif
 endif
 "}}}
 
 "------------------------------------------------------------------------------
 " QuickFix Toggle: {{{
-function! s:toggle_quickfix(height)
+function! s:toggle_quickfix(type, height)
   let w = winnr('$')
-  cclose
+  execute a:type . 'close'
   if w == winnr('$')
-    execute 'cwindow' a:height
+    execute a:type . 'window' a:height
   endif
 endfunction
 command! -bar -nargs=?
   \ CToggle
-  \ call s:toggle_quickfix(<q-args>)
-
-function! s:toggle_location(height)
-  let w = winnr('$')
-  lclose
-  if w == winnr('$')
-    execute 'lwindow' a:height
-  endif
-endfunction
+  \ call s:toggle_quickfix('c', <q-args>)
 command! -bar -nargs=?
   \ LToggle
-  \ call s:toggle_location(<q-args>)
+  \ call s:toggle_quickfix('l', <q-args>)
 
 NXnoremap <C-W>, :<C-U>CToggle<CR>
 NXnoremap <C-W>. :<C-U>LToggle<CR>
@@ -2172,8 +2151,7 @@ let s:mark_char = [
   \ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
 function! s:_get_mark_pos()
-  let pos = get(b:, 'mark_pos', -1)
-  let pos = (pos + 1) % len(s:mark_char)
+  let pos = (get(b:, 'mark_pos', -1) + 1) % len(s:mark_char)
   for i in range(pos, len(s:mark_char)) + range(0, pos)
     try
       silent execute 'marks' s:mark_char[i]
@@ -2193,8 +2171,7 @@ function! s:clear_marks()
 endfunction
 
 function! s:_get_file_mark_pos()
-  let pos = get(s:, 'file_mark_pos', -1)
-  let pos = (pos + 1) % len(s:mark_char)
+  let pos = (get(s:, 'file_mark_pos', -1) + 1) % len(s:mark_char)
   for i in range(pos, len(s:mark_char)) + range(0, pos)
     try
       silent execute 'marks' toupper(s:mark_char[i])
@@ -2425,6 +2402,21 @@ let g:asmsyntax = 'masm'
 
 " Shell Script
 let g:is_bash = 1
+
+" Indent
+let g:vim_indent_cont = 2
+
+" Folding
+let g:c_no_comment_fold   = 1
+let g:c_no_block_fold     = 1
+let g:javaScript_fold     = 1
+let g:perl_fold           = 1
+let g:php_folding         = 1
+let g:ruby_fold           = 1
+let g:sh_fold_enabled     = 1
+let g:vbnet_no_code_folds = 1
+let g:vimsyn_folding      = 'af'
+let g:xml_syntax_folding  = 1
 
 " Omni
 call extend(s:neocompl_omni_patterns, {
@@ -2658,11 +2650,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   onoremap  <script> ( <SID>(columnjump-backward)
   NXnoremap <script> ) <SID>(columnjump-forward)zvzz
   onoremap  <script> ) <SID>(columnjump-forward)
-
-  NXnoremap <M-(> (zvzz
-  onoremap  <M-(> (
-  NXnoremap <M-)> )zvzz
-  onoremap  <M-)> )
 endif
 unlet! s:bundle
 "}}}
@@ -3446,11 +3433,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   onoremap  <script> { <SID>(parajump-backward)
   NXnoremap <script> } <SID>(parajump-forward)zvzz
   onoremap  <script> } <SID>(parajump-forward)
-
-  NXnoremap <M-{> {zvzz
-  onoremap  <M-{> {
-  NXnoremap <M-}> }zvzz
-  onoremap  <M-}> }
 endif
 unlet! s:bundle
 "}}}
