@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  14-Sep-2013.
+" Last Change:  17-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -619,6 +619,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'rhysd/vim-operator-clang-format', {
     \ 'autoload' : {
+    \   'commands' : ['ClangFormat', 'ClangFormatEchoFormattedCode'],
     \   'mappings' : [['nvo', '<Plug>(operator-clang-format)']]}}
 
   NeoBundleLazy 'tyru/operator-html-escape.vim', {
