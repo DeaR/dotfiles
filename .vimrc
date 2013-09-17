@@ -2802,7 +2802,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('hier')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    nnoremap <Esc><Esc> :<C-U>nohlsearch \| HierClear<CR><Esc>
+    nnoremap <Esc><Esc> :<C-U>nohlsearch<Bar>HierClear<CR><Esc>
   endfunction
 endif
 unlet! s:bundle
@@ -3610,11 +3610,11 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('repeat')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <M-o>
-    \ :<C-U>call append(line('.'), repeat([''], v:count1)) \|
-    \  call repeat#set('<M-o>', v:count1)<CR>
+    \ :<C-U>call append(line('.'), repeat([''], v:count1))<Bar>
+    \ call repeat#set('<M-o>', v:count1)<CR>
   nnoremap <M-O>
-    \ :<C-U>call append(line('.') - 1, repeat([''], v:count1)) \|
-    \  call repeat#set('<M-O>', v:count1)<CR>
+    \ :<C-U>call append(line('.') - 1, repeat([''], v:count1))<Bar>
+    \ call repeat#set('<M-O>', v:count1)<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -3631,7 +3631,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   NXnoremap <F6> :<C-U>VersDiff -<CR>
   NXnoremap <F7> :<C-U>VersDiff +<CR>
-  NXnoremap <F8> :<C-U>execute 'VersDiff -c' \| Undiff<CR>
+  NXnoremap <F8> :<C-U>execute 'VersDiff -c'<Bar>Undiff<CR>
 
   autocmd MyVimrc BufNewFile,BufRead *
     \ NeoBundleSource savevers

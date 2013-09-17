@@ -1,7 +1,7 @@
 " Abbreviations for VimShell
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  30-Aug-2013.
+" Last Change:  17-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,20 +28,20 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-inoreabbrev <buffer> L \| less
+inoreabbrev <buffer> L <Bar> less
 if executable('head')
-  inoreabbrev <buffer> H \| head
+  inoreabbrev <buffer> H <Bar> head
 endif
 if executable('tailf')
-  inoreabbrev <buffer> T \| tailf
+  inoreabbrev <buffer> T <Bar> tailf
 elseif executable('tail')
-  inoreabbrev <buffer> T \| tail
+  inoreabbrev <buffer> T <Bar> tail
 endif
 if executable('grep')
-  inoreabbrev <buffer> G \| grep
+  inoreabbrev <buffer> G <Bar> grep
 endif
 if executable('sort')
-  inoreabbrev <buffer> S \| sort
+  inoreabbrev <buffer> S <Bar> sort
 endif
 
 if exists('b:undo_ftplugin')

@@ -1,7 +1,7 @@
 " Mapping for VimFiler
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  30-Aug-2013.
+" Last Change:  17-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,35 +34,35 @@ nmap <buffer> mm <Plug>(vimfiler_move)
 nmap <buffer> <SID>(vimfiler_redraw_screen) <Plug>(vimfiler_redraw_screen)
 xmap <buffer> <SID>(vimfiler_redraw_screen) <Plug>(vimfiler_redraw_screen)
 
-nnoremap <buffer><script> <C-W>=  <C-W>=<SID>(vimfiler_redraw_screen)
-xnoremap <buffer><script> <C-W>=  <C-W>+<SID>(vimfiler_redraw_screen)
-nnoremap <buffer><script> <C-W>-  <C-W>-<SID>(vimfiler_redraw_screen)
-xnoremap <buffer><script> <C-W>-  <C-W>-<SID>(vimfiler_redraw_screen)
-nnoremap <buffer><script> <C-W>+  <C-W>+<SID>(vimfiler_redraw_screen)
-xnoremap <buffer><script> <C-W>+  <C-W>+<SID>(vimfiler_redraw_screen)
-nnoremap <buffer><script> <C-W>_  <C-W>_<SID>(vimfiler_redraw_screen)
-xnoremap <buffer><script> <C-W>_  <C-W>_<SID>(vimfiler_redraw_screen)
-nnoremap <buffer><script> <C-W><  <C-W><<SID>(vimfiler_redraw_screen)
-xnoremap <buffer><script> <C-W><  <C-W><<SID>(vimfiler_redraw_screen)
-nnoremap <buffer><script> <C-W>>  <C-W>><SID>(vimfiler_redraw_screen)
-xnoremap <buffer><script> <C-W>>  <C-W>><SID>(vimfiler_redraw_screen)
-nnoremap <buffer><script> <C-W>\| <C-W>\|<SID>(vimfiler_redraw_screen)
-xnoremap <buffer><script> <C-W>\| <C-W>\|<SID>(vimfiler_redraw_screen)
+nnoremap <buffer><script> <C-W>=     <C-W>=<SID>(vimfiler_redraw_screen)
+xnoremap <buffer><script> <C-W>=     <C-W>+<SID>(vimfiler_redraw_screen)
+nnoremap <buffer><script> <C-W>-     <C-W>-<SID>(vimfiler_redraw_screen)
+xnoremap <buffer><script> <C-W>-     <C-W>-<SID>(vimfiler_redraw_screen)
+nnoremap <buffer><script> <C-W>+     <C-W>+<SID>(vimfiler_redraw_screen)
+xnoremap <buffer><script> <C-W>+     <C-W>+<SID>(vimfiler_redraw_screen)
+nnoremap <buffer><script> <C-W>_     <C-W>_<SID>(vimfiler_redraw_screen)
+xnoremap <buffer><script> <C-W>_     <C-W>_<SID>(vimfiler_redraw_screen)
+nnoremap <buffer><script> <C-W><     <C-W><<SID>(vimfiler_redraw_screen)
+xnoremap <buffer><script> <C-W><     <C-W><<SID>(vimfiler_redraw_screen)
+nnoremap <buffer><script> <C-W>>     <C-W>><SID>(vimfiler_redraw_screen)
+xnoremap <buffer><script> <C-W>>     <C-W>><SID>(vimfiler_redraw_screen)
+nnoremap <buffer><script> <C-W><Bar> <C-W><Bar><SID>(vimfiler_redraw_screen)
+xnoremap <buffer><script> <C-W><Bar> <C-W><Bar><SID>(vimfiler_redraw_screen)
 
-nmap <buffer> <M-=>  <C-W>=
-xmap <buffer> <M-=>  <C-W>=
-nmap <buffer> <M-->  <C-W>-
-xmap <buffer> <M-->  <C-W>-
-nmap <buffer> <M-+>  <C-W>+
-xmap <buffer> <M-+>  <C-W>+
-nmap <buffer> <M-_>  <C-W>_
-xmap <buffer> <M-_>  <C-W>_
-nmap <buffer> <M-<>  <C-W><
-xmap <buffer> <M-<>  <C-W><
-nmap <buffer> <M->>  <C-W>>
-xmap <buffer> <M->>  <C-W>>
-nmap <buffer> <M-\|> <C-W>\|
-xmap <buffer> <M-\|> <C-W>\|
+nmap <buffer> <M-=>   <C-W>=
+xmap <buffer> <M-=>   <C-W>=
+nmap <buffer> <M-->   <C-W>-
+xmap <buffer> <M-->   <C-W>-
+nmap <buffer> <M-+>   <C-W>+
+xmap <buffer> <M-+>   <C-W>+
+nmap <buffer> <M-_>   <C-W>_
+xmap <buffer> <M-_>   <C-W>_
+nmap <buffer> <M-<>   <C-W><
+xmap <buffer> <M-<>   <C-W><
+nmap <buffer> <M->>   <C-W>>
+xmap <buffer> <M->>   <C-W>>
+nmap <buffer> <M-Bar> <C-W><Bar>
+xmap <buffer> <M-Bar> <C-W><Bar>
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
@@ -88,8 +88,8 @@ let b:undo_ftplugin .= '
   \ silent! execute ''xunmap <C-W><'' |
   \ silent! execute ''nunmap <C-W>>'' |
   \ silent! execute ''xunmap <C-W>>'' |
-  \ silent! execute ''nunmap <C-W>\|'' |
-  \ silent! execute ''xunmap <C-W>\|'' |
+  \ silent! execute ''nunmap <C-W><Bar>'' |
+  \ silent! execute ''xunmap <C-W><Bar>'' |
   \
   \ silent! execute ''nunmap <M-=>'' |
   \ silent! execute ''xunmap <M-=>'' |
@@ -103,8 +103,8 @@ let b:undo_ftplugin .= '
   \ silent! execute ''xunmap <M-<>'' |
   \ silent! execute ''nunmap <M->>'' |
   \ silent! execute ''xunmap <M->>'' |
-  \ silent! execute ''nunmap <M-\|>'' |
-  \ silent! execute ''xunmap <M-\'' |>'
+  \ silent! execute ''nunmap <M-Bar>'' |
+  \ silent! execute ''xunmap <M-Bar>'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
