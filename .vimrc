@@ -1344,9 +1344,11 @@ let s:skip_regexp = '\.clean$\|[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
 
 " Swap
 set swapfile
-if has('win32')
+if exists('$TEMP')
   set directory^=$TEMP,~/.bak
-else
+elseif exists('$TMP')
+  set directory^=$TMP,~/.bak
+elseif exists('$TMPDIR')
   set directory^=$TMPDIR,~/.bak
 endif
 
