@@ -1,7 +1,7 @@
 " TextObj Continuous Line ftplugin for Vim
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Aug-2013.
+" Last Change:  17-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,10 +28,10 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-xmap <buffer> av <Plug>(textobj-continuous-vim-a)
-omap <buffer> av <Plug>(textobj-continuous-vim-a)
-xmap <buffer> iv <Plug>(textobj-continuous-vim-i)
-omap <buffer> iv <Plug>(textobj-continuous-vim-i)
+xmap <buffer> a<Bslash> <Plug>(textobj-continuous-vim-a)
+omap <buffer> a<Bslash> <Plug>(textobj-continuous-vim-a)
+xmap <buffer> i<Bslash> <Plug>(textobj-continuous-vim-i)
+omap <buffer> i<Bslash> <Plug>(textobj-continuous-vim-i)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
@@ -39,10 +39,10 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''xunmap <buffer> av'' |
-  \ silent! execute ''ounmap <buffer> av'' |
-  \ silent! execute ''xunmap <buffer> iv'' |
-  \ silent! execute ''ounmap <buffer> iv'''
+  \ silent! execute ''xunmap <buffer> a<Bslash>'' |
+  \ silent! execute ''ounmap <buffer> a<Bslash>'' |
+  \ silent! execute ''xunmap <buffer> i<Bslash>'' |
+  \ silent! execute ''ounmap <buffer> i<Bslash>'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
