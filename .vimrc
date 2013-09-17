@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  17-Sep-2013.
+" Last Change:  18-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2619,6 +2619,8 @@ silent! let s:bundle = neobundle#get('clever-f')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:clever_f_not_overwrites_standard_mappings = 1
+    let g:clever_f_fix_key_direction                = 1
+    let g:clever_f_use_migemo                       = 1
 
     nmap <SID>(clever-f-f)              <Plug>(clever-f-f)
     nmap <SID>(clever-f-F)              <Plug>(clever-f-F)
