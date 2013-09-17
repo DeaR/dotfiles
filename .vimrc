@@ -1329,14 +1329,13 @@ set t_vb=
 " VimInfo
 if s:is_android
   set viminfo+=n/data/data/net.momodalo.app.vimtouch/files/vim/.viminfo
-else
+elseif isdirectory($HOME . '/.local')
   set viminfo+=n~/.local/.viminfo
 endif
 set history=100
 
 " Backup
 set backup
-set backupdir^=~/.bak
 set patchmode=.clean
 set suffixes+=.clean
 set backupskip+=*.clean,*/.drive.r/*,*/.hg/*,*/.git/*,*/.svn/*
@@ -1344,19 +1343,26 @@ let s:skip_regexp = '\.clean$\|[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
 
 " Swap
 set swapfile
-if exists('$TEMP')
-  set directory^=$TEMP,~/.bak
-elseif exists('$TMP')
-  set directory^=$TMP,~/.bak
-elseif exists('$TMPDIR')
-  set directory^=$TMPDIR,~/.bak
-endif
 
 " Undo persistence
 set undofile
-set undodir^=~/.bak
 autocmd MyVimrc BufNewFile,BufRead *
   \ let &l:undofile = (expand('%:p') !~? s:skip_regexp)
+
+" Directory
+if exists('$TEMP')
+  set backupdir^=~/.bak,$TEMP
+  set undodir^=~/.bak,$TEMP
+  set directory^=$TEMP
+elseif exists('$TMP')
+  set backupdir^=~/.bak,$TMP
+  set undodir^=~/.bak,$TMP
+  set directory^=$TMP
+elseif exists('$TMPDIR')
+  set backupdir^=~/.bak,$TMPDIR
+  set undodir^=~/.bak,$TMPDIR
+  set directory^=$TMPDIR
+endif
 
 " ClipBoard
 set clipboard=unnamed
@@ -1375,7 +1381,7 @@ set ambiwidth=double
 
 " Wild menu
 set wildmenu
-set wildignore+=*.clean,.drive.r,.hg,.git,.svn
+set wildignore+=*.swp,*.clean,.drive.r,.hg,.git,.svn
 set wildignore+=*.o,*.a,*.so,*.obj,*.lib,*.dll,*.exe
 set wildignore+=*.lc,*.elc,*.fas,*.pyc,*.luac
 
