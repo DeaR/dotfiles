@@ -884,7 +884,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'deris/vim-textobj-enclosedsyntax', {
     \ 'autoload' : {
     \   'commands' : 'TextobjEnclosedsyntaxDefaultKeyMappings',
-    \   'mappings' : [['nvo', '<Plug>(textobj-enclosedsyntax-']]}}
+    \   'mappings' : [['vo', '<Plug>(textobj-enclosedsyntax-']]}}
 
   NeoBundleLazy 'kana/vim-textobj-entire', {
     \ 'autoload' : {
