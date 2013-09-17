@@ -995,6 +995,11 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : 'TextobjWiwDefaultKeyMappings',
     \   'mappings' : [['nvo', '<Plug>(textobj-wiw-']]}}
 
+  NeoBundleLazy 'rhysd/textobj-word-column.vim', {
+    \ 'autoload' : {
+    \   'commands' : 'TextobjWordcolumnDefaultKeyMappings',
+    \   'mappings' : [['nvo', '<Plug>(textobj-wordcolumn-']]}}
+
   NeoBundleLazy 'akiyan/vim-textobj-xml-attribute', {
     \ 'autoload' : {
     \   'commands' : 'TextobjXmlattributeDefaultKeyMappings',
@@ -4443,6 +4448,22 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   XOmap a<M-w> <Plug>(textobj-wiw-a)
   XOmap i<M-w> <Plug>(textobj-wiw-i)
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" TextObj Word Column: {{{
+silent! let s:bundle = neobundle#get('textobj-word-column')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:textobj_wordcolumn_no_default_key_mappings = 1
+  endfunction
+
+  XOmap av <Plug>(textobj-wordcolumn-w-a)
+  XOmap aV <Plug>(textobj-wordcolumn-W-a)
+  XOmap iv <Plug>(textobj-wordcolumn-w-i)
+  XOmap iV <Plug>(textobj-wordcolumn-W-i)
 endif
 unlet! s:bundle
 "}}}
