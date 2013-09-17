@@ -3569,14 +3569,14 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ quickrun#is_running() ? quickrun#sweep_sessions() : '<C-C>'
   endfunction
 
-  if neobundle#get('precious') != {}
-    NXOmap sr <Plug>(precious-quickrun-op)
-  else
-    NXOmap sr <Plug>(quickrun-op)
-  endif
+  nmap <expr> sr
+    \ neobundle#get('precious') != {} ?
+    \   '<Plug>(precious-quickrun-op)' : '<Plug>(quickrun-op)'
+  xmap sr  <Plug>(quickrun)
+  omap sr  g@
   nmap srr srsr
 
-  nmap  <Leader>r <Plug>(quickrun)
+  NXmap <Leader>r <Plug>(quickrun)
   NXmap <F5>      <Plug>(quickrun)
 endif
 unlet! s:bundle
