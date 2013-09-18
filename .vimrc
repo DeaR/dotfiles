@@ -248,6 +248,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     'markdown', 'mason', 'msql', 'php', 'plp', 'phtml', 'sass', 'scss',
     \     'smarty', 'spyce', 'tt2html', 'webmacro', 'wml', 'xhtml']}}
 
+  NeoBundleLazy 'pekepeke/vim-csvutil'
+
   NeoBundleLazy 'JesseKPhillips/d.vim', {
     \ 'autoload' : {
     \   'filetypes' : 'd'}}
@@ -626,18 +628,35 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>(operator-html-']]}}
 
-  NeoBundleLazy 'kana/vim-operator-replace', {
+  NeoBundleLazy 'rhysd/vim-operator-filled-with-blank', {
     \ 'autoload' : {
-    \   'mappings' : [['nvo', '<Plug>(operator-replace)']]}}
+    \   'mappings' : [['nvo', '<Plug>(operator-filled-with-blank)']]}}
 
   NeoBundleLazy 'sgur/vim-operator-openbrowser', {
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>(operator-openbrowser)']]}}
 
+  NeoBundleLazy 'rbtnn/vim-operator-quickhl.vim', {
+    \ 'autoload' : {
+    \   'mappings' : [['nvo', '<Plug>(operator-quickhl)']]}}
+
+  NeoBundleLazy 'kana/vim-operator-replace', {
+    \ 'autoload' : {
+    \   'mappings' : [['nvo', '<Plug>(operator-replace)']]}}
+
   NeoBundleLazy 'tyru/operator-reverse.vim', {
     \ 'autoload' : {
     \   'commands' : 'OperatorReverseLines',
     \   'mappings' : [['nvo', '<Plug>(operator-reverse-']]}}
+
+  NeoBundleLazy 'thinca/vim-operator-sequence', {
+    \ 'autoload' : {
+    \   'functions' : 'operator#sequence#map'},
+    \ 'depends' : 'tyru/operator-camelize.vim'}
+
+  NeoBundleLazy 'pekepeke/vim-operator-shuffle', {
+    \ 'autoload' : {
+    \   'mappings' : [['nvo', '<Plug>(operator-shuffle)']]}}
 
   NeoBundleLazy 'emonkak/vim-operator-sort', {
     \ 'autoload' : {
@@ -651,10 +670,26 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      '<Plug>(operator-#)', '<Plug>(operator-g#)']]},
     \ 'depends' : 'thinca/vim-visualstar'}
 
+  NeoBundleLazy 'yomi322/vim-operator-suddendeath', {
+    \ 'autoload' : {
+    \   'mappings' : [['nvo', '<Plug>(operator-suddendeath)']]}}
+
+  NeoBundleLazy 'pekepeke/vim-operator-tabular', {
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['nvo',
+    \      '<Plug>(operator-tabularize)', '<Plug>(operator-untabulatize)',
+    \      '<Plug>(operator-textile_',    '<Plug>(operator-backlog_',
+    \      '<Plug>(operator-md_']]}}
+
+  NeoBundleLazy 'rhysd/vim-operator-trailingspace-killer', {
+    \ 'autoload' : {
+    \   'mappings' : [['nvo', '<Plug>(operator-trailingspace-killer)']]}}
+
   NeoBundleLazy 'kana/vim-operator-user', {
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>(operator-grep)']],
-    \ 'function_prefix' : 'operator'}}
+    \   'function_prefix' : 'operator'}}
 
   NeoBundleLazy 'deris/parajump', {
     \ 'autoload' : {
@@ -727,6 +762,15 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'filetypes' : 'qf',
     \   'commands' : ['QuickfixStatusEnable', 'QuickfixStatusDisable']}}
+
+  NeoBundleLazy 't9md/vim-quickhl', {
+    \ 'autoload' : {
+    \   'commands' : [
+    \     'QuickhlList', 'QuickhlAdd', 'QuickhlLock',   'QuickhlReset',
+    \     'QuickhlDump', 'QuickhlDel', 'QuickhlUnlock', 'QuickhlColors',
+    \     'QuickhlReloadColors', 'QuickhlMatch', 'QuickhlMatchClear',
+    \     'QuickhlMatchAuto', 'QuickhlMatchNoAuto'],
+    \   'mappings' : [['nv', '<Plug>(quickhl-']]}}
 
   NeoBundleLazy 'thinca/vim-quickrun', {
     \ 'autoload' : {
@@ -2921,29 +2965,28 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('kwbdi')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
+    function! s:kwbd()
+      if &l:modified
+        if v:lang =~? '^ja' && has('multi_lang')
+          let msg = '変更を "' . expand('%:t') . '" に保存しますか?'
+          let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
+        else
+          let msg = 'Save changes to "' . expand('%:t') . '"?'
+          let choices = "&Yes\n&No\n&Cancel"
+        endif
+
+        let ret = confirm(msg, choices, 1, 'Question')
+        if ret == 1
+          silent write!
+        elseif ret == 3
+          return
+        endif
+      endif
+      silent execute "normal \<Plug>Kwbd"
+    endfunction
     command! -bar
       \ Kwbd
       \ call s:kwbd()
-  endfunction
-
-  function! s:kwbd()
-    if &l:modified
-      if v:lang =~? '^ja' && has('multi_lang')
-        let msg = '変更を "' . expand('%:t') . '" に保存しますか?'
-        let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
-      else
-        let msg = 'Save changes to "' . expand('%:t') . '"?'
-        let choices = "&Yes\n&No\n&Cancel"
-      endif
-
-      let ret = confirm(msg, choices, 1, 'Question')
-      if ret == 1
-        silent write!
-      elseif ret == 3
-        return
-      endif
-    endif
-    silent execute "normal \<Plug>Kwbd"
   endfunction
 
   NXnoremap <Leader>q :<C-U>Kwbd<CR>
@@ -3284,6 +3327,17 @@ unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
+" Operator Filled With Blank: {{{
+silent! let s:bundle = neobundle#get('operator-filled-with-blank')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXOmap s<Space> <Plug>(operator-filled-with-blank)
+
+  nmap s<Space><Space> s<Space>s<Space>
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
 " Operator HTML Escape: {{{
 silent! let s:bundle = neobundle#get('operator-html-escape')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3301,6 +3355,17 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('operator-openbrowser')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXOmap gx <Plug>(operator-openbrowser)
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Operator Quickhl: {{{
+silent! let s:bundle = neobundle#get('operator-quickhl')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXOmap sm <Plug>(operator-quickhl)
+
+  nmap smm smsm
 endif
 unlet! s:bundle
 "}}}
@@ -3329,12 +3394,35 @@ unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
+" Operator Sequence: {{{
+silent! let s:bundle = neobundle#get('operator-sequence')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXOmap <expr> s<C-U>
+    \ operator#sequence#map("\<Plug>(operator-decamelize)", 'gU')
+
+  nmap s<C-U><C-U> s<C-U>s<C-U>
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Operator Shuffle: {{{
+silent! let s:bundle = neobundle#get('operator-shuffle')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXOmap sS <Plug>(operator-shuffle)
+
+  nmap sSS sSsS
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
 " Operator Sort: {{{
 silent! let s:bundle = neobundle#get('operator-sort')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXOmap sS <Plug>(operator-sort)
+  NXOmap ss <Plug>(operator-sort)
 
-  nmap sSS sSsS
+  nmap sss ssss
 endif
 unlet! s:bundle
 "}}}
@@ -3376,6 +3464,80 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap <C-W>g??  <C-W>##
   nmap <C-W>g**  <C-W>g*g*
   nmap <C-W>g##  <C-W>g#g#
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Operator Suddendeath: {{{
+silent! let s:bundle = neobundle#get('operator-suddendeath')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXOmap s! <Plug>(operator-suddendeath)
+
+  nmap s!! s!s!
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Operator Tabular: {{{
+silent! let s:bundle = neobundle#get('operator-tabular')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let s:operator_tabular_kind = 'markdown'
+    let s:operator_tabular_ext  = 'csv'
+
+    function! s:operator_tabularize(motion_wise, ...)
+      let kind = input('Kind: ', s:operator_tabular_kind,
+        \ 'customlist,' . s:SID_PREFIX() . 'operator_tabular_kind_complete')
+      if kind == 'markdown' || kind == 'textile' || kind == 'backlog'
+        let s:operator_tabular_kind = kind
+      endif
+
+      let ext = input('Kind: ', s:operator_tabular_ext,
+        \ 'customlist,' . s:SID_PREFIX() . 'operator_tabular_ext_complete')
+      if ext == 'csv'  || ext == 'tsv'
+        let s:operator_tabular_ext = ext
+      endif
+
+      execute 'call' 'operator#tabular#' . s:operator_tabular_kind .
+        \ (a:0 && a:1 ? '#untabularize_' : '#tabularize_') .
+        \ s:operator_tabular_ext . '(a:motion_wise)'
+    endfunction
+    function! s:operator_untabularize(motion_wise)
+      call s:operator_tabularize(a:motion_wise, 1)
+    endfunction
+    function! s:operator_tabular_kind_complete(...)
+      return ['markdown', 'textile', 'backlog']
+    endfunction
+    function! s:operator_tabular_ext_complete(...)
+      return ['csv', 'tsv']
+    endfunction
+
+    call operator#user#define(
+      \ 'tabularize',
+      \ s:SID_PREFIX() . 'operator_tabularize')
+    call operator#user#define(
+      \ 'untabularize',
+      \ s:SID_PREFIX() . 'operator_untabularize')
+  endfunction
+
+  NXOmap st <Plug>(operator-tabularize)
+  NXOmap sT <Plug>(operator-untabularize)
+
+  nmap stt stst
+  nmap sTT sTsT
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Operator Trailingspace Killer: {{{
+silent! let s:bundle = neobundle#get('operator-trailingspace-killer')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXOmap s$ <Plug>(operator-trailingspace-killer)
+
+  nmap s$$ s$s$
 endif
 unlet! s:bundle
 "}}}
@@ -3499,6 +3661,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   autocmd MyVimrc FileType *
     \ NeoBundleSource precious
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Quickhl: {{{
+silent! let s:bundle = neobundle#get('quickhl')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXmap sM <Plug>(quickhl-reset)
 endif
 unlet! s:bundle
 "}}}
@@ -3794,51 +3965,50 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '\=tolower(call(''' . s:SID_PREFIX() .
       \   'ordinal'', [submatch(1) - 1]))'}])
 
+    function! s:switch(direction)
+      let definitions = []
+      if !exists('g:switch_no_builtins')
+        let definitions = extend(definitions, g:switch_definitions)
+      endif
+      if exists('g:switch_custom_definitions')
+        call extend(definitions, g:switch_custom_definitions)
+      endif
+      if exists('b:switch_definitions') && !exists('b:switch_no_builtins')
+        call extend(definitions, b:switch_definitions)
+      endif
+      if exists('b:switch_custom_definitions')
+        call extend(definitions, b:switch_custom_definitions)
+      endif
+      if a:direction == '+'
+        if exists('g:switch_increment_definitions')
+          call extend(definitions, g:switch_increment_definitions)
+        endif
+        if exists('b:switch_increment_definitions')
+          call extend(definitions, b:switch_increment_definitions)
+        endif
+      elseif a:direction == '-'
+        if exists('g:switch_decrement_definitions')
+          call extend(definitions, g:switch_decrement_definitions)
+        endif
+        if exists('b:switch_decrement_definitions')
+          call extend(definitions, b:switch_decrement_definitions)
+        endif
+      endif
+
+      if !switch#Switch(definitions)
+        if a:direction == '+'
+          execute "normal! \<C-A>"
+        elseif a:direction == '-'
+          execute "normal! \<C-X>"
+        endif
+      endif
+    endfunction
     command! -bar
       \ SwitchIncrement
       \ call s:switch('+')
     command! -bar
       \ SwitchDecrement
       \ call s:switch('-')
-  endfunction
-
-  function! s:switch(direction)
-    let definitions = []
-    if !exists('g:switch_no_builtins')
-      let definitions = extend(definitions, g:switch_definitions)
-    endif
-    if exists('g:switch_custom_definitions')
-      call extend(definitions, g:switch_custom_definitions)
-    endif
-    if exists('b:switch_definitions') && !exists('b:switch_no_builtins')
-      call extend(definitions, b:switch_definitions)
-    endif
-    if exists('b:switch_custom_definitions')
-      call extend(definitions, b:switch_custom_definitions)
-    endif
-    if a:direction == '+'
-      if exists('g:switch_increment_definitions')
-        call extend(definitions, g:switch_increment_definitions)
-      endif
-      if exists('b:switch_increment_definitions')
-        call extend(definitions, b:switch_increment_definitions)
-      endif
-    elseif a:direction == '-'
-      if exists('g:switch_decrement_definitions')
-        call extend(definitions, g:switch_decrement_definitions)
-      endif
-      if exists('b:switch_decrement_definitions')
-        call extend(definitions, b:switch_decrement_definitions)
-      endif
-    endif
-
-    if !switch#Switch(definitions)
-      if a:direction == '+'
-        execute "normal! \<C-A>"
-      elseif a:direction == '-'
-        execute "normal! \<C-X>"
-      endif
-    endif
   endfunction
 
   nnoremap <C-A> :<C-U>SwitchIncrement<CR>
