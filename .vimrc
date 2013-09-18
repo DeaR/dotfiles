@@ -2693,16 +2693,17 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('eskk')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:eskk#directory        = $HOME . '/.local/.eskk'
-    let g:eskk#dictionary       = {
+    let g:eskk#directory               = $HOME . '/.local/.eskk'
+    let g:eskk#start_completion_length = 1
+    let g:eskk#dictionary              = {
       \ 'path' : $HOME . '/.skk/jisyo',
       \ 'sorted' : 0,
       \ 'encoding' : 'utf-8'}
-    let g:eskk#large_dictionary = {
+    let g:eskk#large_dictionary        = {
       \ 'path' : $HOME . '/.skk/SKK-JISYO.L',
       \ 'sorted' : 1,
       \ 'encoding' : 'euc-jp'}
-    let g:eskk#mapped_keys      =
+    let g:eskk#mapped_keys             =
       \ filter(eskk#get_default_mapped_keys(), 'v:val !=? "<Tab>"')
   endfunction
 
