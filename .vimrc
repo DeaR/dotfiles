@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-Sep-2013.
+" Last Change:  20-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -673,6 +673,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'yomi322/vim-operator-suddendeath', {
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>(operator-suddendeath)']]}}
+
+  NeoBundleFetch 'rhysd/vim-operator-surround'
 
   NeoBundleLazy 'pekepeke/vim-operator-tabular', {
     \ 'autoload' : {
