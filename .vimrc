@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  20-Sep-2013.
+" Last Change:  24-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2568,19 +2568,24 @@ unlet! s:bundle
 " Anzu: {{{
 silent! let s:bundle = neobundle#get('anzu')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  set shortmess+=s
+  function! s:bundle.hooks.on_source(bundle)
+    set shortmess+=s
 
-  nmap <SID>(anzu-n-with-echo) <Plug>(anzu-n-with-echo)
-  nmap <SID>(anzu-N-with-echo) <Plug>(anzu-N-with-echo)
+    nmap <Plug>(anzu-jump-n-with-echo) <Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)
+    nmap <Plug>(anzu-jump-N-with-echo) <Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)
+  endfunction
+
+  nmap <SID>(anzu-jump-n-with-echo) <Plug>(anzu-jump-n-with-echo)
+  nmap <SID>(anzu-jump-N-with-echo) <Plug>(anzu-jump-N-with-echo)
 
   nnoremap <script><expr> n
     \ <SID>search_forward_expr() ?
-    \   '<SID>(anzu-n-with-echo)zvzz' :
-    \   '<SID>(anzu-N-with-echo)zvzz'
+    \   '<SID>(anzu-jump-n-with-echo)zvzz' :
+    \   '<SID>(anzu-jump-N-with-echo)zvzz'
   nnoremap <script><expr> N
     \ <SID>search_forward_expr() ?
-    \   '<SID>(anzu-N-with-echo)zvzz' :
-    \   '<SID>(anzu-n-with-echo)zvzz'
+    \   '<SID>(anzu-jump-N-with-echo)zvzz' :
+    \   '<SID>(anzu-jump-n-with-echo)zvzz'
 endif
 unlet! s:bundle
 "}}}
