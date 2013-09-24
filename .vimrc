@@ -1718,6 +1718,10 @@ endfunction
 noremap <expr> <SID>(split-nicely)
   \ <SID>split_nicely_expr() ? '<C-W>s' : '<C-W>v'
 
+" Recenter
+NXnoremap <SID>(recenter) zvzz
+SOnoremap <SID>(recenter) <Nop>
+
 " Gips
 if s:gips_enable
   noremap <Up>       <Nop>
@@ -1793,26 +1797,26 @@ NXOnoremap mj ]`
 NXOnoremap mk [`
 
 " Motion
-NXnoremap ( (zvzz
-NXnoremap ) )zvzz
-NXnoremap { {zvzz
-NXnoremap } }zvzz
+NXOnoremap <script> ( (<SID>(recenter)
+NXOnoremap <script> ) )<SID>(recenter)
+NXOnoremap <script> { {<SID>(recenter)
+NXOnoremap <script> } }<SID>(recenter)
 
 " Search
-NXnoremap *  *zvzz
-NXnoremap #  #zvzz
-NXnoremap g* g*zvzz
-NXnoremap g# g#zvzz
-NXmap g/ *
-NXmap g? #
+NXOnoremap <script> *  *<SID>(recenter)
+NXOnoremap <script> #  #<SID>(recenter)
+NXOnoremap <script> g* g*<SID>(recenter)
+NXOnoremap <script> g# g#<SID>(recenter)
+NXOmap g/ *
+NXOmap g? #
 
 " Search Split Window
 NXnoremap <script> <C-W>/  <SID>(split-nicely)<SID>/
 NXnoremap <script> <C-W>?  <SID>(split-nicely)<SID>?
-NXnoremap <script> <C-W>*  <SID>(split-nicely)*zvzz
-NXnoremap <script> <C-W>#  <SID>(split-nicely)#zvzz
-NXnoremap <script> <C-W>g* <SID>(split-nicely)g*zvzz
-NXnoremap <script> <C-W>g# <SID>(split-nicely)g#zvzz
+NXnoremap <script> <C-W>*  <SID>(split-nicely)*<SID>(recenter)
+NXnoremap <script> <C-W>#  <SID>(split-nicely)#<SID>(recenter)
+NXnoremap <script> <C-W>g* <SID>(split-nicely)g*<SID>(recenter)
+NXnoremap <script> <C-W>g# <SID>(split-nicely)g#<SID>(recenter)
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
 "}}}
@@ -2299,10 +2303,10 @@ function! s:search_forward_expr()
   return exists('v:searchforward') ? v:searchforward : 1
 endfunction
 
-NXnoremap <expr> n <SID>search_forward_expr() ? 'nzvzz' : 'Nzvzz'
-NXnoremap <expr> N <SID>search_forward_expr() ? 'Nzvzz' : 'nzvzz'
-onoremap  <expr> n <SID>search_forward_expr() ? 'n' : 'N'
-onoremap  <expr> N <SID>search_forward_expr() ? 'N' : 'n'
+NXOnoremap <script><expr> n
+  \ <SID>search_forward_expr() ? 'n<SID>(recenter)' : 'N<SID>(recenter)'
+NXOnoremap <script><expr> N
+  \ <SID>search_forward_expr() ? 'N<SID>(recenter)' : 'n<SID>(recenter)'
 "}}}
 
 "------------------------------------------------------------------------------
@@ -2571,21 +2575,20 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     set shortmess+=s
 
-    nmap <Plug>(anzu-jump-n-with-echo) <Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)
-    nmap <Plug>(anzu-jump-N-with-echo) <Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)
+    nmap <expr> n
+      \ <SID>search_forward_expr() ?
+      \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)<SID>(recenter)' :
+      \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)<SID>(recenter)'
+    nmap <expr> N
+      \ <SID>search_forward_expr() ?
+      \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)<SID>(recenter)' :
+      \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)<SID>(recenter)'
   endfunction
 
-  nmap <SID>(anzu-jump-n-with-echo) <Plug>(anzu-jump-n-with-echo)
-  nmap <SID>(anzu-jump-N-with-echo) <Plug>(anzu-jump-N-with-echo)
-
-  nnoremap <script><expr> n
-    \ <SID>search_forward_expr() ?
-    \   '<SID>(anzu-jump-n-with-echo)zvzz' :
-    \   '<SID>(anzu-jump-N-with-echo)zvzz'
-  nnoremap <script><expr> N
-    \ <SID>search_forward_expr() ?
-    \   '<SID>(anzu-jump-N-with-echo)zvzz' :
-    \   '<SID>(anzu-jump-n-with-echo)zvzz'
+  nnoremap <silent> n
+    \ :<C-U>NeoBundleSource anzu<Bar>normal n<CR>
+  nnoremap <silent> N
+    \ :<C-U>NeoBundleSource anzu<Bar>normal N<CR>
 endif
 unlet! s:bundle
 "}}}
@@ -2706,17 +2709,15 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('columnjump')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
+    nmap <SID>(columnjump-backward) <Plug>(columnjump-backward)
+    nmap <SID>(columnjump-forward)  <Plug>(columnjump-forward)
+
     inoremap <script> <M-(> <C-O><SID>(columnjump-backward)
     inoremap <script> <M-)> <C-O><SID>(columnjump-forward)
   endfunction
 
-  map <SID>(columnjump-backward) <Plug>(columnjump-backward)
-  map <SID>(columnjump-forward)  <Plug>(columnjump-forward)
-
-  NXnoremap <script> ( <SID>(columnjump-backward)zvzz
-  onoremap  <script> ( <SID>(columnjump-backward)
-  NXnoremap <script> ) <SID>(columnjump-forward)zvzz
-  onoremap  <script> ) <SID>(columnjump-forward)
+  NXOmap ( <Plug>(columnjump-backward)<SID>(recenter)
+  NXOmap ) <Plug>(columnjump-forward)<SID>(recenter)
 endif
 unlet! s:bundle
 "}}}
@@ -3448,22 +3449,22 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NOmap <C-W>g* <SID>(split-nicely)<Plug>(operator-g*)
   NOmap <C-W>g# <SID>(split-nicely)<Plug>(operator-g#)
 
-  nnoremap **   *zvzz
-  nnoremap ##   #zvzz
-  nnoremap g*g* g*zvzz
-  nnoremap g#g# g#zvzz
+  NOnoremap <script> **   *<SID>(recenter)
+  NOnoremap <script> ##   #<SID>(recenter)
+  NOnoremap <script> g*g* g*<SID>(recenter)
+  NOnoremap <script> g#g# g#<SID>(recenter)
 
-  nmap g/g/ **
-  nmap g?g? ##
-  nmap g//  **
-  nmap g??  ##
-  nmap g**  g*g*
-  nmap g##  g#g#
+  NOmap g/g/ **
+  NOmap g?g? ##
+  NOmap g//  **
+  NOmap g??  ##
+  NOmap g**  g*g*
+  NOmap g##  g#g#
 
-  nnoremap <script> <C-W>**   <SID>(split-nicely)*zvzz
-  nnoremap <script> <C-W>##   <SID>(split-nicely)#zvzz
-  nnoremap <script> <C-W>g*g* <SID>(split-nicely)g*zvzz
-  nnoremap <script> <C-W>g#g# <SID>(split-nicely)g#zvzz
+  nnoremap <script> <C-W>**   <SID>(split-nicely)*<SID>(recenter)
+  nnoremap <script> <C-W>##   <SID>(split-nicely)#<SID>(recenter)
+  nnoremap <script> <C-W>g*g* <SID>(split-nicely)g*<SID>(recenter)
+  nnoremap <script> <C-W>g#g# <SID>(split-nicely)g#<SID>(recenter)
 
   nmap <C-W>g/g/ <C-W>**
   nmap <C-W>g?g? <C-W>##
@@ -3608,17 +3609,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:parajump_no_default_key_mappings = 1
 
+    nmap <SID>(parajump-backward) <Plug>(parajump-backward)
+    nmap <SID>(parajump-forward)  <Plug>(parajump-forward)
+
     inoremap <script> <M-{> <C-O><SID>(parajump-backward)
     inoremap <script> <M-}> <C-O><SID>(parajump-forward)
   endfunction
 
-  map <SID>(parajump-backward) <Plug>(parajump-backward)
-  map <SID>(parajump-forward)  <Plug>(parajump-forward)
-
-  NXnoremap <script> { <SID>(parajump-backward)zvzz
-  onoremap  <script> { <SID>(parajump-backward)
-  NXnoremap <script> } <SID>(parajump-forward)zvzz
-  onoremap  <script> } <SID>(parajump-forward)
+  NXOmap { <Plug>(parajump-backward)<SID>(recenter)
+  NXOmap } <Plug>(parajump-forward)<SID>(recenter)
 endif
 unlet! s:bundle
 "}}}
@@ -5131,15 +5130,19 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   xmap <SID>(visualstar-g*) <Plug>(visualstar-g*)
   xmap <SID>(visualstar-g#) <Plug>(visualstar-g#)
 
-  xnoremap <script> *  <SID>(visualstar-*)zvzz
-  xnoremap <script> #  <SID>(visualstar-#)zvzz
-  xnoremap <script> g* <SID>(visualstar-g*)zvzz
-  xnoremap <script> g# <SID>(visualstar-g#)zvzz
+  xmap *  <SID>(visualstar-*)<SID>(recenter)
+  xmap #  <SID>(visualstar-#)<SID>(recenter)
+  xmap g* <SID>(visualstar-g*)<SID>(recenter)
+  xmap g# <SID>(visualstar-g#)<SID>(recenter)
 
-  xnoremap <script> <C-W>*  <SID>(split-nicely)gv<SID>(visualstar-*)zvzz
-  xnoremap <script> <C-W>#  <SID>(split-nicely)gv<SID>(visualstar-#)zvzz
-  xnoremap <script> <C-W>g* <SID>(split-nicely)gv<SID>(visualstar-g*)zvzz
-  xnoremap <script> <C-W>g# <SID>(split-nicely)gv<SID>(visualstar-g#)zvzz
+  xnoremap <script> <C-W>*
+    \ <SID>(split-nicely)gv<SID>(visualstar-*)<SID>(recenter)
+  xnoremap <script> <C-W>#
+    \ <SID>(split-nicely)gv<SID>(visualstar-#)<SID>(recenter)
+  xnoremap <script> <C-W>g*
+    \ <SID>(split-nicely)gv<SID>(visualstar-g*)<SID>(recenter)
+  xnoremap <script> <C-W>g#
+    \ <SID>(split-nicely)gv<SID>(visualstar-g#)<SID>(recenter)
 endif
 unlet! s:bundle
 "}}}
