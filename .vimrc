@@ -2585,10 +2585,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)<SID>(recenter)'
   endfunction
 
-  nnoremap <silent> n
-    \ :<C-U>NeoBundleSource anzu<Bar>normal n<CR>
-  nnoremap <silent> N
-    \ :<C-U>NeoBundleSource anzu<Bar>normal N<CR>
+  nnoremap <silent> n :<C-U>NeoBundleSource anzu<Bar>normal n<CR>
+  nnoremap <silent> N :<C-U>NeoBundleSource anzu<Bar>normal N<CR>
 endif
 unlet! s:bundle
 "}}}
