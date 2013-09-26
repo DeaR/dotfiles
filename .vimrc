@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  26-Sep-2013.
+" Last Change:  27-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -3967,7 +3967,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '\=tolower(call(''' . s:SID_PREFIX() .
       \   'ordinal'', [submatch(1) - 1]))'}])
 
-    function! s:switch(direction)
+    function! s:switch(is_increment)
       let save_count1 = v:count1
 
       let definitions = []
@@ -3983,14 +3983,14 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       if exists('b:switch_custom_definitions')
         call extend(definitions, b:switch_custom_definitions)
       endif
-      if a:direction == '+'
+      if a:is_increment
         if exists('g:switch_increment_definitions')
           call extend(definitions, g:switch_increment_definitions)
         endif
         if exists('b:switch_increment_definitions')
           call extend(definitions, b:switch_increment_definitions)
         endif
-      elseif a:direction == '-'
+      else
         if exists('g:switch_decrement_definitions')
           call extend(definitions, g:switch_decrement_definitions)
         endif
@@ -4000,25 +4000,19 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       endif
 
       if !switch#Switch(definitions)
-        if a:direction == '+'
-          execute "normal!" save_count1 . "\<C-A>"
-        elseif a:direction == '-'
-          execute "normal!" save_count1 . "\<C-X>"
-        endif
+        execute "normal!" save_count1 .
+          \ (a:is_increment ? "\<C-A>" : "\<C-X>")
       endif
 
-      if a:direction == '+'
-        silent! call repeat#set("\<C-A>", save_count1)
-      elseif a:direction == '-'
-        silent! call repeat#set("\<C-X>", save_count1)
-      endif
+      silent! call repeat#set(
+        \ a:is_increment ? "\<C-A>" : "\<C-X>", save_count1)
     endfunction
     command! -bar
       \ SwitchIncrement
-      \ call s:switch('+')
+      \ call s:switch(1)
     command! -bar
       \ SwitchDecrement
-      \ call s:switch('-')
+      \ call s:switch(0)
   endfunction
 
   nnoremap <C-A> :<C-U>SwitchIncrement<CR>
