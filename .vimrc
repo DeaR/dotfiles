@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Sep-2013.
+" Last Change:  26-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -3968,6 +3968,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   'ordinal'', [submatch(1) - 1]))'}])
 
     function! s:switch(direction)
+      let save_count1 = v:count1
+
       let definitions = []
       if !exists('g:switch_no_builtins')
         let definitions = extend(definitions, g:switch_definitions)
@@ -3999,10 +4001,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
       if !switch#Switch(definitions)
         if a:direction == '+'
-          execute "normal! \<C-A>"
+          execute "normal!" save_count1 . "\<C-A>"
         elseif a:direction == '-'
-          execute "normal! \<C-X>"
+          execute "normal!" save_count1 . "\<C-X>"
         endif
+      endif
+
+      if a:direction == '+'
+        silent! call repeat#set("\<C-A>", save_count1)
+      elseif a:direction == '-'
+        silent! call repeat#set("\<C-X>", save_count1)
       endif
     endfunction
     command! -bar
