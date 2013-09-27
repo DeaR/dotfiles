@@ -1822,6 +1822,8 @@ NXmap <C-W>g? <C-W>#
 " Leader keys
 NXnoremap <Leader>c     :<C-U>close<CR>
 NXnoremap <Leader>C     :<C-U>only<CR>
+NXnoremap <Leader><M-c> :<C-U>tabclose<CR>
+NXnoremap <Leader><M-C> :<C-U>tabonly<CR>
 NXnoremap <Leader>w     :<C-U>update<CR>
 NXnoremap <Leader>W     :<C-U>wall<CR>
 NXnoremap <Leader>q     :<C-U>bdelete<CR>
@@ -1860,6 +1862,10 @@ nnoremap Y y$
 
 " Jump
 nnoremap <S-Tab> <C-O>
+
+" Tabs
+NXnoremap g<M-t> :<C-U>tabmove +1<CR>
+NXnoremap g<M-T> :<C-U>tabmove -1<CR>
 
 " Buffer Grep
 NXnoremap <C-N> :<C-U>vimgrep // %<CR>
