@@ -3061,6 +3061,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('neocomplcache')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
+    let g:neocomplcache_enable_at_startup            = 1
     let g:neocomplcache_enable_auto_select           = 0
     let g:neocomplcache_enable_auto_delimiter        = 1
     " let g:neocomplcache_enable_insert_char_pre       = 1
@@ -3112,8 +3113,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ neocomplcache#smart_close_popup() . '<C-H>'
     inoremap <script><expr> <BS>
       \ neocomplcache#smart_close_popup() . '<BS>'
-
-    call neocomplcache#initialize()
   endfunction
 
   function! s:cmdwin_enter_neocomplcache()
