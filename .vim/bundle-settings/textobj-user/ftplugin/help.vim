@@ -1,7 +1,7 @@
 " Text Object for Help
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  06-Sep-2013.
+" Last Change:  27-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -54,8 +54,12 @@ call textobj#user#plugin('help', {
   \   'move-N': '<buffer> <LocalLeader>D',
   \   'move-P': '<buffer> <LocalLeader>E'}})
 
-map <buffer> <C-J> <Plug>(textobj-help-any-n)
-map <buffer> <C-K> <Plug>(textobj-help-any-p)
+nmap <buffer> <C-J> <Plug>(textobj-help-any-n)zvzz
+xmap <buffer> <C-J> <Plug>(textobj-help-any-n)zvzz
+omap <buffer> <C-J> <Plug>(textobj-help-any-n)zvzz
+nmap <buffer> <C-K> <Plug>(textobj-help-any-p)zvzz
+xmap <buffer> <C-K> <Plug>(textobj-help-any-p)zvzz
+omap <buffer> <C-K> <Plug>(textobj-help-any-p)zvzz
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
@@ -75,8 +79,12 @@ let b:undo_ftplugin .= '
   \ silent! execute ''unmap <buffer> <LocalLeader>e'' |
   \ silent! execute ''unmap <buffer> <LocalLeader>D'' |
   \ silent! execute ''unmap <buffer> <LocalLeader>E'' |
-  \ silent! execute ''unmap <buffer> J'' |
-  \ silent! execute ''unmap <buffer> K'''
+  \ silent! execute ''nunmap <buffer> <C-J>'' |
+  \ silent! execute ''xunmap <buffer> <C-J>'' |
+  \ silent! execute ''ounmap <buffer> <C-J>'' |
+  \ silent! execute ''nunmap <buffer> <C-K>'' |
+  \ silent! execute ''xunmap <buffer> <C-K>'' |
+  \ silent! execute ''ounmap <buffer> <C-K>'''
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
