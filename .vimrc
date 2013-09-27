@@ -2646,7 +2646,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   function! s:bundle.hooks.on_post_source(bundle)
-    function s:clang_complete_init(ext)
+    function s:clang_complete_init()
       silent! iunmap <buffer> <C-X><C-U>
       silent! iunmap <buffer> .
       silent! iunmap <buffer> >
@@ -2654,7 +2654,12 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endfunction
 
     autocmd MyVimrc FileType c,cpp,objc,objcpp
-      \ call s:clang_complete_init('<amatch>')
+      \ call s:clang_complete_init()
+
+    if &filetype == 'c' || &filetype == 'cpp' ||
+      \ &filetype == 'objc' || &filetype == 'objcpp'
+      doautocmd FileType
+    endif
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
