@@ -3025,9 +3025,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     if &filetype != ''
       call localrc#load(
         \ map(type(g:localrc_filetype) == type([]) ?
-        \   copy(g:localrc_filetype) :
-        \   [g:localrc_filetype],
-        \ 'printf(v:val, &filetype)'))
+        \     copy(g:localrc_filetype) : [g:localrc_filetype],
+        \   'printf(v:val, &filetype)'))
     endif
   endfunction
 
