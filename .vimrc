@@ -4267,26 +4267,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_diff_no_default_key_mappings = 1
   endfunction
-
-  NXOnoremap <Leader>f <Nop>
-  NXOmap <Leader>fj <Plug>(textobj-diff-file-n)
-  NXOmap <Leader>fk <Plug>(textobj-diff-file-p)
-  NXOmap <Leader>fJ <Plug>(textobj-diff-file-N)
-  NXOmap <Leader>fK <Plug>(textobj-diff-file-P)
-
-  NXOnoremap <Leader>h <Nop>
-  NXOmap <Leader>hj <Plug>(textobj-diff-hunk-n)
-  NXOmap <Leader>hk <Plug>(textobj-diff-hunk-p)
-  NXOmap <Leader>hJ <Plug>(textobj-diff-hunk-N)
-  NXOmap <Leader>hK <Plug>(textobj-diff-hunk-P)
-
-  XOnoremap ad <Nop>
-  XOmap adf <Plug>(textobj-diff-file)
-  XOmap adh <Plug>(textobj-diff-hunk)
-
-  XOnoremap id <Nop>
-  XOmap idf <Plug>(textobj-diff-file)
-  XOmap idh <Plug>(textobj-diff-hunk)
 endif
 unlet! s:bundle
 "}}}
