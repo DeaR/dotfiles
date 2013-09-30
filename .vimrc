@@ -2088,7 +2088,7 @@ if exists('$VCVARSALL')
       let env = system($VCVARSALL . ' ' . a:arch . ' & set')
       for matches in filter(map(split(env, '\n'),
         \ 'matchlist(v:val, ''\([^=]\+\)=\(.*\)'')'), 'len(v:val) > 1')
-        execute 'let $' . matches[1] . '=''' . matches[2] . ''''
+        execute 'let $' . matches[1] . '=' . string(matches[2])
       endfor
     finally
       call s:set_shell(save_shell)
