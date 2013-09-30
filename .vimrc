@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-Sep-2013.
+" Last Change:  30-Sep-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2858,11 +2858,11 @@ unlet! s:bundle
 " Grex: {{{
 silent! let s:bundle = neobundle#get('grex')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXOmap sd <Plug>(operator-grex-delete)
-  NXOmap sy <Plug>(operator-grex-yank)
+  NXOmap sD <Plug>(operator-grex-delete)
+  NXOmap sY <Plug>(operator-grex-yank)
 
-  nmap sdd sdsd
-  nmap syy sysy
+  nmap sDD sDsD
+  nmap sYY sYsY
 endif
 unlet! s:bundle
 "}}}
