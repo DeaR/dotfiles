@@ -841,18 +841,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [['nvo', '<Plug>(smartword-']],
     \   'insert' : 1}}
 
-  " NeoBundleLazy 'tpope/vim-surround', {
-  "   \ 'autoload' : {
-  "   \   'mappings' : [
-  "   \     ['n',
-  "   \      '<Plug>SurroundRepeat',
-  "   \      '<Plug>Dsurround', '<Plug>Csurround',  '<Plug>Ysurround',
-  "   \      '<Plug>YSurround', '<Plug>Yssurround', '<Plug>YSsurround'],
-  "   \     ['v',
-  "   \      '<Plug>VSurround', '<Plug>VgSurround'],
-  "   \     ['i',
-  "   \      '<Plug>Isurround', '<Plug>ISurround']]}}
-
   NeoBundleLazy 'AndrewRadev/switch.vim', {
     \ 'autoload' : {
     \   'commands' : ['Switch', 'SwitchIncrement', 'SwitchDecrement']}}
@@ -3879,29 +3867,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXOmap b  <Plug>(smartword-b)
   NXOmap e  <Plug>(smartword-e)
   NXOmap ge <Plug>(smartword-ge)
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" Surround: {{{
-silent! let s:bundle = neobundle#get('surround')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:surround_no_mappings = 1
-  endfunction
-
-  nmap ds     <Plug>Dsurround
-  nmap cs     <Plug>Csurround
-  nmap ys     <Plug>Ysurround
-  nmap yS     <Plug>YSurround
-  nmap yss    <Plug>Yssurround
-  nmap ySs    <Plug>YSsurround
-  nmap ySS    <Plug>YSsurround
-  xmap S      <Plug>VSurround
-  xmap gS     <Plug>VgSurround
-  imap <C-S>s <Plug>Isurround
-  imap <C-S>S <Plug>Isurround
 endif
 unlet! s:bundle
 "}}}
