@@ -674,7 +674,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>(operator-suddendeath)']]}}
 
-  NeoBundleFetch 'rhysd/vim-operator-surround'
+  NeoBundleLazy 'rhysd/vim-operator-surround', {
+    \ 'autoload' : {
+    \   'mappings' : [['nvo', '<Plug>(operator-surround-']]}}
 
   NeoBundleLazy 'pekepeke/vim-operator-tabular', {
     \ 'autoload' : {
@@ -3487,6 +3489,21 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXOmap s! <Plug>(operator-suddendeath)
 
   nmap s!! s!s!
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Operator Surround: {{{
+silent! let s:bundle = neobundle#get('operator-surround')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXOmap sa <Plug>(operator-surround-append)
+  NXOmap sd <Plug>(operator-surround-delete)
+  NXOmap sc <Plug>(operator-surround-replace)
+
+  nmap saa sasa
+  nmap sdd sdsd
+  nmap scc scsc
 endif
 unlet! s:bundle
 "}}}
