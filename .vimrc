@@ -4437,9 +4437,9 @@ silent! let s:bundle = neobundle#get('textobj-multitextobj')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_multitextobj_textobjects_group_a = {
-      \ 'A' : [{'textobj' : "a\<F13>", 'is_cursor_in' : 1}],
-      \ 'B' : [{'textobj' : "a\<F14>", 'is_cursor_in' : 1}],
-      \ 'C' : [{'textobj' : "a\<F15>", 'is_cursor_in' : 1}],
+      \ 'A' : [{'textobj' : 'a"',  'is_cursor_in' : 1, 'noremap' : 1}],
+      \ 'B' : [{'textobj' : 'a''', 'is_cursor_in' : 1, 'noremap' : 1}],
+      \ 'C' : [{'textobj' : 'a`',  'is_cursor_in' : 1, 'noremap' : 1}],
       \ 'D' : [[
       \   "\<Plug>(textobj-jabraces-parens-a)",
       \   "\<Plug>(textobj-jabraces-braces-a)",
@@ -4453,9 +4453,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   "\<Plug>(textobj-jabraces-kikkou-kakko-a)",
       \   "\<Plug>(textobj-jabraces-sumi-kakko-a)"]]}
     let g:textobj_multitextobj_textobjects_group_i = {
-      \ 'A' : [{'textobj' : "i\<F13>", 'is_cursor_in' : 1}],
-      \ 'B' : [{'textobj' : "i\<F14>", 'is_cursor_in' : 1}],
-      \ 'C' : [{'textobj' : "i\<F15>", 'is_cursor_in' : 1}],
+      \ 'A' : [{'textobj' : 'i"',  'is_cursor_in' : 1, 'noremap' : 1}],
+      \ 'B' : [{'textobj' : 'i''', 'is_cursor_in' : 1, 'noremap' : 1}],
+      \ 'C' : [{'textobj' : 'i`',  'is_cursor_in' : 1, 'noremap' : 1}],
       \ 'D' : [[
       \   "\<Plug>(textobj-jabraces-parens-i)",
       \   "\<Plug>(textobj-jabraces-braces-i)",
@@ -4470,30 +4470,23 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   "\<Plug>(textobj-jabraces-sumi-kakko-i)"]]}
   endfunction
 
-  XOmap <SID>(textobj-quotes-a)        <Plug>(textobj-multitextobj-A-a)
-  XOmap <SID>(textobj-quotes-i)        <Plug>(textobj-multitextobj-A-i)
-  XOmap <SID>(textobj-double-quotes-a) <Plug>(textobj-multitextobj-B-a)
-  XOmap <SID>(textobj-double-quotes-i) <Plug>(textobj-multitextobj-B-i)
+  XOmap <SID>(textobj-double-quotes-a) <Plug>(textobj-multitextobj-A-a)
+  XOmap <SID>(textobj-double-quotes-i) <Plug>(textobj-multitextobj-A-i)
+  XOmap <SID>(textobj-single-quotes-a) <Plug>(textobj-multitextobj-B-a)
+  XOmap <SID>(textobj-single-quotes-i) <Plug>(textobj-multitextobj-B-i)
   XOmap <SID>(textobj-back-quotes-a)   <Plug>(textobj-multitextobj-C-a)
   XOmap <SID>(textobj-back-quotes-i)   <Plug>(textobj-multitextobj-C-i)
   XOmap <SID>(textobj-jabraces-a)      <Plug>(textobj-multitextobj-D-a)
   XOmap <SID>(textobj-jabraces-i)      <Plug>(textobj-multitextobj-D-i)
 
-  XOmap a' <SID>(textobj-quotes-a)
-  XOmap i' <SID>(textobj-quotes-i)
   XOmap a" <SID>(textobj-double-quotes-a)
   XOmap i" <SID>(textobj-double-quotes-i)
+  XOmap a' <SID>(textobj-single-quotes-a)
+  XOmap i' <SID>(textobj-single-quotes-i)
   XOmap a` <SID>(textobj-back-quotes-a)
   XOmap i` <SID>(textobj-back-quotes-i)
   XOmap aB <SID>(textobj-jabraces-a)
   XOmap iB <SID>(textobj-jabraces-i)
-
-  XOnoremap a<F13> a'
-  XOnoremap i<F13> i'
-  XOnoremap a<F14> a"
-  XOnoremap i<F14> i"
-  XOnoremap a<F15> a`
-  XOnoremap i<F15> i`
 endif
 unlet! s:bundle
 "}}}
