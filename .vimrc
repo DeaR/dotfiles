@@ -841,17 +841,17 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [['nvo', '<Plug>(smartword-']],
     \   'insert' : 1}}
 
-  NeoBundleLazy 'tpope/vim-surround', {
-    \ 'autoload' : {
-    \   'mappings' : [
-    \     ['n',
-    \      '<Plug>SurroundRepeat',
-    \      '<Plug>Dsurround', '<Plug>Csurround',  '<Plug>Ysurround',
-    \      '<Plug>YSurround', '<Plug>Yssurround', '<Plug>YSsurround'],
-    \     ['v',
-    \      '<Plug>VSurround', '<Plug>VgSurround'],
-    \     ['i',
-    \      '<Plug>Isurround', '<Plug>ISurround']]}}
+  " NeoBundleLazy 'tpope/vim-surround', {
+  "   \ 'autoload' : {
+  "   \   'mappings' : [
+  "   \     ['n',
+  "   \      '<Plug>SurroundRepeat',
+  "   \      '<Plug>Dsurround', '<Plug>Csurround',  '<Plug>Ysurround',
+  "   \      '<Plug>YSurround', '<Plug>Yssurround', '<Plug>YSsurround'],
+  "   \     ['v',
+  "   \      '<Plug>VSurround', '<Plug>VgSurround'],
+  "   \     ['i',
+  "   \      '<Plug>Isurround', '<Plug>ISurround']]}}
 
   NeoBundleLazy 'AndrewRadev/switch.vim', {
     \ 'autoload' : {
