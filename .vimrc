@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  30-Sep-2013.
+" Last Change:  01-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1026,7 +1026,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'function_prefix' : 'textobj'}}
 
-  NeoBundleLazy 'DeaR/textobj-wiw', {
+  NeoBundleLazy 'DeaR/vim-textobj-wiw', {
     \ 'autoload' : {
     \   'commands' : 'TextobjWiwDefaultKeyMappings',
     \   'mappings' : [['nvo', '<Plug>(textobj-wiw-']]}}
