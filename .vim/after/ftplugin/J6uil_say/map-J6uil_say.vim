@@ -1,7 +1,7 @@
 " Mapping for J6uil
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  06-Sep-2013.
+" Last Change:  01-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "

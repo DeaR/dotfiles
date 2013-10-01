@@ -2285,15 +2285,10 @@ inoremap <expr> <M-L> '<C-O>' . <SID>smart_eol()
 
 "------------------------------------------------------------------------------
 " Smart Close: {{{
-function! s:smart_close()
-  if winnr('$') != 1
-    close
-  endif
-endfunction
-
 autocmd MyVimrc FileType *
   \ if (&readonly || !&modifiable) && maparg('q', 'n') == '' |
-  \   nnoremap <buffer> q :<C-U>call <SID>smart_close()<CR>|
+  \   nnoremap <buffer><expr> q
+  \     winnr('$') != 1 ? ':<C-U>close<CR>' : ''|
   \ endif
 "}}}
 
