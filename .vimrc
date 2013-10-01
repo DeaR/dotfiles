@@ -2262,11 +2262,19 @@ nnoremap <expr> ml <SID>marks()
 "------------------------------------------------------------------------------
 " Smart BOL: {{{
 function! s:smart_bol()
-  let col = col('.')
-  return col <= 1 || col > match(getline('.'), '^\s*\zs') + 1 ? '^' : '0'
+  if v:count
+    return repeat("\<Del>", len(v:count)) . (v:count % 2 ? '^' : '0')
+  else
+    let col = col('.')
+    return col <= 1 || col > match(getline('.'), '^\s*\zs') + 1 ? '^' : '0'
+  endif
 endfunction
 function! s:smart_eol()
-  return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
+  if v:count
+    return repeat("\<Del>", len(v:count)) . (v:count % 2 ? '$' : 'g_')
+  else
+    return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
+  endif
 endfunction
 
 NXOnoremap <expr> H <SID>smart_bol()
