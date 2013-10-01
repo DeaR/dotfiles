@@ -2318,7 +2318,7 @@ nnoremap <F12> :<C-U>call <SID>toggle_line_number_style()<CR>
 
 "------------------------------------------------------------------------------
 " Insert One Character: {{{
-function! s:insert_one_char()
+function! s:insert_one_char(cmd)
   echohl ModeMsg
   if v:lang =~? '^ja' && has('multi_lang')
     echo '-- 挿入 (1文字) --'
@@ -2326,13 +2326,13 @@ function! s:insert_one_char()
     echo '-- INSERT (one char) --'
   endif
   echohl None
-  return nr2char(getchar())
+  return a:cmd . nr2char(getchar()) . "\<Esc>"
 endfunction
 
-nnoremap  <expr> <M-a> "a" . <SID>insert_one_char() . "\<Esc>"
-NXnoremap <expr> <M-A> "A" . <SID>insert_one_char() . "\<Esc>"
-nnoremap  <expr> <M-i> "i" . <SID>insert_one_char() . "\<Esc>"
-NXnoremap <expr> <M-I> "I" . <SID>insert_one_char() . "\<Esc>"
+nnoremap  <expr> <M-a> <SID>insert_one_char('a')
+NXnoremap <expr> <M-A> <SID>insert_one_char('A')
+nnoremap  <expr> <M-i> <SID>insert_one_char('i')
+NXnoremap <expr> <M-I> <SID>insert_one_char('I')
 "}}}
 
 "------------------------------------------------------------------------------
