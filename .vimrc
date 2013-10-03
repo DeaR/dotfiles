@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  03-Oct-2013.
+" Last Change:  04-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -681,7 +681,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo',
-    \      '<Plug>(operator-tabularize)', '<Plug>(operator-untabulatize)',
+    \      '<Plug>(operator-tabularize)', '<Plug>(operator-untabularize)',
     \      '<Plug>(operator-textile_',    '<Plug>(operator-backlog_',
     \      '<Plug>(operator-md_']]}}
 
@@ -807,6 +807,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'depends' : 'ujihisa/ref-hoogle'}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'Ref' : 'ref#complete'})
+
+  NeoBundleLazy 'deris/vim-rengbang', {
+    \ 'autoload' : {
+    \   'commands' : ['RengBang', 'RengBangUsePrev'],
+    \   'mappings' : [
+    \     ['nvo', '<Plug>(operator-rengbang)', '<Plug>(operator-rengbang-']]}}
 
   NeoBundleLazy 'tpope/vim-repeat'
 
@@ -3801,6 +3807,25 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   NXmap K <Plug>(ref-keyword)
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" RengBang: {{{
+silent! let s:bundle = neobundle#get('rengbang')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    function! s:operator_rengbang_prompt(motion_wise)
+      execute input(':', line("'[") . ',' . line("']") . 'RengBang ')
+    endfunction
+
+    call operator#user#define('rengbang-prompt', s:SID_PREFIX() . 'operator_rengbang_prompt')
+  endfunction
+
+  NXOmap s+ <Plug>(operator-rengbang-prompt)
+
+  nmap s++ s+s+
 endif
 unlet! s:bundle
 "}}}
