@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  02-Oct-2013.
+" Last Change:  03-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -5190,6 +5190,10 @@ unlet! s:bundle
 
 "==============================================================================
 " Post Init: {{{
+if filereadable($HOME . '/.local/.vimrc_local.vim')
+  source ~/.local/.vimrc_local.vim
+endif
+
 if exists('#User#VimrcPost')
   execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
     \ 'User VimrcPost'

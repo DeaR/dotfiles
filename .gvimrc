@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  20-Aug-2013.
+" Last Change:  03-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -181,6 +181,10 @@ map! <S-Insert> <MiddleMouse>
 
 "==============================================================================
 " Post Init: {{{
+if filereadable($HOME . '/.local/.gvimrc_local.vim')
+  source ~/.local/.gvimrc_local.vim
+endif
+
 if exists('#User#GVimrcPost')
   execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
     \ 'User GVimrcPost'
