@@ -199,9 +199,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'gist:iori-yja/1615430', {
     \ 'name' : 'arm',
+    \ 'script_type' : 'syntax',
     \ 'autoload' : {
-    \   'filetypes' : 'arm'},
-    \ 'script_type' : 'syntax'}
+    \   'filetypes' : 'arm'}}
 
   NeoBundleLazy 'autodate.vim', {
     \ 'autoload' : {
@@ -453,9 +453,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'https://raw.github.com/januswel/dotfiles/master/.vim/syntax/mayu.vim', {
     \ 'name' : 'mayu',
+    \ 'script_type' : 'syntax',
     \ 'autoload' : {
-    \   'filetypes' : 'mayu'},
-    \ 'script_type' : 'syntax'}
+    \   'filetypes' : 'mayu'}}
 
   if has('unix') && !has('gui_running')
     NeoBundle 'gist:DeaR/5560785', {
@@ -465,12 +465,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'gist:DeaR/5558981', {
     \ 'name' : 'maplist',
+    \ 'script_type' : 'plugin',
     \ 'autoload' : {
     \   'commands' : [
     \     'MapList',  'NMapList', 'OMapList',
     \     'VMapList', 'XMapList', 'SMapList',
-    \     'IMapList', 'CMapList', 'LMapList']},
-    \ 'script_type' : 'plugin'}
+    \     'IMapList', 'CMapList', 'LMapList']}}
 
   NeoBundleLazy 'xolox/vim-misc', {
     \ 'autoload' : {
