@@ -284,8 +284,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     'EskkReload', 'EskkUpdateDictionary',
     \     {'name' : 'EskkFixDictionary',
     \      'complete' : 'file'}],
-    \   'mappings' : [['n', '<Plug>(eskk:']],
-    \   'insert' : 1}}
+    \   'mappings' : [['n', '<Plug>(eskk:']]}}
 
   NeoBundleLazy 'kana/vim-filetype-haskell', {
     \ 'autoload' : {
@@ -2750,6 +2749,7 @@ silent! let s:bundle = neobundle#get('eskk')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:eskk#directory               = $HOME . '/.local/.eskk'
+    let g:eskk#no_default_mappings     = 1
     let g:eskk#start_completion_length = 1
     let g:eskk#dictionary              = {
       \ 'path' : $HOME . '/.skk/jisyo',
@@ -2763,12 +2763,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ filter(eskk#get_default_mapped_keys(), 'v:val !=? "<Tab>"')
   endfunction
 
-  function! s:bundle.hooks.on_post_source(bundle)
-    EskkMap <expr> <Tab>
-      \ pumvisible() ? '<C-N>' : '<Tab>'
-    EskkMap <expr> <S-Tab>
-      \ pumvisible() ? '<C-P>' : '<S-Tab>'
-  endfunction
+  noremap! <expr> <C-J> eskk#toggle()
+  lnoremap <expr> <C-J> eskk#toggle()
 
   autocmd MyVimrc User CmdlineEnter
     \ NeoBundleSource eskk
