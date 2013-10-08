@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  03-Oct-2013.
+" Last Change:  09-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -33,7 +33,7 @@
 "------------------------------------------------------------------------------
 " Variable: {{{
 " Direct Write
-let s:enable_directx = 0
+let s:directx_enable = 0
 " }}}
 
 "------------------------------------------------------------------------------
@@ -140,7 +140,7 @@ elseif has('mac')
 endif
 
 " Direct Write
-if s:enable_directx && has('directx')
+if s:directx_enable && has('directx')
   set renderoptions=type:directx
 endif
 
