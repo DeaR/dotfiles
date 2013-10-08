@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Oct-2013.
+" Last Change:  08-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -284,7 +284,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     'EskkReload', 'EskkUpdateDictionary',
     \     {'name' : 'EskkFixDictionary',
     \      'complete' : 'file'}],
-    \   'mappings' : [['n', '<Plug>(eskk:']]}}
+    \   'mappings' : [['i', '<Plug>(eskk:']]}}
 
   NeoBundleLazy 'kana/vim-filetype-haskell', {
     \ 'autoload' : {
@@ -2769,8 +2769,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ filter(eskk#get_default_mapped_keys(), 'v:val !=? "<Tab>"')
   endfunction
 
-  noremap! <expr> <C-J> eskk#toggle()
-  lnoremap <expr> <C-J> eskk#toggle()
+  map! <C-J> <Plug>(eskk:toggle)
+  lmap <C-J> <Plug>(eskk:toggle)
 
   autocmd MyVimrc User CmdlineEnter
     \ NeoBundleSource eskk
