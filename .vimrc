@@ -765,11 +765,18 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 't9md/vim-quickhl', {
     \ 'autoload' : {
     \   'commands' : [
-    \     'QuickhlList', 'QuickhlAdd', 'QuickhlLock',   'QuickhlReset',
-    \     'QuickhlDump', 'QuickhlDel', 'QuickhlUnlock', 'QuickhlColors',
-    \     'QuickhlReloadColors', 'QuickhlMatch', 'QuickhlMatchClear',
-    \     'QuickhlMatchAuto', 'QuickhlMatchNoAuto'],
-    \   'mappings' : [['nv', '<Plug>(quickhl-']]}}
+    \     'QuickhlManualEnable', 'QuickhlManualDisable',
+    \     'QuickhlManualList',   'QuickhlManualColors',
+    \     'QuickhlManualAdd',    'QuickhlManualDelete',
+    \     'QuickhlManualLock',   'QuickhlManualLockWindow',
+    \     'QuickhlManualUnlock', 'QuickhlManualLockToggle',
+    \     'QuickhlManualReset',  'QuickhlManualLockWindowToggle',
+    \     'QuickhlCwordEnable',  'QuickhlTagEnable',
+    \     'QuickhlCwordDisable', 'QuickhlTagDisable',
+    \     'QuickhlCwordToggle',  'QuickhlTagToggle'],
+    \   'mappings' : [
+    \     ['nv', '<Plug>(quickhl-'],
+    \     ['nvo', '<Plug>(operator-quickhl-']]}}
 
   NeoBundleLazy 'thinca/vim-quickrun', {
     \ 'autoload' : {
@@ -3678,7 +3685,10 @@ unlet! s:bundle
 " Quickhl: {{{
 silent! let s:bundle = neobundle#get('quickhl')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXmap sM <Plug>(quickhl-reset)
+  NXmap  sM <Plug>(quickhl-manual-reset)
+  NXOmap sm <Plug>(operator-quickhl-manual-this-motion)
+
+  nmap smm smsm
 endif
 unlet! s:bundle
 "}}}
