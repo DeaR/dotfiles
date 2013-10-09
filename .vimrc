@@ -3622,15 +3622,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:parajump_no_default_key_mappings = 1
 
-    nmap <SID>(parajump-backward) <Plug>(parajump-backward)
-    nmap <SID>(parajump-forward)  <Plug>(parajump-forward)
-
     inoremap <script> <M-{> <C-O><SID>(parajump-backward)
     inoremap <script> <M-}> <C-O><SID>(parajump-forward)
   endfunction
 
-  NXOmap { <Plug>(parajump-backward)zvzz
-  NXOmap } <Plug>(parajump-forward)zvzz
+  nmap <SID>(parajump-backward) <Plug>(parajump-backward)
+  nmap <SID>(parajump-forward)  <Plug>(parajump-forward)
+
+  NXOnoremap <script> { <SID>(parajump-backward)zvzz
+  NXOnoremap <script> } <SID>(parajump-forward)zvzz
 endif
 unlet! s:bundle
 "}}}
