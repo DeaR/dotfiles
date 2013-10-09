@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  08-Oct-2013.
+" Last Change:  09-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -634,10 +634,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'sgur/vim-operator-openbrowser', {
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>(operator-openbrowser)']]}}
-
-  NeoBundleLazy 'rbtnn/vim-operator-quickhl.vim', {
-    \ 'autoload' : {
-    \   'mappings' : [['nvo', '<Plug>(operator-quickhl)']]}}
 
   NeoBundleLazy 'kana/vim-operator-replace', {
     \ 'autoload' : {
@@ -3366,17 +3362,6 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('operator-openbrowser')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXOmap gx <Plug>(operator-openbrowser)
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" Operator Quickhl: {{{
-silent! let s:bundle = neobundle#get('operator-quickhl')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXOmap sm <Plug>(operator-quickhl)
-
-  nmap smm smsm
 endif
 unlet! s:bundle
 "}}}
