@@ -2588,14 +2588,17 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ <Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)
   endfunction
 
-  nmap <expr> n
+  nmap <SID>(anzu-jump-n-with-echo) <Plug>(anzu-jump-n-with-echo)
+  nmap <SID>(anzu-jump-N-with-echo) <Plug>(anzu-jump-N-with-echo)
+
+  nnoremap <script> <expr> n
     \ <SID>search_forward_expr() ?
-    \   '<Plug>(anzu-jump-n-with-echo)zvzz' :
-    \   '<Plug>(anzu-jump-N-with-echo)zvzz'
-  nmap <expr> N
+    \   '<SID>(anzu-jump-n-with-echo)zvzz' :
+    \   '<SID>(anzu-jump-N-with-echo)zvzz'
+  nnoremap <script> <expr> N
     \ <SID>search_forward_expr() ?
-    \   '<Plug>(anzu-jump-N-with-echo)zvzz' :
-    \   '<Plug>(anzu-jump-n-with-echo)zvzz'
+    \   '<SID>(anzu-jump-N-with-echo)zvzz' :
+    \   '<SID>(anzu-jump-n-with-echo)zvzz'
 endif
 unlet! s:bundle
 "}}}
