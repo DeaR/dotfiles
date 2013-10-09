@@ -2724,15 +2724,15 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('columnjump')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    nmap <SID>(columnjump-backward) <Plug>(columnjump-backward)
-    nmap <SID>(columnjump-forward)  <Plug>(columnjump-forward)
-
     inoremap <script> <M-(> <C-O><SID>(columnjump-backward)
     inoremap <script> <M-)> <C-O><SID>(columnjump-forward)
   endfunction
 
-  NXOmap ( <Plug>(columnjump-backward)zvzz
-  NXOmap ) <Plug>(columnjump-forward)zvzz
+  nmap <SID>(columnjump-backward) <Plug>(columnjump-backward)
+  nmap <SID>(columnjump-forward)  <Plug>(columnjump-forward)
+
+  NXOnoremap <script> ( <SID>(columnjump-backward)zvzz
+  NXOnoremap <script> ) <SID>(columnjump-forward)zvzz
 endif
 unlet! s:bundle
 "}}}
