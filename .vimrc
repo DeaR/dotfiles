@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-Oct-2013.
+" Last Change:  10-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -671,7 +671,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'rhysd/vim-operator-surround', {
     \ 'autoload' : {
-    \   'mappings' : [['nvo', '<Plug>(operator-surround-']]}}
+    \   'mappings' : [['nvo', '<Plug>(operator-surround-']]},
+    \ 'depends' : 'osyo-manga/vim-textobj-multiblock'}
 
   NeoBundleLazy 'pekepeke/vim-operator-tabular', {
     \ 'autoload' : {
@@ -3479,6 +3480,9 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXOmap sa <Plug>(operator-surround-append)
   NXOmap sd <Plug>(operator-surround-delete)
   NXOmap sc <Plug>(operator-surround-replace)
+
+  nmap sdsd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
+  nmap scsc <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
 
   nmap saa sasa
   nmap sdd sdsd
