@@ -2167,9 +2167,9 @@ function! s:cmdwin_enter()
   startinsert!
   nnoremap <buffer><silent> q :<C-U>quit<CR>
 
-  inoremap <buffer><silent><script><expr> <C-H>
+  inoremap <buffer><silent><expr> <C-H>
     \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<C-H>'
-  inoremap <buffer><silent><script><expr> <BS>
+  inoremap <buffer><silent><expr> <BS>
     \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<BS>'
 endfunction
 autocmd MyVimrc CmdwinEnter *
@@ -3110,11 +3110,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '<C-P>' :
       \   neocomplcache#start_manual_complete()
 
-    inoremap <script><expr> <CR>
+    inoremap <expr> <CR>
       \ neocomplcache#smart_close_popup() . '<CR>'
-    inoremap <script><expr> <C-H>
+    inoremap <expr> <C-H>
       \ neocomplcache#smart_close_popup() . '<C-H>'
-    inoremap <script><expr> <BS>
+    inoremap <expr> <BS>
       \ neocomplcache#smart_close_popup() . '<BS>'
   endfunction
 
@@ -3132,11 +3132,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '<C-P>' :
       \   neocomplcache#start_manual_complete()
 
-    inoremap <buffer><script><silent><expr> <C-H>
+    inoremap <buffer><silent><expr> <C-H>
       \ col('.') == 1 && getline('.') == '' ?
       \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplcache#smart_close_popup() . '<C-H>')
-    inoremap <buffer><script><silent><expr> <BS>
+    inoremap <buffer><silent><expr> <BS>
       \ col('.') == 1 && getline('.') == '' ?
       \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplcache#smart_close_popup() . '<BS>')
@@ -3210,11 +3210,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '<C-P>' :
       \   neocomplete#start_manual_complete()
 
-    inoremap <script><expr> <CR>
+    inoremap <expr> <CR>
       \ neocomplete#smart_close_popup() . '<CR>'
-    inoremap <script><expr> <C-H>
+    inoremap <expr> <C-H>
       \ neocomplete#smart_close_popup() . '<C-H>'
-    inoremap <script><expr> <BS>
+    inoremap <expr> <BS>
       \ neocomplete#smart_close_popup() . '<BS>'
   endfunction
 
@@ -3232,11 +3232,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   '<C-P>' :
       \   neocomplete#start_manual_complete()
 
-    inoremap <buffer><silent><script><expr> <C-H>
+    inoremap <buffer><silent><expr> <C-H>
       \ col('.') == 1 && getline('.') == '' ?
       \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplete#smart_close_popup() . '<C-H>')
-    inoremap <buffer><silent><script><expr> <BS>
+    inoremap <buffer><silent><expr> <BS>
       \ col('.') == 1 && getline('.') == '' ?
       \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplete#smart_close_popup() . '<BS>')
@@ -3604,7 +3604,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap sgg sgsg
 
   if neobundle#get('unite') == {}
-    nnoremap <script> sgsg :<C-U>execute input(':', 'grep ')<CR>
+    nnoremap sgsg :<C-U>execute input(':', 'grep ')<CR>
   endif
 endif
 unlet! s:bundle
