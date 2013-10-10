@@ -3600,9 +3600,12 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   NXOmap sg <Plug>(operator-grep)
-  nnoremap <script> sgsg :<C-U>execute input(':', 'grep ')<CR>
 
   nmap sgg sgsg
+
+  if neobundle#get('unite') == {}
+    nnoremap <script> sgsg :<C-U>execute input(':', 'grep ')<CR>
+  endif
 endif
 unlet! s:bundle
 "}}}
