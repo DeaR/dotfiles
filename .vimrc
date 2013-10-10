@@ -3369,6 +3369,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('operator-replace')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXOmap p <Plug>(operator-replace)
+
   nnoremap pp p
 endif
 unlet! s:bundle
