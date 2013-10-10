@@ -3860,8 +3860,10 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:scratch_buffer_name = '[scratch]'
 
-    call operator#user#define_ex_command('scrach-evaluate',  'ScrachEvaluate')
-    call operator#user#define_ex_command('scrach-evaluate!', 'ScrachEvaluate!')
+    call operator#user#define_ex_command(
+      \ 'scratch-evaluate',  'ScrachEvaluate')
+    call operator#user#define_ex_command(
+      \ 'scratch-evaluate!', 'ScrachEvaluate!')
 
     autocmd MyVimrc User PluginScratchInitializeAfter
       \ nmap <buffer> sr <Plug>(operator-scratch-evaluate)
