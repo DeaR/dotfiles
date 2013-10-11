@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Oct-2013.
+" Last Change:  12-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -195,7 +195,11 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     'AnzuClearSearchStatus',  'AnzuClearSearchCache',
     \     'AnzuUpdateSearchStatus', 'AnzuUpdateSearchStatusOutput',
     \     'AnzuSignMatchLine',      'AnzuClearSignMatchLine'],
-    \   'mappings' : [['n', '<Plug>(anzu-']]}}
+    \   'mappings' : [
+    \     ['n',
+    \      '<Plug>(anzu-',
+    \      '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)',
+    \      '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)']]}}
 
   NeoBundleLazy 'gist:iori-yja/1615430', {
     \ 'name' : 'arm',
@@ -2570,23 +2574,16 @@ unlet! s:bundle
 " Anzu: {{{
 silent! let s:bundle = neobundle#get('anzu')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    set shortmess+=s
-
-    nmap <Plug>(anzu-jump-n-with-echo)
-      \ <Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)
-    nmap <Plug>(anzu-jump-N-with-echo)
-      \ <Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)
-  endfunction
+  set shortmess+=s
 
   nmap <expr> n
     \ <SID>search_forward_expr() ?
-    \   '<Plug>(anzu-jump-n-with-echo)' :
-    \   '<Plug>(anzu-jump-N-with-echo)'
+      \ '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)' :
+      \ '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)'
   nmap <expr> N
     \ <SID>search_forward_expr() ?
-    \   '<Plug>(anzu-jump-N-with-echo)' :
-    \   '<Plug>(anzu-jump-n-with-echo)'
+      \ '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)' :
+      \ '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)'
 endif
 unlet! s:bundle
 "}}}
