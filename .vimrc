@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  12-Oct-2013.
+" Last Change:  15-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -198,8 +198,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [
     \     ['n',
     \      '<Plug>(anzu-',
-    \      '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)',
-    \      '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)']]}}
+    \      '<Plug>(anzu-jump-n)<Plug>(anzu-',
+    \      '<Plug>(anzu-jump-N)<Plug>(anzu-']]}}
 
   NeoBundleLazy 'gist:iori-yja/1615430', {
     \ 'name' : 'arm',
@@ -2578,12 +2578,12 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nmap <expr> n
     \ <SID>search_forward_expr() ?
-      \ '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)' :
-      \ '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)'
+    \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)' :
+    \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)'
   nmap <expr> N
     \ <SID>search_forward_expr() ?
-      \ '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)' :
-      \ '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)'
+    \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)' :
+    \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)'
 endif
 unlet! s:bundle
 "}}}
