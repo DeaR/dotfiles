@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  15-Oct-2013.
+" Last Change:  16-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -156,6 +156,10 @@ endfunction
 " Check Android OS
 let s:is_android = has('unix') &&
   \ ($HOSTNAME ==? 'android' || $VIM =~? 'net\.momodalo\.app\.vimtouch')
+if s:is_android
+  let s:jvgrep_enable = 0
+  let s:ag_enable     = 0
+endif
 "}}}
 
 "------------------------------------------------------------------------------
