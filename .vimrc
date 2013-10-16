@@ -1828,7 +1828,6 @@ NXnoremap <Leader><M-C> :<C-U>tabonly<CR>
 NXnoremap <Leader>w     :<C-U>update<CR>
 NXnoremap <Leader>W     :<C-U>wall<CR>
 NXnoremap <Leader>q     :<C-U>bdelete<CR>
-NXnoremap <Leader>Q     :<C-U>bufdo bdelete<CR>
 NXnoremap <Leader>!     :<C-U>shell<CR>
 NXnoremap <Leader>B     :<C-U>buffers<CR>
 NXnoremap <Leader>E     :<C-U>Explorer<CR>
@@ -1841,6 +1840,8 @@ NXnoremap <script> <Leader>b <SID>:<C-U>buffer<Space>
 NXnoremap <script> <Leader>t <SID>:<C-U>tabm<Space>
 NXnoremap <script> <Leader>d <SID>:<C-U>lcd<Space>
 NXnoremap <script> <Leader>D <SID>:<C-U>cd<Space>
+NXnoremap <expr> <Leader>Q
+  \ ':<C-U>1,' . bufnr('$') . 'bdelete<CR>'
 NXnoremap <script><expr> <Leader><M-d>
   \ '<SID>:<C-U>lcd ' .
   \ expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '')) .
