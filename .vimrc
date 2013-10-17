@@ -1880,8 +1880,7 @@ nnoremap <M-O>
 
 " Paste toggle
 set pastetoggle=<F11>
-nnoremap <expr> <F11>
-  \ &paste ? ':<C-U>set nopaste<CR>' : ':<C-U>set paste<CR>'
+nnoremap <F11> :<C-U>set paste! paste?<CR>
 
 " Start Visual-mode with the same area
 onoremap gv :<C-U>normal! gv<CR>
