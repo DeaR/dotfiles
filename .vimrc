@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  16-Oct-2013.
+" Last Change:  17-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -79,10 +79,6 @@ let s:gips_enable = 0
 " Command line window
 let s:cmdwin_enable = 1
 
-" Grep
-let s:jvgrep_enable = 1
-let s:ag_enable     = 1
-
 " AlterCommand
 let s:altercmd_define = {}
 
@@ -156,10 +152,6 @@ endfunction
 " Check Android OS
 let s:is_android = has('unix') &&
   \ ($HOSTNAME ==? 'android' || $VIM =~? 'net\.momodalo\.app\.vimtouch')
-if s:is_android
-  let s:jvgrep_enable = 0
-  let s:ag_enable     = 0
-endif
 "}}}
 
 "------------------------------------------------------------------------------
@@ -445,7 +437,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'filetypes' : 'json'}}
 
-  if s:jvgrep_enable && s:executable('go')
+  if s:executable('go')
     NeoBundleFetch 'mattn/jvgrep', {
       \ 'build' : {
       \   'others' : 'go get -u github.com/mattn/jvgrep'}}
@@ -1058,7 +1050,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : 'TextobjXmlattributeDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-xmlattribute-']]}}
 
-  if s:ag_enable
+  if s:executable('gcc') || s:executable('aclocal')
     NeoBundleFetch 'ggreer/the_silver_searcher', {
       \ 'build' : {
       \   'windows' :
@@ -1496,9 +1488,9 @@ if &t_Co > 2
 endif
 
 " Grep
-if s:jvgrep_enable
+if s:executable('jvgrep') || neobundle#get('jvgrep') != {}
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
-elseif s:ag_enable
+elseif s:executable('ag') || neobundle#get('the_silver_searcher') != {}
   set grepprg=ag\ --line-numbers\ --nocolor\ --nogroup\ --hidden\
     \ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
 elseif s:executable('grep')
@@ -3562,9 +3554,9 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('operator-user')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    if s:jvgrep_enable
+    if s:executable('jvgrep') || neobundle#get('jvgrep') != {}
       let s:operator_grep_escape = '\[](){}|.?+*^$'
-    elseif s:ag_enable
+    elseif s:executable('ag') || neobundle#get('the_silver_searcher') != {}
       let s:operator_grep_escape = '\[](){}|.?+*^$'
     elseif s:executable('grep')
       let s:operator_grep_escape = '\[].*^$'
@@ -4720,11 +4712,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ '\|^\%(\\\\\|/mnt/\|/media/\|/temp/\|/tmp/\|\%(/private\)\=/var/folders/\)' .
       \ '\|\%(^\%(fugitive\):\%(//\|\\\\\)\)'
 
-    if s:jvgrep_enable
+    if s:executable('jvgrep') || neobundle#get('jvgrep') != {}
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '-n --exclude .drive.r'
-    elseif s:ag_enable
+    elseif s:executable('ag') || neobundle#get('the_silver_searcher') != {}
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_default_opts  =
