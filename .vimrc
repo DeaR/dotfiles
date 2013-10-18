@@ -82,12 +82,12 @@ let s:cmdwin_enable = 1
 " AlterCommand
 let s:altercmd_define = {}
 
-" NeoComplete or NeoComplCache
-let s:neocompl_keyword_patterns = {}
-let s:neocompl_vim_completefuncs = {}
+" NeoComplete and NeoComplCache
+let s:neocompl_keyword_patterns          = {}
+let s:neocompl_vim_completefuncs         = {}
 let s:neocompl_dictionary_filetype_lists = {}
-let s:neocompl_force_omni_patterns = {}
-let s:neocompl_omni_patterns = {}
+let s:neocompl_force_omni_patterns       = {}
+let s:neocompl_omni_patterns             = {}
 
 " VCvarsall.bat
 if has('win32') && !exists('$VCVARSALL')
@@ -2491,7 +2491,13 @@ let g:vbnet_no_code_folds = 1
 let g:vimsyn_folding      = 'af'
 let g:xml_syntax_folding  = 1
 
-" Omni
+" NeoComplete and NeoComplCache
+call extend(s:neocompl_dictionary_filetype_lists, {
+  \ '_' : ''})
+call extend(s:neocompl_keyword_patterns, {
+  \ '_' : '[a-zA-Z@0-9_]\+'})
+call extend(s:neocompl_vim_completefuncs, {
+  \ 'SQLSetType' : 'SQL_GetList'})
 call extend(s:neocompl_omni_patterns, {
   \ 'CucumberComplete'              : '.*',
   \ 'adacomplete#Complete'          : '.*',
@@ -3180,11 +3186,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~ '\s'
   endfunction
-
-  call extend(s:neocompl_dictionary_filetype_lists, {
-    \ '_' : ''})
-  call extend(s:neocompl_keyword_patterns, {
-    \ '_' : '[a-zA-Z@0-9_]\+'})
 endif
 unlet! s:bundle
 "}}}
@@ -3280,11 +3281,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~ '\s'
   endfunction
-
-  call extend(s:neocompl_dictionary_filetype_lists, {
-    \ '_' : ''})
-  call extend(s:neocompl_keyword_patterns, {
-    \ '_' : '[a-zA-Z@0-9_]\+'})
 endif
 unlet! s:bundle
 "}}}
