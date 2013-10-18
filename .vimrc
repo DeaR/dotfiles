@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  17-Oct-2013.
+" Last Change:  18-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -389,6 +389,11 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'filetypes' : 'qf',
     \   'commands' : ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
 
+  NeoBundle 'vimtaku/hl_matchit.vim', {
+    \ 'autoload' : {
+    \   'commands' : ['HiMatch', 'HiMatchOn', 'HiMatchOff']},
+    \ 'depends' : 'tmhedberg/matchit'}
+
   NeoBundleLazy 'othree/html5.vim', {
     \ 'autoload' : {
     \   'filetypes' : [
@@ -449,6 +454,12 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : 'Kwbd'}}
 
   NeoBundleLazy 'thinca/vim-localrc'
+
+  NeoBundleLazy 'tmhedberg/matchit', {
+    \ 'autoload' : {
+    \   'mappings' : [
+    \     ['nvo', '%', 'g%', '[%', ']%'],
+    \     ['v',   'a%']]}}
 
   NeoBundleLazy 'https://raw.github.com/januswel/dotfiles/master/.vim/syntax/mayu.vim', {
     \ 'name' : 'mayu',
@@ -2865,6 +2876,20 @@ unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
+" Highlight MatchIt: {{{
+silent! let s:bundle = neobundle#get('hl_matchit')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  function! s:bundle.hooks.on_source(bundle)
+    let g:hl_matchit_hl_groupname = 'MatchParen'
+  endfunction
+
+  autocmd MyVimrc CursorMoved,CursorMovedI *
+    \ HiMatch
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
 " IndentLine: {{{
 silent! let s:bundle = neobundle#get('indentLine')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3018,6 +3043,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   autocmd MyVimrc BufNewFile,BufRead,FileType *
     \ NeoBundleSource localrc
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" MatchIt: {{{
+silent! let s:bundle = neobundle#get('matchit')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXOmap <Space>   %
+  NXOmap <S-Space> g%
 endif
 unlet! s:bundle
 "}}}
