@@ -689,9 +689,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [
     \     ['nvo',
-    \      '<Plug>(operator-tabularize)', '<Plug>(operator-untabularize)',
-    \      '<Plug>(operator-textile_',    '<Plug>(operator-backlog_',
-    \      '<Plug>(operator-md_']]}}
+    \      '<Plug>(operator-tabular-',
+    \      '<Plug>(operator-tabularize)', '<Plug>(operator-untabularize)']]}}
 
   NeoBundleLazy 'rhysd/vim-operator-trailingspace-killer', {
     \ 'autoload' : {
