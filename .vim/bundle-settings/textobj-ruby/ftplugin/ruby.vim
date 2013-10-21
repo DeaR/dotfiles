@@ -1,7 +1,7 @@
 " TextObj Ruby ftplugin for Ruby
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Aug-2013.
+" Last Change:  21-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,6 +28,10 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+xmap <buffer> aC <Plug>(textobj-ruby-definition-a)
+omap <buffer> aC <Plug>(textobj-ruby-definition-a)
+xmap <buffer> iC <Plug>(textobj-ruby-definition-i)
+omap <buffer> iC <Plug>(textobj-ruby-definition-i)
 xmap <buffer> ar <Plug>(textobj-ruby-any-a)
 omap <buffer> ar <Plug>(textobj-ruby-any-a)
 xmap <buffer> ir <Plug>(textobj-ruby-any-i)
@@ -39,6 +43,10 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
+  \ silent! execute ''xunmap <buffer> aC'' |
+  \ silent! execute ''ounmap <buffer> aC'' |
+  \ silent! execute ''xunmap <buffer> iC'' |
+  \ silent! execute ''ounmap <buffer> iC'' |
   \ silent! execute ''xunmap <buffer> ar'' |
   \ silent! execute ''ounmap <buffer> ar'' |
   \ silent! execute ''xunmap <buffer> ir'' |
