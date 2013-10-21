@@ -1,7 +1,7 @@
 " Text Object Difff
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-Sep-2013.
+" Last Change:  21-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -72,12 +72,12 @@ omap <buffer> idf <Plug>(textobj-diff-file)
 xmap <buffer> idh <Plug>(textobj-diff-hunk)
 omap <buffer> idh <Plug>(textobj-diff-hunk)
 
-nmap <buffer> <C-J> <Plug>(textobj-diff-hunk-n)zvzz
-xmap <buffer> <C-J> <Plug>(textobj-diff-hunk-n)zvzz
-omap <buffer> <C-J> <Plug>(textobj-diff-hunk-n)zvzz
-nmap <buffer> <C-K> <Plug>(textobj-diff-hunk-p)zvzz
-xmap <buffer> <C-K> <Plug>(textobj-diff-hunk-p)zvzz
-omap <buffer> <C-K> <Plug>(textobj-diff-hunk-p)zvzz
+nmap <buffer> <C-J> <Plug>(textobj-diff-hunk-n)
+xmap <buffer> <C-J> <Plug>(textobj-diff-hunk-n)
+omap <buffer> <C-J> <Plug>(textobj-diff-hunk-n)
+nmap <buffer> <C-K> <Plug>(textobj-diff-hunk-p)
+xmap <buffer> <C-K> <Plug>(textobj-diff-hunk-p)
+omap <buffer> <C-K> <Plug>(textobj-diff-hunk-p)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' | '
