@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-Oct-2013.
+" Last Change:  21-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2899,8 +2899,11 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('indentLine')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
-    let g:indentLine_char     = '|'
-    let g:indentLine_maxLines = 10000
+    let g:indentLine_char            = '|'
+    let g:indentLine_maxLines        = 10000
+    let g:indentLine_noConcealCursor = 1
+    let g:indentLine_bufNameExclude  = [
+      \ '[Command Line]']
 
     call s:set_indent_line_color(0)
   endfunction
@@ -2915,17 +2918,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   augroup MyVimrc
-    autocmd CmdwinEnter *
-      \ let b:indentLine_enabled = 0
     autocmd ColorScheme *
       \ call s:set_indent_line_color(1)
     autocmd FileType *
-      \ if get(b:, 'indentLine_enabled', 1) && !&l:expandtab |
-      \   execute 'IndentLinesToggle' |
-      \ endif
-    autocmd Syntax *
-      \ if get(b:, 'indentLine_enabled', 1) |
-      \   execute 'IndentLinesReset' |
+      \ if get(b:, 'indentLine_enabled', 1) != &l:expandtab |
+      \   execute "IndentLinesToggle" |
       \ endif
   augroup END
 endif
