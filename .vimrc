@@ -1064,7 +1064,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : 'TextobjXmlattributeDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-xmlattribute-']]}}
 
-  if s:executable('gcc') || s:executable('aclocal')
+  if has('win32') || s:executable('aclocal')
     NeoBundleFetch 'ggreer/the_silver_searcher', {
       \ 'build' : {
       \   'windows' :
