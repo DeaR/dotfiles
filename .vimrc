@@ -655,6 +655,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : 'OperatorReverseLines',
     \   'mappings' : [['nvo', '<Plug>(operator-reverse-']]}}
 
+  NeoBundleLazy 'osyo-manga/vim-operator-search', {
+    \ 'autoload' : {
+    \   'mappings' : [['nvo', '<Plug>(operator-search)']]}}
+
   NeoBundleLazy 'thinca/vim-operator-sequence', {
     \ 'autoload' : {
     \   'functions' : 'operator#sequence#map'},
@@ -3404,6 +3408,17 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nmap svv svsv
   nmap sVV sVsV
+endif
+unlet! s:bundle
+"}}}
+
+"------------------------------------------------------------------------------
+" Operator Search: {{{
+silent! let s:bundle = neobundle#get('operator-search')
+if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+  NXOmap s/ <Plug>(operator-search)
+
+  nmap s// s/s/
 endif
 unlet! s:bundle
 "}}}
