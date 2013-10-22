@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  21-Oct-2013.
+" Last Change:  22-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -219,6 +219,13 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     NeoBundleLazy 'Rip-Rip/clang_complete', {
       \ 'autoload' : {
       \   'filetypes' : ['c', 'cpp', 'objc', 'objcpp']}}
+  endif
+
+  if s:executable('clang-format')
+    NeoBundleLazy 'rhysd/vim-clang-format', {
+      \ 'autoload' : {
+      \   'commands' : ['ClangFormat', 'ClangFormatEchoFormattedCode'],
+      \   'mappings' : [['nvo', '<Plug>(operator-clang-format)']]}}
   endif
 
   NeoBundleLazy 'rhysd/clever-f.vim', {
@@ -628,11 +635,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     ['nvo',
     \      '<Plug>(operator-camelize)', '<Plug>(operator-decamelize)',
     \      '<Plug>(operator-camelize-toggle)']]}}
-
-  NeoBundleLazy 'rhysd/vim-operator-clang-format', {
-    \ 'autoload' : {
-    \   'commands' : ['ClangFormat', 'ClangFormatEchoFormattedCode'],
-    \   'mappings' : [['nvo', '<Plug>(operator-clang-format)']]}}
 
   NeoBundleLazy 'tyru/operator-html-escape.vim', {
     \ 'autoload' : {
