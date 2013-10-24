@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  22-Oct-2013.
+" Last Change:  24-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1356,11 +1356,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'mattn/webapi-vim'
 
-  for s:bundle in filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
-    \ 'neobundle#get(fnamemodify(v:val, ":t")) != {}')
-    execute 'set runtimepath+=' . s:bundle
-  endfor
-  unlet! s:bundle
+  execute 'set runtimepath+=' .
+    \ join(map(filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
+    \                 'neobundle#get(fnamemodify(v:val, ":t")) != {}'),
+    \          'escape(v:val, " ,")'), ',')
   autocmd MyVimrc User VimrcPost
     \ call neobundle#call_hook('on_source')
 endif
