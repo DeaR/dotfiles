@@ -397,8 +397,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
 
   NeoBundle 'vimtaku/hl_matchit.vim', {
-    \ 'autoload' : {
-    \   'commands' : ['HiMatch', 'HiMatchOn', 'HiMatchOff']},
     \ 'depends' : 'tmhedberg/matchit'}
 
   NeoBundleLazy 'othree/html5.vim', {
