@@ -1277,7 +1277,13 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'ynkdir/vim-vimlparser'
 
-  NeoBundle 'Shougo/vimproc.vim', {
+  NeoBundleLazy 'Shougo/vimproc.vim', {
+    \ 'autoload' : {
+    \   'commands' : [
+    \     {'name' : 'VimProcBang',
+    \      'complete' : 'shellcmd'},
+    \     {'name' : 'VimProcRead',
+    \      'complete' : 'shellcmd'}]},
     \ 'build' : {
     \   'windows' : $VCVARSALL . ' ' . $PROCESSOR_ARCHITECTURE . ' & ' .
     \     'nmake -f Make_msvc.mak nodebug=1',
