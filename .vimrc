@@ -3320,12 +3320,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:OmniSharp_typeLookupInPreview    = 0
     let g:OmniSharp_timeout                = 5
     let g:OmniSharp_BufWritePreSyntaxCheck = 1
-    let g:Omnisharp_stop_server            = 0
-
-    autocmd MyVimrc VimLeavePre *
-      \ if OmniSharp#ServerIsRunning() |
-      \   call OmniSharp#StopServer() |
-      \ endif
+    let g:Omnisharp_stop_server            = 2
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
