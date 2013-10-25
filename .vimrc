@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  24-Oct-2013.
+" Last Change:  25-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1004,7 +1004,10 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', {
     \ 'autoload' : {
     \   'commands' : 'TextobjMultitextobjDefaultKeyMappings',
-    \   'mappings' : [['vo', '<Plug>(textobj-multitextobj-']]},
+    \   'mappings' : [['vo', '<Plug>(textobj-multitextobj-']],
+    \   'functions' : [
+    \     'textobj#multitextobj#mapexpr_a',
+    \     'textobj#multitextobj#mapexpr_i']},
     \ 'depends' : 'kana/vim-textobj-jabraces'}
 
   NeoBundleLazy 'sgur/vim-textobj-parameter', {
@@ -4502,56 +4505,53 @@ silent! let s:bundle = neobundle#get('textobj-multitextobj')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:textobj_multitextobj_textobjects_group_a = {
-      \ 'A' : [{'textobj' : 'a"',  'is_cursor_in' : 1, 'noremap' : 1}],
-      \ 'B' : [{'textobj' : 'a''', 'is_cursor_in' : 1, 'noremap' : 1}],
-      \ 'C' : [{'textobj' : 'a`',  'is_cursor_in' : 1, 'noremap' : 1}],
-      \ 'D' : [[
-      \   "\<Plug>(textobj-jabraces-parens-a)",
-      \   "\<Plug>(textobj-jabraces-braces-a)",
-      \   "\<Plug>(textobj-jabraces-brackets-a)",
-      \   "\<Plug>(textobj-jabraces-angles-a)",
-      \   "\<Plug>(textobj-jabraces-double-angles-a)",
-      \   "\<Plug>(textobj-jabraces-kakko-a)",
-      \   "\<Plug>(textobj-jabraces-double-kakko-a)",
-      \   "\<Plug>(textobj-jabraces-yama-kakko-a)",
-      \   "\<Plug>(textobj-jabraces-double-yama-kakko-a)",
-      \   "\<Plug>(textobj-jabraces-kikkou-kakko-a)",
-      \   "\<Plug>(textobj-jabraces-sumi-kakko-a)"]]}
+      \ 'doublequotes' : [
+      \   {'textobj' : 'a"',  'is_cursor_in' : 1, 'noremap' : 1}],
+      \ 'singlequotes' : [
+      \   {'textobj' : 'a''', 'is_cursor_in' : 1, 'noremap' : 1}],
+      \ 'backquotes' : [
+      \   {'textobj' : 'a`',  'is_cursor_in' : 1, 'noremap' : 1}],
+      \ 'jabraces' : [
+      \   ["\<Plug>(textobj-jabraces-parens-a)",
+      \    "\<Plug>(textobj-jabraces-braces-a)",
+      \    "\<Plug>(textobj-jabraces-brackets-a)",
+      \    "\<Plug>(textobj-jabraces-angles-a)",
+      \    "\<Plug>(textobj-jabraces-double-angles-a)",
+      \    "\<Plug>(textobj-jabraces-kakko-a)",
+      \    "\<Plug>(textobj-jabraces-double-kakko-a)",
+      \    "\<Plug>(textobj-jabraces-yama-kakko-a)",
+      \    "\<Plug>(textobj-jabraces-double-yama-kakko-a)",
+      \    "\<Plug>(textobj-jabraces-kikkou-kakko-a)",
+      \    "\<Plug>(textobj-jabraces-sumi-kakko-a)"]]}
     let g:textobj_multitextobj_textobjects_group_i = {
-      \ 'A' : [{'textobj' : 'i"',  'is_cursor_in' : 1, 'noremap' : 1}],
-      \ 'B' : [{'textobj' : 'i''', 'is_cursor_in' : 1, 'noremap' : 1}],
-      \ 'C' : [{'textobj' : 'i`',  'is_cursor_in' : 1, 'noremap' : 1}],
-      \ 'D' : [[
-      \   "\<Plug>(textobj-jabraces-parens-i)",
-      \   "\<Plug>(textobj-jabraces-braces-i)",
-      \   "\<Plug>(textobj-jabraces-brackets-i)",
-      \   "\<Plug>(textobj-jabraces-angles-i)",
-      \   "\<Plug>(textobj-jabraces-double-angles-i)",
-      \   "\<Plug>(textobj-jabraces-kakko-i)",
-      \   "\<Plug>(textobj-jabraces-double-kakko-i)",
-      \   "\<Plug>(textobj-jabraces-yama-kakko-i)",
-      \   "\<Plug>(textobj-jabraces-double-yama-kakko-i)",
-      \   "\<Plug>(textobj-jabraces-kikkou-kakko-i)",
-      \   "\<Plug>(textobj-jabraces-sumi-kakko-i)"]]}
+      \ 'doublequotes' : [
+      \   {'textobj' : 'i"',  'is_cursor_in' : 1, 'noremap' : 1}],
+      \ 'singlequotes' : [
+      \   {'textobj' : 'i''', 'is_cursor_in' : 1, 'noremap' : 1}],
+      \ 'backquotes' : [
+      \   {'textobj' : 'i`',  'is_cursor_in' : 1, 'noremap' : 1}],
+      \ 'jabraces' : [
+      \   ["\<Plug>(textobj-jabraces-parens-i)",
+      \    "\<Plug>(textobj-jabraces-braces-i)",
+      \    "\<Plug>(textobj-jabraces-brackets-i)",
+      \    "\<Plug>(textobj-jabraces-angles-i)",
+      \    "\<Plug>(textobj-jabraces-double-angles-i)",
+      \    "\<Plug>(textobj-jabraces-kakko-i)",
+      \    "\<Plug>(textobj-jabraces-double-kakko-i)",
+      \    "\<Plug>(textobj-jabraces-yama-kakko-i)",
+      \    "\<Plug>(textobj-jabraces-double-yama-kakko-i)",
+      \    "\<Plug>(textobj-jabraces-kikkou-kakko-i)",
+      \    "\<Plug>(textobj-jabraces-sumi-kakko-i)"]]}
   endfunction
 
-  XOmap <SID>(textobj-double-quotes-a) <Plug>(textobj-multitextobj-A-a)
-  XOmap <SID>(textobj-double-quotes-i) <Plug>(textobj-multitextobj-A-i)
-  XOmap <SID>(textobj-single-quotes-a) <Plug>(textobj-multitextobj-B-a)
-  XOmap <SID>(textobj-single-quotes-i) <Plug>(textobj-multitextobj-B-i)
-  XOmap <SID>(textobj-back-quotes-a)   <Plug>(textobj-multitextobj-C-a)
-  XOmap <SID>(textobj-back-quotes-i)   <Plug>(textobj-multitextobj-C-i)
-  XOmap <SID>(textobj-jabraces-a)      <Plug>(textobj-multitextobj-D-a)
-  XOmap <SID>(textobj-jabraces-i)      <Plug>(textobj-multitextobj-D-i)
-
-  XOmap a" <SID>(textobj-double-quotes-a)
-  XOmap i" <SID>(textobj-double-quotes-i)
-  XOmap a' <SID>(textobj-single-quotes-a)
-  XOmap i' <SID>(textobj-single-quotes-i)
-  XOmap a` <SID>(textobj-back-quotes-a)
-  XOmap i` <SID>(textobj-back-quotes-i)
-  XOmap aB <SID>(textobj-jabraces-a)
-  XOmap iB <SID>(textobj-jabraces-i)
+  XOmap <expr> a" textobj#multitextobj#mapexpr_a('doublequotes')
+  XOmap <expr> i" textobj#multitextobj#mapexpr_i('doublequotes')
+  XOmap <expr> a' textobj#multitextobj#mapexpr_a('singlequotes')
+  XOmap <expr> i' textobj#multitextobj#mapexpr_i('singlequotes')
+  XOmap <expr> a` textobj#multitextobj#mapexpr_a('backquotes')
+  XOmap <expr> i` textobj#multitextobj#mapexpr_i('backquotes')
+  XOmap <expr> aB textobj#multitextobj#mapexpr_a('jabraces')
+  XOmap <expr> iB textobj#multitextobj#mapexpr_i('jabraces')
 endif
 unlet! s:bundle
 "}}}
