@@ -1417,19 +1417,8 @@ autocmd MyVimrc BufNewFile,BufRead *
   \ let &l:undofile = (expand('%:p') !~? s:skip_regexp)
 
 " Directory
-if exists('$TEMP')
-  set backupdir^=~/.bak,$TEMP
-  set undodir^=~/.bak,$TEMP
-  set directory^=$TEMP
-elseif exists('$TMP')
-  set backupdir^=~/.bak,$TMP
-  set undodir^=~/.bak,$TMP
-  set directory^=$TMP
-elseif exists('$TMPDIR')
-  set backupdir^=~/.bak,$TMPDIR
-  set undodir^=~/.bak,$TMPDIR
-  set directory^=$TMPDIR
-endif
+set backupdir^=~/.bak
+set undodir^=~/.bak
 
 " ClipBoard
 set clipboard=unnamed
