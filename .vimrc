@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Oct-2013.
+" Last Change:  29-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -875,10 +875,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
     NeoBundleLazy 'marijnh/tern_for_vim', {
       \ 'name' : 'tern_for_vim',
-      \ 'autoload' : {
-      \   'filetypes' : 'javascript'}}
-  else
-    NeoBundleLazy 'teramako/jscomplete-vim', {
       \ 'autoload' : {
       \   'filetypes' : 'javascript'}}
   endif
@@ -2971,20 +2967,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   call extend(s:neocompl_omni_patterns, {
     \ 'jedi#completions' : '.*'})
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" JsComplete: {{{
-silent! let s:bundle = neobundle#get('jscomplete')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:jscomplete_use = ['dom', 'moz', 'xpcom', 'es6th']
-  endfunction
-
-  call extend(s:neocompl_omni_patterns, {
-    \ 'jscomplete#CompleteJS' : '.*'})
 endif
 unlet! s:bundle
 "}}}
