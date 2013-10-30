@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  29-Oct-2013.
+" Last Change:  30-Oct-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2932,7 +2932,7 @@ silent! let s:bundle = neobundle#get('J6uil')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     let g:J6uil_config_dir             = $HOME . '/.local/.J6uil'
-    let g:J6uil_display_interval       = 0
+    let g:J6uil_echo_presence          = 0
     let g:J6uil_open_buffer_cmd        = 'tabedit'
     let g:J6uil_no_default_keymappings = 1
 
