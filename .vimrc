@@ -83,11 +83,11 @@ let s:cmdwin_enable = 1
 let s:altercmd_define = {}
 
 " NeoComplete and NeoComplCache
+let s:neocompl_dictionary_filetype_lists = {}
 let s:neocompl_keyword_patterns          = {}
 let s:neocompl_vim_completefuncs         = {}
-let s:neocompl_dictionary_filetype_lists = {}
-let s:neocompl_force_omni_patterns       = {}
 let s:neocompl_omni_patterns             = {}
+let s:neocompl_force_omni_patterns       = {}
 
 " VCvarsall.bat
 if has('win32') && !exists('$VCVARSALL')
@@ -2497,25 +2497,25 @@ call extend(s:neocompl_vim_completefuncs, {
 call extend(s:neocompl_omni_patterns, {
   \ 'CucumberComplete'              : '\h\w*',
   \ 'adacomplete#Complete'          : '\h\w*',
-  \ 'ccomplete#Complete'            : '\h\w*\%(\.\|->\|::\)\w*',
+  \ 'ccomplete#Complete'            : '\h\w*\|\%(\.\|->\|::\)\w*',
   \ 'clojurecomplete#Complete'      : '\h\w*',
   \ 'csscomplete#CompleteCSS'       : '\h\w*\|[@!]',
   \ 'htmlcomplete#CompleteTags'     : '<[^>]*',
-  \ 'javascriptcomplete#CompleteJS' : '\h\w*\.\w*',
-  \ 'phpcomplete#CompletePHP'       : '\h\w*\%(->\|::\)\w*',
+  \ 'javascriptcomplete#CompleteJS' : '\h\w*\|\.\w*',
+  \ 'phpcomplete#CompletePHP'       : '\h\w*\|\%(->\|::\)\w*',
   \ 'sqlcomplete#Complete'          : '\h\w*',
   \ 'xmlcomplete#CompleteTags'      : '<[^>]*'})
 if has('python3')
   call extend(s:neocompl_omni_patterns, {
-    \ 'python3complete#Complete' : '\h\w*\.\w*'})
+    \ 'python3complete#Complete' : '\h\w*\|\.\w*'})
 endif
 if has('python')
   call extend(s:neocompl_omni_patterns, {
-    \ 'pythoncomplete#Complete' : '\h\w*\.\w*'})
+    \ 'pythoncomplete#Complete' : '\h\w*\|\.\w*'})
 endif
 if has('ruby')
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'rubycomplete#Complete' : '\h\w*\%(\.\|::\)\w*'})
+    \ 'rubycomplete#Complete' : '\h\w*\|\%(\.\|::\)\w*'})
 endif
 "}}}
 
@@ -2671,7 +2671,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'ClangComplete' : '\h\w*\%(\.\|->\|::\)\w*'})
+    \ 'ClangComplete' : '\h\w*\|\%(\.\|->\|::\)\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2796,7 +2796,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'xolox#lua#omnifunc' : '\h\w*\%(\.\|:\)\w*'})
+    \ 'xolox#lua#omnifunc' : '\h\w*\|\%(\.\|:\)\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2848,7 +2848,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('gocode')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   call extend(s:neocompl_omni_patterns, {
-    \ 'gocomplete#Complete' : '\h\w*\.\w*'})
+    \ 'gocomplete#Complete' : '\h\w*\|\.\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2966,7 +2966,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'jedi#completions' : '\h\w*\.\w*'})
+    \ 'jedi#completions' : '\h\w*\|\.\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -3088,16 +3088,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplcache_temporary_dir                =
       \ $HOME . '/.local/.neocomplcache'
 
-    let g:neocomplcache_force_omni_patterns       =
-      \ s:neocompl_force_omni_patterns
-    let g:neocomplcache_keyword_patterns          =
-      \ s:neocompl_keyword_patterns
-    let g:neocomplcache_omni_patterns             =
-      \ s:neocompl_omni_patterns
     let g:neocomplcache_dictionary_filetype_lists =
       \ s:neocompl_dictionary_filetype_lists
+    let g:neocomplcache_keyword_patterns          =
+      \ s:neocompl_keyword_patterns
     let g:neocomplcache_vim_completefuncs         =
       \ s:neocompl_vim_completefuncs
+    let g:neocomplcache_omni_patterns             =
+      \ s:neocompl_omni_patterns
+    let g:neocomplcache_force_omni_patterns       =
+      \ s:neocompl_force_omni_patterns
 
     call neocomplcache#custom_source('syntax_complete',   'rank',  9)
     call neocomplcache#custom_source('snippets_complete', 'rank', 80)
@@ -3182,16 +3182,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neocomplete#data_directory               =
       \ $HOME . '/.local/.neocomplete'
 
-    let g:neocomplete#force_omni_input_patterns        =
-      \ s:neocompl_force_omni_patterns
-    let g:neocomplete#keyword_patterns                 =
-      \ s:neocompl_keyword_patterns
-    let g:neocomplete#sources#omni#input_patterns      =
-      \ s:neocompl_omni_patterns
     let g:neocomplete#sources#dictionary#dictionaryies =
       \ s:neocompl_dictionary_filetype_lists
+    let g:neocomplete#keyword_patterns                 =
+      \ s:neocompl_keyword_patterns
     let g:neocomplete#sources#vim#complete_functions   =
       \ s:neocompl_vim_completefuncs
+    let g:neocomplete#sources#omni#input_patterns      =
+      \ s:neocompl_omni_patterns
+    let g:neocomplete#force_omni_input_patterns        =
+      \ s:neocompl_force_omni_patterns
 
     call neocomplete#custom#source('_', 'matchers', ['matcher_head'])
     call neocomplete#custom#source('syntax_complete',   'rank',  9)
@@ -3299,7 +3299,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'OmniSharp#Complete' : '\h\w*\.\w*'})
+    \ 'OmniSharp#Complete' : '\h\w*\|\.\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -3652,7 +3652,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'PerlComplete' : '\h\w*\%(->\|::\)\w*'})
+    \ 'PerlComplete' : '\h\w*\|\%(->\|::\)\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -4136,7 +4136,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'tern#Complete' : '\h\w*\.\w*'})
+    \ 'tern#Complete' : '\h\w*\|\.\w*'})
 endif
 unlet! s:bundle
 "}}}
