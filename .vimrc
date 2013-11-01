@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  31-Oct-2013.
+" Last Change:  01-Nov-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2497,25 +2497,25 @@ call extend(s:neocompl_vim_completefuncs, {
 call extend(s:neocompl_omni_patterns, {
   \ 'CucumberComplete'              : '\h\w*',
   \ 'adacomplete#Complete'          : '\h\w*',
-  \ 'ccomplete#Complete'            : '\h\w*\|\%(\.\|->\|::\)\w*',
+  \ 'ccomplete#Complete'            : '\h\w*\|\h\w*\%(\.\|->\|::\)\w*',
   \ 'clojurecomplete#Complete'      : '\h\w*',
   \ 'csscomplete#CompleteCSS'       : '\h\w*\|[@!]',
   \ 'htmlcomplete#CompleteTags'     : '<[^>]*',
-  \ 'javascriptcomplete#CompleteJS' : '\h\w*\|\.\w*',
-  \ 'phpcomplete#CompletePHP'       : '\h\w*\|\%(->\|::\)\w*',
+  \ 'javascriptcomplete#CompleteJS' : '\h\w*\|\h\w*\.\w*',
+  \ 'phpcomplete#CompletePHP'       : '\h\w*\|\h\w*\%(->\|::\)\w*',
   \ 'sqlcomplete#Complete'          : '\h\w*',
   \ 'xmlcomplete#CompleteTags'      : '<[^>]*'})
 if has('python3')
   call extend(s:neocompl_omni_patterns, {
-    \ 'python3complete#Complete' : '\h\w*\|\.\w*'})
+    \ 'python3complete#Complete' : '\h\w*\|\h\w*\.\w*'})
 endif
 if has('python')
   call extend(s:neocompl_omni_patterns, {
-    \ 'pythoncomplete#Complete' : '\h\w*\|\.\w*'})
+    \ 'pythoncomplete#Complete' : '\h\w*\|\h\w*\.\w*'})
 endif
 if has('ruby')
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'rubycomplete#Complete' : '\h\w*\|\%(\.\|::\)\w*'})
+    \ 'rubycomplete#Complete' : '\h\w*\|\h\w*\%(\.\|::\)\w*'})
 endif
 "}}}
 
@@ -2671,7 +2671,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'ClangComplete' : '\h\w*\|\%(\.\|->\|::\)\w*'})
+    \ 'ClangComplete' : '\h\w*\|\h\w*\%(\.\|->\|::\)\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2796,7 +2796,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'xolox#lua#omnifunc' : '\h\w*\|\%(\.\|:\)\w*'})
+    \ 'xolox#lua#omnifunc' : '\h\w*\|\h\w*\%(\.\|:\)\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2848,7 +2848,7 @@ unlet! s:bundle
 silent! let s:bundle = neobundle#get('gocode')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   call extend(s:neocompl_omni_patterns, {
-    \ 'gocomplete#Complete' : '\h\w*\|\.\w*'})
+    \ 'gocomplete#Complete' : '\h\w*\|\h\w*\.\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -2966,7 +2966,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'jedi#completions' : '\h\w*\|\.\w*'})
+    \ 'jedi#completions' : '\h\w*\|\h\w*\.\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -3299,7 +3299,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'OmniSharp#Complete' : '\h\w*\|\.\w*'})
+    \ 'OmniSharp#Complete' : '\h\w*\|\h\w*\.\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -3652,7 +3652,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'PerlComplete' : '\h\w*\|\%(->\|::\)\w*'})
+    \ 'PerlComplete' : '\h\w*\|\h\w*\%(->\|::\)\w*'})
 endif
 unlet! s:bundle
 "}}}
@@ -4136,7 +4136,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
-    \ 'tern#Complete' : '\h\w*\|\.\w*'})
+    \ 'tern#Complete' : '\h\w*\|\h\w*\.\w*'})
 endif
 unlet! s:bundle
 "}}}
