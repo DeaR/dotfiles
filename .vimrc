@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  01-Nov-2013.
+" Last Change:  05-Nov-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -395,9 +395,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'filetypes' : 'qf',
     \   'commands' : ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']}}
-
-  NeoBundle 'vimtaku/hl_matchit.vim', {
-    \ 'depends' : 'tmhedberg/matchit'}
 
   NeoBundleLazy 'othree/html5.vim', {
     \ 'autoload' : {
@@ -2873,20 +2870,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     nnoremap <Esc><Esc> :<C-U>nohlsearch<Bar>HierClear<CR><Esc>
   endfunction
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" Highlight MatchIt: {{{
-silent! let s:bundle = neobundle#get('hl_matchit')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:hl_matchit_hl_groupname = 'MatchParen'
-  endfunction
-
-  autocmd MyVimrc CursorMoved,CursorMovedI *
-    \ HiMatch
 endif
 unlet! s:bundle
 "}}}
