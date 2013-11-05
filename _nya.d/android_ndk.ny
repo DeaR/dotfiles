@@ -1,7 +1,7 @@
 # Android NDK for NYAOS 3.x
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  05-Nov-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -26,9 +26,9 @@
 # }}}
 
 android_ndk{
-  set NDK_TOP=C:\Apps\android-ndk-r9
+  set NDK_TOP=C:\Apps\android-ndk-r9b
 
-  set SYSROOT=%NDK_TOP%\platforms\android-18\arch-arm
+  set SYSROOT=%NDK_TOP%\platforms\android-19\arch-arm
   set CFLAGS=-march=armv6 -msoft-float
   if %PROGRAMFILES(X86).defined% -ne 0 then
     set CC=%NDK_TOP%\toolchains\arm-linux-androideabi-4.8\prebuilt\windows-x86_64\bin\arm-linux-androideabi-gcc.exe -mandroid --sysroot=%SYSROOT%
