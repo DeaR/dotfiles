@@ -83,11 +83,36 @@ let s:cmdwin_enable = 1
 let s:altercmd_define = {}
 
 " NeoComplete and NeoComplCache
-let s:neocompl_dictionary_filetype_lists = {}
-let s:neocompl_keyword_patterns          = {}
-let s:neocompl_vim_completefuncs         = {}
-let s:neocompl_omni_patterns             = {}
-let s:neocompl_force_omni_patterns       = {}
+let s:neocompl_dictionary_filetype_lists = {
+  \ '_' : ''}
+let s:neocompl_keyword_patterns = {
+  \ '_' : '[a-zA-Z@0-9_]\+'}
+let s:neocompl_vim_completefuncs = {
+  \ 'SQLSetType' : 'SQL_GetList'}
+let s:neocompl_omni_patterns = {
+  \ 'CucumberComplete'              : '\h\w*',
+  \ 'adacomplete#Complete'          : '\h\w*',
+  \ 'ccomplete#Complete'            : '\h\w*\|\h\w*\%(\.\|->\|::\)\w*',
+  \ 'clojurecomplete#Complete'      : '\h\w*',
+  \ 'csscomplete#CompleteCSS'       : '\h\w*\|[@!]',
+  \ 'htmlcomplete#CompleteTags'     : '<[^>]*',
+  \ 'javascriptcomplete#CompleteJS' : '\h\w*\|\h\w*\.\w*',
+  \ 'phpcomplete#CompletePHP'       : '\h\w*\|\h\w*\%(->\|::\)\w*',
+  \ 'sqlcomplete#Complete'          : '\h\w*',
+  \ 'xmlcomplete#CompleteTags'      : '<[^>]*'}
+let s:neocompl_force_omni_patterns = {}
+if has('python3')
+  call extend(s:neocompl_omni_patterns, {
+    \ 'python3complete#Complete' : '\h\w*\|\h\w*\.\w*'})
+endif
+if has('python')
+  call extend(s:neocompl_omni_patterns, {
+    \ 'pythoncomplete#Complete' : '\h\w*\|\h\w*\.\w*'})
+endif
+if has('ruby')
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'rubycomplete#Complete' : '\h\w*\|\h\w*\%(\.\|::\)\w*'})
+endif
 
 " VCvarsall.bat
 if has('win32') && !exists('$VCVARSALL')
@@ -2477,37 +2502,6 @@ let g:sh_fold_enabled     = 1
 let g:vbnet_no_code_folds = 1
 let g:vimsyn_folding      = 'af'
 let g:xml_syntax_folding  = 1
-
-" NeoComplete and NeoComplCache
-call extend(s:neocompl_dictionary_filetype_lists, {
-  \ '_' : ''})
-call extend(s:neocompl_keyword_patterns, {
-  \ '_' : '[a-zA-Z@0-9_]\+'})
-call extend(s:neocompl_vim_completefuncs, {
-  \ 'SQLSetType' : 'SQL_GetList'})
-call extend(s:neocompl_omni_patterns, {
-  \ 'CucumberComplete'              : '\h\w*',
-  \ 'adacomplete#Complete'          : '\h\w*',
-  \ 'ccomplete#Complete'            : '\h\w*\|\h\w*\%(\.\|->\|::\)\w*',
-  \ 'clojurecomplete#Complete'      : '\h\w*',
-  \ 'csscomplete#CompleteCSS'       : '\h\w*\|[@!]',
-  \ 'htmlcomplete#CompleteTags'     : '<[^>]*',
-  \ 'javascriptcomplete#CompleteJS' : '\h\w*\|\h\w*\.\w*',
-  \ 'phpcomplete#CompletePHP'       : '\h\w*\|\h\w*\%(->\|::\)\w*',
-  \ 'sqlcomplete#Complete'          : '\h\w*',
-  \ 'xmlcomplete#CompleteTags'      : '<[^>]*'})
-if has('python3')
-  call extend(s:neocompl_omni_patterns, {
-    \ 'python3complete#Complete' : '\h\w*\|\h\w*\.\w*'})
-endif
-if has('python')
-  call extend(s:neocompl_omni_patterns, {
-    \ 'pythoncomplete#Complete' : '\h\w*\|\h\w*\.\w*'})
-endif
-if has('ruby')
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'rubycomplete#Complete' : '\h\w*\|\h\w*\%(\.\|::\)\w*'})
-endif
 "}}}
 
 "------------------------------------------------------------------------------
