@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  05-Nov-2013.
+" Last Change:  06-Nov-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -456,12 +456,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'commands' : 'Kwbd'}}
 
   NeoBundleLazy 'thinca/vim-localrc'
-
-  NeoBundleLazy 'tmhedberg/matchit', {
-    \ 'autoload' : {
-    \   'mappings' : [
-    \     ['nvo', '%', 'g%', '[%', ']%'],
-    \     ['v',   'a%']]}}
 
   NeoBundleLazy 'https://raw.github.com/januswel/dotfiles/master/.vim/syntax/mayu.vim', {
     \ 'name' : 'mayu',
@@ -2517,6 +2511,27 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
+" MatchIt: {{{
+source $VIMRUNTIME/macros/matchit.vim
+
+xmap <SID>[% [%
+xmap <SID>]% ]%
+
+xnoremap <script> [% <Esc><SID>[%m'gv``
+xnoremap <script> ]% <Esc><SID>]%m'gv``
+xnoremap <script> a% <Esc><SID>[%v<SID>]%
+
+silent! sunmap %
+silent! sunmap g%
+silent! sunmap [%
+silent! sunmap ]%
+silent! sunmap a%
+
+NXOmap <Space>   %
+NXOmap <S-Space> g%
+"}}}
+
+"------------------------------------------------------------------------------
 " Alignta: {{{
 silent! let s:bundle = neobundle#get('alignta')
 if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
@@ -3011,16 +3026,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   autocmd MyVimrc BufNewFile,BufRead,FileType *
     \ NeoBundleSource localrc
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" MatchIt: {{{
-silent! let s:bundle = neobundle#get('matchit')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  NXOmap <Space>   %
-  NXOmap <S-Space> g%
 endif
 unlet! s:bundle
 "}}}
