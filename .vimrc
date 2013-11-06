@@ -718,7 +718,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'kana/vim-operator-user', {
     \ 'autoload' : {
-    \   'mappings' : [['nvo', '<Plug>(operator-grep)']],
+    \   'mappings' : [
+    \     ['nvo', '<Plug>(operator-grep)', '<Plug>(operator-justify)']],
     \   'function_prefix' : 'operator'}}
 
   NeoBundleLazy 'deris/parajump', {
@@ -3598,11 +3599,14 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endfunction
 
     call operator#user#define('grep', s:SID_PREFIX() . 'operator_grep')
+    call operator#user#define_ex_command('justify', 'Justify tw 4')
   endfunction
 
   NXOmap sg <Plug>(operator-grep)
+  NXOmap sJ <Plug>(operator-justify)
 
   nmap sgg sgsg
+  nmap sJJ sJsJ
 
   if neobundle#get('unite') == {}
     nnoremap sgsg :<C-U>execute input(':', 'grep ')<CR>
