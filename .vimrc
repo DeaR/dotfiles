@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  06-Nov-2013.
+" Last Change:  11-Nov-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -4804,38 +4804,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
-  function! s:unite_search_expr()
-    return line('$') > 10000
-  endfunction
-  function! s:unite_search_forward()
-    return s:unite_search_expr() ?
-      \ (":\<C-U>Unite line/fast" .
-      \  " -buffer-name=search -no-split -start-insert\<CR>") :
-      \ (":\<C-U>Unite line" .
-      \  " -buffer-name=search -no-split -start-insert\<CR>")
-  endfunction
-  function! s:unite_search_backward()
-    return s:unite_search_expr() ?
-      \ (":\<C-U>Unite line/fast:backward" .
-      \  " -buffer-name=search -no-split -start-insert\<CR>") :
-      \ (":\<C-U>Unite line:backward" .
-      \  " -buffer-name=search -no-split -start-insert\<CR>")
-  endfunction
-  function! s:unite_search_cword_forward()
-    return s:unite_search_expr() ?
-      \ (":\<C-U>UniteWithCursorWord line/fast" .
-      \  " -buffer-name=search -no-split -no-start-insert\<CR>") :
-      \ (":\<C-U>UniteWithCursorWord line" .
-      \  " -buffer-name=search -no-split -no-start-insert\<CR>")
-  endfunction
-  function! s:unite_search_cword_backward()
-    return s:unite_search_expr() ?
-      \ (":\<C-U>UniteWithCursorWord line/fast:backward" .
-      \  " -buffer-name=search -no-split -no-start-insert\<CR>") :
-      \ (":\<C-U>UniteWithCursorWord line:backward" .
-      \  " -buffer-name=search -no-split -no-start-insert\<CR>")
-  endfunction
-
   NXnoremap <Leader>u <Nop>
   NXnoremap <script> <Leader>uu <SID>:<C-U>Unite<Space>
 
@@ -4913,10 +4881,18 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ :<C-U>execute 'Unite vimgrep:%:' . escape(@/, '\ :')
     \ '-buffer-name=search -no-split -multi-line'<CR>
 
-  NXnoremap <expr> <Leader>u/ <SID>unite_search_forward()
-  NXnoremap <expr> <Leader>u? <SID>unite_search_backward()
-  NXnoremap <expr> <Leader>u* <SID>unite_search_cword_forward()
-  NXnoremap <expr> <Leader>u# <SID>unite_search_cword_backward()
+  NXnoremap <Leader>u/
+    \ :<C-U>Unite line
+    \ -buffer-name=search -no-split -start-insert<CR>
+  NXnoremap <Leader>u?
+    \ :<C-U>Unite line:backward
+    \ -buffer-name=search -no-split -start-insert<CR>
+  NXnoremap <Leader>u*
+    \ :<C-U>UniteWithCursorWord line
+    \ -buffer-name=search -no-split -no-start-insert<CR>
+  NXnoremap <Leader>u#
+    \ :<C-U>UniteWithCursorWord line:backward
+    \ -buffer-name=search -no-split -no-start-insert<CR>
 
   NXmap <Leader>ug/ <Leader>u*
   NXmap <Leader>ug? <Leader>u#
