@@ -84,9 +84,7 @@ let s:altercmd_define = {}
 
 " NeoComplete and NeoComplCache
 let s:neocompl_dictionary_filetype_lists = {
-  \ '_' : ''}
-let s:neocompl_keyword_patterns = {
-  \ '_' : '[a-zA-Z@0-9_]\+'}
+  \ 'default' : ''}
 let s:neocompl_vim_completefuncs = {
   \ 'SQLSetType' : 'SQL_GetList'}
 let s:neocompl_omni_patterns = {
@@ -3078,8 +3076,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     let g:neocomplcache_dictionary_filetype_lists =
       \ s:neocompl_dictionary_filetype_lists
-    let g:neocomplcache_keyword_patterns          =
-      \ s:neocompl_keyword_patterns
     let g:neocomplcache_vim_completefuncs         =
       \ s:neocompl_vim_completefuncs
     let g:neocomplcache_omni_patterns             =
@@ -3172,8 +3168,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
     let g:neocomplete#sources#dictionary#dictionaryies =
       \ s:neocompl_dictionary_filetype_lists
-    let g:neocomplete#keyword_patterns                 =
-      \ s:neocompl_keyword_patterns
     let g:neocomplete#sources#vim#complete_functions   =
       \ s:neocompl_vim_completefuncs
     let g:neocomplete#sources#omni#input_patterns      =
