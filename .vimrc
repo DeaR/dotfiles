@@ -2936,16 +2936,13 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:J6uil_echo_presence          = 0
     let g:J6uil_open_buffer_cmd        = 'tabedit'
     let g:J6uil_no_default_keymappings = 1
+    let g:J6uil_user                   = 'DeaR'
 
     if has('win32') && isdirectory($PROGRAMFILES . '/ImageMagick-6.8.6-Q16')
       let g:J6uil_display_icon = 1
       let $PATH = $PROGRAMFILES . '\ImageMagick-6.8.6-Q16;' . $PATH
     elseif !has('win32') && s:executable('convert')
       let g:J6uil_display_icon = 1
-    endif
-
-    if filereadable($HOME . '/.vim/J6uil_config.vim')
-      source ~/.vim/j6uil_config.vim
     endif
   endfunction
 
