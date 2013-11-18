@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  11-Nov-2013.
+" Last Change:  17-Nov-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -543,7 +543,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \   'insert' : 1},
       \ 'depends' : [
       \   'hrsh7th/vim-neco-calc',
-      \   'ujihisa/neco-ghc',
+      \   'eagletmt/neco-ghc',
       \   'ujihisa/neco-look',
       \   'Shougo/neosnippet.vim']}
     call extend(s:neocompl_vim_completefuncs, {
@@ -580,7 +580,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
       \   'insert' : 1},
       \ 'depends' : [
       \   'hrsh7th/vim-neco-calc',
-      \   'ujihisa/neco-ghc',
+      \   'eagletmt/neco-ghc',
       \   'ujihisa/neco-look',
       \   'Shougo/neosnippet.vim']}
     call extend(s:neocompl_vim_completefuncs, {
