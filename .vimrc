@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  17-Nov-2013.
+" Last Change:  18-Nov-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2006,13 +2006,13 @@ nnoremap   s?? g??
 " Change File Format Option: {{{
 command! -bar
   \ FfUnix
-  \ setlocal modified fileformat=unix
+  \ setlocal fileformat=unix
 command! -bar
   \ FfDos
-  \ setlocal modified fileformat=dos
+  \ setlocal fileformat=dos
 command! -bar
   \ FfMac
-  \ setlocal modified fileformat=mac
+  \ setlocal fileformat=mac
 "}}}
 
 "------------------------------------------------------------------------------
@@ -2020,30 +2020,30 @@ command! -bar
 if has('multi_byte')
   command! -bar
     \ FencUtf8
-    \ setlocal modified fileencoding=utf-8
+    \ setlocal fileencoding=utf-8
   command! -bar
     \ FencUtf16le
-    \ setlocal modified fileencoding=utf-16le
+    \ setlocal fileencoding=utf-16le
   command! -bar
     \ FencUtf16
-    \ setlocal modified fileencoding=utf-16
+    \ setlocal fileencoding=utf-16
   command! -bar
     \ FencCp932
-    \ setlocal modified fileencoding=cp932
+    \ setlocal fileencoding=cp932
   command! -bar
     \ FencEucjp
-    \ setlocal modified fileencoding=euc-jp
+    \ setlocal fileencoding=euc-jp
   if s:enc_jisx0213
     command! -bar
       \ FencEucJisx0213
-      \ setlocal modified fileencoding=euc-jisx0213
+      \ setlocal fileencoding=euc-jisx0213
     command! -bar
       \ FencIso2022jp
-      \ setlocal modified fileencoding=iso-2022-jp-3
+      \ setlocal fileencoding=iso-2022-jp-3
   else
     command! -bar
       \ FencIso2022jp
-      \ setlocal modified fileencoding=iso-2022-jp
+      \ setlocal fileencoding=iso-2022-jp
   endif
 endif
 "}}}
