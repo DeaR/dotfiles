@@ -175,6 +175,9 @@ endfunction
 " Check Android OS
 let s:is_android = has('unix') &&
   \ ($HOSTNAME ==? 'android' || $VIM =~? 'net\.momodalo\.app\.vimtouch')
+
+" Check japanese
+let s:is_lang_ja = has('multi_lang') && v:lang =~? '^ja'
 "}}}
 
 "------------------------------------------------------------------------------
@@ -1596,7 +1599,7 @@ if has('multi_byte')
 endif
 set statusline+=\ (%v,%l)/%L
 
-if v:lang =~? '^ja' && has('multi_lang')
+if s:is_lang_ja
   set statusline+=\ %4P
 else
   set statusline+=\ %3P
@@ -2357,7 +2360,7 @@ nnoremap <F12> :<C-U>call <SID>toggle_line_number_style()<CR>
 " Insert One Character: {{{
 function! s:insert_one_char(cmd)
   echohl ModeMsg
-  if v:lang =~? '^ja' && has('multi_lang')
+  if s:is_lang_ja
     echo '-- 挿入 (1文字) --'
   else
     echo '-- INSERT (one char) --'
@@ -2375,7 +2378,7 @@ NXnoremap <expr> <M-I> <SID>insert_one_char('I')
 "------------------------------------------------------------------------------
 " Auto MkDir: {{{
 function! s:auto_mkdir(dir, force)
-  if v:lang =~? '^ja' && has('multi_lang')
+  if s:is_lang_ja
     let msg = '"' . a:dir . '" は存在しません。作成しますか?'
     let choices = "はい(&Y)\nいいえ(&N)"
   else
@@ -2986,7 +2989,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   function! s:bundle.hooks.on_source(bundle)
     function! s:kwbd()
       if &l:modified
-        if v:lang =~? '^ja' && has('multi_lang')
+        if s:is_lang_ja
           let msg = '変更を "' . expand('%:t') . '" に保存しますか?'
           let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
         else
