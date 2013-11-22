@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-Nov-2013.
+" Last Change:  22-Nov-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -852,10 +852,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'vim-ruby/vim-ruby', {
     \ 'autoload' : {
     \   'filetypes' : ['eruby', 'haml', 'ruby']}}
-
-  NeoBundleLazy 'DeaR/savevers.vim', {
-    \ 'autoload' : {
-    \   'commands' : ['Purge', 'VersDiff']}}
 
   NeoBundleLazy 'thinca/vim-scouter', {
     \ 'autoload' : {
@@ -3827,26 +3823,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nnoremap <M-O>
     \ :<C-U>call append(line('.') - 1, repeat([''], v:count1))<Bar>
     \ call repeat#set('<M-O>', v:count1)<CR>
-endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" SaveVers: {{{
-silent! let s:bundle = neobundle#get('savevers')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    let g:savevers_dirs         = &backupdir
-    let g:savevers_hierarchical = 1
-    let g:versdiff_no_resize    = 1
-  endfunction
-
-  NXnoremap <F6> :<C-U>VersDiff -<CR>
-  NXnoremap <F7> :<C-U>VersDiff +<CR>
-  NXnoremap <F8> :<C-U>execute 'VersDiff -c'<Bar>Undiff<CR>
-
-  autocmd MyVimrc BufNewFile,BufRead *
-    \ NeoBundleSource savevers
 endif
 unlet! s:bundle
 "}}}
