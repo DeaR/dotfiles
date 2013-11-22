@@ -200,9 +200,24 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'tyru/vim-altercmd', {
     \ 'autoload' : {
     \   'commands' : [
-    \     'AlterCommand',  'NAlterCommand', 'OAlterCommand',
-    \     'VAlterCommand', 'XAlterCommand', 'SAlterCommand',
-    \     'IAlterCommand', 'CAlterCommand', 'LAlterCommand']}}
+    \     {'name' : 'AlterCommand',
+    \      'complete' : 'command'},
+    \     {'name' : 'NAlterCommand',
+    \      'complete' : 'command'},
+    \     {'name' : 'VAlterCommand',
+    \      'complete' : 'command'},
+    \     {'name' : 'XAlterCommand',
+    \      'complete' : 'command'},
+    \     {'name' : 'SAlterCommand',
+    \      'complete' : 'command'},
+    \     {'name' : 'OAlterCommand',
+    \      'complete' : 'command'},
+    \     {'name' : 'IAlterCommand',
+    \      'complete' : 'command'},
+    \     {'name' : 'CAlterCommand',
+    \      'complete' : 'command'},
+    \     {'name' : 'LAlterCommand',
+    \      'complete' : 'command'}]}}
 
   NeoBundleLazy 'kana/vim-altr', {
     \ 'autoload' : {
@@ -369,6 +384,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'filetypes' : 'haskell'}}
 
+  NeoBundleLazy 'yomi322/vim-gitcomplete'
+
   NeoBundleLazy 'gregsexton/gitv', {
     \ 'autoload' : {
     \   'commands' : 'Gitv'},
@@ -477,6 +494,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>Kwbd']],
     \   'commands' : 'Kwbd'}}
+
+  NeoBundleLazy 'dbakker/vim-lint'
 
   NeoBundleLazy 'thinca/vim-localrc'
 
@@ -658,7 +677,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'sgur/vim-operator-openbrowser', {
     \ 'autoload' : {
-    \   'mappings' : [['nvo', '<Plug>(operator-openbrowser)']]}}
+    \   'mappings' : [['nvo', '<Plug>(operator-openbrowser)']]},
+    \ 'depends' : 'tyru/open-browser.vim'}
 
   NeoBundleLazy 'kana/vim-operator-replace', {
     \ 'autoload' : {
@@ -855,7 +875,9 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'thinca/vim-scouter', {
     \ 'autoload' : {
-    \   'commands' : 'Scouter'}}
+    \   'commands' : [
+    \     {'name' : 'Scouter',
+    \      'complete' : 'file'}]}}
 
   NeoBundleLazy 'DeaR/vim-scratch', {
     \ 'autoload' : {
@@ -1361,7 +1383,11 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'osyo-manga/vim-watchdogs', {
     \ 'autoload' : {
     \   'commands' : [
-    \     'WatchdogsRun', 'WatchdogsRunSilent', 'WatchdogsRunSweep']},
+    \     {'name' : 'WatchdogsRun',
+    \      'complete' : 'customlist,quickrun#complete'},
+    \     {'name' : 'WatchdogsRunSilent',
+    \      'complete' : 'customlist,quickrun#complete'},
+    \     'WatchdogsRunSweep']},
     \ 'depends' : [
     \   'dbakker/vim-lint',
     \   'thinca/vim-quickrun',
@@ -3579,7 +3605,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
           \ '-buffer-name=grep -no-split -multi-line'
       else
         execute input(':',
-          \ 'grep "' . escape(join(lines), s:operator_grep_escape) . '" '))
+          \ 'grep "' . escape(join(lines), s:operator_grep_escape) . '" ')
       endif
     endfunction
 
