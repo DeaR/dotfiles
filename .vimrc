@@ -1435,23 +1435,13 @@ endif
 set history=100
 
 " Backup
-set backup
-set patchmode=.clean
-set suffixes+=.clean
-set backupskip+=*.clean,*/.drive.r/*,*/.hg/*,*/.git/*,*/.svn/*
-let s:skip_regexp = '\.clean$\|[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
-
-" Swap
+set nobackup
 set swapfile
-
-" Undo persistence
 set undofile
+set undodir^=~/.bak
+let s:skip_regexp = '[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
 autocmd MyVimrc BufNewFile,BufRead *
   \ let &l:undofile = (expand('%:p') !~? s:skip_regexp)
-
-" Directory
-set backupdir^=~/.bak
-set undodir^=~/.bak
 
 " ClipBoard
 set clipboard=unnamed
@@ -1470,7 +1460,7 @@ set ambiwidth=double
 
 " Wild menu
 set wildmenu
-set wildignore+=*.swp,*.clean,.drive.r,.hg,.git,.svn
+set wildignore+=*.swp,.drive.r,.hg,.git,.svn
 set wildignore+=*.o,*.a,*.so,*.obj,*.lib,*.dll,*.exe
 set wildignore+=*.lc,*.elc,*.fas,*.pyc,*.luac
 
