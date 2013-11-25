@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-Oct-2013.
+" Last Change:  25-Nov-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -79,6 +79,12 @@ endfunction
 " Check Android OS
 let s:is_android = has('unix') &&
   \ ($HOSTNAME ==? 'android' || $VIM =~? 'net\.momodalo\.app\.vimtouch')
+
+" Check japanese
+let s:is_lang_ja = has('multi_lang') && v:lang =~? '^ja'
+
+" Check NeoBundle
+let s:has_neobundle = isdirectory($HOME . '/.local/bundle/neobundle')
 "}}}
 "}}}
 
