@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  22-Nov-2013.
+" Last Change:  25-Nov-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -3274,8 +3274,6 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let g:neosnippet#disable_runtime_snippets._ = 1
 
     imap <C-E> <Plug>(neosnippet_expand_or_jump)
-
-    call neosnippet#initialize()
   endfunction
 
   smap <C-E> <Plug>(neosnippet_expand_or_jump)
