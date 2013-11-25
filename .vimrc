@@ -178,11 +178,14 @@ let s:is_android = has('unix') &&
 
 " Check japanese
 let s:is_lang_ja = has('multi_lang') && v:lang =~? '^ja'
+
+" Check NeoBundle
+let s:has_neobundle = isdirectory($HOME . '/.local/bundle/neobundle')
 "}}}
 
 "------------------------------------------------------------------------------
 " NeoBundle: {{{
-if isdirectory($HOME . '/.local/bundle/neobundle')
+if s:has_neobundle
   set runtimepath+=~/.local/bundle/neobundle
   let g:neobundle#enable_name_conversion = 1
   let g:neobundle#enable_tail_path       = 1
@@ -221,10 +224,14 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \      'complete' : 'command'},
     \     {'name' : 'LAlterCommand',
     \      'complete' : 'command'}]}}
+  autocmd MyVimrc User CmdlineEnter
+    \ NeoBundleSource altercmd
 
   NeoBundleLazy 'kana/vim-altr', {
     \ 'autoload' : {
     \   'mappings' : [['nvoi', '<Plug>(altr-']]}}
+  autocmd MyVimrc User CmdlineEnter
+    \ NeoBundleSource altr
 
   NeoBundleLazy 'osyo-manga/vim-anzu', {
     \ 'autoload' : {
@@ -247,6 +254,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   NeoBundleLazy 'autodate.vim', {
     \ 'autoload' : {
     \   'commands' : ['Autodate', 'AutodateON', 'AutodateOFF']}}
+  autocmd MyVimrc BufNewFile,BufRead *
+    \ NeoBundleSource autodate
 
   NeoBundleLazy 'vim-jp/autofmt'
 
@@ -333,6 +342,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \     {'name' : 'EskkFixDictionary',
     \      'complete' : 'file'}],
     \   'mappings' : [['i', '<Plug>(eskk:']]}}
+  autocmd MyVimrc User CmdlineEnter
+    \ NeoBundleSource eskk
 
   NeoBundleLazy 'kana/vim-filetype-haskell', {
     \ 'autoload' : {
@@ -500,7 +511,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   NeoBundleLazy 'dbakker/vim-lint'
 
-  NeoBundleLazy 'thinca/vim-localrc'
+  NeoBundle 'thinca/vim-localrc'
 
   NeoBundleLazy 'https://raw.github.com/januswel/dotfiles/master/.vim/syntax/mayu.vim', {
     \ 'name' : 'mayu',
@@ -792,6 +803,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'mappings' : [
     \     ['vo', '<Plug>(textobj-precious-i)'],
     \     ['n',  '<Plug>(precious-quickrun-op)']]}}
+  autocmd MyVimrc FileType *
+    \ NeoBundleSource precious
 
   NeoBundleLazy 'thinca/vim-prettyprint', {
     \ 'autoload' : {
@@ -1195,11 +1208,19 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \ 'autoload' : {
     \   'unite_sources' : 'ssh'},
     \ 'depends' : 'Shougo/vimfiler.vim'}
+  autocmd MyVimrc User VimrcPost
+    \ if has('vim_starting') && filter(argv(), 'v:val =~# "^ssh:"') != [] |
+    \   NeoBundleSource unite-ssh |
+    \ endif
 
   NeoBundleLazy 'Shougo/unite-sudo', {
     \ 'autoload' : {
     \   'unite_sources' : 'sudo'},
     \ 'depends' : 'Shougo/vimfiler.vim'}
+  autocmd MyVimrc User VimrcPost
+    \ if has('vim_starting') && filter(argv(), 'v:val =~# "^sudo:"') != [] |
+    \   NeoBundleSource unite-sudo |
+    \ endif
 
   NeoBundleLazy 'tsukkee/unite-tag', {
     \ 'autoload' : {
@@ -1221,6 +1242,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     NeoBundleLazy 'koron/verifyenc-vim', {
       \ 'autoload' : {
       \   'commands' : 'VerifyEnc'}}
+    autocmd MyVimrc BufReadPre *
+      \ NeoBundleSource verifyenc
   endif
 
   NeoBundleLazy 'Shougo/vim-vcs', {
@@ -1396,6 +1419,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     \   'thinca/vim-quickrun',
     \   'syngan/vim-vimlint',
     \   'ynkdir/vim-vimlparser']}
+  autocmd MyVimrc FileType *
+    \ NeoBundleSource watchdogs
 
   NeoBundleLazy 'mattn/webapi-vim'
 
@@ -1525,9 +1550,11 @@ if &t_Co > 2
 endif
 
 " Grep
-if s:executable('jvgrep') || neobundle#get('jvgrep') != {}
+if (s:has_neobundle && neobundle#get('jvgrep') != {}) ||
+  \ s:executable('jvgrep')
   set grepprg=jvgrep\ -n\ --exclude\ .drive.r
-elseif s:executable('ag') || neobundle#get('the_silver_searcher') != {}
+elseif (s:has_neobundle && neobundle#get('the_silver_searcher') != {}) ||
+  \ s:executable('ag')
   set grepprg=ag\ --line-numbers\ --nocolor\ --nogroup\ --hidden\
     \ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
 elseif s:executable('grep')
@@ -2549,9 +2576,8 @@ NXOmap <S-Space> g%
 
 "------------------------------------------------------------------------------
 " Alignta: {{{
-silent! let s:bundle = neobundle#get('alignta')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('alignta')
+  function! neobundle#tapped.hooks.on_source(bundle)
     function! s:operator_alignta(motion_wise)
       execute input(':', line("'[") . ',' . line("']") . 'Alignta ')
     endfunction
@@ -2562,15 +2588,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXOmap s= <Plug>(operator-alignta)
 
   nmap s== s=s=
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " AlterCommand: {{{
-silent! let s:bundle = neobundle#get('altercmd')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_post_source(bundle)
+if s:has_neobundle && neobundle#tap('altercmd')
+  function! neobundle#tapped.hooks.on_post_source(bundle)
     for [key, value] in items(s:altercmd_define)
       execute 'CAlterCommand' key value
     endfor
@@ -2582,35 +2608,28 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endfor
   endfunction
 
-  augroup MyVimrc
-    autocmd CmdwinEnter :
-      \ call s:cmdwin_enter_altercmd()
-    autocmd User CmdlineEnter
-      \ NeoBundleSource altercmd
-  augroup END
+  autocmd MyVimrc CmdwinEnter :
+    \ call s:cmdwin_enter_altercmd()
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Altr: {{{
-silent! let s:bundle = neobundle#get('altr')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('altr')
   nmap g<M-f>     <Plug>(altr-forward)
   nmap g<M-F>     <Plug>(altr-back)
   nmap <C-W><M-f> <SID>(split-nicely)<Plug>(altr-forward)
   nmap <C-W><M-F> <SID>(split-nicely)<Plug>(altr-back)
 
-  autocmd MyVimrc User CmdlineEnter
-    \ NeoBundleSource altr
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Anzu: {{{
-silent! let s:bundle = neobundle#get('anzu')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('anzu')
   set shortmess+=s
 
   nmap <expr> n
@@ -2621,38 +2640,35 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ <SID>search_forward_expr() ?
     \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)' :
     \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)'
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " AutoDate: {{{
-silent! let s:bundle = neobundle#get('autodate')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('autodate')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:autodate_lines = 10
   endfunction
 
-  autocmd MyVimrc BufNewFile,BufRead *
-    \ NeoBundleSource autodate
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " AutoFmt: {{{
-silent! let s:bundle = neobundle#get('autofmt')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('autofmt')
   set formatexpr=autofmt#japanese#formatexpr()
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Clang Complete: {{{
-silent! let s:bundle = neobundle#get('clang_complete')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('clang_complete')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:clang_complete_auto          = 0
     let g:clang_auto_select            = 0
     let g:clang_user_options           = '-w'
@@ -2681,7 +2697,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
-  function! s:bundle.hooks.on_post_source(bundle)
+  function! neobundle#tapped.hooks.on_post_source(bundle)
     function s:clang_complete_init()
       silent! iunmap <buffer> <C-X><C-U>
       silent! iunmap <buffer> .
@@ -2700,15 +2716,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   call extend(s:neocompl_omni_patterns, {
     \ 'ClangComplete' : '\h\w*\|\h\w*\%(\.\|->\|::\)\w*'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Clever F: {{{
-silent! let s:bundle = neobundle#get('clever-f')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('clever-f')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:clever_f_not_overwrites_standard_mappings = 1
     let g:clever_f_fix_key_direction                = 1
     let g:clever_f_use_migemo                       = 1
@@ -2737,15 +2753,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXOmap <M-.> <Plug>(clever-f-reset)
   NXOmap <M-;> <Plug>(clever-f-repeat-forward)
   NXOmap <M-,> <Plug>(clever-f-repeat-back)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " ColumnJump: {{{
-silent! let s:bundle = neobundle#get('columnjump')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('columnjump')
+  function! neobundle#tapped.hooks.on_source(bundle)
     nmap <SID>(columnjump-backward) <Plug>(columnjump-backward)
     nmap <SID>(columnjump-forward)  <Plug>(columnjump-forward)
 
@@ -2755,15 +2771,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   NXOmap ( <Plug>(columnjump-backward)
   NXOmap ) <Plug>(columnjump-forward)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Emmet: {{{
-silent! let s:bundle = neobundle#get('emmet')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('emmet')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:user_emmet_settings   = {
       \ 'lang' : 'ja',
       \ 'indentation' : '  ',
@@ -2772,16 +2788,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   call extend(s:neocompl_omni_patterns, {
     \ 'emmet#CompleteTag' : '\h\w*'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 "}}}
 
 "------------------------------------------------------------------------------
 " Eskk: {{{
-silent! let s:bundle = neobundle#get('eskk')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('eskk')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:eskk#directory               = $HOME . '/.local/.eskk'
     let g:eskk#no_default_mappings     = 1
     let g:eskk#start_completion_length = 1
@@ -2800,18 +2816,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   map! <C-J> <Plug>(eskk:toggle)
   lmap <C-J> <Plug>(eskk:toggle)
 
-  autocmd MyVimrc User CmdlineEnter
-    \ NeoBundleSource eskk
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 "}}}
 
 "------------------------------------------------------------------------------
 " FT_Lua: {{{
-silent! let s:bundle = neobundle#get('ft_lua')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('ft_lua')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:lua_complete_omni = 1
     let g:lua_check_syntax  = 0
     let g:lua_check_globals = 0
@@ -2825,15 +2838,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   call extend(s:neocompl_omni_patterns, {
     \ 'xolox#lua#omnifunc' : '\h\w*\|\h\w*\%(\.\|:\)\w*'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Fugitive: {{{
-silent! let s:bundle = neobundle#get('fugitive')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_post_source(bundle)
+if s:has_neobundle && neobundle#tap('fugitive')
+  function! neobundle#tapped.hooks.on_post_source(bundle)
     call fugitive#detect(expand('%') == '' ? getcwd() : expand('%:p'))
   endfunction
 
@@ -2848,15 +2861,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ exists(':Gitv') ? ':<C-U>Gitv<CR>' : ':<C-U>Glog<CR>'
 
   NXnoremap <script> <Leader>gg <SID>:<C-U>Git<Space>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Goto File: {{{
-silent! let s:bundle = neobundle#get('gf-user')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('gf-user')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:gf_user_no_default_key_mappings = 1
   endfunction
 
@@ -2867,49 +2880,49 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXmap <C-W>gf    <Plug>(gf-user-<C-w>gf)
   NXmap <C-W>gF    <Plug>(gf-user-<C-w>gF)
   NXmap <C-W><C-F> <Plug>(gf-user-<C-w><C-f>)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Gocode: {{{
-silent! let s:bundle = neobundle#get('gocode')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('gocode')
   call extend(s:neocompl_omni_patterns, {
     \ 'gocomplete#Complete' : '\h\w*\|\h\w*\.\w*'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Grex: {{{
-silent! let s:bundle = neobundle#get('grex')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('grex')
   NXOmap sD <Plug>(operator-grex-delete)
   NXOmap sY <Plug>(operator-grex-yank)
 
   nmap sDD sDsD
   nmap sYY sYsY
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Hier: {{{
-silent! let s:bundle = neobundle#get('hier')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('hier')
+  function! neobundle#tapped.hooks.on_source(bundle)
     nnoremap <Esc><Esc> :<C-U>nohlsearch<Bar>HierClear<CR><Esc>
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " IndentLine: {{{
-silent! let s:bundle = neobundle#get('indentLine')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('indentLine')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:indentLine_char            = '|'
     let g:indentLine_maxLines        = 10000
     let g:indentLine_noConcealCursor = 1
@@ -2936,15 +2949,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \   execute "IndentLinesToggle" |
       \ endif
   augroup END
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " J6uil: {{{
-silent! let s:bundle = neobundle#get('J6uil')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('J6uil')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:J6uil_config_dir             = $HOME . '/.local/.J6uil'
     let g:J6uil_echo_presence          = 0
     let g:J6uil_open_buffer_cmd        = 'tabedit'
@@ -2961,15 +2974,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   call extend(s:altercmd_define, {
     \ 'j[6uil]' : 'J6uil'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Jedi: {{{
-silent! let s:bundle = neobundle#get('jedi')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('jedi')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:jedi#auto_initialization    = 0
     let g:jedi#auto_vim_configuration = 0
     let g:jedi#popup_on_dot           = 0
@@ -2978,15 +2991,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   call extend(s:neocompl_omni_patterns, {
     \ 'jedi#completions' : '\h\w*\|\h\w*\.\w*'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Kwbdi: {{{
-silent! let s:bundle = neobundle#get('kwbdi')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('kwbdi')
+  function! neobundle#tapped.hooks.on_source(bundle)
     function! s:kwbd()
       if &l:modified
         if s:is_lang_ja
@@ -3018,15 +3031,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ 'bd[elete]' : 'Kwbd',
     \
     \ '_bd[elete]' : 'bdelete'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Localrc: {{{
-silent! let s:bundle = neobundle#get('localrc')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_post_source(bundle)
+if s:has_neobundle && neobundle#tap('localrc')
+  function! neobundle#tapped.hooks.on_post_source(bundle)
     call localrc#load(g:localrc_filename)
 
     if &filetype != ''
@@ -3037,30 +3050,27 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     endif
   endfunction
 
-  autocmd MyVimrc BufNewFile,BufRead,FileType *
-    \ NeoBundleSource localrc
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " MapList: {{{
-silent! let s:bundle = neobundle#get('maplist')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('maplist')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:maplist_mode_length  = 4
     let g:maplist_lhs_length   = 50
     let g:maplist_local_length = 2
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Narrow: {{{
-silent! let s:bundle = neobundle#get('narrow')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('narrow')
+  function! neobundle#tapped.hooks.on_source(bundle)
     call operator#user#define_ex_command('narrow', 'Narrow')
 
     NXnoremap sN :<C-U>Widen<CR>
@@ -3069,15 +3079,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXOmap sn <Plug>(operator-narrow)
 
   nmap snn snsn
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " NeoComplCache: {{{
-silent! let s:bundle = neobundle#get('neocomplcache')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('neocomplcache')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:neocomplcache_enable_at_startup            = 1
     let g:neocomplcache_enable_auto_select           = 0
     let g:neocomplcache_enable_auto_delimiter        = 1
@@ -3164,15 +3174,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~ '\s'
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " NeoComplete: {{{
-silent! let s:bundle = neobundle#get('neocomplete')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('neocomplete')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:neocomplete#enable_at_startup            = 1
     let g:neocomplete#enable_auto_select           = 0
     let g:neocomplete#enable_auto_delimiter        = 1
@@ -3257,15 +3267,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~ '\s'
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " NeoSnippet: {{{
-silent! let s:bundle = neobundle#get('neosnippet')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('neosnippet')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:neosnippet#snippets_directory           = $HOME . '/.vim/snippets'
     let g:neosnippet#disable_select_mode_mappings = 0
 
@@ -3278,15 +3288,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   smap <C-E> <Plug>(neosnippet_expand_or_jump)
   xmap <C-E> <Plug>(neosnippet_expand_target)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " OmniSharp: {{{
-silent! let s:bundle = neobundle#get('Omnisharp')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('Omnisharp')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:OmniSharp_typeLookupInPreview    = 0
     let g:OmniSharp_timeout                = 5
     let g:OmniSharp_BufWritePreSyntaxCheck = 1
@@ -3295,24 +3305,24 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   call extend(s:neocompl_omni_patterns, {
     \ 'OmniSharp#Complete' : '\h\w*\|\h\w*\.\w*'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Open Browser: {{{
-silent! let s:bundle = neobundle#get('open-browser')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('open-browser')
   nmap gxgx <Plug>(openbrowser-smart-search)
   nmap gxx gxgx
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Camelize: {{{
-silent! let s:bundle = neobundle#get('operator-camelize')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-camelize')
   NXOmap sU <Plug>(operator-camelize)
   NXOmap su <Plug>(operator-decamelize)
   NXOmap s~ <Plug>(operator-camelize-toggle)
@@ -3320,116 +3330,116 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap sUU sUsU
   nmap suu susu
   nmap s~~ s~s~
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Filled With Blank: {{{
-silent! let s:bundle = neobundle#get('operator-filled-with-blank')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-filled-with-blank')
   NXOmap s<Space> <Plug>(operator-filled-with-blank)
 
   nmap s<Space><Space> s<Space>s<Space>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator HTML Escape: {{{
-silent! let s:bundle = neobundle#get('operator-html-escape')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-html-escape')
   NXOmap se <Plug>(operator-html-escape)
   NXOmap sE <Plug>(operator-html-unescape)
 
   nmap see sese
   nmap sEE sEsE
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Open Browser: {{{
-silent! let s:bundle = neobundle#get('operator-openbrowser')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-openbrowser')
   NXOmap gx <Plug>(operator-openbrowser)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Replace: {{{
-silent! let s:bundle = neobundle#get('operator-replace')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-replace')
   NXOmap p <Plug>(operator-replace)
 
   nnoremap pp p
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Reverse: {{{
-silent! let s:bundle = neobundle#get('operator-reverse')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-reverse')
   NXOmap sv <Plug>(operator-reverse-text)
   NXOmap sV <Plug>(operator-reverse-lines)
 
   nmap svv svsv
   nmap sVV sVsV
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Search: {{{
-silent! let s:bundle = neobundle#get('operator-search')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-search')
   NXOmap s/ <Plug>(operator-search)
 
   nmap s// s/s/
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Sequence: {{{
-silent! let s:bundle = neobundle#get('operator-sequence')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-sequence')
   NXOmap <expr> s<C-U>
     \ operator#sequence#map("\<Plug>(operator-decamelize)", 'gU')
 
   nmap s<C-U><C-U> s<C-U>s<C-U>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Shuffle: {{{
-silent! let s:bundle = neobundle#get('operator-shuffle')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-shuffle')
   NXOmap sS <Plug>(operator-shuffle)
 
   nmap sSS sSsS
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Sort: {{{
-silent! let s:bundle = neobundle#get('operator-sort')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-sort')
   NXOmap ss <Plug>(operator-sort)
 
   nmap sss ssss
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Star: {{{
-silent! let s:bundle = neobundle#get('operator-star')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-star')
   NOmap *  <Plug>(operator-*)
   NOmap #  <Plug>(operator-#)
   NOmap g* <Plug>(operator-g*)
@@ -3463,25 +3473,25 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap <C-W>g??  <C-W>##
   nmap <C-W>g**  <C-W>g*g*
   nmap <C-W>g##  <C-W>g#g#
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Suddendeath: {{{
-silent! let s:bundle = neobundle#get('operator-suddendeath')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-suddendeath')
   NXOmap s! <Plug>(operator-suddendeath)
 
   nmap s!! s!s!
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Surround: {{{
-silent! let s:bundle = neobundle#get('operator-surround')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-surround')
   NXOmap sa <Plug>(operator-surround-append)
   NXOmap sd <Plug>(operator-surround-delete)
   NXOmap sc <Plug>(operator-surround-replace)
@@ -3492,15 +3502,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap saa sasa
   nmap sdd sdsd
   nmap scc scsc
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Tabular: {{{
-silent! let s:bundle = neobundle#get('operator-tabular')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('operator-tabular')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let s:operator_tabular_kind = 'markdown'
     let s:operator_tabular_ext  = 'csv'
 
@@ -3544,29 +3554,29 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   nmap stt stst
   nmap sTT sTsT
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator Trailingspace Killer: {{{
-silent! let s:bundle = neobundle#get('operator-trailingspace-killer')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('operator-trailingspace-killer')
   NXOmap s$ <Plug>(operator-trailingspace-killer)
 
   nmap s$$ s$s$
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Operator User: {{{
-silent! let s:bundle = neobundle#get('operator-user')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
-    if s:executable('jvgrep') || neobundle#get('jvgrep') != {}
+if s:has_neobundle && neobundle#tap('operator-user')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    if neobundle#get('jvgrep') != {} || s:executable('jvgrep')
       let s:operator_grep_escape = '\[](){}|.?+*^$'
-    elseif s:executable('ag') || neobundle#get('the_silver_searcher') != {}
+    elseif neobundle#get('the_silver_searcher') != {} || s:executable('ag')
       let s:operator_grep_escape = '\[](){}|.?+*^$'
     elseif s:executable('grep')
       let s:operator_grep_escape = '\[].*^$'
@@ -3613,15 +3623,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   if neobundle#get('unite') == {}
     nnoremap sgsg :<C-U>execute input(':', 'grep ')<CR>
   endif
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " ParaJump: {{{
-silent! let s:bundle = neobundle#get('parajump')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('parajump')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:parajump_no_default_key_mappings = 1
 
     nmap <SID>(parajump-backward) <Plug>(parajump-backward)
@@ -3633,15 +3643,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   NXOmap { <Plug>(parajump-backward)
   NXOmap } <Plug>(parajump-forward)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " PerlOmni: {{{
-silent! let s:bundle = neobundle#get('perlomni')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('perlomni')
+  function! neobundle#tapped.hooks.on_source(bundle)
     if has('win32')
       let $PATH = substitute(a:bundle.path, '/', '\\', 'g') . '\bin;' . $PATH
     else
@@ -3651,15 +3661,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   call extend(s:neocompl_omni_patterns, {
     \ 'PerlComplete' : '\h\w*\|\h\w*\%(->\|::\)\w*'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Precious: {{{
-silent! let s:bundle = neobundle#get('precious')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('precious')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_precious_no_default_key_mappings = 1
     let g:precious_enable_switchers                = {
       \ 'help' : {'setfiletype' : 0}}
@@ -3680,29 +3690,26 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   XOmap ax <Plug>(textobj-precious-i)
   XOmap ix <Plug>(textobj-precious-i)
 
-  autocmd MyVimrc FileType *
-    \ NeoBundleSource precious
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Quickhl: {{{
-silent! let s:bundle = neobundle#get('quickhl')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('quickhl')
   NXmap  sM <Plug>(quickhl-manual-reset)
   NXOmap sm <Plug>(operator-quickhl-manual-this-motion)
 
   nmap smm smsm
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " QuickRun: {{{
-silent! let s:bundle = neobundle#get('quickrun')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('quickrun')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:quickrun_no_default_key_mappings = 1
 
     let g:quickrun_config =
@@ -3776,15 +3783,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   NXmap <Leader>r <Plug>(quickrun)
   NXmap <F5>      <Plug>(quickrun)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Reanimate: {{{
-silent! let s:bundle = neobundle#get('reanimate')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('reanimate')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:reanimate_save_dir = $HOME . '/.local/reanimate'
   endfunction
 
@@ -3793,29 +3800,29 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ -buffer-name=files -no-split -default-action=reanimate_load<CR>
   NXnoremap <Leader>uss :<C-U>Unite reanimate
     \ -buffer-name=files -no-split -default-action=reanimate_save<CR>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Ref: {{{
-silent! let s:bundle = neobundle#get('ref')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('ref')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:ref_no_default_key_mappings = 1
     let g:ref_cache_dir               = $HOME . '/.local/.vim_ref_cache'
   endfunction
 
   NXmap K <Plug>(ref-keyword)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " RengBang: {{{
-silent! let s:bundle = neobundle#get('rengbang')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('rengbang')
+  function! neobundle#tapped.hooks.on_source(bundle)
     function! s:operator_rengbang_prompt(motion_wise)
       execute input(':', line("'[") . ',' . line("']") . 'RengBang ')
     endfunction
@@ -3826,29 +3833,29 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXOmap s+ <Plug>(operator-rengbang-prompt)
 
   nmap s++ s+s+
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Repeat: {{{
-silent! let s:bundle = neobundle#get('repeat')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('repeat')
   nnoremap <M-o>
     \ :<C-U>call append(line('.'), repeat([''], v:count1))<Bar>
     \ call repeat#set('<M-o>', v:count1)<CR>
   nnoremap <M-O>
     \ :<C-U>call append(line('.') - 1, repeat([''], v:count1))<Bar>
     \ call repeat#set('<M-O>', v:count1)<CR>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Scratch: {{{
-silent! let s:bundle = neobundle#get('scratch')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('scratch')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:scratch_buffer_name = '[scratch]'
 
     call operator#user#define_ex_command(
@@ -3859,15 +3866,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     autocmd MyVimrc User PluginScratchInitializeAfter
       \ nmap <buffer> sr <Plug>(operator-scratch-evaluate)
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " SmartWord: {{{
-silent! let s:bundle = neobundle#get('smartword')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('smartword')
+  function! neobundle#tapped.hooks.on_source(bundle)
     nmap <SID>(smartword-w)  <Plug>(smartword-w)
     nmap <SID>(smartword-b)  <Plug>(smartword-b)
     nmap <SID>(smartword-e)  <Plug>(smartword-e)
@@ -3883,15 +3890,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   NXOmap b  <Plug>(smartword-b)
   NXOmap e  <Plug>(smartword-e)
   NXOmap ge <Plug>(smartword-ge)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Switch: {{{
-silent! let s:bundle = neobundle#get('switch')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('switch')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:switch_no_builtins        = 1
     let g:switch_custom_definitions = [
       \ ['TRUE', 'FALSE'], ['True', 'False'], ['true', 'false'],
@@ -4026,15 +4033,16 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   autocmd MyVimrc VimEnter,BufNewFile,BufRead *
     \ let b:switch_no_builtins = 1
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TComment: {{{
-silent! let s:bundle = neobundle#get('tcomment')
-if exists('s:bundle') && !get(s:bundle, 'disabled', )
-  function! s:bundle.hooks.on_source(bundle)
+silent! let neobundle#tapped = neobundle#get('tcomment')
+if exists('neobundle#tapped') && !get(neobundle#tapped, 'disabled', )
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:tcommentMaps = 0
 
     function! s:tcomment_operator_setup(options)
@@ -4072,7 +4080,7 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
       \ 'tcomment_operator_setup({"col" : 1})')
   endfunction
 
-  function! s:bundle.hooks.on_post_source(bundle)
+  function! neobundle#tapped.hooks.on_post_source(bundle)
     call tcomment#DefineType('c',         '// %s', {}, 1)
     call tcomment#DefineType('d',         '// %s')
     call tcomment#DefineType('d_inline',  g:tcommentInlineC)
@@ -4100,30 +4108,30 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', )
   nmap gCC         gCgC
   nmap g<M-c><M-c> g<M-c>g<M-c>
   nmap g<M-C><M-C> g<M-C>g<M-C>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Tern: {{{
-silent! let s:bundle = neobundle#get('tern_for_vim')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('tern_for_vim')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:tern#command = ['node',
       \ neobundle#get('tern').path . '/bin/tern']
   endfunction
 
   call extend(s:neocompl_omni_patterns, {
     \ 'tern#Complete' : '\h\w*\|\h\w*\.\w*'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextManipilate: {{{
-silent! let s:bundle = neobundle#get('textmanip')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textmanip')
+  function! neobundle#tapped.hooks.on_source(bundle)
     function! s:operator_textmanip(function, motion_wise)
       let save_sel = &l:selection
       try
@@ -4199,55 +4207,55 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   nmap skk sksk
   nmap shh shsh
   nmap sll slsl
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Between: {{{
-silent! let s:bundle = neobundle#get('textobj-between')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-between')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_between_no_default_key_mappings = 1
   endfunction
 
   XOmap af <Plug>(textobj-between-a)
   XOmap if <Plug>(textobj-between-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Comment: {{{
-silent! let s:bundle = neobundle#get('textobj-comment')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-comment')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_comment_no_default_key_mappings = 1
   endfunction
 
   XOmap ac <Plug>(textobj-comment-a)
   XOmap ic <Plug>(textobj-comment-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Continuous Line: {{{
-silent! let s:bundle = neobundle#get('textobj-continuous-line')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-continuous-line')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_continuous_line_no_default_key_mappings = 1
     let g:textobj_continuous_line_no_default_mappings     = 1
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj DateTime: {{{
-silent! let s:bundle = neobundle#get('textobj-datetime')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-datetime')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_datetime_no_default_key_mappings = 1
   endfunction
 
@@ -4264,87 +4272,87 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   XOmap idf <Plug>(textobj-datetime-full)
   XOmap idt <Plug>(textobj-datetime-time)
   XOmap idz <Plug>(textobj-datetime-tz)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Diff: {{{
-silent! let s:bundle = neobundle#get('textobj-diff')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-diff')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_diff_no_default_key_mappings = 1
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Entrie: {{{
-silent! let s:bundle = neobundle#get('textobj-entire')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-entire')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_entire_no_default_key_mappings = 1
   endfunction
 
   XOmap ae <Plug>(textobj-entire-a)
   XOmap ie <Plug>(textobj-entire-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj EnclosedSyntax: {{{
-silent! let s:bundle = neobundle#get('textobj-enclosedsyntax')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-enclosedsyntax')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_enclosedsyntax_no_default_key_mappings = 1
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Fold: {{{
-silent! let s:bundle = neobundle#get('textobj-fold')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-fold')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_fold_no_default_key_mappings = 1
   endfunction
 
   XOmap az <Plug>(textobj-fold-a)
   XOmap iz <Plug>(textobj-fold-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Function: {{{
-silent! let s:bundle = neobundle#get('textobj-function')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-function')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_function_no_default_key_mappings = 1
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Ifdef: {{{
-silent! let s:bundle = neobundle#get('textobj-ifdef')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-ifdef')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_ifdef_no_default_key_mappings = 1
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj IndentBlock: {{{
-silent! let s:bundle = neobundle#get('textobj-indblock')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-indblock')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_indblock_no_default_key_mappings = 1
   endfunction
 
@@ -4352,15 +4360,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   XOmap io <Plug>(textobj-indblock-i)
   XOmap aO <Plug>(textobj-indblock-same-a)
   XOmap iO <Plug>(textobj-indblock-same-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Indent: {{{
-silent! let s:bundle = neobundle#get('textobj-indent')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-indent')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_indent_no_default_key_mappings = 1
   endfunction
 
@@ -4368,15 +4376,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   XOmap ii <Plug>(textobj-indent-i)
   XOmap aI <Plug>(textobj-indent-same-a)
   XOmap iI <Plug>(textobj-indent-same-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj JaBraces: {{{
-silent! let s:bundle = neobundle#get('textobj-jabraces')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-jabraces')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_jabraces_no_default_key_mappings = 1
   endfunction
 
@@ -4415,43 +4423,43 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   XOmap ijY <Plug>(textobj-jabraces-double-yama-kakko-i)
   XOmap ijt <Plug>(textobj-jabraces-kikkou-kakko-i)
   XOmap ijs <Plug>(textobj-jabraces-sumi-kakko-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Line: {{{
-silent! let s:bundle = neobundle#get('textobj-line')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-line')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_line_no_default_key_mappings = 1
   endfunction
 
   XOmap al <Plug>(textobj-line-a)
   XOmap il <Plug>(textobj-line-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj MultiBlock: {{{
-silent! let s:bundle = neobundle#get('textobj-multiblock')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-multiblock')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_multiblock_no_default_key_mappings = 1
   endfunction
 
   XOmap ab <Plug>(textobj-multiblock-a)
   XOmap ib <Plug>(textobj-multiblock-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj MultiTextObj: {{{
-silent! let s:bundle = neobundle#get('textobj-multitextobj')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-multitextobj')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_multitextobj_textobjects_group_a = {
       \ 'doublequotes' : [
       \   {'textobj' : 'a"',  'is_cursor_in' : 1, 'noremap' : 1}],
@@ -4500,130 +4508,130 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   XOmap <expr> i` textobj#multitextobj#mapexpr_i('backquotes')
   XOmap <expr> aB textobj#multitextobj#mapexpr_a('jabraces')
   XOmap <expr> iB textobj#multitextobj#mapexpr_i('jabraces')
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj MotionMotion: {{{
-silent! let s:bundle = neobundle#get('textobj-motionmotion')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-motionmotion')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_motionmotion_no_default_key_mappings = 1
   endfunction
 
   XOmap am <Plug>(textobj-motionmotion-a)
   XOmap im <Plug>(textobj-motionmotion-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Parameter: {{{
-silent! let s:bundle = neobundle#get('textobj-parameter')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-parameter')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_parameter_no_default_key_mappings = 1
   endfunction
 
   XOmap a, <Plug>(textobj-parameter-a)
   XOmap i, <Plug>(textobj-parameter-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj PHP: {{{
-silent! let s:bundle = neobundle#get('textobj-php')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-php')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_php_no_default_key_mappings = 1
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Python: {{{
-silent! let s:bundle = neobundle#get('textobj-python')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-python')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_python_no_default_key_mappings = 1
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Ruby: {{{
-silent! let s:bundle = neobundle#get('textobj-ruby')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-ruby')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_ruby_no_default_key_mappings = 1
     let g:textobj_ruby_more_mappings           = 1
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Sigil: {{{
-silent! let s:bundle = neobundle#get('textobj-sigil')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-sigil')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_sigil_no_default_key_mappings = 1
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Space: {{{
-silent! let s:bundle = neobundle#get('textobj-space')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-space')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_space_no_default_key_mappings = 1
   endfunction
 
   XOmap aS <Plug>(textobj-space-a)
   XOmap iS <Plug>(textobj-space-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Syntax: {{{
-silent! let s:bundle = neobundle#get('textobj-syntax')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-syntax')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_syntax_no_default_key_mappings = 1
   endfunction
 
   XOmap ay <Plug>(textobj-syntax-a)
   XOmap iy <Plug>(textobj-syntax-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Url: {{{
-silent! let s:bundle = neobundle#get('textobj-url')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-url')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_url_no_default_key_mappings = 1
   endfunction
 
   XOmap au <Plug>(textobj-url-a)
   XOmap iu <Plug>(textobj-url-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj WordInWord: {{{
-silent! let s:bundle = neobundle#get('textobj-wiw')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-wiw')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_wiw_no_default_key_mappings = 1
   endfunction
 
@@ -4634,15 +4642,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   XOmap a<M-w> <Plug>(textobj-wiw-a)
   XOmap i<M-w> <Plug>(textobj-wiw-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj Word Column: {{{
-silent! let s:bundle = neobundle#get('textobj-word-column')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-word-column')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_wordcolumn_no_default_key_mappings = 1
   endfunction
 
@@ -4650,39 +4658,39 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
   XOmap aV <Plug>(textobj-wordcolumn-W-a)
   XOmap iv <Plug>(textobj-wordcolumn-w-i)
   XOmap iV <Plug>(textobj-wordcolumn-W-i)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " TextObj XML Attribute: {{{
-silent! let s:bundle = neobundle#get('textobj-xml-attribute')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('textobj-xml-attribute')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_xmlattribute_no_default_key_mappings = 1
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " UndoTree: {{{
-silent! let s:bundle = neobundle#get('undotree')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('undotree')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:undotree_SetFocusWhenToggle = 1
   endfunction
 
   NXnoremap <M-U> :<C-U>UndotreeToggle<CR>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Unite: {{{
-silent! let s:bundle = neobundle#get('unite')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('unite')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:unite_data_directory             = $HOME . '/.local/.unite'
     let g:unite_enable_start_insert        = 1
     let g:unite_winheight                  = 25
@@ -4702,11 +4710,11 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \ '\|^\%(\\\\\|/mnt/\|/media/\|/temp/\|/tmp/\|\%(/private\)\=/var/folders/\)' .
       \ '\|\%(^\%(fugitive\):\%(//\|\\\\\)\)'
 
-    if s:executable('jvgrep') || neobundle#get('jvgrep') != {}
+    if neobundle#get('jvgrep') != {} || s:executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '-n --exclude .drive.r'
-    elseif s:executable('ag') || neobundle#get('the_silver_searcher') != {}
+    elseif neobundle#get('the_silver_searcher') != {} || s:executable('ag')
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_default_opts  =
@@ -4883,29 +4891,29 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
 
   call extend(s:altercmd_define, {
     \ 'u[nite]' : 'Unite'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Unite Help: {{{
-silent! let s:bundle = neobundle#get('unite-help')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('unite-help')
   nnoremap <Leader>u<F1>
     \ :<C-U>Unite help
     \ -buffer-name=help -start-insert<CR>
   nnoremap <Leader>u<F2>
     \ :<C-U>UniteWithCursorWord help
     \ -buffer-name=help -no-start-insert<CR>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Unite Mark: {{{
-silent! let s:bundle = neobundle#get('unite-mark')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('unite-mark')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:unite_source_mark_marks =
       \ join(s:mark_char, '') . toupper(join(s:mark_char, ''))
   endfunction
@@ -4914,133 +4922,99 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ :<C-U>Unite mark bookmark
     \ -buffer-name=register -no-start-insert -no-empty<CR>
   nnoremap mu :<C-U>UniteBookmarkAdd<CR>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Unite Outline: {{{
-silent! let s:bundle = neobundle#get('unite-outline')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('unite-outline')
   NXnoremap <Leader>uo
     \ :<C-U>Unite outline
     \ -buffer-name=outline -no-split<CR>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Unite QuickFix: {{{
-silent! let s:bundle = neobundle#get('unite-quickfix')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('unite-quickfix')
   NXnoremap <Leader>u,
     \ :<C-U>Unite quickfix
     \ -buffer-name=register -no-empty<CR>
   NXnoremap <Leader>u.
     \ :<C-U>Unite location_list
     \ -buffer-name=register -no-empty<CR>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Unite QuickRun Config: {{{
-silent! let s:bundle = neobundle#get('unite-quickrun_config')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('unite-quickrun_config')
   NXnoremap <Leader>ur
     \ :<C-U>Unite quickrun_config
     \ -buffer-name=register -no-empty<CR>
-endif
-unlet! s:bundle
-"}}}
 
-"------------------------------------------------------------------------------
-" Unite SSH: {{{
-silent! let s:bundle = neobundle#get('unite-ssh')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  autocmd MyVimrc User VimrcPost
-    \ if has('vim_starting') && filter(argv(), 'v:val =~# "^ssh:"') != [] |
-    \   NeoBundleSource unite-ssh |
-    \ endif
+  call neobundle#untap()
 endif
-unlet! s:bundle
-"}}}
-
-"------------------------------------------------------------------------------
-" Unite Sudo: {{{
-silent! let s:bundle = neobundle#get('unite-sudo')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  autocmd MyVimrc User VimrcPost
-    \ if has('vim_starting') && filter(argv(), 'v:val =~# "^sudo:"') != [] |
-    \   NeoBundleSource unite-sudo |
-    \ endif
-endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " Unite Tag: {{{
-silent! let s:bundle = neobundle#get('unite-tag')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('unite-tag')
   NXnoremap <Leader>ut
     \ :<C-U>UniteWithCursorWord tag tag/include
     \ -buffer-name=outline -no-split -no-start-insert<CR>
-endif
-unlet! s:bundle
-"}}}
 
-"------------------------------------------------------------------------------
-" VerifyEnc: {{{
-silent! let s:bundle = neobundle#get('verifyenc')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  autocmd MyVimrc BufReadPre *
-    \ NeoBundleSource verifyenc
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " VimDoc Ja: {{{
-silent! let s:bundle = neobundle#get('vimdoc-ja')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
+if s:has_neobundle && neobundle#tap('vimdoc-ja')
   set helplang^=ja
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " VimFiler: {{{
-silent! let s:bundle = neobundle#get('vimfiler')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('vimfiler')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:vimfiler_data_directory      = $HOME . '/.local/.vimfiler'
     let g:vimfiler_as_default_explorer = 1
   endfunction
 
   NXnoremap <Leader>E     :<C-U>VimFiler<CR>
   NXnoremap <Leader><C-E> :<C-U>VimFilerExplorer<CR>
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " VimProc: {{{
-silent! let s:bundle = neobundle#get('vimproc')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('vimproc')
+  function! neobundle#tapped.hooks.on_source(bundle)
     if s:is_android
       let g:vimproc_dll_path = expand('/data/local/vimproc_unix.so')
     endif
   endfunction
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " VimShell: {{{
-silent! let s:bundle = neobundle#get('vimshell')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('vimshell')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:vimshell_temporary_directory      = $HOME . '/.local/.vimshell'
     let g:vimshell_vimshrc_path             = $HOME . '/.vim/.vimshrc'
     let g:vimshell_max_command_history      = 100000
@@ -5088,15 +5062,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ '_sh[ell]' : 'shell'})
   call extend(s:neocompl_dictionary_filetype_lists, {
     \ 'vimshell' : $HOME . '/.local/.vimshell/command-history'})
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " VisualStar: {{{
-silent! let s:bundle = neobundle#get('visualstar')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('visualstar')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:visualstar_no_default_key_mappings = 1
   endfunction
 
@@ -5118,15 +5092,15 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
     \ <SID>(split-nicely)gv<SID>(visualstar-g*)
   xnoremap <script> <C-W>g#
     \ <SID>(split-nicely)gv<SID>(visualstar-g#)
+
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "------------------------------------------------------------------------------
 " WatchDogs: {{{
-silent! let s:bundle = neobundle#get('watchdogs')
-if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
-  function! s:bundle.hooks.on_source(bundle)
+if s:has_neobundle && neobundle#tap('watchdogs')
+  function! neobundle#tapped.hooks.on_source(bundle)
     let g:watchdogs_check_BufWritePost_enable = 1
 
     let g:quickrun_config =
@@ -5164,10 +5138,8 @@ if exists('s:bundle') && !get(s:bundle, 'disabled', 1)
       \     has('python') ? 'watchdogs_checker/vimlint_by_dbakker' : ''}})
   endfunction
 
-  autocmd MyVimrc FileType *
-    \ NeoBundleSource watchdogs
+  call neobundle#untap()
 endif
-unlet! s:bundle
 "}}}
 
 "==============================================================================
