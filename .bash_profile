@@ -1,7 +1,7 @@
 # Bash settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  26-Nov-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -100,15 +100,10 @@ fi
 if hash lv 2> /dev/null; then
   export LV="-Ia -Ow -c -l"
 fi
-if [ -n "${PAGER}" ] && hash nkf 2> /dev/null; then
-  if hash git 2> /dev/null; then
-    export GIT_PAGER="nkf -w | less"
-  fi
-  if hash hg 2> /dev/null; then
-    export HGPAGER="nkf -w | less"
-  fi
-fi
 
+if hash git 2> /dev/null && hash diff-highlight 2> /dev/null; then
+  export GIT_PAGER="diff-highlight | ${PAGER}"
+fi
 if hash hg 2> /dev/null; then
   export HGENCODING="utf-8"
 fi

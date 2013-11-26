@@ -1,7 +1,7 @@
 # Bash interactive settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  26-Nov-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -164,9 +164,6 @@ if hash vim 2> /dev/null; then
 fi
 if hash sublime_text 2> /dev/null; then
   alias subl="sublime_text"
-fi
-if [ -n "${HGPAGER}" ]; then
-  alias hg="hg --config pager.pager=\"${HGPAGER}\""
 fi
 #}}}
 
