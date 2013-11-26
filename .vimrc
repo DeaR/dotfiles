@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Nov-2013.
+" Last Change:  26-Nov-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1847,9 +1847,6 @@ cnoremap <M-b> <S-Left>
 " Jump
 NXOnoremap ' `
 NXOnoremap ` '
-
-" Paren
-NXOnoremap <Space> %
 
 " Mark
 NXOnoremap mj ]`
