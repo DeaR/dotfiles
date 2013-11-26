@@ -1,7 +1,7 @@
 # NYAOS settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  26-Nov-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -119,16 +119,21 @@ endif
 if "`which lv`" != "" then
   set LV=-Ia -Ow -c -l
 endif
-if "%(os.getenv('PAGER') and nyaos.eval('which nkf'))%" != "" then
-  if "`which git`" != "" then
-    lua_e "nyaos.putenv('GIT_PAGER', 'nkf -w | %PAGER%')"
+
+if "`which git`" != "" then
+  set GIT_PAGER=%PAGER%
+  if "`which diff-highlight`" != "" then
+    lua_e "nyaos.putenv('GIT_PAGER', 'diff-highlight | %GIT_PAGER%')"
   endif
-  if "`which hg`" != "" then
-    lua_e "nyaos.putenv('HGPAGER', 'nkf -w | %PAGER%')"
+  if "`which nkf`" != "" then
+    lua_e "nyaos.putenv('GIT_PAGER', 'nkf -w | %GIT_PAGER%')"
   endif
 endif
 
 if "`which hg`" != "" then
+  if "`which nkf`" != "" then
+    lua_e "nyaos.putenv('HGPAGER', 'nkf -w | %PAGER%')"
+  endif
   set HGENCODING=utf-8
 endif
 #}}}
