@@ -3,7 +3,7 @@
 # Less filter
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  26-Nov-2013.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -43,15 +43,17 @@ highlight() {
 
 
 if file -Lb "$1" | grep '\btext\b' > /dev/null; then
-  if which source-highlight > /dev/null; then
-    if which nkf > /dev/null; then
+  if [ -n "${WINDIR}" ] && which nkf > /dev/null; then
+    if which source-highlight > /dev/null; then
       highlight "$1" | nkf -w
+      exit 0
     else
-      highlight "$1"
+      nkf -w "$1"
+      exit 0
     fi
-  elif which nkf > /dev/null; then
-    nkf -w "$1"
+  elif which source-highlight > /dev/null; then
+    highlight "$1"
+    exit 0
   fi
-  exit 0
 fi
 exit 1
