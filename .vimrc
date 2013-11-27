@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  26-Nov-2013.
+" Last Change:  27-Nov-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2585,8 +2585,6 @@ if s:has_neobundle && neobundle#tap('alignta')
   NXOmap s= <Plug>(operator-alignta)
 
   nmap s== s=s=
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2607,8 +2605,6 @@ if s:has_neobundle && neobundle#tap('altercmd')
 
   autocmd MyVimrc CmdwinEnter :
     \ call s:cmdwin_enter_altercmd()
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2619,8 +2615,6 @@ if s:has_neobundle && neobundle#tap('altr')
   nmap g<M-F>     <Plug>(altr-back)
   nmap <C-W><M-f> <SID>(split-nicely)<Plug>(altr-forward)
   nmap <C-W><M-F> <SID>(split-nicely)<Plug>(altr-back)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2637,8 +2631,6 @@ if s:has_neobundle && neobundle#tap('anzu')
     \ <SID>search_forward_expr() ?
     \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)' :
     \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)'
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2648,8 +2640,6 @@ if s:has_neobundle && neobundle#tap('autodate')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:autodate_lines = 10
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2657,8 +2647,6 @@ endif
 " AutoFmt: {{{
 if s:has_neobundle && neobundle#tap('autofmt')
   set formatexpr=autofmt#japanese#formatexpr()
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2713,8 +2701,6 @@ if s:has_neobundle && neobundle#tap('clang_complete')
 
   call extend(s:neocompl_omni_patterns, {
     \ 'ClangComplete' : '\h\w*\|\h\w*\%(\.\|->\|::\)\w*'})
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2750,8 +2736,6 @@ if s:has_neobundle && neobundle#tap('clever-f')
   NXOmap <M-.> <Plug>(clever-f-reset)
   NXOmap <M-;> <Plug>(clever-f-repeat-forward)
   NXOmap <M-,> <Plug>(clever-f-repeat-back)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2768,8 +2752,6 @@ if s:has_neobundle && neobundle#tap('columnjump')
 
   NXOmap ( <Plug>(columnjump-backward)
   NXOmap ) <Plug>(columnjump-forward)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2785,8 +2767,6 @@ if s:has_neobundle && neobundle#tap('emmet')
 
   call extend(s:neocompl_omni_patterns, {
     \ 'emmet#CompleteTag' : '\h\w*'})
-
-  call neobundle#untap()
 endif
 "}}}
 "}}}
@@ -2812,8 +2792,6 @@ if s:has_neobundle && neobundle#tap('eskk')
 
   map! <C-J> <Plug>(eskk:toggle)
   lmap <C-J> <Plug>(eskk:toggle)
-
-  call neobundle#untap()
 endif
 "}}}
 "}}}
@@ -2835,8 +2813,6 @@ if s:has_neobundle && neobundle#tap('ft_lua')
 
   call extend(s:neocompl_omni_patterns, {
     \ 'xolox#lua#omnifunc' : '\h\w*\|\h\w*\%(\.\|:\)\w*'})
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2858,8 +2834,6 @@ if s:has_neobundle && neobundle#tap('fugitive')
     \ exists(':Gitv') ? ':<C-U>Gitv<CR>' : ':<C-U>Glog<CR>'
 
   NXnoremap <script> <Leader>gg <SID>:<C-U>Git<Space>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2877,8 +2851,6 @@ if s:has_neobundle && neobundle#tap('gf-user')
   NXmap <C-W>gf    <Plug>(gf-user-<C-w>gf)
   NXmap <C-W>gF    <Plug>(gf-user-<C-w>gF)
   NXmap <C-W><C-F> <Plug>(gf-user-<C-w><C-f>)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2887,8 +2859,6 @@ endif
 if s:has_neobundle && neobundle#tap('gocode')
   call extend(s:neocompl_omni_patterns, {
     \ 'gocomplete#Complete' : '\h\w*\|\h\w*\.\w*'})
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2900,8 +2870,6 @@ if s:has_neobundle && neobundle#tap('grex')
 
   nmap sDD sDsD
   nmap sYY sYsY
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2911,8 +2879,6 @@ if s:has_neobundle && neobundle#tap('hier')
   function! neobundle#tapped.hooks.on_source(bundle)
     nnoremap <Esc><Esc> :<C-U>nohlsearch<Bar>HierClear<CR><Esc>
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2946,8 +2912,6 @@ if s:has_neobundle && neobundle#tap('indentLine')
       \   execute "IndentLinesToggle" |
       \ endif
   augroup END
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2971,8 +2935,6 @@ if s:has_neobundle && neobundle#tap('J6uil')
 
   call extend(s:altercmd_define, {
     \ 'j[6uil]' : 'J6uil'})
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -2988,8 +2950,6 @@ if s:has_neobundle && neobundle#tap('jedi')
 
   call extend(s:neocompl_omni_patterns, {
     \ 'jedi#completions' : '\h\w*\|\h\w*\.\w*'})
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3028,8 +2988,6 @@ if s:has_neobundle && neobundle#tap('kwbdi')
     \ 'bd[elete]' : 'Kwbd',
     \
     \ '_bd[elete]' : 'bdelete'})
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3046,8 +3004,6 @@ if s:has_neobundle && neobundle#tap('localrc')
         \   'printf(v:val, &filetype)'))
     endif
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3059,8 +3015,6 @@ if s:has_neobundle && neobundle#tap('maplist')
     let g:maplist_lhs_length   = 50
     let g:maplist_local_length = 2
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3076,8 +3030,6 @@ if s:has_neobundle && neobundle#tap('narrow')
   NXOmap sn <Plug>(operator-narrow)
 
   nmap snn snsn
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3171,8 +3123,6 @@ if s:has_neobundle && neobundle#tap('neocomplcache')
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~ '\s'
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3264,8 +3214,6 @@ if s:has_neobundle && neobundle#tap('neocomplete')
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~ '\s'
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3285,8 +3233,6 @@ if s:has_neobundle && neobundle#tap('neosnippet')
 
   smap <C-E> <Plug>(neosnippet_expand_or_jump)
   xmap <C-E> <Plug>(neosnippet_expand_target)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3302,8 +3248,6 @@ if s:has_neobundle && neobundle#tap('Omnisharp')
 
   call extend(s:neocompl_omni_patterns, {
     \ 'OmniSharp#Complete' : '\h\w*\|\h\w*\.\w*'})
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3312,8 +3256,6 @@ endif
 if s:has_neobundle && neobundle#tap('open-browser')
   nmap gxgx <Plug>(openbrowser-smart-search)
   nmap gxx gxgx
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3327,8 +3269,6 @@ if s:has_neobundle && neobundle#tap('operator-camelize')
   nmap sUU sUsU
   nmap suu susu
   nmap s~~ s~s~
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3338,8 +3278,6 @@ if s:has_neobundle && neobundle#tap('operator-filled-with-blank')
   NXOmap s<Space> <Plug>(operator-filled-with-blank)
 
   nmap s<Space><Space> s<Space>s<Space>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3351,8 +3289,6 @@ if s:has_neobundle && neobundle#tap('operator-html-escape')
 
   nmap see sese
   nmap sEE sEsE
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3360,8 +3296,6 @@ endif
 " Operator Open Browser: {{{
 if s:has_neobundle && neobundle#tap('operator-openbrowser')
   NXOmap gx <Plug>(operator-openbrowser)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3371,8 +3305,6 @@ if s:has_neobundle && neobundle#tap('operator-replace')
   NXOmap p <Plug>(operator-replace)
 
   nnoremap pp p
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3384,8 +3316,6 @@ if s:has_neobundle && neobundle#tap('operator-reverse')
 
   nmap svv svsv
   nmap sVV sVsV
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3395,8 +3325,6 @@ if s:has_neobundle && neobundle#tap('operator-search')
   NXOmap s/ <Plug>(operator-search)
 
   nmap s// s/s/
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3407,8 +3335,6 @@ if s:has_neobundle && neobundle#tap('operator-sequence')
     \ operator#sequence#map("\<Plug>(operator-decamelize)", 'gU')
 
   nmap s<C-U><C-U> s<C-U>s<C-U>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3418,8 +3344,6 @@ if s:has_neobundle && neobundle#tap('operator-shuffle')
   NXOmap sS <Plug>(operator-shuffle)
 
   nmap sSS sSsS
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3429,8 +3353,6 @@ if s:has_neobundle && neobundle#tap('operator-sort')
   NXOmap ss <Plug>(operator-sort)
 
   nmap sss ssss
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3470,8 +3392,6 @@ if s:has_neobundle && neobundle#tap('operator-star')
   nmap <C-W>g??  <C-W>##
   nmap <C-W>g**  <C-W>g*g*
   nmap <C-W>g##  <C-W>g#g#
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3481,8 +3401,6 @@ if s:has_neobundle && neobundle#tap('operator-suddendeath')
   NXOmap s! <Plug>(operator-suddendeath)
 
   nmap s!! s!s!
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3499,8 +3417,6 @@ if s:has_neobundle && neobundle#tap('operator-surround')
   nmap saa sasa
   nmap sdd sdsd
   nmap scc scsc
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3551,8 +3467,6 @@ if s:has_neobundle && neobundle#tap('operator-tabular')
 
   nmap stt stst
   nmap sTT sTsT
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3562,8 +3476,6 @@ if s:has_neobundle && neobundle#tap('operator-trailingspace-killer')
   NXOmap s$ <Plug>(operator-trailingspace-killer)
 
   nmap s$$ s$s$
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3620,8 +3532,6 @@ if s:has_neobundle && neobundle#tap('operator-user')
   if neobundle#get('unite') == {}
     nnoremap sgsg :<C-U>execute input(':', 'grep ')<CR>
   endif
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3640,8 +3550,6 @@ if s:has_neobundle && neobundle#tap('parajump')
 
   NXOmap { <Plug>(parajump-backward)
   NXOmap } <Plug>(parajump-forward)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3658,8 +3566,6 @@ if s:has_neobundle && neobundle#tap('perlomni')
 
   call extend(s:neocompl_omni_patterns, {
     \ 'PerlComplete' : '\h\w*\|\h\w*\%(->\|::\)\w*'})
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3686,8 +3592,6 @@ if s:has_neobundle && neobundle#tap('precious')
 
   XOmap ax <Plug>(textobj-precious-i)
   XOmap ix <Plug>(textobj-precious-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3698,8 +3602,6 @@ if s:has_neobundle && neobundle#tap('quickhl')
   NXOmap sm <Plug>(operator-quickhl-manual-this-motion)
 
   nmap smm smsm
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3780,8 +3682,6 @@ if s:has_neobundle && neobundle#tap('quickrun')
 
   NXmap <Leader>r <Plug>(quickrun)
   NXmap <F5>      <Plug>(quickrun)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3797,8 +3697,6 @@ if s:has_neobundle && neobundle#tap('reanimate')
     \ -buffer-name=files -no-split -default-action=reanimate_load<CR>
   NXnoremap <Leader>uss :<C-U>Unite reanimate
     \ -buffer-name=files -no-split -default-action=reanimate_save<CR>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3811,8 +3709,6 @@ if s:has_neobundle && neobundle#tap('ref')
   endfunction
 
   NXmap K <Plug>(ref-keyword)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3830,8 +3726,6 @@ if s:has_neobundle && neobundle#tap('rengbang')
   NXOmap s+ <Plug>(operator-rengbang-prompt)
 
   nmap s++ s+s+
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3844,8 +3738,6 @@ if s:has_neobundle && neobundle#tap('repeat')
   nnoremap <M-O>
     \ :<C-U>call append(line('.') - 1, repeat([''], v:count1))<Bar>
     \ call repeat#set('<M-O>', v:count1)<CR>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3863,8 +3755,6 @@ if s:has_neobundle && neobundle#tap('scratch')
     autocmd MyVimrc User PluginScratchInitializeAfter
       \ nmap <buffer> sr <Plug>(operator-scratch-evaluate)
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -3887,8 +3777,6 @@ if s:has_neobundle && neobundle#tap('smartword')
   NXOmap b  <Plug>(smartword-b)
   NXOmap e  <Plug>(smartword-e)
   NXOmap ge <Plug>(smartword-ge)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4030,8 +3918,6 @@ if s:has_neobundle && neobundle#tap('switch')
 
   autocmd MyVimrc VimEnter,BufNewFile,BufRead *
     \ let b:switch_no_builtins = 1
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4105,8 +3991,6 @@ if exists('neobundle#tapped') && !get(neobundle#tapped, 'disabled', )
   nmap gCC         gCgC
   nmap g<M-c><M-c> g<M-c>g<M-c>
   nmap g<M-C><M-C> g<M-C>g<M-C>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4120,8 +4004,6 @@ if s:has_neobundle && neobundle#tap('tern_for_vim')
 
   call extend(s:neocompl_omni_patterns, {
     \ 'tern#Complete' : '\h\w*\|\h\w*\.\w*'})
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4204,8 +4086,6 @@ if s:has_neobundle && neobundle#tap('textmanip')
   nmap skk sksk
   nmap shh shsh
   nmap sll slsl
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4218,8 +4098,6 @@ if s:has_neobundle && neobundle#tap('textobj-between')
 
   XOmap af <Plug>(textobj-between-a)
   XOmap if <Plug>(textobj-between-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4232,8 +4110,6 @@ if s:has_neobundle && neobundle#tap('textobj-comment')
 
   XOmap ac <Plug>(textobj-comment-a)
   XOmap ic <Plug>(textobj-comment-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4244,8 +4120,6 @@ if s:has_neobundle && neobundle#tap('textobj-continuous-line')
     let g:textobj_continuous_line_no_default_key_mappings = 1
     let g:textobj_continuous_line_no_default_mappings     = 1
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4269,8 +4143,6 @@ if s:has_neobundle && neobundle#tap('textobj-datetime')
   XOmap idf <Plug>(textobj-datetime-full)
   XOmap idt <Plug>(textobj-datetime-time)
   XOmap idz <Plug>(textobj-datetime-tz)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4280,8 +4152,6 @@ if s:has_neobundle && neobundle#tap('textobj-diff')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_diff_no_default_key_mappings = 1
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4294,8 +4164,6 @@ if s:has_neobundle && neobundle#tap('textobj-entire')
 
   XOmap ae <Plug>(textobj-entire-a)
   XOmap ie <Plug>(textobj-entire-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4305,8 +4173,6 @@ if s:has_neobundle && neobundle#tap('textobj-enclosedsyntax')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_enclosedsyntax_no_default_key_mappings = 1
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4319,8 +4185,6 @@ if s:has_neobundle && neobundle#tap('textobj-fold')
 
   XOmap az <Plug>(textobj-fold-a)
   XOmap iz <Plug>(textobj-fold-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4330,8 +4194,6 @@ if s:has_neobundle && neobundle#tap('textobj-function')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_function_no_default_key_mappings = 1
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4341,8 +4203,6 @@ if s:has_neobundle && neobundle#tap('textobj-ifdef')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_ifdef_no_default_key_mappings = 1
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4357,8 +4217,6 @@ if s:has_neobundle && neobundle#tap('textobj-indblock')
   XOmap io <Plug>(textobj-indblock-i)
   XOmap aO <Plug>(textobj-indblock-same-a)
   XOmap iO <Plug>(textobj-indblock-same-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4373,8 +4231,6 @@ if s:has_neobundle && neobundle#tap('textobj-indent')
   XOmap ii <Plug>(textobj-indent-i)
   XOmap aI <Plug>(textobj-indent-same-a)
   XOmap iI <Plug>(textobj-indent-same-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4420,8 +4276,6 @@ if s:has_neobundle && neobundle#tap('textobj-jabraces')
   XOmap ijY <Plug>(textobj-jabraces-double-yama-kakko-i)
   XOmap ijt <Plug>(textobj-jabraces-kikkou-kakko-i)
   XOmap ijs <Plug>(textobj-jabraces-sumi-kakko-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4434,8 +4288,6 @@ if s:has_neobundle && neobundle#tap('textobj-line')
 
   XOmap al <Plug>(textobj-line-a)
   XOmap il <Plug>(textobj-line-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4448,8 +4300,6 @@ if s:has_neobundle && neobundle#tap('textobj-multiblock')
 
   XOmap ab <Plug>(textobj-multiblock-a)
   XOmap ib <Plug>(textobj-multiblock-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4505,8 +4355,6 @@ if s:has_neobundle && neobundle#tap('textobj-multitextobj')
   XOmap <expr> i` textobj#multitextobj#mapexpr_i('backquotes')
   XOmap <expr> aB textobj#multitextobj#mapexpr_a('jabraces')
   XOmap <expr> iB textobj#multitextobj#mapexpr_i('jabraces')
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4519,8 +4367,6 @@ if s:has_neobundle && neobundle#tap('textobj-motionmotion')
 
   XOmap am <Plug>(textobj-motionmotion-a)
   XOmap im <Plug>(textobj-motionmotion-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4533,8 +4379,6 @@ if s:has_neobundle && neobundle#tap('textobj-parameter')
 
   XOmap a, <Plug>(textobj-parameter-a)
   XOmap i, <Plug>(textobj-parameter-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4544,8 +4388,6 @@ if s:has_neobundle && neobundle#tap('textobj-php')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_php_no_default_key_mappings = 1
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4555,8 +4397,6 @@ if s:has_neobundle && neobundle#tap('textobj-python')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_python_no_default_key_mappings = 1
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4567,8 +4407,6 @@ if s:has_neobundle && neobundle#tap('textobj-ruby')
     let g:textobj_ruby_no_default_key_mappings = 1
     let g:textobj_ruby_more_mappings           = 1
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4578,8 +4416,6 @@ if s:has_neobundle && neobundle#tap('textobj-sigil')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_sigil_no_default_key_mappings = 1
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4592,8 +4428,6 @@ if s:has_neobundle && neobundle#tap('textobj-space')
 
   XOmap aS <Plug>(textobj-space-a)
   XOmap iS <Plug>(textobj-space-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4606,8 +4440,6 @@ if s:has_neobundle && neobundle#tap('textobj-syntax')
 
   XOmap ay <Plug>(textobj-syntax-a)
   XOmap iy <Plug>(textobj-syntax-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4620,8 +4452,6 @@ if s:has_neobundle && neobundle#tap('textobj-url')
 
   XOmap au <Plug>(textobj-url-a)
   XOmap iu <Plug>(textobj-url-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4639,8 +4469,6 @@ if s:has_neobundle && neobundle#tap('textobj-wiw')
 
   XOmap a<M-w> <Plug>(textobj-wiw-a)
   XOmap i<M-w> <Plug>(textobj-wiw-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4655,8 +4483,6 @@ if s:has_neobundle && neobundle#tap('textobj-word-column')
   XOmap aV <Plug>(textobj-wordcolumn-W-a)
   XOmap iv <Plug>(textobj-wordcolumn-w-i)
   XOmap iV <Plug>(textobj-wordcolumn-W-i)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4666,8 +4492,6 @@ if s:has_neobundle && neobundle#tap('textobj-xml-attribute')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_xmlattribute_no_default_key_mappings = 1
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4679,8 +4503,6 @@ if s:has_neobundle && neobundle#tap('undotree')
   endfunction
 
   NXnoremap <M-U> :<C-U>UndotreeToggle<CR>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4888,8 +4710,6 @@ if s:has_neobundle && neobundle#tap('unite')
 
   call extend(s:altercmd_define, {
     \ 'u[nite]' : 'Unite'})
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4902,8 +4722,6 @@ if s:has_neobundle && neobundle#tap('unite-help')
   nnoremap <Leader>u<F2>
     \ :<C-U>UniteWithCursorWord help
     \ -buffer-name=help -no-start-insert<CR>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4919,8 +4737,6 @@ if s:has_neobundle && neobundle#tap('unite-mark')
     \ :<C-U>Unite mark bookmark
     \ -buffer-name=register -no-start-insert -no-empty<CR>
   nnoremap mu :<C-U>UniteBookmarkAdd<CR>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4930,8 +4746,6 @@ if s:has_neobundle && neobundle#tap('unite-outline')
   NXnoremap <Leader>uo
     \ :<C-U>Unite outline
     \ -buffer-name=outline -no-split<CR>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4944,8 +4758,6 @@ if s:has_neobundle && neobundle#tap('unite-quickfix')
   NXnoremap <Leader>u.
     \ :<C-U>Unite location_list
     \ -buffer-name=register -no-empty<CR>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4955,8 +4767,6 @@ if s:has_neobundle && neobundle#tap('unite-quickrun_config')
   NXnoremap <Leader>ur
     \ :<C-U>Unite quickrun_config
     \ -buffer-name=register -no-empty<CR>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4966,8 +4776,6 @@ if s:has_neobundle && neobundle#tap('unite-tag')
   NXnoremap <Leader>ut
     \ :<C-U>UniteWithCursorWord tag tag/include
     \ -buffer-name=outline -no-split -no-start-insert<CR>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4975,8 +4783,6 @@ endif
 " VimDoc Ja: {{{
 if s:has_neobundle && neobundle#tap('vimdoc-ja')
   set helplang^=ja
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -4990,8 +4796,6 @@ if s:has_neobundle && neobundle#tap('vimfiler')
 
   NXnoremap <Leader>E     :<C-U>VimFiler<CR>
   NXnoremap <Leader><C-E> :<C-U>VimFilerExplorer<CR>
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -5003,8 +4807,6 @@ if s:has_neobundle && neobundle#tap('vimproc')
       let g:vimproc_dll_path = expand('/data/local/vimproc_unix.so')
     endif
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -5059,8 +4861,6 @@ if s:has_neobundle && neobundle#tap('vimshell')
     \ '_sh[ell]' : 'shell'})
   call extend(s:neocompl_dictionary_filetype_lists, {
     \ 'vimshell' : $HOME . '/.local/.vimshell/command-history'})
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -5089,8 +4889,6 @@ if s:has_neobundle && neobundle#tap('visualstar')
     \ <SID>(split-nicely)gv<SID>(visualstar-g*)
   xnoremap <script> <C-W>g#
     \ <SID>(split-nicely)gv<SID>(visualstar-g#)
-
-  call neobundle#untap()
 endif
 "}}}
 
@@ -5134,13 +4932,13 @@ if s:has_neobundle && neobundle#tap('watchdogs')
       \   'type' :
       \     has('python') ? 'watchdogs_checker/vimlint_by_dbakker' : ''}})
   endfunction
-
-  call neobundle#untap()
 endif
 "}}}
 
 "==============================================================================
 " Post Init: {{{
+silent! call neobundle#untap()
+
 if filereadable($HOME . '/.local/.vimrc_local.vim')
   source ~/.local/.vimrc_local.vim
 endif
