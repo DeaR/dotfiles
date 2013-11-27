@@ -2506,8 +2506,8 @@ endif
 "------------------------------------------------------------------------------
 " From Example: {{{
 autocmd MyVimrc BufRead *
-  \ if line("'\"") > 1 && line("'\"") <= line('$') &&
-  \   expand('%:p') !~? s:skip_regexp |
+  \ if line('.') == 1 && line("'\"") > 1 && line("'\"") <= line('$') &&
+  \     expand('%:p') !~? s:skip_regexp |
   \   execute 'normal! g`"' |
   \ endif
 "}}}
