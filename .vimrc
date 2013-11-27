@@ -3923,8 +3923,7 @@ endif
 
 "------------------------------------------------------------------------------
 " TComment: {{{
-silent! let neobundle#tapped = neobundle#get('tcomment')
-if exists('neobundle#tapped') && !get(neobundle#tapped, 'disabled', )
+if s:has_neobundle && neobundle#tap('tcomment')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:tcommentMaps = 0
 
