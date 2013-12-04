@@ -1,7 +1,7 @@
 -- Set last command name title
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  13-Aug-2013.
+-- Last Change:  04-Dec-2013.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -59,7 +59,7 @@ function nyaos.filter2.prompt(c)
   end
   local t = ''
   for w in c:gmatch('[^ ]+') do
-    t = t .. w
+    t = t .. ' ' .. w
     if t:match('^[^\034]+$') or t:match('^\034[^\034]+\034$') then
       table.insert(lastcmd, t)
       t = ''
