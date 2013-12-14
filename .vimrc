@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Dec-2013.
+" Last Change:  15-Dec-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1403,6 +1403,20 @@ if s:has_neobundle
   NeoBundleLazy 'thinca/vim-visualstar', {
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>(visualstar-']]}}
+
+  NeoBundleLazy 'taku25/vim-visualstudio', {
+    \ 'autoload' : {
+    \   'commands' : [
+    \     'VSFindResult1', 'VSFindResult2',
+    \     'VSBuild',       'VSBuildNoWait',
+    \     'VSReBuild',     'VSReBuildNoWait',
+    \     'VSClean',       'VSCleanNoWait',
+    \     'VSCompile',     'VSCompileNoWait',
+    \     'VSOpenFile',    'VSGetFile',
+    \     'VSOutput',      'VSErorrList',
+    \     'VSAddBreakPoint']}}
+
+  NeoBundleFetch 'taku25/VisualStudioController'
 
   NeoBundle 'vim-jp/vital.vim'
 
@@ -4888,6 +4902,17 @@ if s:has_neobundle && neobundle#tap('visualstar')
     \ <SID>(split-nicely)gv<SID>(visualstar-g*)
   xnoremap <script> <C-W>g#
     \ <SID>(split-nicely)gv<SID>(visualstar-g#)
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" VisualStudio: {{{
+if s:has_neobundle && neobundle#tap('visualstudio')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:visualstudio_controllerpath =
+      \ neobundle#get('VisualStudioContoller').path .
+      \ '/bin/VisualStudioContoller.exe'
+  endfunction
 endif
 "}}}
 
