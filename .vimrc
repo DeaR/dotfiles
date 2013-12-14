@@ -2590,7 +2590,8 @@ NXOmap <S-Space> g%
 if s:has_neobundle && neobundle#tap('alignta')
   function! neobundle#tapped.hooks.on_source(bundle)
     function! s:operator_alignta(motion_wise)
-      execute input(':', line("'[") . ',' . line("']") . 'Alignta ')
+      let range = line("'[") . ',' . line("']")
+      execute range . input(':' . range, 'Alignta ')
     endfunction
 
     call operator#user#define('alignta', s:SID_PREFIX() . 'operator_alignta')
