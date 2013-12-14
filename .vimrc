@@ -3732,7 +3732,8 @@ endif
 if s:has_neobundle && neobundle#tap('rengbang')
   function! neobundle#tapped.hooks.on_source(bundle)
     function! s:operator_rengbang_prompt(motion_wise)
-      execute input(':', line("'[") . ',' . line("']") . 'RengBang ')
+      let range = line("'[") . ',' . line("']")
+      execute range . input(':' . range, 'RengBang ')
     endfunction
 
     call operator#user#define('rengbang-prompt', s:SID_PREFIX() . 'operator_rengbang_prompt')
