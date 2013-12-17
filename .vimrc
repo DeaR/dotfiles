@@ -4538,14 +4538,12 @@ if s:has_neobundle && neobundle#tap('unite')
     let g:unite_source_file_mru_limit      = 50
     let g:unite_source_directory_mru_limit = 50
 
-    let g:unite_source_directory_mru_ignore_pattern =
-      \ '\%(^\|[/\\]\)\.\%(hg\|git\|bzr\|svn\)\%($\|[/\\]\)' .
-      \ '\|^\%(\\\\\|/mnt/\|/media/\|/temp/\|/tmp/\|\%(/private\)\=/var/folders/\)'
     let g:unite_source_file_mru_ignore_pattern =
       \ '\~$\|\.\%(o\|exe\|dll\|bak\|zwc\|pyc\|sw[po]\)$' .
       \ '\|\%(^\|[/\\]\)\.\%(hg\|git\|bzr\|svn\)\%($\|[/\\]\)' .
       \ '\|^\%(\\\\\|/mnt/\|/media/\|/temp/\|/tmp/\|\%(/private\)\=/var/folders/\)' .
-      \ '\|\%(^\%(fugitive\):\%(//\|\\\\\)\)'
+      \ '\|\%(^\%(fugitive\):\%(//\|\\\\\)\)' .
+      \ '\|[/\\]doc[/\\][^/\\]\+\.\%(txt\|[:alpha:]\{2}x\)'
 
     if neobundle#get('jvgrep') != {} || s:executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
