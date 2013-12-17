@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  17-Dec-2013.
+" Last Change:  18-Dec-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -535,12 +535,14 @@ if s:has_neobundle
     \     'VMapList', 'XMapList', 'SMapList',
     \     'IMapList', 'CMapList', 'LMapList']}}
 
-  NeoBundleLazy 'osyo-manga/vim-marching', {
-    \ 'autoload' : {
-    \   'filetypes' : ['c', 'cpp'],
-    \   'commands' : [
-    \     'MarchingBufferClearCache', 'MarchingDebugLog'],
-    \   'mappings' : [['i', '<Plug>(marching_']]}}
+  if s:executable('clang')
+    NeoBundleLazy 'osyo-manga/vim-marching', {
+      \ 'autoload' : {
+      \   'filetypes' : ['c', 'cpp'],
+      \   'commands' : [
+      \     'MarchingBufferClearCache', 'MarchingDebugLog'],
+      \   'mappings' : [['i', '<Plug>(marching_']]}}
+  endif
 
   NeoBundleLazy 'xolox/vim-misc', {
     \ 'autoload' : {
