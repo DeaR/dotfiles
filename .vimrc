@@ -3075,6 +3075,8 @@ if s:has_neobundle && neobundle#tap('neocomplcache')
     call neocomplcache#custom_source('syntax_complete',   'rank',  9)
     call neocomplcache#custom_source('snippets_complete', 'rank', 80)
 
+    inoremap <expr> <C-Y>
+      \ neocomplcache#close_popup()
     inoremap <expr> <C-G>
       \ neocomplcache#undo_completion()
     inoremap <expr> <C-C>
@@ -3097,7 +3099,7 @@ if s:has_neobundle && neobundle#tap('neocomplcache')
       \   neocomplcache#start_manual_complete()
 
     inoremap <expr> <CR>
-      \ neocomplcache#smart_close_popup() . '<CR>'
+      \ neocomplcache#close_popup() . '<CR>'
     inoremap <expr> <C-H>
       \ neocomplcache#smart_close_popup() . '<C-H>'
     inoremap <expr> <BS>
@@ -3166,6 +3168,8 @@ if s:has_neobundle && neobundle#tap('neocomplete')
     call neocomplete#custom#source('syntax_complete',   'rank',  9)
     call neocomplete#custom#source('snippets_complete', 'rank', 80)
 
+    inoremap <expr> <C-Y>
+      \ neocomplete#close_popup()
     inoremap <expr> <C-G>
       \ neocomplete#undo_completion()
     inoremap <expr> <C-C>
@@ -3188,7 +3192,7 @@ if s:has_neobundle && neobundle#tap('neocomplete')
       \   neocomplete#start_manual_complete()
 
     inoremap <expr> <CR>
-      \ neocomplete#smart_close_popup() . '<CR>'
+      \ neocomplete#close_popup() . '<CR>'
     inoremap <expr> <C-H>
       \ neocomplete#smart_close_popup() . '<C-H>'
     inoremap <expr> <BS>
