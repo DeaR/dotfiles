@@ -90,26 +90,26 @@ let s:neocompl_vim_completefuncs = {
 let s:neocompl_omni_patterns = {
   \ 'CucumberComplete'              : '\h\w*',
   \ 'adacomplete#Complete'          : '\h\w*',
-  \ 'ccomplete#Complete'            : '\h\w*\%(\.\|->\|::\)\w*',
   \ 'clojurecomplete#Complete'      : '\h\w*',
-  \ 'csscomplete#CompleteCSS'       : '[@!]',
+  \ 'csscomplete#CompleteCSS'       : '\h\w*\|[@!]',
+  \ 'sqlcomplete#Complete'          : '\h\w*'}
+let s:neocompl_force_omni_patterns = {
+  \ 'ccomplete#Complete'            : '[^.[:blank:]]\%(\.\|->\|::\)\%(\h\w*\)\?',
   \ 'htmlcomplete#CompleteTags'     : '<[^>]*',
-  \ 'javascriptcomplete#CompleteJS' : '\h\w*\.\w*',
-  \ 'phpcomplete#CompletePHP'       : '\h\w*\%(->\|::\)\w*',
-  \ 'sqlcomplete#Complete'          : '\h\w*',
+  \ 'javascriptcomplete#CompleteJS' : '[^.[:blank:]]\.\%(\h\w*\)\?',
+  \ 'phpcomplete#CompletePHP'       : '[^.[:blank:]]\%(->\|::\)\%(\h\w*\)\?',
   \ 'xmlcomplete#CompleteTags'      : '<[^>]*'}
-let s:neocompl_force_omni_patterns = {}
 if has('python3')
-  call extend(s:neocompl_omni_patterns, {
-    \ 'python3complete#Complete' : '\h\w*\.\w*'})
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'python3complete#Complete' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
 endif
 if has('python')
-  call extend(s:neocompl_omni_patterns, {
-    \ 'pythoncomplete#Complete' : '\h\w*\.\w*'})
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'pythoncomplete#Complete' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
 endif
 if has('ruby')
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'rubycomplete#Complete' : '\h\w*\%(\.\|::\)\w*'})
+    \ 'rubycomplete#Complete' : '[^.[:blank:]]\%(\.\|::\)\%(\h\w*\)\?'})
 endif
 
 " VCvarsall.bat
@@ -2719,8 +2719,8 @@ if s:has_neobundle && neobundle#tap('clang_complete')
     endif
   endfunction
 
-  call extend(s:neocompl_omni_patterns, {
-    \ 'ClangComplete' : '\h\w*\%(\.\|->\|::\)\w*'})
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'ClangComplete' : '[^.[:blank:]]\%(\.\|->\|::\)\%(\h\w*\)\?'})
 endif
 "}}}
 
@@ -2831,8 +2831,8 @@ if s:has_neobundle && neobundle#tap('ft_lua')
     endif
   endfunction
 
-  call extend(s:neocompl_omni_patterns, {
-    \ 'xolox#lua#omnifunc' : '\h\w*\%(\.\|:\)\w*'})
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'xolox#lua#omnifunc' : '[^.[:blank:]]\%(\.\|:\)\%(\h\w*\)\?'})
 endif
 "}}}
 
@@ -2877,8 +2877,8 @@ endif
 "------------------------------------------------------------------------------
 " Gocode: {{{
 if s:has_neobundle && neobundle#tap('gocode')
-  call extend(s:neocompl_omni_patterns, {
-    \ 'gocomplete#Complete' : '\h\w*\.\w*'})
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'gocomplete#Complete' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
 endif
 "}}}
 
@@ -2968,8 +2968,8 @@ if s:has_neobundle && neobundle#tap('jedi')
     let g:jedi#auto_close_doc         = 0
   endfunction
 
-  call extend(s:neocompl_omni_patterns, {
-    \ 'jedi#completions' : '\h\w*\.\w*'})
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'jedi#completions' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
 endif
 "}}}
 
@@ -3266,8 +3266,8 @@ if s:has_neobundle && neobundle#tap('Omnisharp')
     let g:Omnisharp_stop_server            = 2
   endfunction
 
-  call extend(s:neocompl_omni_patterns, {
-    \ 'OmniSharp#Complete' : '\h\w*\.\w*'})
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'OmniSharp#Complete' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
 endif
 "}}}
 
@@ -3584,8 +3584,8 @@ if s:has_neobundle && neobundle#tap('perlomni')
     endif
   endfunction
 
-  call extend(s:neocompl_omni_patterns, {
-    \ 'PerlComplete' : '\h\w*\%(->\|::\)\w*'})
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'PerlComplete' : '[^.[:blank:]]\%(->\|::\)\%(\h\w*\)\?'})
 endif
 "}}}
 
@@ -4022,8 +4022,8 @@ if s:has_neobundle && neobundle#tap('tern_for_vim')
       \ neobundle#get('tern').path . '/bin/tern']
   endfunction
 
-  call extend(s:neocompl_omni_patterns, {
-    \ 'tern#Complete' : '\h\w*\.\w*'})
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'tern#Complete' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
 endif
 "}}}
 
