@@ -265,11 +265,11 @@ if s:has_neobundle
     \ 'autoload' : {
     \   'commands' : 'BenchVimrc'}}
 
-  if has('python') && s:executable('clang')
-    NeoBundleLazy 'Rip-Rip/clang_complete', {
-      \ 'autoload' : {
-      \   'filetypes' : ['c', 'cpp', 'objc', 'objcpp']}}
-  endif
+  " if has('python') && s:executable('clang')
+  "   NeoBundleLazy 'Rip-Rip/clang_complete', {
+  "     \ 'autoload' : {
+  "     \   'filetypes' : ['c', 'cpp', 'objc', 'objcpp']}}
+  " endif
 
   if s:executable('clang-format')
     NeoBundleLazy 'rhysd/vim-clang-format', {
