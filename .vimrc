@@ -862,7 +862,8 @@ if s:has_neobundle
     \     ['n',  '<Plug>(quickrun-op)']]},
     \ 'depends' : [
     \   'osyo-manga/quickrun-hook-vcvarsall',
-    \   'osyo-manga/shabadou.vim']}
+    \   'osyo-manga/shabadou.vim',
+    \   'osyo-manga/vim-watchdogs']}
   call extend(s:neocompl_vim_completefuncs, {
     \ 'QuickRun' : 'quickrun#complete'})
 
@@ -1445,6 +1446,9 @@ if s:has_neobundle
     \   'ynkdir/vim-vimlparser']}
   autocmd MyVimrc FileType *
     \ NeoBundleSource watchdogs
+  call extend(s:neocompl_vim_completefuncs, {
+    \ 'WatchdogsRun'       : 'quickrun#complete',
+    \ 'WatchdogsRunSilent' : 'quickrun#complete'})
 
   NeoBundleLazy 'mattn/webapi-vim'
 
@@ -4913,16 +4917,17 @@ if s:has_neobundle && neobundle#tap('watchdogs')
     call extend(g:quickrun_config, {
       \ 'c/watchdogs_checker' : {
       \   'type' :
-      \     exists('$VCVARSALL')  ? 'watchdogs_checker/msvc' :
-      \     s:executable('cl')    ? 'watchdogs_checker/msvc' :
       \     s:executable('clang') ? 'watchdogs_checker/clang' :
-      \     s:executable('gcc')   ? 'watchdogs_checker/gcc' : ''},
+      \     s:executable('gcc')   ? 'watchdogs_checker/gcc' :
+      \     exists('$VCVARSALL')  ? 'watchdogs_checker/msvc' :
+      \     s:executable('cl')    ? 'watchdogs_checker/msvc' : ''},
       \ 'cpp/watchdogs_checker' : {
       \   'type' :
-      \     exists('$VCVARSALL')    ? 'watchdogs_checker/msvc' :
-      \     s:executable('cl')      ? 'watchdogs_checker/msvc' :
-      \     s:executable('clang++') ? 'watchdogs_checker/clang++' :
-      \     s:executable('g++')     ? 'watchdogs_checker/g++' : ''},
+      \     s:executable('clang_check') ? 'watchdogs_checker/clang_check' :
+      \     s:executable('clang++')     ? 'watchdogs_checker/clang++' :
+      \     s:executable('g++')         ? 'watchdogs_checker/g++' :
+      \     exists('$VCVARSALL')        ? 'watchdogs_checker/msvc' :
+      \     s:executable('cl')          ? 'watchdogs_checker/msvc' : ''},
       \ 'watchdogs_checker/msvc' : {
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
@@ -4940,6 +4945,8 @@ if s:has_neobundle && neobundle#tap('watchdogs')
       \ 'vim/watchdogs_checker' : {
       \   'type' :
       \     has('python') ? 'watchdogs_checker/vimlint_by_dbakker' : ''}})
+
+    call watchdogs#setup(g:quickrun_config)
   endfunction
 endif
 "}}}
