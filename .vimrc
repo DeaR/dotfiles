@@ -4904,8 +4904,8 @@ endif
 if s:has_neobundle && neobundle#tap('visualstudio')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:visualstudio_controllerpath =
-      \ neobundle#get('VisualStudioContoller').path .
-      \ '/bin/VisualStudioContoller.exe'
+      \ neobundle#get('VisualStudioController').path .
+      \ '/bin/VisualStudioController.exe'
   endfunction
 endif
 "}}}
