@@ -535,6 +535,13 @@ if s:has_neobundle
     \     'VMapList', 'XMapList', 'SMapList',
     \     'IMapList', 'CMapList', 'LMapList']}}
 
+  NeoBundleLazy 'osyo-manga/vim-marching', {
+    \ 'autoload' : {
+    \   'filetypes' : ['c', 'cpp'],
+    \   'commands' : [
+    \     'MarchingBufferClearCache', 'MarchingDebugLog'],
+    \   'mappings' : [['i', '<Plug>(marching_']]}}
+
   NeoBundleLazy 'xolox/vim-misc', {
     \ 'autoload' : {
     \   'function_prefix' : 'xolox'}}
@@ -885,6 +892,8 @@ if s:has_neobundle
     \     ['nvo', '<Plug>(operator-rengbang)', '<Plug>(operator-rengbang-']]}}
 
   NeoBundleLazy 'tpope/vim-repeat'
+
+  NeoBundleLazy 'osyo-manga/vim-reunions'
 
   NeoBundleLazy 'vim-ruby/vim-ruby', {
     \ 'autoload' : {
@@ -3004,6 +3013,18 @@ if s:has_neobundle && neobundle#tap('maplist')
     let g:maplist_lhs_length   = 50
     let g:maplist_local_length = 2
   endfunction
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" Marching: {{{
+if s:has_neobundle && neobundle#tap('marching')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:marching_enable_neocomplete = 1
+  endfunction
+
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'marching#complete' : '[^.[:blank:]]\%(\.\|->\|::\)\%(\h\w*\)\?'})
 endif
 "}}}
 
