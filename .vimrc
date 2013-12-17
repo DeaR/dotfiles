@@ -468,10 +468,6 @@ if s:has_neobundle
     \ 'autoload' : {
     \   'filetypes' : ['hybrid', 'text']}}
 
-  if has('conceal')
-    NeoBundle 'Yggdroot/indentLine'
-  endif
-
   NeoBundleLazy 'basyura/J6uil.vim', {
     \ 'autoload' : {
     \   'commands' : [
@@ -2899,39 +2895,6 @@ if s:has_neobundle && neobundle#tap('hier')
   function! neobundle#tapped.hooks.on_source(bundle)
     nnoremap <Esc><Esc> :<C-U>nohlsearch<Bar>HierClear<CR><Esc>
   endfunction
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" IndentLine: {{{
-if s:has_neobundle && neobundle#tap('indentLine')
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:indentLine_char            = '|'
-    let g:indentLine_maxLines        = 10000
-    let g:indentLine_noConcealCursor = 1
-    let g:indentLine_bufNameExclude  = [
-      \ '[Command Line]']
-
-    call s:set_indent_line_color(0)
-  endfunction
-
-  function! s:set_indent_line_color(force)
-    if !exists('g:indentLine_color_term') ||
-      \ !exists('g:indentLine_color_gui') || a:force
-      let hi_special_key          = s:get_highlight('SpecialKey')
-      let g:indentLine_color_term = matchstr(hi_special_key, 'ctermfg=\zs\S\+')
-      let g:indentLine_color_gui  = matchstr(hi_special_key, 'guifg=\zs\S\+')
-    endif
-  endfunction
-
-  augroup MyVimrc
-    autocmd ColorScheme *
-      \ call s:set_indent_line_color(1)
-    autocmd FileType *
-      \ if get(b:, 'indentLine_enabled', 1) != &l:expandtab |
-      \   execute "IndentLinesToggle" |
-      \ endif
-  augroup END
 endif
 "}}}
 
