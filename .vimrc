@@ -3631,10 +3631,10 @@ if s:has_neobundle && neobundle#tap('quickrun')
       \
       \ 'c' : {
       \   'type' :
-      \     exists('$VCVARSALL')  ? 'c/vc' :
-      \     s:executable('cl')    ? 'c/vc' :
       \     s:executable('clang') ? 'c/clang' :
-      \     s:executable('gcc')   ? 'c/gcc' : ''},
+      \     s:executable('gcc')   ? 'c/gcc' :
+      \     exists('$VCVARSALL')  ? 'c/vc' :
+      \     s:executable('cl')    ? 'c/vc' : ''},
       \ 'c/vc' : {
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
@@ -3642,10 +3642,10 @@ if s:has_neobundle && neobundle#tap('quickrun')
       \
       \ 'cpp' : {
       \   'type' :
-      \     exists('$VCVARSALL')    ? 'cpp/vc' :
-      \     s:executable('cl')      ? 'cpp/vc' :
       \     s:executable('clang++') ? 'cpp/clang++' :
-      \     s:executable('g++')     ? 'cpp/g++' : ''},
+      \     s:executable('g++')     ? 'cpp/g++' :
+      \     exists('$VCVARSALL')    ? 'cpp/vc' :
+      \     s:executable('cl')      ? 'cpp/vc' : ''},
       \ 'cpp/vc' : {
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
