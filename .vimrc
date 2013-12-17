@@ -1938,12 +1938,10 @@ NXnoremap g<M-t> :<C-U>tabmove +1<CR>
 NXnoremap g<M-T> :<C-U>tabmove -1<CR>
 
 " Buffer Grep
-" NXnoremap <C-N> :<C-U>vimgrep // %<CR>
+NXnoremap <M-n> :<C-U>vimgrep // %<CR>
 
 " Undo branch
-nnoremap <M-u> g-
-nnoremap <M-r> g+
-nnoremap <M-U> :<C-U>undolist<CR>
+nnoremap <M-u> :<C-U>undolist<CR>
 
 " New line
 nnoremap <M-o>
@@ -4667,9 +4665,9 @@ if s:has_neobundle && neobundle#tap('unite')
 
   NXnoremap <Leader>un
     \ :<C-U>UniteResume search -start-insert<CR>
-  " NXnoremap <C-N>
-  "   \ :<C-U>execute 'Unite vimgrep:%:' . escape(@/, '\ :')
-  "   \ '-buffer-name=search -no-split -multi-line'<CR>
+  NXnoremap <M-n>
+    \ :<C-U>execute 'Unite vimgrep:%:' . escape(@/, '\ :')
+    \ '-buffer-name=search -no-split -multi-line'<CR>
 
   NXnoremap <Leader>u/
     \ :<C-U>Unite line
@@ -4936,8 +4934,8 @@ if s:has_neobundle && neobundle#tap('yankround')
   nmap P     <Plug>(yankround-P)
   nmap gp    <Plug>(yankround-gp)
   nmap gP    <Plug>(yankround-gP)
-  nmap <C-n> <Plug>(yankround-next)
-  nmap <C-p> <Plug>(yankround-prev)
+  nmap <C-N> <Plug>(yankround-next)
+  nmap <C-P> <Plug>(yankround-prev)
 endif
 "}}}
 
