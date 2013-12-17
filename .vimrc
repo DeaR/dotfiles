@@ -1940,9 +1940,6 @@ NXnoremap g<M-T> :<C-U>tabmove -1<CR>
 " Buffer Grep
 " NXnoremap <C-N> :<C-U>vimgrep // %<CR>
 
-" Search highlight
-nnoremap <Esc><Esc> :<C-U>nohlsearch<CR><Esc>
-
 " Undo branch
 nnoremap <M-u> g-
 nnoremap <M-r> g+
@@ -2277,6 +2274,18 @@ NXmap ?  <SID>?
 NXnoremap <expr> ;: <SID>cmdline_enter(':')
 NXnoremap <expr> ;/ <SID>cmdline_enter('/')
 NXnoremap <expr> ;? <SID>cmdline_enter('?')
+"}}}
+
+"------------------------------------------------------------------------------
+" Escape Key: {{{
+function! s:escape_key()
+  if exists('#User#EscapeKey')
+    execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
+      \ 'User EscapeKey'
+  endif
+  return ":\<C-U>nohlsearch\<CR>\<Esc>"
+endfunction
+nnoremap <expr> <Esc><Esc> <SID>escape_key()
 "}}}
 
 "------------------------------------------------------------------------------
@@ -2892,9 +2901,8 @@ endif
 "------------------------------------------------------------------------------
 " Hier: {{{
 if s:has_neobundle && neobundle#tap('hier')
-  function! neobundle#tapped.hooks.on_source(bundle)
-    nnoremap <Esc><Esc> :<C-U>nohlsearch<Bar>HierClear<CR><Esc>
-  endfunction
+  autocmd MyVimrc User EscapeKey
+    \ HierClear
 endif
 "}}}
 
