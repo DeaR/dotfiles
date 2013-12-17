@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Nov-2013.
+" Last Change:  17-Dec-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -129,7 +129,7 @@ set hlsearch
 "------------------------------------------------------------------------------
 " Display: {{{
 " Command line
-set cmdheight=1
+set cmdheight=2
 
 " Font
 if has('win32')

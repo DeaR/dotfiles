@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  15-Dec-2013.
+" Last Change:  17-Dec-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -327,6 +327,11 @@ if s:has_neobundle
     \ 'Dispatch'      : 'dispatch#command_complete',
     \ 'FocusDispatch' : 'dispatch#command_complete',
     \ 'Start'         : 'dispatch#command_complete'})
+
+  NeoBundleLazy 'Shougo/echodoc.vim', {
+    \ 'autoload' : {
+    \   'commands' : ['EchoDocEnable', 'EchoDocDisable'],
+    \   'insert' : 1}}
 
   NeoBundleLazy 'mattn/emmet-vim', {
     \ 'autoload' : {
@@ -1531,7 +1536,7 @@ set showmatch
 set matchtime=1
 
 " Command line
-set cmdheight=1
+set cmdheight=2
 set laststatus=2
 set showcmd
 
