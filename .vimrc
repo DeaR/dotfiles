@@ -336,7 +336,7 @@ if s:has_neobundle
   NeoBundleLazy 'mattn/emmet-vim', {
     \ 'autoload' : {
     \   'commands' : 'Emmet',
-    \   'mappings' : [['nvi', '<C-Y>']]}}
+    \   'mappings' : [['nvi', '<M-y>']]}}
 
   NeoBundleLazy 'tyru/eskk.vim', {
     \ 'autoload' : {
@@ -2795,6 +2795,7 @@ endif
 " Emmet: {{{
 if s:has_neobundle && neobundle#tap('emmet')
   function! neobundle#tapped.hooks.on_source(bundle)
+    let g:user_emmet_leader_key = '<M-y>'
     let g:user_emmet_settings   = {
       \ 'lang' : 'ja',
       \ 'indentation' : '  ',
