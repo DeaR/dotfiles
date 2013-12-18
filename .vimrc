@@ -1454,8 +1454,6 @@ if s:has_neobundle
 
   NeoBundleLazy 'mattn/webapi-vim'
 
-  NeoBundle 'LeafCage/yankround.vim'
-
   execute 'set runtimepath+=' .
     \ join(map(filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
     \                 'neobundle#get(fnamemodify(v:val, ":t")) != {}'),
@@ -1937,7 +1935,9 @@ NXnoremap <script><expr> <Leader><M-D>
   \ '/'
 
 " Paste
-" noremap!  <M-p> <C-R>"
+NXnoremap <C-P> :<C-U>registers<CR>
+inoremap  <C-P> <C-O>:<C-U>registers<CR>
+noremap!  <M-p> <C-R>"
 
 " BackSpace
 nnoremap <BS> X
@@ -1953,7 +1953,7 @@ NXnoremap g<M-t> :<C-U>tabmove +1<CR>
 NXnoremap g<M-T> :<C-U>tabmove -1<CR>
 
 " Buffer Grep
-NXnoremap <M-n> :<C-U>vimgrep // %<CR>
+NXnoremap <C-N> :<C-U>vimgrep // %<CR>
 
 " Undo branch
 nnoremap <M-u> :<C-U>undolist<CR>
@@ -3323,9 +3323,9 @@ endif
 "------------------------------------------------------------------------------
 " Operator Replace: {{{
 if s:has_neobundle && neobundle#tap('operator-replace')
-  NXOmap sp <Plug>(operator-replace)
+  NXOmap p <Plug>(operator-replace)
 
-  nnoremap spp spsp
+  nnoremap pp p
 endif
 "}}}
 
@@ -4534,6 +4534,7 @@ if s:has_neobundle && neobundle#tap('unite')
     let g:unite_data_directory             = $HOME . '/.local/.unite'
     let g:unite_enable_start_insert        = 1
     let g:unite_winheight                  = 25
+    let g:unite_source_history_yank_enable = 1
     let g:unite_cursor_line_highlight      = 'CursorLine'
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
@@ -4692,10 +4693,21 @@ if s:has_neobundle && neobundle#tap('unite')
   NXnoremap <Leader>J
     \ :<C-U>Unite change
     \ -buffer-name=register -no-empty<CR>
+  nnoremap <C-P>
+    \ :<C-U>Unite history/yank
+    \ -buffer-name=register -no-empty -multi-line<CR>
+  xnoremap <C-P>
+    \ d:<C-U>Unite history/yank
+    \ -buffer-name=register -no-empty -multi-line<CR>
+  inoremap <expr> <C-P>
+    \ unite#start_complete('history/yank', {
+    \   'buffer_name': 'register',
+    \   'is_multi_line' : 1,
+    \   'direction' : 'leftabove'})
 
   NXnoremap <Leader>un
     \ :<C-U>UniteResume search -start-insert<CR>
-  NXnoremap <M-n>
+  NXnoremap <C-N>
     \ :<C-U>execute 'Unite vimgrep:%:' . escape(@/, '\ :')
     \ '-buffer-name=search -no-split -multi-line'<CR>
 
@@ -4953,22 +4965,6 @@ if s:has_neobundle && neobundle#tap('watchdogs')
 
     call watchdogs#setup(g:quickrun_config)
   endfunction
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" YankRound: {{{
-if s:has_neobundle && neobundle#tap('yankround')
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:yankround_dir = $HOME . '/.local/.yankround'
-  endfunction
-
-  nmap p     <Plug>(yankround-p)
-  nmap P     <Plug>(yankround-P)
-  nmap gp    <Plug>(yankround-gp)
-  nmap gP    <Plug>(yankround-gP)
-  nmap <C-N> <Plug>(yankround-next)
-  nmap <C-P> <Plug>(yankround-prev)
 endif
 "}}}
 
