@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-Dec-2013.
+" Last Change:  20-Dec-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -585,6 +585,7 @@ if s:has_neobundle
       \   'unite_sources' : ['file_include', 'neocomplete'],
       \   'insert' : 1},
       \ 'depends' : [
+      \   'Shougo/echodoc',
       \   'hrsh7th/vim-neco-calc',
       \   'eagletmt/neco-ghc',
       \   'ujihisa/neco-look',
@@ -622,6 +623,7 @@ if s:has_neobundle
       \   'unite_sources' : ['file_include', 'neocomplcache'],
       \   'insert' : 1},
       \ 'depends' : [
+      \   'Shougo/echodoc',
       \   'hrsh7th/vim-neco-calc',
       \   'eagletmt/neco-ghc',
       \   'ujihisa/neco-look',
@@ -2790,6 +2792,15 @@ if s:has_neobundle && neobundle#tap('columnjump')
 
   NXOmap ( <Plug>(columnjump-backward)
   NXOmap ) <Plug>(columnjump-forward)
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" EchoDoc: {{{
+if s:has_neobundle && neobundle#tap('echodoc')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    call echodoc#enable()
+  endfunction
 endif
 "}}}
 
