@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  20-Dec-2013.
+" Last Change:  23-Dec-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -892,7 +892,7 @@ if s:has_neobundle
 
   NeoBundleLazy 'deris/vim-rengbang', {
     \ 'autoload' : {
-    \   'commands' : ['RengBang', 'RengBangUsePrev'],
+    \   'commands' : ['RengBang', 'RengBangUsePrev', 'RengBangConfirm'],
     \   'mappings' : [
     \     ['nvo', '<Plug>(operator-rengbang)', '<Plug>(operator-rengbang-']]}}
 
@@ -3748,15 +3748,11 @@ endif
 " RengBang: {{{
 if s:has_neobundle && neobundle#tap('rengbang')
   function! neobundle#tapped.hooks.on_source(bundle)
-    function! s:operator_rengbang_prompt(motion_wise)
-      let range = line("'[") . ',' . line("']")
-      execute range . input(':' . range, 'RengBang ')
-    endfunction
-
-    call operator#user#define('rengbang-prompt', s:SID_PREFIX() . 'operator_rengbang_prompt')
+    call operator#user#define_ex_command(
+      \ 'rengbang-confirm', 'RengBangConfirm')
   endfunction
 
-  NXOmap s+ <Plug>(operator-rengbang-prompt)
+  NXOmap s+ <Plug>(operator-rengbang-confirm)
 
   nmap s++ s+s+
 endif
