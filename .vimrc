@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  23-Dec-2013.
+" Last Change:  24-Dec-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -3396,11 +3396,6 @@ if s:has_neobundle && neobundle#tap('operator-star')
   NOmap g* <Plug>(operator-g*)
   NOmap g# <Plug>(operator-g#)
 
-  NOmap <C-W>*  <SID>(split-nicely)<Plug>(operator-*)
-  NOmap <C-W>#  <SID>(split-nicely)<Plug>(operator-#)
-  NOmap <C-W>g* <SID>(split-nicely)<Plug>(operator-g*)
-  NOmap <C-W>g# <SID>(split-nicely)<Plug>(operator-g#)
-
   NOnoremap **   *
   NOnoremap ##   #
   NOnoremap g*g* g*
@@ -3412,6 +3407,11 @@ if s:has_neobundle && neobundle#tap('operator-star')
   NOmap g??  ##
   NOmap g**  g*g*
   NOmap g##  g#g#
+
+  nmap <C-W>*  <SID>(split-nicely)<Plug>(operator-*)
+  nmap <C-W>#  <SID>(split-nicely)<Plug>(operator-#)
+  nmap <C-W>g* <SID>(split-nicely)<Plug>(operator-g*)
+  nmap <C-W>g# <SID>(split-nicely)<Plug>(operator-g#)
 
   nnoremap <script> <C-W>**   <SID>(split-nicely)*
   nnoremap <script> <C-W>##   <SID>(split-nicely)#
