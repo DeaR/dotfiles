@@ -1810,7 +1810,7 @@ cnoremap   <C-G> <Nop>
 function! s:split_nicely_expr()
   return &columns < 160
 endfunction
-noremap <expr> <SID>(split-nicely)
+NXnoremap <expr> <SID>(split-nicely)
   \ <SID>split_nicely_expr() ? '<C-W>s' : '<C-W>v'
 
 " Gips
