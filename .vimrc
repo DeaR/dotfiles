@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  24-Dec-2013.
+" Last Change:  26-Dec-2013.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -642,7 +642,8 @@ if s:has_neobundle
     \     {'name' : 'NeoSnippetMakeCache',
     \      'complete' : 'customlist,neosnippet#filetype_complete'},
     \     {'name' : 'NeoSnippetSource',
-    \      'complete' : 'file'}],
+    \      'complete' : 'file'},
+    \     'NeoSnippetClearMarkers'],
     \   'mappings' : [['vi', '<Plug>(neosnippet_']],
     \   'unite_sources' : [
     \     'snippet', 'snippet/target',
@@ -3265,6 +3266,9 @@ if s:has_neobundle && neobundle#tap('neosnippet')
 
   smap <C-E> <Plug>(neosnippet_expand_or_jump)
   xmap <C-E> <Plug>(neosnippet_expand_target)
+
+  autocmd MyVimrc InsertLeave *
+    \ NeoSnippetClearMarkers
 endif
 "}}}
 
