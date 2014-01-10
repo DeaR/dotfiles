@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  26-Dec-2013.
+" Last Change:  10-Jan-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -830,7 +830,8 @@ if s:has_neobundle
 
   NeoBundleLazy 'kannokanno/previm', {
     \ 'autoload' : {
-    \   'filetypes' : 'markdown'}}
+    \   'filetypes' : 'markdown'},
+    \ 'depends' : 'tyru/open-browser.vim'}
 
   NeoBundleLazy 'thinca/vim-qfreplace', {
     \ 'autoload' : {
