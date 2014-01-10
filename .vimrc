@@ -3549,7 +3549,7 @@ if s:has_neobundle && neobundle#tap('operator-user')
         execute 'Unite'
           \ (&grepprg == 'internal' ? 'vimgrep::' : 'grep:::') .
           \ escape(join(lines), s:operator_grep_escape . ' :')
-          \ '-buffer-name=grep -no-split -multi-line'
+          \ '-buffer-name=grep -no-split -wrap'
       else
         execute input(':',
           \ 'grep "' . escape(join(lines), s:operator_grep_escape) . '" ')
@@ -4689,15 +4689,15 @@ if s:has_neobundle && neobundle#tap('unite')
   if &grepprg == 'internal'
     nnoremap sgsg
       \ :<C-U>Unite vimgrep
-      \ -buffer-name=grep -no-split -multi-line<CR>
+      \ -buffer-name=grep -no-split -wrap<CR>
   else
     nnoremap sgsg
       \ :<C-U>Unite grep
-      \ -buffer-name=grep -no-split -multi-line<CR>
+      \ -buffer-name=grep -no-split -wrap<CR>
   endif
   NXnoremap sG
     \ :<C-U>UniteResume grep
-    \ -no-split -multi-line -no-start-insert<CR>
+    \ -no-split -wrap -no-start-insert<CR>
 
   NXnoremap <Leader>j
     \ :<C-U>Unite jump
@@ -4707,10 +4707,10 @@ if s:has_neobundle && neobundle#tap('unite')
     \ -buffer-name=register -no-empty<CR>
   nnoremap <C-P>
     \ :<C-U>Unite history/yank
-    \ -buffer-name=register -no-empty -multi-line<CR>
+    \ -buffer-name=register -no-empty -wrap<CR>
   xnoremap <C-P>
     \ d:<C-U>Unite history/yank
-    \ -buffer-name=register -no-empty -multi-line<CR>
+    \ -buffer-name=register -no-empty -wrap<CR>
   inoremap <expr> <C-P>
     \ unite#start_complete('history/yank', {
     \   'buffer_name': 'register',
@@ -4721,7 +4721,7 @@ if s:has_neobundle && neobundle#tap('unite')
     \ :<C-U>UniteResume search -start-insert<CR>
   NXnoremap <C-N>
     \ :<C-U>execute 'Unite vimgrep:%:' . escape(@/, '\ :')
-    \ '-buffer-name=search -no-split -multi-line'<CR>
+    \ '-buffer-name=search -no-split -wrap'<CR>
 
   NXnoremap <Leader>u/
     \ :<C-U>Unite line
