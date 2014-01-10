@@ -3041,6 +3041,7 @@ endif
 if s:has_neobundle && neobundle#tap('marching')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:marching_enable_neocomplete = 1
+    let g:marching_backend            = "sync_clang_command"
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
