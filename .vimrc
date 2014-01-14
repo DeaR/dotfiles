@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  12-Jan-2014.
+" Last Change:  14-Jan-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1784,12 +1784,12 @@ command! -complete=mapping -nargs=*
 "}}}
 
 "------------------------------------------------------------------------------
-" Prefix: {{{
+" Common: {{{
 " <Leader> <LocalLeader>
 NXOnoremap <Leader>      <Nop>
 NXOnoremap <LocalLeader> <Nop>
 
-" Useless
+" Prefix
 NXOnoremap ;     <Nop>
 NXOnoremap ,     <Nop>
 NXOnoremap s     <Nop>
@@ -1798,18 +1798,52 @@ NXOnoremap m     <Nop>
 NXOnoremap M     <Nop>
 NOnoremap  <C-G> <Nop>
 cnoremap   <C-G> <Nop>
+
+" Split Nicely
+NXnoremap <expr> <SID>(split-nicely)
+  \ myvimrc#split_nicely_expr() ? '<C-W>s' : '<C-W>v'
 "}}}
 
 "------------------------------------------------------------------------------
-" Moving: {{{
-" Split Nicely
-function! s:split_nicely_expr()
-  return &columns < 160
-endfunction
-NXnoremap <expr> <SID>(split-nicely)
-  \ <SID>split_nicely_expr() ? '<C-W>s' : '<C-W>v'
+" Command Line: {{{
+if s:cmdwin_enable
+  noremap <SID>: q:
+  noremap <SID>/ q/
+  noremap <SID>? q?
+else
+  noremap <expr> <SID>: myvimrc#cmdline_enter(':')
+  noremap <expr> <SID>/ myvimrc#cmdline_enter('/')
+  noremap <expr> <SID>? myvimrc#cmdline_enter('?')
+endif
 
-" Gips
+NXmap ;; <SID>:
+NXmap :  <SID>:
+NXmap /  <SID>/
+NXmap ?  <SID>?
+
+NXnoremap <expr> ;: myvimrc#cmdline_enter(':')
+NXnoremap <expr> ;/ myvimrc#cmdline_enter('/')
+NXnoremap <expr> ;? myvimrc#cmdline_enter('?')
+
+cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
+augroup MyVimrc
+  autocmd CmdwinEnter *
+    \ call myvimrc#cmdwin_enter()
+  autocmd CmdwinEnter /
+    \ inoremap <buffer> / \/
+  autocmd CmdwinEnter ?
+    \ inoremap <buffer> ? \?
+augroup END
+"}}}
+
+"------------------------------------------------------------------------------
+" Escape Key: {{{
+nnoremap <expr> <Esc><Esc> myvimrc#escape_key()
+"}}}
+
+"------------------------------------------------------------------------------
+" Gips: {{{
 if s:gips_enable
   noremap <Up>       <Nop>
   noremap <Down>     <Nop>
@@ -1820,26 +1854,10 @@ if s:gips_enable
   noremap <PageUp>   <Nop>
   noremap <PageDown> <Nop>
 endif
+"}}}
 
-" Window Control
-NXnoremap <M-s>   <C-W>s
-NXnoremap <M-v>   <C-W>v
-NXnoremap <M-j>   <C-W>j
-NXnoremap <M-k>   <C-W>k
-NXnoremap <M-h>   <C-W>h
-NXnoremap <M-l>   <C-W>l
-NXnoremap <M-J>   <C-W>J
-NXnoremap <M-K>   <C-W>K
-NXnoremap <M-H>   <C-W>H
-NXnoremap <M-L>   <C-W>L
-NXnoremap <M-=>   <C-W>=
-NXnoremap <M-->   <C-W>-
-NXnoremap <M-+>   <C-W>+
-NXnoremap <M-_>   <C-W>_
-NXnoremap <M-<>   <C-W><
-NXnoremap <M->>   <C-W>>
-NXnoremap <M-Bar> <C-W><Bar>
-
+"------------------------------------------------------------------------------
+" Moving: {{{
 " Insert-mode & Command-line-mode
 noremap! <M-j> <Down>
 noremap! <M-k> <Up>
@@ -1875,6 +1893,7 @@ cnoremap <M-b> <S-Left>
 " Jump
 NXOnoremap ' `
 NXOnoremap ` '
+nnoremap <S-Tab> <C-O>
 
 " Mark
 NXOnoremap mj ]`
@@ -1884,24 +1903,38 @@ NXOnoremap mk [`
 NXOnoremap <C-J> ]c
 NXOnoremap <C-K> [c
 
-" Search
-NXOmap g/ *
-NXOmap g? #
-
-" Search Split Window
-NXnoremap <script> <C-W>/  <SID>(split-nicely)<SID>/
-NXnoremap <script> <C-W>?  <SID>(split-nicely)<SID>?
-NXnoremap <script> <C-W>*  <SID>(split-nicely)*
-NXnoremap <script> <C-W>#  <SID>(split-nicely)#
-NXnoremap <script> <C-W>g* <SID>(split-nicely)g*
-NXnoremap <script> <C-W>g# <SID>(split-nicely)g#
-NXmap <C-W>g/ <C-W>*
-NXmap <C-W>g? <C-W>#
+" Command-line
+cnoremap <expr> <C-H>
+  \ getcmdtype() == '@' && getcmdpos() == 1 && getcmdline() == '' ?
+  \   '<Esc>' : '<C-H>'
+cnoremap <expr> <BS>
+  \ getcmdtype() == '@' && getcmdpos() == 1 && getcmdline() == '' ?
+  \   '<Esc>' : '<BS>'
 "}}}
 
 "------------------------------------------------------------------------------
-" Useful: {{{
-" Leader keys
+" Window Control: {{{
+NXnoremap <M-s>   <C-W>s
+NXnoremap <M-v>   <C-W>v
+NXnoremap <M-j>   <C-W>j
+NXnoremap <M-k>   <C-W>k
+NXnoremap <M-h>   <C-W>h
+NXnoremap <M-l>   <C-W>l
+NXnoremap <M-J>   <C-W>J
+NXnoremap <M-K>   <C-W>K
+NXnoremap <M-H>   <C-W>H
+NXnoremap <M-L>   <C-W>L
+NXnoremap <M-=>   <C-W>=
+NXnoremap <M-->   <C-W>-
+NXnoremap <M-+>   <C-W>+
+NXnoremap <M-_>   <C-W>_
+NXnoremap <M-<>   <C-W><
+NXnoremap <M->>   <C-W>>
+NXnoremap <M-Bar> <C-W><Bar>
+"}}}
+
+"------------------------------------------------------------------------------
+" Leader Prefix: {{{
 NXnoremap <Leader>c     :<C-U>close<CR>
 NXnoremap <Leader>C     :<C-U>only<CR>
 NXnoremap <Leader><M-c> :<C-U>tabclose<CR>
@@ -1931,8 +1964,88 @@ NXnoremap <script><expr> <Leader><M-D>
   \ '<SID>:<C-U>cd ' .
   \ expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '')) .
   \ '/'
+"}}}
 
+"------------------------------------------------------------------------------
+" Search: {{{
+NXOmap g/ *
+NXOmap g? #
+
+NXnoremap <script> <C-W>/  <SID>(split-nicely)<SID>/
+NXnoremap <script> <C-W>?  <SID>(split-nicely)<SID>?
+NXnoremap <script> <C-W>*  <SID>(split-nicely)*
+NXnoremap <script> <C-W>#  <SID>(split-nicely)#
+NXnoremap <script> <C-W>g* <SID>(split-nicely)g*
+NXnoremap <script> <C-W>g# <SID>(split-nicely)g#
+NXmap <C-W>g/ <C-W>*
+NXmap <C-W>g? <C-W>#
+
+NXOnoremap <expr> n
+  \ myvimrc#search_forward_expr() ? 'n' : 'N'
+NXOnoremap <expr> N
+  \ myvimrc#search_forward_expr() ? 'N' : 'n'
+"}}}
+
+"------------------------------------------------------------------------------
+" Help: {{{
+inoremap <expr> <F1>
+  \ myvimrc#split_nicely_expr() ?
+  \   '<Esc>:<C-U>help<Space>' :
+  \   '<Esc>:<C-U>vertical help<Space>'
+nnoremap <expr> <F1>
+  \ myvimrc#split_nicely_expr() ?
+  \   ':<C-U>help<Space>' :
+  \   ':<C-U>vertical help<Space>'
+nnoremap <expr> <F2>
+  \ myvimrc#split_nicely_expr() ?
+  \   ':<C-U>help ' . expand('<cword>') . '<CR>' :
+  \   ':<C-U>vertical help ' . expand('<cword>') . '<CR>'
+"}}}
+
+"------------------------------------------------------------------------------
+" Auto Mark: {{{
+nnoremap <expr> mm myvimrc#auto_mark()
+nnoremap <expr> mc myvimrc#clear_marks()
+nnoremap <expr> mM myvimrc#auto_file_mark()
+nnoremap <expr> mC myvimrc#clear_file_marks()
+nnoremap <expr> ml myvimrc#marks()
+"}}}
+
+"------------------------------------------------------------------------------
+" Smart BOL: {{{
+NXOnoremap <expr> H myvimrc#smart_bol()
+NXOnoremap <expr> L myvimrc#smart_eol()
+inoremap <expr> <M-H> '<C-O>' . myvimrc#smart_bol()
+inoremap <expr> <M-L> '<C-O>' . myvimrc#smart_eol()
+"}}}
+
+"------------------------------------------------------------------------------
+" Smart Close: {{{
+autocmd MyVimrc FileType *
+  \ if (&readonly || !&modifiable) && maparg('q', 'n') == '' |
+  \   nnoremap <buffer><expr> q
+  \     winnr('$') != 1 ? ':<C-U>close<CR>' : ''|
+  \ endif
+"}}}
+
+"------------------------------------------------------------------------------
+" Line Number: {{{
+nnoremap <F12> :<C-U>call myvimrc#toggle_line_number_style()<CR>
+"}}}
+
+"------------------------------------------------------------------------------
+" Insert One Character: {{{
+nnoremap  <expr> <M-a> myvimrc#insert_one_char('a')
+NXnoremap <expr> <M-A> myvimrc#insert_one_char('A')
+nnoremap  <expr> <M-i> myvimrc#insert_one_char('i')
+NXnoremap <expr> <M-I> myvimrc#insert_one_char('I')
+"}}}
+
+"------------------------------------------------------------------------------
+" Others: {{{
 " Paste
+set pastetoggle=<F11>
+nnoremap  <F11> :<C-U>set paste! paste?<CR>
 NXnoremap <C-P> :<C-U>registers<CR>
 inoremap  <C-P> <C-O>:<C-U>registers<CR>
 noremap!  <M-p> <C-R>"
@@ -1940,18 +2053,12 @@ noremap!  <M-p> <C-R>"
 " BackSpace
 nnoremap <BS> X
 
-" Yank at end of line
+" Yank to end of line
 nnoremap Y y$
-
-" Jump
-nnoremap <S-Tab> <C-O>
 
 " Tabs
 NXnoremap g<M-t> :<C-U>tabmove +1<CR>
 NXnoremap g<M-T> :<C-U>tabmove -1<CR>
-
-" Buffer Grep
-NXnoremap <C-N> :<C-U>vimgrep // %<CR>
 
 " Undo branch
 nnoremap <M-u> :<C-U>undolist<CR>
@@ -1962,64 +2069,20 @@ nnoremap <M-o>
 nnoremap <M-O>
   \ :<C-U>call append(line('.') - 1, repeat([''], v:count1))<CR>
 
-" Paste toggle
-set pastetoggle=<F11>
-nnoremap <F11> :<C-U>set paste! paste?<CR>
-
-" Start Visual-mode with the same area
+" The precious area text object
 onoremap gv :<C-U>normal! gv<CR>
 
-" Start Visual-mode with the last changed area
+" The last changed area text object
 nnoremap  g[ `[v`]
 XOnoremap g[ :<C-U>normal g[<CR>
 
 " Delete at Insert-mode
 inoremap <C-W> <C-G>u<C-W>
 inoremap <C-U> <C-G>u<C-U>
-
-" Auto exit at Command-mode
-cnoremap <expr> <C-H>
-  \ getcmdtype() == '@' && getcmdpos() == 1 && getcmdline() == '' ?
-  \   '<Esc>' : '<C-H>'
-cnoremap <expr> <BS>
-  \ getcmdtype() == '@' && getcmdpos() == 1 && getcmdline() == '' ?
-  \   '<Esc>' : '<BS>'
-
-" Auto escape at Command-mode
-cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
-cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
-augroup MyVimrc
-  autocmd CmdwinEnter /
-    \ inoremap <buffer> / \/
-  autocmd CmdwinEnter ?
-    \ inoremap <buffer> ? \?
-augroup END
-
-" Help
-inoremap <expr> <F1>
-  \ <SID>split_nicely_expr() ?
-  \   '<Esc>:<C-U>help<Space>' :
-  \   '<Esc>:<C-U>vertical help<Space>'
-nnoremap <expr> <F1>
-  \ <SID>split_nicely_expr() ?
-  \   ':<C-U>help<Space>' :
-  \   ':<C-U>vertical help<Space>'
-nnoremap <expr> <F2>
-  \ <SID>split_nicely_expr() ?
-  \   ':<C-U>help ' . expand('<cword>') . '<CR>' :
-  \   ':<C-U>vertical help ' . expand('<cword>') . '<CR>'
-
-" QuickFix
-augroup MyVimrc
-  autocmd QuickFixCmdPost [^l]*
-    \ cwindow
-  autocmd QuickFixCmdPost l*
-    \ lwindow
-augroup END
 "}}}
 
 "------------------------------------------------------------------------------
-" Subrogation: {{{
+" Evacuation: {{{
 " Mark
 nnoremap <M-m> m
 
@@ -2146,51 +2209,26 @@ endif
 "------------------------------------------------------------------------------
 " Shell Setting: {{{
 if has('win32')
-  function! s:get_shell()
-    return [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
-  endfunction
-  function! s:set_shell(value)
-    let [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote] =
-      \ a:value
-  endfunction
-
   command! -bar
     \ ShellCmd
-    \ call s:set_shell(s:default_shell)
+    \ call myvimrc#set_shell(s:default_shell)
   command! -bar -nargs=?
     \ ShellSh
-    \ call s:set_shell([<q-args> != '' ? <q-args> : 'sh', 1, '-c', '', '"'])
+    \ call myvimrc#set_shell([<q-args> != '' ? <q-args> : 'sh', 1, '-c', '', '"'])
 endif
 "}}}
 
 "------------------------------------------------------------------------------
 " VC Vars: {{{
 if exists('$VCVARSALL')
-  function! s:vcvarsall(arch)
-    let save_shell = s:get_shell()
-    let save_isi   = &isident
-    ShellCmd
-    set isident+=( isident+=)
-    try
-      let env = system($VCVARSALL . ' ' . a:arch . ' & set')
-      for matches in filter(map(split(env, '\n'),
-        \ 'matchlist(v:val, ''\([^=]\+\)=\(.*\)'')'), 'len(v:val) > 1')
-        execute 'let $' . matches[1] . '=' . string(matches[2])
-      endfor
-    finally
-      call s:set_shell(save_shell)
-      let &isident = save_isi
-    endtry
-  endfunction
-
   command! -bar
     \ VCVars32
-    \ call s:vcvarsall('x86')
+    \ call myvimrc#vcvarsall('x86')
 
   if exists('$PROGRAMFILES(x86)')
     command! -bar
       \ VCVars64
-      \ call s:vcvarsall(exists('PROCESSOR_ARCHITEW6432') ?
+      \ call myvimrc#vcvarsall(exists('PROCESSOR_ARCHITEW6432') ?
       \   $PROCESSOR_ARCHITEW6432 : $PROCESSOR_ARCHITECTURE)
   endif
 endif
@@ -2198,22 +2236,21 @@ endif
 
 "------------------------------------------------------------------------------
 " QuickFix Toggle: {{{
-function! s:toggle_quickfix(type, height)
-  let w = winnr('$')
-  execute a:type . 'close'
-  if w == winnr('$')
-    execute a:type . 'window' a:height
-  endif
-endfunction
 command! -bar -nargs=?
   \ CToggle
-  \ call s:toggle_quickfix('c', <q-args>)
+  \ call myvimrc#toggle_quickfix('c', <q-args>)
 command! -bar -nargs=?
   \ LToggle
-  \ call s:toggle_quickfix('l', <q-args>)
+  \ call myvimrc#toggle_quickfix('l', <q-args>)
 
 NXnoremap <C-W>, :<C-U>CToggle<CR>
 NXnoremap <C-W>. :<C-U>LToggle<CR>
+augroup MyVimrc
+  autocmd QuickFixCmdPost [^l]*
+    \ cwindow
+  autocmd QuickFixCmdPost l*
+    \ lwindow
+augroup END
 "}}}
 
 "------------------------------------------------------------------------------
@@ -2225,7 +2262,8 @@ command! -bar
   \ Undiff
   \ diffoff |
   \ setlocal scrollbind< cursorbind< wrap< foldmethod< foldcolumn< |
-  \ doautocmd FileType
+  \ execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
+  \ 'FileType'
 
 nnoremap <F8> :<C-U>Undiff<CR>
 "}}}
@@ -2246,213 +2284,9 @@ nnoremap <F6> :<C-U>DiffOrig<CR>
 " Vim Script: {{{
 
 "------------------------------------------------------------------------------
-" Command Line Window: {{{
-function! s:cmdwin_enter()
-  startinsert!
-  nnoremap <buffer><silent> q :<C-U>quit<CR>
-
-  inoremap <buffer><silent><expr> <C-H>
-    \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<C-H>'
-  inoremap <buffer><silent><expr> <BS>
-    \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<BS>'
-endfunction
-autocmd MyVimrc CmdwinEnter *
-  \ call s:cmdwin_enter()
-
-function! s:cmdline_enter(type)
-  if exists('#User#CmdlineEnter')
-    execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
-      \ 'User CmdlineEnter'
-  endif
-  return a:type
-endfunction
-
-if s:cmdwin_enable
-  noremap <SID>: q:
-  noremap <SID>/ q/
-  noremap <SID>? q?
-else
-  noremap <expr> <SID>: <SID>cmdline_enter(':')
-  noremap <expr> <SID>/ <SID>cmdline_enter('/')
-  noremap <expr> <SID>? <SID>cmdline_enter('?')
-endif
-
-NXmap ;; <SID>:
-NXmap :  <SID>:
-NXmap /  <SID>/
-NXmap ?  <SID>?
-
-NXnoremap <expr> ;: <SID>cmdline_enter(':')
-NXnoremap <expr> ;/ <SID>cmdline_enter('/')
-NXnoremap <expr> ;? <SID>cmdline_enter('?')
-"}}}
-
-"------------------------------------------------------------------------------
-" Escape Key: {{{
-function! s:escape_key()
-  if exists('#User#EscapeKey')
-    execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
-      \ 'User EscapeKey'
-  endif
-  return ":\<C-U>nohlsearch\<CR>\<Esc>"
-endfunction
-nnoremap <expr> <Esc><Esc> <SID>escape_key()
-"}}}
-
-"------------------------------------------------------------------------------
-" Auto Mark: {{{
-let s:mark_char = [
-  \ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-  \ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-function! s:_get_mark_pos()
-  let pos = (get(b:, 'mark_pos', -1) + 1) % len(s:mark_char)
-  for i in range(pos, len(s:mark_char)) + range(0, pos)
-    try
-      silent execute 'marks' s:mark_char[i]
-    catch /^Vim\%((\a\+)\)\?:E283/
-      return i
-    endtry
-  endfor
-  return pos
-endfunction
-function! s:auto_mark()
-  let b:mark_pos = s:_get_mark_pos()
-  return (":\<C-U>mark " . s:mark_char[b:mark_pos] . "\<CR>")
-endfunction
-function! s:clear_marks()
-  let b:mark_pos = -1
-  return (":\<C-U>delmarks " . join(s:mark_char, '') . "\<CR>")
-endfunction
-
-function! s:_get_file_mark_pos()
-  let pos = (get(s:, 'file_mark_pos', -1) + 1) % len(s:mark_char)
-  for i in range(pos, len(s:mark_char)) + range(0, pos)
-    try
-      silent execute 'marks' toupper(s:mark_char[i])
-    catch /^Vim\%((\a\+)\)\?:E283/
-      return i
-    endtry
-  endfor
-  return pos
-endfunction
-function! s:auto_file_mark()
-  let s:file_mark_pos = s:_get_file_mark_pos()
-  return (":\<C-U>mark " . toupper(s:mark_char[s:file_mark_pos]) . "\<CR>")
-endfunction
-function! s:clear_file_marks()
-  let s:file_mark_pos = -1
-  return (":\<C-U>rviminfo | delmarks " .
-    \ toupper(join(s:mark_char, '')) . " | wviminfo!\<CR>")
-endfunction
-
-function! s:marks()
-  let char = join(s:mark_char, '')
-  return (":\<C-U>marks " . char . toupper(char) . "\<CR>")
-endfunction
-
-nnoremap <expr> mm <SID>auto_mark()
-nnoremap <expr> mc <SID>clear_marks()
-nnoremap <expr> mM <SID>auto_file_mark()
-nnoremap <expr> mC <SID>clear_file_marks()
-nnoremap <expr> ml <SID>marks()
-"}}}
-
-"------------------------------------------------------------------------------
-" Smart BOL: {{{
-function! s:smart_bol()
-  if v:count
-    return repeat("\<Del>", len(v:count)) . (v:count % 2 ? '^' : '0')
-  else
-    let col = col('.')
-    return col <= 1 || col > match(getline('.'), '^\s*\zs') + 1 ? '^' : '0'
-  endif
-endfunction
-function! s:smart_eol()
-  if v:count
-    return repeat("\<Del>", len(v:count)) . (v:count % 2 ? '$' : 'g_')
-  else
-    return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
-  endif
-endfunction
-
-NXOnoremap <expr> H <SID>smart_bol()
-NXOnoremap <expr> L <SID>smart_eol()
-inoremap <expr> <M-H> '<C-O>' . <SID>smart_bol()
-inoremap <expr> <M-L> '<C-O>' . <SID>smart_eol()
-"}}}
-
-"------------------------------------------------------------------------------
-" Smart Close: {{{
-autocmd MyVimrc FileType *
-  \ if (&readonly || !&modifiable) && maparg('q', 'n') == '' |
-  \   nnoremap <buffer><expr> q
-  \     winnr('$') != 1 ? ':<C-U>close<CR>' : ''|
-  \ endif
-"}}}
-
-"------------------------------------------------------------------------------
-" Make Searching Directions Consistent: {{{
-function! s:search_forward_expr()
-  return exists('v:searchforward') ? v:searchforward : 1
-endfunction
-
-NXOnoremap <expr> n
-  \ <SID>search_forward_expr() ? 'n' : 'N'
-NXOnoremap <expr> N
-  \ <SID>search_forward_expr() ? 'N' : 'n'
-"}}}
-
-"------------------------------------------------------------------------------
-" Line Number: {{{
-function! s:toggle_line_number_style()
-  set relativenumber!
-  if !&number && !&relativenumber
-    set number
-  endif
-endfunction
-
-nnoremap <F12> :<C-U>call <SID>toggle_line_number_style()<CR>
-"}}}
-
-"------------------------------------------------------------------------------
-" Insert One Character: {{{
-function! s:insert_one_char(cmd)
-  echohl ModeMsg
-  if s:is_lang_ja
-    echo '-- 挿入 (1文字) --'
-  else
-    echo '-- INSERT (one char) --'
-  endif
-  echohl None
-  return a:cmd . nr2char(getchar()) . "\<Esc>"
-endfunction
-
-nnoremap  <expr> <M-a> <SID>insert_one_char('a')
-NXnoremap <expr> <M-A> <SID>insert_one_char('A')
-nnoremap  <expr> <M-i> <SID>insert_one_char('i')
-NXnoremap <expr> <M-I> <SID>insert_one_char('I')
-"}}}
-
-"------------------------------------------------------------------------------
 " Auto MkDir: {{{
-function! s:auto_mkdir(dir, force)
-  if s:is_lang_ja
-    let msg = '"' . a:dir . '" は存在しません。作成しますか?'
-    let choices = "はい(&Y)\nいいえ(&N)"
-  else
-    let msg = '"' . a:dir . '" does not exist. Create?'
-    let choices = "&Yes\n&No"
-  endif
-  if !isdirectory(a:dir) &&
-    \ (a:force || confirm(msg, choices, 1, 'Question') == 1)
-    let dir = (has('iconv') && &termencoding != '') ?
-      \ iconv(a:dir, &encoding, &termencoding) : a:dir
-    call mkdir(dir, 'p')
-  endif
-endfunction
 autocmd MyVimrc BufWritePre *
-  \ call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
+  \ call myvimrc#auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
 "}}}
 
 "------------------------------------------------------------------------------
@@ -2610,12 +2444,9 @@ NXOmap <S-Space> g%
 " Alignta: {{{
 if s:has_neobundle && neobundle#tap('alignta')
   function! neobundle#tapped.hooks.on_source(bundle)
-    function! s:operator_alignta(motion_wise)
-      let range = line("'[") . ',' . line("']")
-      execute range . input(':' . range, 'Alignta ')
-    endfunction
-
-    call operator#user#define('alignta', s:SID_PREFIX() . 'operator_alignta')
+    call operator#user#define(
+      \ 'alignta',
+      \ 'myvimrc#operator_alignta')
   endfunction
 
   NXOmap s= <Plug>(operator-alignta)
@@ -2633,14 +2464,8 @@ if s:has_neobundle && neobundle#tap('altercmd')
     endfor
   endfunction
 
-  function! s:cmdwin_enter_altercmd()
-    for [key, value] in items(s:altercmd_define)
-      execute 'IAlterCommand <buffer>' key value
-    endfor
-  endfunction
-
   autocmd MyVimrc CmdwinEnter :
-    \ call s:cmdwin_enter_altercmd()
+    \ call myvimrc#cmdwin_enter_altercmd(s:altercmd_define)
 endif
 "}}}
 
@@ -2660,11 +2485,11 @@ if s:has_neobundle && neobundle#tap('anzu')
   set shortmess+=s
 
   nmap <expr> n
-    \ <SID>search_forward_expr() ?
+    \ myvimrc#search_forward_expr() ?
     \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)' :
     \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)'
   nmap <expr> N
-    \ <SID>search_forward_expr() ?
+    \ myvimrc#search_forward_expr() ?
     \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)' :
     \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)'
 endif
@@ -2915,28 +2740,9 @@ endif
 " Kwbdi: {{{
 if s:has_neobundle && neobundle#tap('kwbdi')
   function! neobundle#tapped.hooks.on_source(bundle)
-    function! s:kwbd()
-      if &l:modified
-        if s:is_lang_ja
-          let msg = '変更を "' . expand('%:t') . '" に保存しますか?'
-          let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
-        else
-          let msg = 'Save changes to "' . expand('%:t') . '"?'
-          let choices = "&Yes\n&No\n&Cancel"
-        endif
-
-        let ret = confirm(msg, choices, 1, 'Question')
-        if ret == 1
-          silent write!
-        elseif ret == 3
-          return
-        endif
-      endif
-      silent execute "normal \<Plug>Kwbd"
-    endfunction
     command! -bar
       \ Kwbd
-      \ call s:kwbd()
+      \ call myvimrc#kwbd()
   endfunction
 
   NXnoremap <Leader>q :<C-U>Kwbd<CR>
@@ -2993,7 +2799,9 @@ endif
 " Narrow: {{{
 if s:has_neobundle && neobundle#tap('narrow')
   function! neobundle#tapped.hooks.on_source(bundle)
-    call operator#user#define_ex_command('narrow', 'Narrow')
+    call operator#user#define_ex_command(
+      \ 'narrow',
+      \ 'Narrow')
 
     NXnoremap sN :<C-U>Widen<CR>
   endfunction
@@ -3046,7 +2854,7 @@ if s:has_neobundle && neobundle#tap('neocomplcache')
     inoremap <expr> <Tab>
       \ pumvisible() ?
       \   '<C-N>' :
-      \   <SID>check_back_space() ?
+      \   myvimrc#check_back_space() ?
       \     '<Tab>' :
       \     neocomplcache#start_manual_complete()
     inoremap <expr> <S-Tab>
@@ -3062,40 +2870,12 @@ if s:has_neobundle && neobundle#tap('neocomplcache')
       \ neocomplcache#smart_close_popup() . '<BS>'
   endfunction
 
-  function! s:cmdwin_enter_neocomplcache()
-    let b:neocomplcache_sources_list = []
-
-    inoremap <buffer><expr> <Tab>
-      \ pumvisible() ?
-      \   '<C-N>' :
-      \   <SID>check_back_space() ?
-      \     '<Tab>' :
-      \     neocomplcache#start_manual_complete()
-    inoremap <buffer><expr> <S-Tab>
-      \ pumvisible() ?
-      \   '<C-P>' :
-      \   neocomplcache#start_manual_complete()
-
-    inoremap <buffer><silent><expr> <C-H>
-      \ col('.') == 1 && getline('.') == '' ?
-      \   '<Esc>:<C-U>quit<CR>' :
-      \   (neocomplcache#smart_close_popup() . '<C-H>')
-    inoremap <buffer><silent><expr> <BS>
-      \ col('.') == 1 && getline('.') == '' ?
-      \   '<Esc>:<C-U>quit<CR>' :
-      \   (neocomplcache#smart_close_popup() . '<BS>')
-  endfunction
   augroup MyVimrc
     autocmd CmdwinEnter *
-      \ call s:cmdwin_enter_neocomplcache()
+      \ call myvimrc#cmdwin_enter_neocomplcache()
     autocmd CmdwinEnter :
       \ let b:neocomplcache_sources_list = ['file_complete', 'vim_complete']
   augroup END
-
-  function! s:check_back_space()
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1] =~ '\s'
-  endfunction
 endif
 "}}}
 
@@ -3139,7 +2919,7 @@ if s:has_neobundle && neobundle#tap('neocomplete')
     inoremap <expr> <Tab>
       \ pumvisible() ?
       \   '<C-N>' :
-      \   <SID>check_back_space() ?
+      \   myvimrc#check_back_space() ?
       \     '<Tab>' :
       \     neocomplete#start_manual_complete()
     inoremap <expr> <S-Tab>
@@ -3155,40 +2935,12 @@ if s:has_neobundle && neobundle#tap('neocomplete')
       \ neocomplete#smart_close_popup() . '<BS>'
   endfunction
 
-  function! s:cmdwin_enter_neocomplete()
-    let b:neocomplete_sources = []
-
-    inoremap <buffer><expr> <Tab>
-      \ pumvisible() ?
-      \   '<C-N>' :
-      \   <SID>check_back_space() ?
-      \     '<Tab>' :
-      \     neocomplete#start_manual_complete()
-    inoremap <buffer><expr> <S-Tab>
-      \ pumvisible() ?
-      \   '<C-P>' :
-      \   neocomplete#start_manual_complete()
-
-    inoremap <buffer><silent><expr> <C-H>
-      \ col('.') == 1 && getline('.') == '' ?
-      \   '<Esc>:<C-U>quit<CR>' :
-      \   (neocomplete#smart_close_popup() . '<C-H>')
-    inoremap <buffer><silent><expr> <BS>
-      \ col('.') == 1 && getline('.') == '' ?
-      \   '<Esc>:<C-U>quit<CR>' :
-      \   (neocomplete#smart_close_popup() . '<BS>')
-  endfunction
   augroup MyVimrc
     autocmd CmdwinEnter *
-      \ call s:cmdwin_enter_neocomplete()
+      \ call myvimrc#cmdwin_enter_neocomplete()
     autocmd CmdwinEnter :
       \ let b:neocomplete_sources = ['file', 'vim']
   augroup END
-
-  function! s:check_back_space()
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1] =~ '\s'
-  endfunction
 endif
 "}}}
 
@@ -3402,42 +3154,12 @@ endif
 " Operator Tabular: {{{
 if s:has_neobundle && neobundle#tap('operator-tabular')
   function! neobundle#tapped.hooks.on_source(bundle)
-    let s:operator_tabular_kind = 'markdown'
-    let s:operator_tabular_ext  = 'csv'
-
-    function! s:operator_tabularize(motion_wise, ...)
-      let kind = input('Kind: ', s:operator_tabular_kind,
-        \ 'customlist,' . s:SID_PREFIX() . 'operator_tabular_kind_complete')
-      if kind == 'markdown' || kind == 'textile' || kind == 'backlog'
-        let s:operator_tabular_kind = kind
-      endif
-
-      let ext = input('Kind: ', s:operator_tabular_ext,
-        \ 'customlist,' . s:SID_PREFIX() . 'operator_tabular_ext_complete')
-      if ext == 'csv'  || ext == 'tsv'
-        let s:operator_tabular_ext = ext
-      endif
-
-      execute 'call' 'operator#tabular#' . s:operator_tabular_kind .
-        \ (a:0 && a:1 ? '#untabularize_' : '#tabularize_') .
-        \ s:operator_tabular_ext . '(a:motion_wise)'
-    endfunction
-    function! s:operator_untabularize(motion_wise)
-      call s:operator_tabularize(a:motion_wise, 1)
-    endfunction
-    function! s:operator_tabular_kind_complete(...)
-      return ['markdown', 'textile', 'backlog']
-    endfunction
-    function! s:operator_tabular_ext_complete(...)
-      return ['csv', 'tsv']
-    endfunction
-
     call operator#user#define(
       \ 'tabularize',
-      \ s:SID_PREFIX() . 'operator_tabularize')
+      \ 'myvimrc#operator_tabularize')
     call operator#user#define(
       \ 'untabularize',
-      \ s:SID_PREFIX() . 'operator_untabularize')
+      \ 'myvimrc#operator_untabularize')
   endfunction
 
   NXOmap st <Plug>(operator-tabularize)
@@ -3461,44 +3183,12 @@ endif
 " Operator User: {{{
 if s:has_neobundle && neobundle#tap('operator-user')
   function! neobundle#tapped.hooks.on_source(bundle)
-    if neobundle#get('jvgrep') != {} || s:executable('jvgrep')
-      let s:operator_grep_escape = '\[](){}|.?+*^$'
-    elseif neobundle#get('the_silver_searcher') != {} || s:executable('ag')
-      let s:operator_grep_escape = '\[](){}|.?+*^$'
-    elseif s:executable('grep')
-      let s:operator_grep_escape = '\[].*^$'
-    else
-      let s:operator_grep_escape = '\[].*^$'
-    endif
-
-    function! s:operator_grep(motion_wise)
-      if a:motion_wise == 'char'
-        let lines = getline(line("'["), line("']"))
-        let lines[-1] = lines[-1][: col("']") - 1]
-        let lines[0] = lines[0][col("'[") - 1 :]
-      elseif a:motion_wise == 'line'
-        let lines = getline(line("'["), line("']"))
-      else " a:motion_wise == 'block'
-        let start = col("'<") - 1
-        let end = col("'>") - 1
-        let lines = map(
-          \ getline(line("'<"), line("'>")),
-          \ 'v:val[start : end]')
-      endif
-
-      if neobundle#get('unite') != {}
-        execute 'Unite'
-          \ (&grepprg == 'internal' ? 'vimgrep::' : 'grep:::') .
-          \ escape(join(lines), s:operator_grep_escape . ' :')
-          \ '-buffer-name=grep -no-split -wrap'
-      else
-        execute input(':',
-          \ 'grep "' . escape(join(lines), s:operator_grep_escape) . '" ')
-      endif
-    endfunction
-
-    call operator#user#define('grep', s:SID_PREFIX() . 'operator_grep')
-    call operator#user#define_ex_command('justify', 'Justify tw 4')
+    call operator#user#define(
+      \ 'grep',
+      \ 'myvimrc#operator_grep')
+    call operator#user#define(
+      \ 'justify',
+      \ 'myvimrc#operator_justify')
   endfunction
 
   NXOmap sg <Plug>(operator-grep)
@@ -3695,7 +3385,8 @@ endif
 if s:has_neobundle && neobundle#tap('rengbang')
   function! neobundle#tapped.hooks.on_source(bundle)
     call operator#user#define_ex_command(
-      \ 'rengbang-confirm', 'RengBangConfirm')
+      \ 'rengbang-confirm',
+      \ 'RengBangConfirm')
   endfunction
 
   NXOmap s+ <Plug>(operator-rengbang-confirm)
@@ -3723,9 +3414,11 @@ if s:has_neobundle && neobundle#tap('scratch')
     let g:scratch_buffer_name = '[scratch]'
 
     call operator#user#define_ex_command(
-      \ 'scratch-evaluate',  'ScrachEvaluate')
+      \ 'scratch-evaluate',
+      \ 'ScrachEvaluate')
     call operator#user#define_ex_command(
-      \ 'scratch-evaluate!', 'ScrachEvaluate!')
+      \ 'scratch-evaluate!',
+      \ 'ScrachEvaluate!')
 
     autocmd MyVimrc User PluginScratchInitializeAfter
       \ nmap <buffer> sr <Plug>(operator-scratch-evaluate)
@@ -3818,74 +3511,23 @@ if s:has_neobundle && neobundle#tap('switch')
       call add(g:switch_decrement_definitions, reverse(copy(l)))
     endfor
 
-    let s:ordinal_suffixes = [
-      \ 'th', 'st', 'nd', 'rd', 'th',
-      \ 'th', 'th', 'th', 'th', 'th']
-    function! s:ordinal(num)
-      return a:num . s:ordinal_suffixes[abs(a:num % 10)]
-    endfunction
-
     call extend(g:switch_increment_definitions, [{
       \ '\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
-      \   '\=toupper(call(''' . s:SID_PREFIX() .
-      \   'ordinal'', [submatch(1) + 1]))',
+      \   '\=toupper(call(''myvimrc#ordinal'', [submatch(1) + 1]))',
       \ '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
-      \   '\=tolower(call(''' . s:SID_PREFIX() .
-      \   'ordinal'', [submatch(1) + 1]))'}])
+      \   '\=tolower(call(''myvimrc#ordinal'', [submatch(1) + 1]))'}])
     call extend(g:switch_decrement_definitions, [{
       \ '\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
-      \   '\=toupper(call(''' . s:SID_PREFIX() .
-      \   'ordinal'', [submatch(1) - 1]))',
+      \   '\=toupper(call(''myvimrc#ordinal'', [submatch(1) - 1]))',
       \ '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
-      \   '\=tolower(call(''' . s:SID_PREFIX() .
-      \   'ordinal'', [submatch(1) - 1]))'}])
+      \   '\=tolower(call(''myvimrc#ordinal'', [submatch(1) - 1]))'}])
 
-    function! s:switch(is_increment)
-      let save_count1 = v:count1
-
-      let definitions = []
-      if !exists('g:switch_no_builtins')
-        let definitions = extend(definitions, g:switch_definitions)
-      endif
-      if exists('g:switch_custom_definitions')
-        call extend(definitions, g:switch_custom_definitions)
-      endif
-      if exists('b:switch_definitions') && !exists('b:switch_no_builtins')
-        call extend(definitions, b:switch_definitions)
-      endif
-      if exists('b:switch_custom_definitions')
-        call extend(definitions, b:switch_custom_definitions)
-      endif
-      if a:is_increment
-        if exists('g:switch_increment_definitions')
-          call extend(definitions, g:switch_increment_definitions)
-        endif
-        if exists('b:switch_increment_definitions')
-          call extend(definitions, b:switch_increment_definitions)
-        endif
-      else
-        if exists('g:switch_decrement_definitions')
-          call extend(definitions, g:switch_decrement_definitions)
-        endif
-        if exists('b:switch_decrement_definitions')
-          call extend(definitions, b:switch_decrement_definitions)
-        endif
-      endif
-
-      if !switch#Switch(definitions)
-        execute "normal!" save_count1 .
-          \ (a:is_increment ? "\<C-A>" : "\<C-X>")
-      endif
-
-      silent! call repeat#set(
-        \ a:is_increment ? "\<C-A>" : "\<C-X>", save_count1)
-    endfunction
     command! -bar
       \ SwitchIncrement
-      \ call s:switch(1)
+      \ call myvimrc#switch(1)
     command! -bar
       \ SwitchDecrement
-      \ call s:switch(0)
+      \ call myvimrc#switch(0)
   endfunction
 
   nnoremap <C-A> :<C-U>SwitchIncrement<CR>
@@ -3902,39 +3544,23 @@ if s:has_neobundle && neobundle#tap('tcomment')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:tcommentMaps = 0
 
-    function! s:tcomment_operator_setup(options)
-      let w:tcommentPos = getpos('.')
-      call tcomment#SetOption('count', v:count)
-      for [key, value] in items(a:options)
-        call tcomment#SetOption(key, value)
-      endfor
-    endfunction
-
-    function! s:tcomment_operator_block(type)
-      call tcomment#Operator(a:type, 'B')
-    endfunction
-
     call operator#user#define(
       \ 'tcomment',
       \ 'tcomment#Operator',
-      \ 'call ' . s:SID_PREFIX() .
-      \ 'tcomment_operator_setup({})')
+      \ 'call myvimrc#operator_tcomment_setup({})')
     call operator#user#define(
       \ 'tcomment-col=1',
       \ 'tcomment#Operator',
-      \ 'call ' . s:SID_PREFIX() .
-      \ 'tcomment_operator_setup({"col" : 1})')
+      \ 'call myvimrc#operator_tcomment_setup({"col" : 1})')
 
     call operator#user#define(
       \ 'tcomment-block',
-      \ s:SID_PREFIX() . 'tcomment_operator_block',
-      \ 'call ' . s:SID_PREFIX() .
-      \ 'tcomment_operator_setup({})')
+      \ 'myvimrc#operator_tcomment_block',
+      \ 'call myvimrc#operator_tcomment_setup({})')
     call operator#user#define(
       \ 'tcomment-block-col=1',
-      \ s:SID_PREFIX() . 'tcomment_operator_block',
-      \ 'call ' . s:SID_PREFIX() .
-      \ 'tcomment_operator_setup({"col" : 1})')
+      \ 'myvimrc#operator_tcomment_block',
+      \ 'call myvimrc#operator_tcomment_setup({"col" : 1})')
   endfunction
 
   function! neobundle#tapped.hooks.on_post_source(bundle)
@@ -3985,61 +3611,24 @@ endif
 " TextManipilate: {{{
 if s:has_neobundle && neobundle#tap('textmanip')
   function! neobundle#tapped.hooks.on_source(bundle)
-    function! s:operator_textmanip(function, motion_wise)
-      let save_sel = &l:selection
-      try
-        let &l:selection = 'inclusive'
-        execute 'normal! `[' .
-          \ operator#user#visual_command_from_wise_name(a:motion_wise) .
-          \ "`]:\<C-U>call " . a:function . "\<CR>\<Esc>"
-      finally
-        let &l:selection = save_sel
-      endtry
-    endfunction
-
-    function! s:operator_textmanip_duplicate_down(motion_wise)
-      call s:operator_textmanip(
-        \ 'textmanip#duplicate("down", "v")', a:motion_wise)
-    endfunction
-    function! s:operator_textmanip_duplicate_up(motion_wise)
-      call s:operator_textmanip(
-        \ 'textmanip#duplicate("up", "v")', a:motion_wise)
-    endfunction
-    function! s:operator_textmanip_move_left(motion_wise)
-      call s:operator_textmanip(
-        \ 'textmanip#move("left")', a:motion_wise)
-    endfunction
-    function! s:operator_textmanip_move_right(motion_wise)
-      call s:operator_textmanip(
-        \ 'textmanip#move("right")', a:motion_wise)
-    endfunction
-    function! s:operator_textmanip_move_down(motion_wise)
-      call s:operator_textmanip(
-        \ 'textmanip#move("down")', a:motion_wise)
-    endfunction
-    function! s:operator_textmanip_move_up(motion_wise)
-      call s:operator_textmanip(
-        \ 'textmanip#move("up")', a:motion_wise)
-    endfunction
-
     call operator#user#define(
       \ 'textmanip-duplicate-down',
-      \ s:SID_PREFIX() . 'operator_textmanip_duplicate_down')
+      \ 'myvimrc#operator_textmanip_duplicate_down')
     call operator#user#define(
       \ 'textmanip-duplicate-up',
-      \ s:SID_PREFIX() . 'operator_textmanip_duplicate_up')
+      \ 'myvimrc#operator_textmanip_duplicate_up')
     call operator#user#define(
       \ 'textmanip-move-left',
-      \ s:SID_PREFIX() . 'operator_textmanip_move_left')
+      \ 'myvimrc#operator_textmanip_move_left')
     call operator#user#define(
       \ 'textmanip-move-right',
-      \ s:SID_PREFIX() . 'operator_textmanip_move_right')
+      \ 'myvimrc#operator_textmanip_move_right')
     call operator#user#define(
       \ 'textmanip-move-down',
-      \ s:SID_PREFIX() . 'operator_textmanip_move_down')
+      \ 'myvimrc#operator_textmanip_move_down')
     call operator#user#define(
       \ 'textmanip-move-up',
-      \ s:SID_PREFIX() . 'operator_textmanip_move_up')
+      \ 'myvimrc#operator_textmanip_move_up')
   endfunction
 
   NOmap <M-p> <Plug>(operator-textmanip-duplicate-down)
@@ -4660,9 +4249,6 @@ if s:has_neobundle && neobundle#tap('unite')
 
   NXnoremap <Leader>un
     \ :<C-U>UniteResume search -start-insert<CR>
-  NXnoremap <C-N>
-    \ :<C-U>execute 'Unite vimgrep:%:' . escape(@/, '\ :')
-    \ '-buffer-name=search -no-split -wrap'<CR>
 
   NXnoremap <Leader>u/
     \ :<C-U>Unite line
