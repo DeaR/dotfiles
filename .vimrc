@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Jan-2014.
+" Last Change:  12-Jan-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -264,12 +264,6 @@ if s:has_neobundle
   NeoBundleLazy 'mattn/benchvimrc-vim', {
     \ 'autoload' : {
     \   'commands' : 'BenchVimrc'}}
-
-  " if has('python') && s:executable('clang')
-  "   NeoBundleLazy 'Rip-Rip/clang_complete', {
-  "     \ 'autoload' : {
-  "     \   'filetypes' : ['c', 'cpp', 'objc', 'objcpp']}}
-  " endif
 
   if s:executable('clang-format')
     NeoBundleLazy 'rhysd/vim-clang-format', {
@@ -2689,60 +2683,6 @@ endif
 " AutoFmt: {{{
 if s:has_neobundle && neobundle#tap('autofmt')
   set formatexpr=autofmt#japanese#formatexpr()
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" Clang Complete: {{{
-if s:has_neobundle && neobundle#tap('clang_complete')
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:clang_complete_auto          = 0
-    let g:clang_auto_select            = 0
-    let g:clang_user_options           = '-w'
-    let g:clang_jumpto_declaration_key = '<LocalLeader><C-]>'
-    let g:clang_jumpto_back_key        = '<LocalLeader><C-T>'
-
-    if has('win64')
-      if filereadable($HOME . '/bin64/libclang.dll')
-        let g:clang_library_path = $HOME . '/bin64'
-      endif
-    elseif has('win32')
-      if filereadable($HOME . '/bin/libclang.dll')
-        let g:clang_library_path = $HOME . '/bin'
-      endif
-    else
-      if filereadable($HOME . '/lib/libclang.so')
-        let g:clang_library_path = $HOME . '/lib'
-      elseif filereadable(expand('/usr/local/lib/libclang.so'))
-        let g:clang_library_path = expand('/usr/local/lib')
-      elseif filereadable(expand('/usr/lib/libclang.so'))
-        let g:clang_library_path = expand('/usr/lib')
-      endif
-    endif
-    if exists('g:clang_library_path')
-      let g:clang_use_library = 1
-    endif
-  endfunction
-
-  function! neobundle#tapped.hooks.on_post_source(bundle)
-    function s:clang_complete_init()
-      silent! iunmap <buffer> <C-X><C-U>
-      silent! iunmap <buffer> .
-      silent! iunmap <buffer> >
-      silent! iunmap <buffer> :
-    endfunction
-
-    autocmd MyVimrc FileType c,cpp,objc,objcpp
-      \ call s:clang_complete_init()
-
-    if &filetype == 'c' || &filetype == 'cpp' ||
-      \ &filetype == 'objc' || &filetype == 'objcpp'
-      doautocmd FileType
-    endif
-  endfunction
-
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'ClangComplete' : '[^.[:blank:]]\%(\.\|->\|::\)\%(\h\w*\)\?'})
 endif
 "}}}
 
