@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  14-Jan-2014.
+" Last Change:  20-Jan-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -92,7 +92,15 @@ endfunction
 "------------------------------------------------------------------------------
 " Command Line: {{{
 function! myvimrc#cmdwin_enter()
+  let s:save_bs = &backspace
+  set backspace=
+  setlocal nocursorcolumn
+  setlocal foldcolumn=0
+  setlocal nofoldenable
+  setlocal nonumber
+  setlocal norelativenumber
   startinsert!
+
   nnoremap <buffer><silent> q :<C-U>quit<CR>
 
   inoremap <buffer><silent><expr> <C-H>
@@ -106,6 +114,9 @@ function! myvimrc#cmdline_enter(type)
       \ 'User CmdlineEnter'
   endif
   return a:type
+endfunction
+function! myvimrc#cmdwin_leave()
+  let &backspace = s:save_bs
 endfunction
 "}}}
 

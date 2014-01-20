@@ -1546,8 +1546,6 @@ set ruler
 set wrap
 set display=lastline
 set scrolloff=5
-autocmd MyVimrc CmdwinEnter *
-  \ setlocal nonumber norelativenumber
 
 " Match
 set showmatch
@@ -1616,13 +1614,6 @@ set virtualedit=block
 
 " Cursor can move to bol & eol
 set backspace=indent,eol,start
-augroup MyVimrc
-  autocmd CmdwinEnter *
-    \ let s:save_bs = &backspace |
-    \ set backspace=
-  autocmd CmdwinLeave *
-    \ let &backspace = s:save_bs
-augroup END
 
 " Ctags
 set showfulltag
@@ -1645,8 +1636,6 @@ set foldenable
 set foldmethod=marker
 set foldcolumn=2
 set foldlevelstart=99
-autocmd MyVimrc CmdwinEnter *
-  \ setlocal nofoldenable foldcolumn=0
 "}}}
 
 "------------------------------------------------------------------------------
@@ -1711,8 +1700,6 @@ if has('gui_running') || &t_Co > 255
       \   [!get(b:, 'nocursorline'), !get(b:, 'nocursorcolumn')]
     autocmd BufWinLeave,WinLeave *
       \ setlocal nocursorline nocursorcolumn
-    autocmd CmdwinEnter *
-      \ setlocal nocursorcolumn
   augroup END
 endif
 
@@ -1835,9 +1822,12 @@ NXnoremap <expr> ;? myvimrc#cmdline_enter('?')
 
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
+
 augroup MyVimrc
   autocmd CmdwinEnter *
     \ call myvimrc#cmdwin_enter()
+  autocmd CmdwinLeave *
+    \ call myvimrc#cmdwin_leave()
   autocmd CmdwinEnter /
     \ inoremap <buffer> / \/
   autocmd CmdwinEnter ?
@@ -2253,6 +2243,7 @@ command! -bar -nargs=?
 
 NXnoremap <C-W>, :<C-U>CToggle<CR>
 NXnoremap <C-W>. :<C-U>LToggle<CR>
+
 augroup MyVimrc
   autocmd QuickFixCmdPost [^l]*
     \ cwindow
