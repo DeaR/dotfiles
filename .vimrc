@@ -4500,7 +4500,7 @@ if s:has_neobundle && neobundle#tap('watchdogs')
       \     s:executable('cl')    ? 'watchdogs_checker/msvc' : ''},
       \ 'cpp/watchdogs_checker' : {
       \   'type' :
-      \     s:executable('clang_check') ? 'watchdogs_checker/clang_check' :
+      \     s:executable('clang-check') ? 'watchdogs_checker/clang_check' :
       \     s:executable('clang++')     ? 'watchdogs_checker/clang++' :
       \     s:executable('g++')         ? 'watchdogs_checker/g++' :
       \     exists('$VCVARSALL')        ? 'watchdogs_checker/msvc' :
@@ -4509,15 +4509,6 @@ if s:has_neobundle && neobundle#tap('watchdogs')
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
       \   'hook/vcvarsall/bat' : $VCVARSALL},
-      \
-      \ 'lua/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('luac')   ? 'watchdogs_checker/luac' :
-      \     s:executable('luac52') ? 'watchdogs_checker/luac' : ''},
-      \ 'watchdogs_checker/luac' : {
-      \   'command' :
-      \     s:executable('luac')   ? 'luac' :
-      \     s:executable('luac52') ? 'luac52' : ''},
       \
       \ 'vim/watchdogs_checker' : {
       \   'type' :
