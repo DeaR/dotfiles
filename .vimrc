@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  14-Jan-2014.
+" Last Change:  20-Jan-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -78,6 +78,15 @@ let s:gips_enable = 0
 
 " Command line window
 let s:cmdwin_enable = 1
+
+" Ignore pattern
+let s:ignore_dir = [
+  \ '.git', '.hg', '.bzr', '.svn', '.drive.r', 'temp', 'tmp']
+let s:ignore_ext = [
+  \ 'o', 'obj', 'a', 'lib', 'so', 'dll', 'dylib', 'exe', 'bin',
+  \ 'swp', 'swo', 'bak', 'lc', 'elc', 'fas', 'pyc', 'luac', 'zwc']
+let s:ignore_ft = [
+  \ 'gitcommit', 'gitrebase', 'hgcommit']
 
 " AlterCommand
 let s:altercmd_define = {}
@@ -1494,10 +1503,9 @@ set history=100
 set nobackup
 set swapfile
 set undofile
-set undodir^=~/.bak
-let s:skip_regexp = '[/\\]\%(\.drive\.r\|\.hg\|\.git\|\.svn\)[/\\]'
+set undodir^=~/.local/.vimundo
 autocmd MyVimrc BufNewFile,BufRead *
-  \ let &l:undofile = (expand('%:p') !~? s:skip_regexp)
+  \ let &l:undofile = (index(copy(s:ignore_ft), &filetype) < 0)
 
 " ClipBoard
 set clipboard=unnamed
@@ -1516,9 +1524,10 @@ set ambiwidth=double
 
 " Wild menu
 set wildmenu
-set wildignore+=*.swp,.drive.r,.hg,.git,.svn
-set wildignore+=*.o,*.a,*.so,*.obj,*.lib,*.dll,*.exe
-set wildignore+=*.lc,*.elc,*.fas,*.pyc,*.luac
+execute 'set wildignore+=' .
+  \ join(map(copy(s:ignore_dir), 'escape(v:val, ''\,'')'), ',')
+execute 'set wildignore+=' .
+  \ join(map(copy(s:ignore_ext), '''*.'' . escape(v:val, ''\,'')'), ',')
 
 " Mouse
 set mouse=a
@@ -1580,11 +1589,10 @@ endif
 " Grep
 if (s:has_neobundle && neobundle#get('jvgrep') != {}) ||
   \ s:executable('jvgrep')
-  set grepprg=jvgrep\ -n\ --exclude\ .drive.r
+  set grepprg=jvgrep\ -n
 elseif (s:has_neobundle && neobundle#get('the_silver_searcher') != {}) ||
   \ s:executable('ag')
-  set grepprg=ag\ --line-numbers\ --nocolor\ --nogroup\ --hidden\
-    \ --ignore\ .drive.r\ --ignore\ .hg\ --ignore\ .git\ --ignore\ .svn
+  set grepprg=ag\ --line-numbers\ --nocolor\ --nogroup\ --hidden
 elseif s:executable('grep')
   set grepprg=grep\ -Hn
 else
@@ -2376,7 +2384,7 @@ endif
 " From Example: {{{
 autocmd MyVimrc BufRead *
   \ if line('.') == 1 && line("'\"") > 1 && line("'\"") <= line('$') &&
-  \     expand('%:p') !~? s:skip_regexp |
+  \     index(copy(s:ignore_ft), &filetype) < 0 |
   \   execute 'normal! g`"' |
   \ endif
 "}}}
@@ -2735,6 +2743,18 @@ if s:has_neobundle && neobundle#tap('jedi')
     \ 'jedi#completions' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
 endif
 "}}}
+
+"------------------------------------------------------------------------------
+" Jvgrep: {{{
+if s:has_neobundle && neobundle#tap('jvgrep')
+  let $JVGREP_EXCLUDE =
+    \ '(' . join(map(
+    \   copy(s:ignore_dir),
+    \   'escape(v:val, ''\*+.?{}()[]^$-|/'')'), '|') . ')$|' .
+    \ '\.(' . join(map(
+    \   copy(s:ignore_ext),
+    \   'escape(v:val, ''\*+.?{}()[]^$-|/'')'), '|') . ')$'
+endif
 
 "------------------------------------------------------------------------------
 " Kwbdi: {{{
@@ -4084,22 +4104,23 @@ if s:has_neobundle && neobundle#tap('unite')
     let g:unite_source_directory_mru_limit = 50
 
     let g:unite_source_file_mru_ignore_pattern =
-      \ '\~$\|\.\%(o\|exe\|dll\|bak\|zwc\|pyc\|sw[po]\)$' .
-      \ '\|\%(^\|[/\\]\)\.\%(hg\|git\|bzr\|svn\)\%($\|[/\\]\)' .
-      \ '\|^\%(\\\\\|/mnt/\|/media/\|/temp/\|/tmp/\|\%(/private\)\=/var/folders/\)' .
-      \ '\|\%(^\%(fugitive\):\%(//\|\\\\\)\)' .
-      \ '\|[/\\]doc[/\\][^/\\]\+\.\%(txt\|[:alpha:]\{2}x\)'
+      \ '[/\\]doc[/\\][^/\\]\+\.\%(txt\|[:alpha:]\{2}x\)$\|' .
+      \ '[/\\]\%(' . join(map(
+      \   copy(s:ignore_dir),
+      \   'escape(v:val, ''\*.^$'')'), '\|') . '\)[/\\]\|' .
+      \ '\.\%(' . join(map(
+      \   copy(s:ignore_ext),
+      \   'escape(v:val, ''\*.^$'')'), '\|') . '\)$'
 
     if neobundle#get('jvgrep') != {} || s:executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
-      let g:unite_source_grep_default_opts  = '-n --exclude .drive.r'
+      let g:unite_source_grep_default_opts  = '-n'
     elseif neobundle#get('the_silver_searcher') != {} || s:executable('ag')
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_default_opts  =
-        \ '--line-numbers --nocolor --nogroup --hidden --ignore .drive.r ' .
-        \ '--ignore .hg --ignore .git --ignore .svn'
+        \ '--line-numbers --nocolor --nogroup --hidden'
     elseif s:executable('grep')
       let g:unite_source_grep_command       = 'grep'
       let g:unite_source_grep_recursive_opt = '-r'
