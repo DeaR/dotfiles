@@ -2710,9 +2710,9 @@ if s:has_neobundle && neobundle#tap('J6uil')
     let g:J6uil_no_default_keymappings = 1
     let g:J6uil_user                   = 'DeaR'
 
-    if has('win32') && isdirectory($PROGRAMFILES . '/ImageMagick-6.8.6-Q16')
+    if has('win32') && isdirectory($PROGRAMFILES . '/ImageMagick-6.8.8-Q8')
       let g:J6uil_display_icon = 1
-      let $PATH = $PROGRAMFILES . '\ImageMagick-6.8.6-Q16;' . $PATH
+      let $PATH = $PROGRAMFILES . '\ImageMagick-6.8.8-Q8;' . $PATH
     elseif !has('win32') && s:executable('convert')
       let g:J6uil_display_icon = 1
     endif
