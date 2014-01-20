@@ -2628,12 +2628,6 @@ if s:has_neobundle && neobundle#tap('ft_lua')
     let g:lua_complete_omni = 1
     let g:lua_check_syntax  = 0
     let g:lua_check_globals = 0
-
-    if s:executable('luac')
-      let g:lua_compiler_name = 'luac'
-    elseif s:executable('luac52')
-      let g:lua_compiler_name = 'luac52'
-    endif
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
