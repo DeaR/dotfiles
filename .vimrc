@@ -103,22 +103,22 @@ let s:neocompl_omni_patterns = {
   \ 'csscomplete#CompleteCSS'       : '\h\w*\|[@!]',
   \ 'sqlcomplete#Complete'          : '\h\w*'}
 let s:neocompl_force_omni_patterns = {
-  \ 'ccomplete#Complete'            : '[^.[:blank:]]\%(\.\|->\|::\)\%(\h\w*\)\?',
+  \ 'ccomplete#Complete'            : '\%(\.\|->\|::\)\h\w*',
   \ 'htmlcomplete#CompleteTags'     : '<[^>]*',
-  \ 'javascriptcomplete#CompleteJS' : '[^.[:blank:]]\.\%(\h\w*\)\?',
-  \ 'phpcomplete#CompletePHP'       : '[^.[:blank:]]\%(->\|::\)\%(\h\w*\)\?',
+  \ 'javascriptcomplete#CompleteJS' : '\.\h\w*',
+  \ 'phpcomplete#CompletePHP'       : '\%(->\|::\)\h\w*',
   \ 'xmlcomplete#CompleteTags'      : '<[^>]*'}
 if has('python3')
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'python3complete#Complete' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
+    \ 'python3complete#Complete' : '\.\h\w*'})
 endif
 if has('python')
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'pythoncomplete#Complete' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
+    \ 'pythoncomplete#Complete' : '\.\h\w*'})
 endif
 if has('ruby')
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'rubycomplete#Complete' : '[^.[:blank:]]\%(\.\|::\)\%(\h\w*\)\?'})
+    \ 'rubycomplete#Complete' : '\%(\.\|::\)\h\w*'})
 endif
 
 " VCvarsall.bat
@@ -2631,7 +2631,7 @@ if s:has_neobundle && neobundle#tap('ft_lua')
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'xolox#lua#omnifunc' : '[^.[:blank:]]\%(\.\|:\)\%(\h\w*\)\?'})
+    \ 'xolox#lua#omnifunc' : '\%(\.\|:\)\h\w*'})
 endif
 "}}}
 
@@ -2677,7 +2677,7 @@ endif
 " Gocode: {{{
 if s:has_neobundle && neobundle#tap('gocode')
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'gocomplete#Complete' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
+    \ 'gocomplete#Complete' : '\.\h\w*'})
 endif
 "}}}
 
@@ -2734,7 +2734,7 @@ if s:has_neobundle && neobundle#tap('jedi')
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'jedi#completions' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
+    \ 'jedi#completions' : '\.\h\w*'})
 endif
 "}}}
 
@@ -2807,7 +2807,7 @@ if s:has_neobundle && neobundle#tap('marching')
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'marching#complete' : '[^.[:blank:]]\%(\.\|->\|::\)\%(\h\w*\)\?'})
+    \ 'marching#complete' : '\%(\.\|->\|::\)\h\w*'})
 endif
 "}}}
 
@@ -2993,7 +2993,7 @@ if s:has_neobundle && neobundle#tap('Omnisharp')
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'OmniSharp#Complete' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
+    \ 'OmniSharp#Complete' : '\.\h\w*'})
 endif
 "}}}
 
@@ -3249,7 +3249,7 @@ if s:has_neobundle && neobundle#tap('perlomni')
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'PerlComplete' : '[^.[:blank:]]\%(->\|::\)\%(\h\w*\)\?'})
+    \ 'PerlComplete' : '\%(->\|::\)\h\w*'})
 endif
 "}}}
 
@@ -3643,7 +3643,7 @@ if s:has_neobundle && neobundle#tap('tern_for_vim')
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'tern#Complete' : '[^.[:blank:]]\.\%(\h\w*\)\?'})
+    \ 'tern#Complete' : '\.\h\w*'})
 endif
 "}}}
 
