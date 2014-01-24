@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  20-Jan-2014.
+" Last Change:  25-Jan-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -932,6 +932,15 @@ if s:has_neobundle
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>(smartword-']],
     \   'insert' : 1}}
+
+  if s:executable('clang') && has('python')
+    NeoBundleLazy 'osyo-manga/vim-snowdrop', {
+      \ 'autoload' : {
+      \   'filetypes' : ['c', 'cpp'],
+      \   'commands' : [
+      \     'SnowdropVerify', 'SnowdropEchoClangVersion'],
+      \   'unite_sources' : ['snowdrop/includes', 'snowdrop/outline']}}
+  endif
 
   NeoBundleLazy 'AndrewRadev/switch.vim', {
     \ 'autoload' : {
@@ -2792,7 +2801,9 @@ endif
 if s:has_neobundle && neobundle#tap('marching')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:marching_enable_neocomplete = 1
-    let g:marching_backend            = "sync_clang_command"
+    let g:marching_backend            =
+      \ neobundle#get('snowdrop') != {} ?
+      \   "snowdrop" : "sync_clang_command"
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
@@ -3450,6 +3461,30 @@ if s:has_neobundle && neobundle#tap('smartword')
   NXOmap b  <Plug>(smartword-b)
   NXOmap e  <Plug>(smartword-e)
   NXOmap ge <Plug>(smartword-ge)
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" Snowdrop: {{{
+if s:has_neobundle && neobundle#tap('snowdrop')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    if has('win64')
+      let g:snowdrop#libclang_directory = $HOME . '/bin64'
+      let g:snowdrop#libclang_file      = 'libclang.dll'
+    elseif has('win32')
+      let g:snowdrop#libclang_directory = $HOME . '/bin'
+      let g:snowdrop#libclang_file      = 'libclang.dll'
+    elseif filereadable($HOME . '/lib/libclang.so')
+      let g:snowdrop#libclang_directory = $HOME . '/lib'
+      let g:snowdrop#libclang_file      = 'libclang.so'
+    elseif filereadable(expand('/usr/local/lib/libclang.so'))
+      let g:snowdrop#libclang_directory = '/usr/local/lib'
+      let g:snowdrop#libclang_file      = 'libclang.so'
+    elseif filereadable(expand('/usr/lib/libclang.so'))
+      let g:snowdrop#libclang_directory = '/usr/lib'
+      let g:snowdrop#libclang_file      = 'libclang.so'
+    endif
+  endfunction
 endif
 "}}}
 
