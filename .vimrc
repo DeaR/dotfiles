@@ -77,7 +77,7 @@ let g:maplocalleader = ','
 let s:gips_enable = 0
 
 " Command line window
-let s:cmdwin_enable = 1
+let s:cmdwin_enable = 0
 
 " Ignore pattern
 let s:ignore_dir = [
