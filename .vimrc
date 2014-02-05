@@ -4116,8 +4116,10 @@ if s:has_neobundle && neobundle#tap('unite')
     let g:unite_data_directory             = $HOME . '/.local/.unite'
     let g:unite_enable_start_insert        = 1
     let g:unite_winheight                  = 25
-    let g:unite_source_history_yank_enable = 1
+    let g:unite_candidate_icon             = "-"
+    let g:unite_marked_icon                = "+"
     let g:unite_cursor_line_highlight      = 'CursorLine'
+    let g:unite_source_history_yank_enable = 1
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
     let g:unite_source_file_mru_limit      = 50
