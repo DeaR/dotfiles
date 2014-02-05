@@ -1,7 +1,7 @@
 " OmniSharp ftplugin for C#
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  22-Aug-2013.
+" Last Change:  29-Jan-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,6 +28,8 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+setlocal omnifunc=OmniSharp#Complete
+
 nnoremap <buffer> <F5>    :<C-U>wall!<CR>:OmniSharpBuildAsync<CR>
 nnoremap <buffer> gd      :<C-U>OmniSharpGotoDefinition<CR>
 nnoremap <buffer> gD      :<C-U>OmniSharpFindImplementations<CR>
@@ -50,6 +52,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
+  \ setlocal omnifunc< |
   \ silent! execute ''nunmap <buffer> <F5>'' |
   \ silent! execute ''nunmap <buffer> <Space>'' |
   \ silent! execute ''nunmap <buffer> gd'' |
