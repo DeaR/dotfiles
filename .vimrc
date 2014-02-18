@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  31-Jan-2014.
+" Last Change:  19-Feb-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -4331,7 +4331,7 @@ endif
 if s:has_neobundle && neobundle#tap('unite-mark')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:unite_source_mark_marks =
-      \ join(s:mark_char, '') . toupper(join(s:mark_char, ''))
+      \ myvimrc#unite_source_mark_marks()
   endfunction
 
   nnoremap ml

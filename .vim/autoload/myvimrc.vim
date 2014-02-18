@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  20-Jan-2014.
+" Last Change:  11-Feb-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -616,6 +616,16 @@ if s:has_neobundle && neobundle#tap('textmanip')
   endfunction
 endif
 "}}}
+
+"------------------------------------------------------------------------------
+" Unite Mark: {{{
+if s:has_neobundle && neobundle#tap('unite-mark')
+  function! myvimrc#unite_source_mark_marks()
+    return join(s:mark_char, '') . toupper(join(s:mark_char, ''))
+  endfunction
+endif
+"}}}
+
 "}}}
 
 let &cpo = s:save_cpo
