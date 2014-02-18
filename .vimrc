@@ -636,6 +636,8 @@ if s:has_neobundle
       \ 'NeoComplCacheCachingSyntax'     : 'neocomplcache#filetype_complete'})
   endif
 
+  NeoBundle 'Shougo/neomru.vim'
+
   NeoBundleLazy 'Shougo/neosnippet.vim', {
     \ 'autoload' : {
     \   'filetypes' : 'snippet',
@@ -2961,6 +2963,47 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
+" NeoMru: {{{
+if s:has_neobundle && neobundle#tap('neomru')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:neomru#file_mru_path       = $HOME . '/.local/.neomru/file'
+    let g:neomru#directory_mru_path  = $HOME . '/.local/.neomru/directory'
+    let g:neomru#file_mru_limit      = 50
+    let g:neomru#directory_mru_limit = 50
+
+    let g:neomru#file_mru_ignore_pattern =
+      \ '[/\\]doc[/\\][^/\\]\+\.\%(txt\|[:alpha:]\{2}x\)$\|' .
+      \ '[/\\]\%(' . join(map(
+      \   copy(s:ignore_dir),
+      \   'escape(v:val, ''\*.^$'')'), '\|') . '\)[/\\]\|' .
+      \ '\.\%(' . join(map(
+      \   copy(s:ignore_ext),
+      \   'escape(v:val, ''\*.^$'')'), '\|') . '\)$'
+  endfunction
+
+  NXnoremap <Leader>e
+    \ :<C-U>Unite neomru/file file file/new
+    \ -buffer-name=files -no-split<CR>
+  NXnoremap <Leader>d
+    \ :<C-U>Unite
+    \ menu:directory_current neomru/directory directory directory/new
+    \ -buffer-name=files -no-split -default-action=lcd<CR>
+  NXnoremap <Leader>D
+    \ :<C-U>Unite
+    \ menu:directory_current neomru/directory directory directory/new
+    \ -buffer-name=files -no-split -default-action=cd<CR>
+  NXnoremap <Leader><M-d>
+    \ :<C-U>UniteWithBufferDir
+    \ menu:directory_file neomru/directory directory directory/new
+    \ -buffer-name=files -no-split -default-action=lcd<CR>
+  NXnoremap <Leader><M-D>
+    \ :<C-U>UniteWithBufferDir
+    \ menu:directory_file neomru/directory directory directory/new
+    \ -buffer-name=files -no-split -default-action=cd<CR>
+endif
+"}}}
+
+"------------------------------------------------------------------------------
 " NeoSnippet: {{{
 if s:has_neobundle && neobundle#tap('neosnippet')
   function! neobundle#tapped.hooks.on_source(bundle)
@@ -4122,17 +4165,6 @@ if s:has_neobundle && neobundle#tap('unite')
     let g:unite_source_history_yank_enable = 1
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
-    let g:unite_source_file_mru_limit      = 50
-    let g:unite_source_directory_mru_limit = 50
-
-    let g:unite_source_file_mru_ignore_pattern =
-      \ '[/\\]doc[/\\][^/\\]\+\.\%(txt\|[:alpha:]\{2}x\)$\|' .
-      \ '[/\\]\%(' . join(map(
-      \   copy(s:ignore_dir),
-      \   'escape(v:val, ''\*.^$'')'), '\|') . '\)[/\\]\|' .
-      \ '\.\%(' . join(map(
-      \   copy(s:ignore_ext),
-      \   'escape(v:val, ''\*.^$'')'), '\|') . '\)$'
 
     if neobundle#get('jvgrep') != {} || s:executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
@@ -4233,31 +4265,12 @@ if s:has_neobundle && neobundle#tap('unite')
     NXnoremap <Leader>uf :<C-U>Unite menu:set_fenc<CR>
   endif
 
-  NXnoremap <Leader>e
-    \ :<C-U>Unite file_mru file file/new
-    \ -buffer-name=files -no-split<CR>
   NXnoremap <Leader>b
     \ :<C-U>Unite buffer
     \ -buffer-name=files -no-split<CR>
   NXnoremap <Leader>t
     \ :<C-U>Unite tab
     \ -buffer-name=files -no-split<CR>
-  NXnoremap <Leader>d
-    \ :<C-U>Unite
-    \ menu:directory_current directory_mru directory directory/new
-    \ -buffer-name=files -no-split -default-action=lcd<CR>
-  NXnoremap <Leader>D
-    \ :<C-U>Unite
-    \ menu:directory_current directory_mru directory directory/new
-    \ -buffer-name=files -no-split -default-action=cd<CR>
-  NXnoremap <Leader><M-d>
-    \ :<C-U>UniteWithBufferDir
-    \ menu:directory_file directory_mru directory directory/new
-    \ -buffer-name=files -no-split -default-action=lcd<CR>
-  NXnoremap <Leader><M-D>
-    \ :<C-U>UniteWithBufferDir
-    \ menu:directory_file directory_mru directory directory/new
-    \ -buffer-name=files -no-split -default-action=cd<CR>
 
   if &grepprg == 'internal'
     nnoremap sgsg
