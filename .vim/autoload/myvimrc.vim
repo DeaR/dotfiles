@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  11-Feb-2014.
+" Last Change:  27-Feb-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -250,9 +250,7 @@ endfunction
 "------------------------------------------------------------------------------
 " VC Vars: {{{
 function! myvimrc#vcvarsall(arch)
-  let save_shell = myvimrc#get_shell()
   let save_isi   = &isident
-  ShellCmd
   set isident+=( isident+=)
   try
     let env = system($VCVARSALL . ' ' . a:arch . ' & set')
@@ -261,7 +259,6 @@ function! myvimrc#vcvarsall(arch)
       execute 'let $' . matches[1] . '=' . string(matches[2])
     endfor
   finally
-    call myvimrc#set_shell(save_shell)
     let &isident = save_isi
   endtry
 endfunction
