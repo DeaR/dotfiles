@@ -948,14 +948,12 @@ if s:has_neobundle
     \   'commands' : ['Switch', 'SwitchIncrement', 'SwitchDecrement']}}
 
   if has('python') && s:executable('node')
-    NeoBundleFetch 'marijnh/tern', {
+    NeoBundleLazy 'marijnh/tern_for_vim', {
+      \ 'name' : 'tern',
+      \ 'autoload' : {
+      \   'filetypes' : 'javascript'},
       \ 'build' : {
       \   'others' : 'npm install'}}
-
-    NeoBundleLazy 'marijnh/tern_for_vim', {
-      \ 'name' : 'tern_for_vim',
-      \ 'autoload' : {
-      \   'filetypes' : 'javascript'}}
   endif
 
   NeoBundleLazy 'tomtom/tcomment_vim', {
@@ -3678,12 +3676,7 @@ endif
 
 "------------------------------------------------------------------------------
 " Tern: {{{
-if s:has_neobundle && neobundle#tap('tern_for_vim')
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:tern#command = ['node',
-      \ neobundle#get('tern').path . '/bin/tern']
-  endfunction
-
+if s:has_neobundle && neobundle#tap('tern')
   call extend(s:neocompl_force_omni_patterns, {
     \ 'tern#Complete' : '\.\h\w*'})
 endif
