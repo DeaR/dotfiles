@@ -1,7 +1,8 @@
+scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Feb-2014.
+" Last Change:  27-Feb-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -24,8 +25,6 @@
 "     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
-
-scriptencoding utf-8
 
 "==============================================================================
 " Pre Init: {{{
