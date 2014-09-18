@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-Feb-2014.
+" Last Change:  17-Sep-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -155,9 +155,11 @@ function! s:SID_PREFIX()
 endfunction
 
 " Check Vim version
-function! s:has_patch(version, patch)
-  return (v:version > a:version) || (v:version == a:version &&
-    \ has(type(a:patch) == type(0) ? ('patch' . a:patch) : a:patch))
+function! s:has_patch(major, minor, patch)
+  let l:version = (a:major * 100 + a:minor)
+  return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
+    \ (v:version > l:version) ||
+    \ (v:version == l:version && 'patch' . a:patch)
 endfunction
 
 " Check vimproc
@@ -203,7 +205,7 @@ if s:has_neobundle
     let g:neobundle#types#git#default_protocol = 'ssh'
     let g:neobundle#types#hg#default_protocol  = 'ssh'
   endif
-  call neobundle#rc($HOME . '/.local/bundle')
+  call neobundle#begin($HOME . '/.local/bundle')
 
   NeoBundleLazy 'h1mesuke/vim-alignta', {
     \ 'autoload' : {
@@ -364,6 +366,10 @@ if s:has_neobundle
     \ 'autoload' : {
     \   'filetypes' : 'diff'}}
 
+  NeoBundleLazy 'google/vim-ft-go', {
+    \ 'autoload' : {
+    \   'filetypes' : 'go'}}
+
   NeoBundleLazy 'thinca/vim-ft-help_fold', {
     \ 'autoload' : {
     \   'filetypes' : 'help'}}
@@ -412,33 +418,21 @@ if s:has_neobundle
     \   'commands' : 'Gitv'},
     \ 'depends' : 'tpope/vim-fugitive'}
 
+  NeoBundleLazy 'vim-jp/vim-go-extra', {
+    \ 'autoload' : {
+    \   'filetypes' : 'go'}}
+
   if s:executable('go')
-    NeoBundleLazy 'nsf/gocode', {
-      \ 'rtp' : 'vim',
-      \ 'autoload' : {
-      \   'filetypes' : 'go'},
+    NeoBundleFetch 'nsf/gocode', {
       \ 'build' : {
       \   'others' : 'go get -u github.com/nsf/gocode'}}
   endif
 
-  NeoBundleLazy 'jnwhiteh/vim-golang', {
-    \ 'autoload' : {
-    \   'filetypes' : 'go',
-    \   'commands' : [
-    \     {'name' : 'Godoc',
-    \      'complete' : 'customlist,go#complete#Package'}],
-    \   'mappings' : [['n', '<Plug>(godoc-keyword)']]}}
-  call extend(s:neocompl_vim_completefuncs, {
-    \ 'Godoc' : 'go#complete#Package'})
-
   if s:executable('go')
-    NeoBundleLazy 'golang/lint', {
+    NeoBundleFetch 'golang/lint', {
       \ 'name' : 'golint',
-      \ 'rtp' : 'misc/vim',
-      \ 'autoload' : {
-      \   'filetypes' : 'go'},
       \ 'build' : {
-      \   'others' : 'go get -u github.com/golang/lint/golint'}}
+      \   'others' : 'go get -u github.com/golang/lint'}}
   endif
 
   NeoBundleLazy 'kana/vim-grex', {
@@ -546,6 +540,12 @@ if s:has_neobundle
       \   'mappings' : [['i', '<Plug>(marching_']]}}
   endif
 
+  if !has('win32') && s:executable('go')
+    NeoBundleFetch 'laurent22/massren', {
+      \ 'build' : {
+      \   'other' : 'go get -u github.com/laurent22/massren'}}
+  endif
+
   NeoBundleLazy 'xolox/vim-misc', {
     \ 'autoload' : {
     \   'function_prefix' : 'xolox'}}
@@ -566,7 +566,7 @@ if s:has_neobundle
     \ 'NeoBundleClean'     : 'neobundle#complete_deleted_bundles',
     \ 'NeoBundleReinstall' : 'neobundle#complete_bundles'})
 
-  if has('lua') && s:has_patch(703, 885)
+  if has('lua') && s:has_patch(7, 3, 885)
     NeoBundleLazy 'Shougo/neocomplete.vim', {
       \ 'autoload' : {
       \   'commands' : [
@@ -1140,14 +1140,14 @@ if s:has_neobundle
     \   'commands' : 'TextobjXmlattributeDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-xmlattribute-']]}}
 
-  if has('win32') || s:executable('aclocal')
-    NeoBundleFetch 'ggreer/the_silver_searcher', {
-      \ 'build' : {
-      \   'windows' :
-      \     'mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32',
-      \   'others'  :
-      \     './build.sh && sudo make install'}}
-  endif
+  " if has('win32') || s:executable('aclocal')
+  "   NeoBundleFetch 'ggreer/the_silver_searcher', {
+  "     \ 'build' : {
+  "     \   'windows' :
+  "     \     'mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32',
+  "     \   'others'  :
+  "     \     './build.sh && sudo make install'}}
+  " endif
 
   NeoBundleLazy 'zaiste/tmux.vim', {
     \ 'autoload' : {
@@ -1259,10 +1259,6 @@ if s:has_neobundle
     \   'unite_sources' : 'webcolorname'}}
 
   NeoBundleLazy 'vbnet.vim', {
-    \ 'autoload' : {
-    \   'filetypes' : 'vbnet'}}
-
-  NeoBundleLazy 'rbtnn/vbnet_indent.vim', {
     \ 'autoload' : {
     \   'filetypes' : 'vbnet'}}
 
@@ -1469,6 +1465,7 @@ if s:has_neobundle
 
   NeoBundleLazy 'mattn/webapi-vim'
 
+  call neobundle#end()
   execute 'set runtimepath+=' .
     \ join(map(filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
     \                 'neobundle#get(fnamemodify(v:val, ":t")) != {}'),
@@ -2269,7 +2266,7 @@ command! -bar
   \ Undiff
   \ diffoff |
   \ setlocal scrollbind< cursorbind< wrap< foldmethod< foldcolumn< |
-  \ execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
+  \ execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
   \ 'FileType'
 
 nnoremap <F8> :<C-U>Undiff<CR>
@@ -2673,10 +2670,15 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
-" Gocode: {{{
-if s:has_neobundle && neobundle#tap('gocode')
+" Go: {{{
+if s:has_neobundle && neobundle#tap('go')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:go_bin_path            = $HOME . '/.local/.vim-go'
+    let g:go_disable_autoinstall = 1
+  endfunction
+
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'gocomplete#Complete' : '\.\h\w*'})
+    \ 'go#complete#Complete' : '\.\h\w*'})
 endif
 "}}}
 
@@ -2800,9 +2802,9 @@ endif
 if s:has_neobundle && neobundle#tap('marching')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:marching_enable_neocomplete = 1
-    " let g:marching_backend            =
-    "   \ neobundle#get('snowdrop') != {} ?
-    "   \   "snowdrop" : "sync_clang_command"
+    let g:marching_backend            =
+      \ neobundle#get('snowdrop') != {} ?
+      \   "snowdrop" : "sync_clang_command"
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
@@ -2840,16 +2842,18 @@ if s:has_neobundle && neobundle#tap('neocomplcache')
     let g:neocomplcache_enable_fuzzy_completion      = 0
     let g:neocomplcache_force_overwrite_completefunc = 1
     let g:neocomplcache_temporary_dir                =
-      \ $HOME . '/.local/.neocomplcache'
+      \ $HOME . '/.local/.cache/neocomplcache'
 
     let g:neocomplcache_dictionary_filetype_lists =
       \ s:neocompl_dictionary_filetype_lists
     let g:neocomplcache_vim_completefuncs         =
       \ s:neocompl_vim_completefuncs
-    let g:neocomplcache_omni_patterns             =
-      \ s:neocompl_omni_patterns
-    let g:neocomplcache_force_omni_patterns       =
-      \ s:neocompl_force_omni_patterns
+    " let g:neocomplcache_omni_patterns             =
+    "   \ s:neocompl_omni_patterns
+    " let g:neocomplcache_force_omni_patterns       =
+    "   \ s:neocompl_force_omni_patterns
+    let g:neocomplcache_omni_patterns             = {}
+    let g:neocomplcache_force_omni_patterns       = {}
 
     call neocomplcache#custom_source('syntax_complete',   'rank',  9)
     call neocomplcache#custom_source('snippets_complete', 'rank', 80)
@@ -2904,16 +2908,18 @@ if s:has_neobundle && neobundle#tap('neocomplete')
     " let g:neocomplete#enable_insert_char_pre       = 1
     let g:neocomplete#force_overwrite_completefunc = 1
     let g:neocomplete#data_directory               =
-      \ $HOME . '/.local/.neocomplete'
+      \ $HOME . '/.local/.cache/neocomplete'
 
     let g:neocomplete#sources#dictionary#dictionaryies =
       \ s:neocompl_dictionary_filetype_lists
     let g:neocomplete#sources#vim#complete_functions   =
       \ s:neocompl_vim_completefuncs
-    let g:neocomplete#sources#omni#input_patterns      =
-      \ s:neocompl_omni_patterns
-    let g:neocomplete#force_omni_input_patterns        =
-      \ s:neocompl_force_omni_patterns
+    " let g:neocomplete#sources#omni#input_patterns      =
+    "   \ s:neocompl_omni_patterns
+    " let g:neocomplete#force_omni_input_patterns        =
+    "   \ s:neocompl_force_omni_patterns
+    let g:neocomplete#sources#omni#input_patterns      = {}
+    let g:neocomplete#force_omni_input_patterns        = {}
 
     call neocomplete#custom#source('_', 'matchers', ['matcher_head'])
     call neocomplete#custom#source('syntax_complete',   'rank',  9)
@@ -2963,8 +2969,8 @@ endif
 " NeoMru: {{{
 if s:has_neobundle && neobundle#tap('neomru')
   function! neobundle#tapped.hooks.on_source(bundle)
-    let g:neomru#file_mru_path       = $HOME . '/.local/.neomru/file'
-    let g:neomru#directory_mru_path  = $HOME . '/.local/.neomru/directory'
+    let g:neomru#file_mru_path       = $HOME . '/.local/.cache/neomru/file'
+    let g:neomru#directory_mru_path  = $HOME . '/.local/.cache/neomru/directory'
     let g:neomru#file_mru_limit      = 50
     let g:neomru#directory_mru_limit = 50
 
@@ -3005,6 +3011,7 @@ endif
 if s:has_neobundle && neobundle#tap('neosnippet')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:neosnippet#snippets_directory           = $HOME . '/.vim/snippets'
+    let g:neosnippet#data_directory               = $HOME . '/.local/.cache/neosnippet'
     let g:neosnippet#disable_select_mode_mappings = 0
 
     let g:neosnippet#disable_runtime_snippets =
@@ -4148,7 +4155,7 @@ endif
 " Unite: {{{
 if s:has_neobundle && neobundle#tap('unite')
   function! neobundle#tapped.hooks.on_source(bundle)
-    let g:unite_data_directory             = $HOME . '/.local/.unite'
+    let g:unite_data_directory             = $HOME . '/.local/.cache/unite'
     let g:unite_enable_start_insert        = 1
     let g:unite_winheight                  = 25
     let g:unite_candidate_icon             = "-"
@@ -4396,7 +4403,7 @@ endif
 " VimFiler: {{{
 if s:has_neobundle && neobundle#tap('vimfiler')
   function! neobundle#tapped.hooks.on_source(bundle)
-    let g:vimfiler_data_directory      = $HOME . '/.local/.vimfiler'
+    let g:vimfiler_data_directory      = $HOME . '/.local/.cache/vimfiler'
     let g:vimfiler_as_default_explorer = 1
   endfunction
 
@@ -4420,7 +4427,7 @@ endif
 " VimShell: {{{
 if s:has_neobundle && neobundle#tap('vimshell')
   function! neobundle#tapped.hooks.on_source(bundle)
-    let g:vimshell_temporary_directory      = $HOME . '/.local/.vimshell'
+    let g:vimshell_data_directory           = $HOME . '/.local/.cache/vimshell'
     let g:vimshell_vimshrc_path             = $HOME . '/.vim/.vimshrc'
     let g:vimshell_max_command_history      = 100000
     let g:vimshell_no_save_history_commands = {}
@@ -4555,7 +4562,7 @@ if filereadable($HOME . '/.local/.vimrc_local.vim')
 endif
 
 if exists('#User#VimrcPost')
-  execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
+  execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
     \ 'User VimrcPost'
 endif
 "}}}

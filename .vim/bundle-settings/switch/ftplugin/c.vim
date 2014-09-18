@@ -1,7 +1,7 @@
 " Switch ftplugin for C
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  07-May-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -44,7 +44,7 @@ function! s:initialize()
     \ ['char', 'short', 'int', 'long'],
     \ ['float', 'double'],
     \ ['BYTE', 'WORD', 'DWORD'],
-    \ ['u8', 'u16', 'u32'], ['s8', 's16', 's32']]
+    \ ['u8', 'u16', 'u32', 'u64'], ['s8', 's16', 's32', 's64']]
     for i in range(len(l))
       let s1 = l[i]
       let s2 = get(l, i + 1, l[0])

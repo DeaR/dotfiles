@@ -1,3 +1,7 @@
+VERSION=$(shell grep -Po "(?<=\[)([0-9.]+.[0-9]+.[0-9]+)(?=\])" configure.ac)
+
+CC=gcc
+
 SRCS = \
 	src/decompress.c \
 	src/ignore.c \
@@ -11,8 +15,7 @@ SRCS = \
 	src/util.c
 OBJS = $(subst .c,.o,$(SRCS))
 
-VERSION=
-CFLAGS = -O2 -Isrc/win32 -DPACKAGE_VERSION=\"0.16\" -I$(HOME)/.vim/tools/the_silver_searcher
+CFLAGS = -O2 -Isrc/win32 -DPACKAGE_VERSION=\"$(VERSION)\" -I$(HOME)/.vim/tools/the_silver_searcher
 LIBS = -lz -lpthread $(HOME)/bin/libpcre.dll -llzma -lshlwapi
 TARGET = ag.exe
 
@@ -20,10 +23,10 @@ all : $(TARGET)
 	mv $(TARGET) $(HOME)/bin/
 
 $(TARGET) : $(OBJS)
-	gcc -o $@ $(OBJS) $(LIBS)
+	$(CC) -o $@ $(OBJS) $(LIBS)
 
 .c.o :
-	gcc -c $(CFLAGS) -Isrc $< -o $@
+	$(CC) -c $(CFLAGS) -Isrc $< -o $@
 
 clean :
 	rm -f src/*.o $(TARGET)

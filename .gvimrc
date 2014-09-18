@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-Feb-2014.
+" Last Change:  17-Sep-2014.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -49,9 +49,11 @@ function! s:SID_PREFIX()
 endfunction
 
 " Check Vim version
-function! s:has_patch(version, patch)
-  return (v:version > a:version) || (v:version == a:version &&
-    \ has(type(a:patch) == type(0) ? ('patch' . a:patch) : a:patch))
+function! s:has_patch(major, minor, patch)
+  let l:version = (a:major * 100 + a:minor)
+  return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
+    \ (v:version > l:version) ||
+    \ (v:version == l:version && 'patch' . a:patch)
 endfunction
 
 " Check vimproc
@@ -149,14 +151,14 @@ if s:directx_enable && has('directx')
 endif
 
 " Full screen
-if has('win32')
-  autocmd MyGVimrc GUIEnter *
-    \ simalt ~x
-else
+" if has('win32')
+"   autocmd MyGVimrc GUIEnter *
+"     \ simalt ~x
+" else
   autocmd MyGVimrc GUIEnter *
     \ winpos 0 0 |
     \ set lines=999 columns=9999
-endif
+" endif
 "}}}
 
 "------------------------------------------------------------------------------
@@ -190,7 +192,7 @@ if filereadable($HOME . '/.local/.gvimrc_local.vim')
 endif
 
 if exists('#User#GVimrcPost')
-  execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
+  execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
     \ 'User GVimrcPost'
 endif
 "}}}
