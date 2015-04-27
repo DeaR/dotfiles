@@ -1,7 +1,7 @@
 # Nodoka settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  06-Mar-2014.
+# Last Change:  17-Apr-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -159,7 +159,7 @@ if(USEdefault)
    key C-A-P               = &Default # ウィンドウを上に寄せる
    key C-A-N               = &Default # ウィンドウを下に寄せる
    key C-A-V               = &Default # ウィンドウを見える位置へ移動
-   # key C-S-K     C-A-K     = &Default # ウィンドウを閉じる
+   key C-S-K     C-A-K     = &Default # ウィンドウを閉じる
    key C-S-T               = &Default # 最前面トグル
    key C-S-D               = &Default # ウィンドウの素性を調べる
    key C-S-H               = &Default # ウィンドウの半透明化
@@ -167,6 +167,11 @@ if(USEdefault)
    key C-S-U               = &Default # ウィンドウの再描画
    key C-S-S               = &Default # 設定ファイルの読み込み
    key C-S-F1              = &Default # WM_COMMAND の調査
+   key C-S-A     C-S-B     = &Default # ウィンドウを左に寄せる
+   key C-S-F     C-S-E     = &Default # ウィンドウを右に寄せる
+   key C-S-P               = &Default # ウィンドウを上に寄せる
+   key C-S-N               = &Default # ウィンドウを下に寄せる
+   key C-S-V               = &Default # ウィンドウを見える位置へ移動
 endif
 #}}}
 
@@ -298,6 +303,13 @@ endif
 # TortoiseSVN: {{{
 if(USEdefault)
   window TortoiseProc /TortoiseProc\.exe/ : EmacsEdit
+endif
+#}}}
+
+#------------------------------------------------------------------------------
+# Tween: {{{
+if(USEdefault)
+  window Tween /Tween\.exe/ : EmacsEdit
 endif
 #}}}
 

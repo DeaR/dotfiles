@@ -1,4 +1,5 @@
-VERSION=$(shell grep -Po "(?<=\[)([0-9.]+.[0-9]+.[0-9]+)(?=\])" configure.ac)
+GREP=grep
+VERSION:=$(shell $(GREP) -Po "(?<=\[)([0-9.]+.[0-9]+.[0-9]+)(?=\])" configure.ac)
 
 CC=gcc
 
@@ -12,7 +13,8 @@ SRCS = \
 	src/print.c \
 	src/scandir.c \
 	src/search.c \
-	src/util.c
+	src/util.c \
+	src/print_w32.c
 OBJS = $(subst .c,.o,$(SRCS))
 
 CFLAGS = -O2 -Isrc/win32 -DPACKAGE_VERSION=\"$(VERSION)\" -I$(HOME)/.vim/tools/the_silver_searcher

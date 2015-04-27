@@ -1,7 +1,7 @@
 " Switch ftplugin for PHP
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  19-Feb-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -48,10 +48,6 @@ function! s:initialize()
   endfor
 
   call extend(s:cst, {
-    \ '&\@<!&&\@!' : '|',
-    \ '|\@<!||\@!' : '^',
-    \ '\^'         : '&',
-    \
     \ '\C==='         : '!==',
     \ '\C!=='         : '===',
     \ '\C=\@<!===\@!' : '!=',

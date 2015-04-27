@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  17-Sep-2014.
+" Last Change:  27-Apr-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -79,9 +79,8 @@ let s:gips_enable = 0
 let s:cmdwin_enable = 0
 
 " Ignore pattern
-let s:ignore_dir = [
-  \ '.git', '.hg', '.bzr', '.svn', '.drive.r', 'temp', 'tmp']
 let s:ignore_ext = [
+  \ 'git', 'hg', 'bzr', 'svn', 'drive.r',
   \ 'o', 'obj', 'a', 'lib', 'so', 'dll', 'dylib', 'exe', 'bin',
   \ 'swp', 'swo', 'bak', 'lc', 'elc', 'fas', 'pyc', 'luac', 'zwc']
 let s:ignore_ft = [
@@ -354,6 +353,12 @@ if s:has_neobundle
   autocmd MyVimrc User CmdlineEnter
     \ NeoBundleSource eskk
 
+  if s:executable('go')
+    NeoBundleFetch 'mattn/files', {
+      \ 'build' : {
+      \   'others' : 'go get -u github.com/mattn/files'}}
+  endif
+
   NeoBundleLazy 'kana/vim-filetype-haskell', {
     \ 'autoload' : {
     \   'filetypes' : 'haskell'}}
@@ -432,7 +437,7 @@ if s:has_neobundle
     NeoBundleFetch 'golang/lint', {
       \ 'name' : 'golint',
       \ 'build' : {
-      \   'others' : 'go get -u github.com/golang/lint'}}
+      \   'others' : 'go get -u github.com/golang/lint/golint'}}
   endif
 
   NeoBundleLazy 'kana/vim-grex', {
@@ -440,11 +445,11 @@ if s:has_neobundle
     \   'commands' : ['Gred', 'Grey'],
     \   'mappings' : [['nvo', '<Plug>(operator-grex-']]}}
 
-  NeoBundleLazy 'rbtnn/hexript.vim', {
-    \ 'autoload' : {
-    \   'commands' : [
-    \     {'name' : 'HexriptToBinaryFile',
-    \      'complete' : 'file'}]}}
+  " NeoBundleLazy 'rbtnn/hexript.vim', {
+  "   \ 'autoload' : {
+  "   \   'commands' : [
+  "   \     {'name' : 'HexriptToBinaryFile',
+  "   \      'complete' : 'file'}]}}
 
   NeoBundleLazy 'cohama/vim-hier', {
     \ 'autoload' : {
@@ -463,6 +468,10 @@ if s:has_neobundle
   NeoBundleLazy 'HybridText', {
     \ 'autoload' : {
     \   'filetypes' : ['hybrid', 'text']}}
+
+  NeoBundleLazy 'kamichidu/vim-javaclasspath'
+
+  NeoBundleLazy 'kamichidu/vim-javalang'
 
   NeoBundleLazy 'basyura/J6uil.vim', {
     \ 'autoload' : {
@@ -508,9 +517,11 @@ if s:has_neobundle
 
   NeoBundleLazy 'dbakker/vim-lint'
 
-  NeoBundle 'thinca/vim-localrc'
+  NeoBundleLazy 'thinca/vim-localrc'
+  autocmd MyVimrc VimEnter *
+    \ NeoBundleSource localrc
 
-  NeoBundleLazy 'https://raw.github.com/januswel/dotfiles/master/.vim/syntax/mayu.vim', {
+  NeoBundleLazy 'https://raw.githubusercontent.com/januswel/dotfiles/master/.vim/syntax/mayu.vim', {
     \ 'name' : 'mayu',
     \ 'script_type' : 'syntax',
     \ 'autoload' : {
@@ -544,6 +555,12 @@ if s:has_neobundle
     NeoBundleFetch 'laurent22/massren', {
       \ 'build' : {
       \   'other' : 'go get -u github.com/laurent22/massren'}}
+  endif
+
+  if s:executable('go')
+    NeoBundleFetch 'peco/migemogrep', {
+      \ 'build' : {
+      \   'others' : 'go get -u github.com/peco/migemogrep'}}
   endif
 
   NeoBundleLazy 'xolox/vim-misc', {
@@ -808,19 +825,8 @@ if s:has_neobundle
     \ 'autoload' : {
     \   'filetypes' : 'php'}}
 
-  NeoBundleLazy 'osyo-manga/vim-precious', {
-    \ 'autoload' : {
-    \   'commands' : [
-    \     {'name' : 'PreciousSwitch',
-    \      'complete' : 'filetype'},
-    \     {'name' : 'PreciousSwitchAutcmd',
-    \      'complete' : 'filetype'},
-    \     'PreciousSetContextLocal', 'PreciousReset',
-    \     'TextobjPreciousDefaultKeyMappings'],
-    \   'mappings' : [
-    \     ['vo', '<Plug>(textobj-precious-i)'],
-    \     ['n',  '<Plug>(precious-quickrun-op)']]}}
-  autocmd MyVimrc FileType *
+  NeoBundleLazy 'osyo-manga/vim-precious'
+  autocmd MyVimrc VimEnter *
     \ NeoBundleSource precious
 
   NeoBundleLazy 'thinca/vim-prettyprint', {
@@ -929,7 +935,7 @@ if s:has_neobundle
     NeoBundleFetch 'thinca/vim-singleton'
   endif
 
-  NeoBundleLazy 'DeaR/vim-smartword', {
+  NeoBundleLazy 'kana/vim-smartword', {
     \ 'autoload' : {
     \   'mappings' : [['nvo', '<Plug>(smartword-']],
     \   'insert' : 1}}
@@ -1140,14 +1146,14 @@ if s:has_neobundle
     \   'commands' : 'TextobjXmlattributeDefaultKeyMappings',
     \   'mappings' : [['vo', '<Plug>(textobj-xmlattribute-']]}}
 
-  " if has('win32') || s:executable('aclocal')
-  "   NeoBundleFetch 'ggreer/the_silver_searcher', {
-  "     \ 'build' : {
-  "     \   'windows' :
-  "     \     'mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32',
-  "     \   'others'  :
-  "     \     './build.sh && sudo make install'}}
-  " endif
+  if has('win32') || s:executable('aclocal')
+    NeoBundleFetch 'ggreer/the_silver_searcher', {
+      \ 'build' : {
+      \   'windows' :
+      \     'mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32',
+      \   'others'  :
+      \     './build.sh && sudo make install'}}
+  endif
 
   NeoBundleLazy 'zaiste/tmux.vim', {
     \ 'autoload' : {
@@ -1407,21 +1413,32 @@ if s:has_neobundle
     \ 'VimShellTerminal'    : 'vimshell#vimshell_execute_complete'})
 
   if has('python') || has('python3')
+    " NeoBundleLazy 'Shougo/vinarise.vim', {
+    "   \ 'autoload' : {
+    "   \   'commands' : [
+    "   \     {'name' : 'Vinarise',
+    "   \      'complete' : 'customlist,vinarise#complete'},
+    "   \     {'name' : 'VinariseDump',
+    "   \      'complete' : 'customlist,vinarise#complete'},
+    "   \     {'name' : 'VinariseScript2Hex',
+    "   \      'complete' : 'customlist,vinarise#complete'}],
+    "   \   'unite_sources' : 'vinarise/analysis'},
+    "   \ 'depends' : 'rbtnn/hexript.vim'}
+    " call extend(s:neocompl_vim_completefuncs, {
+    "   \ 'Vinarise'           : 'vinarise#complete',
+    "   \ 'VinariseDump'       : 'vinarise#complete',
+    "   \ 'VinariseScript2Hex' : 'vinarise#complete'})
     NeoBundleLazy 'Shougo/vinarise.vim', {
       \ 'autoload' : {
       \   'commands' : [
       \     {'name' : 'Vinarise',
       \      'complete' : 'customlist,vinarise#complete'},
       \     {'name' : 'VinariseDump',
-      \      'complete' : 'customlist,vinarise#complete'},
-      \     {'name' : 'VinariseScript2Hex',
       \      'complete' : 'customlist,vinarise#complete'}],
-      \   'unite_sources' : 'vinarise/analysis'},
-      \ 'depends' : 'rbtnn/hexript.vim'}
+      \   'unite_sources' : 'vinarise/analysis'}}
     call extend(s:neocompl_vim_completefuncs, {
-      \ 'Vinarise'           : 'vinarise#complete',
-      \ 'VinariseDump'       : 'vinarise#complete',
-      \ 'VinariseScript2Hex' : 'vinarise#complete'})
+      \ 'Vinarise'     : 'vinarise#complete',
+      \ 'VinariseDump' : 'vinarise#complete'})
   endif
 
   NeoBundleLazy 'thinca/vim-visualstar', {
@@ -1457,7 +1474,7 @@ if s:has_neobundle
     \   'thinca/vim-quickrun',
     \   'syngan/vim-vimlint',
     \   'ynkdir/vim-vimlparser']}
-  autocmd MyVimrc FileType *
+  autocmd MyVimrc BufNewFile,BufRead *
     \ NeoBundleSource watchdogs
   call extend(s:neocompl_vim_completefuncs, {
     \ 'WatchdogsRun'       : 'quickrun#complete',
@@ -1529,8 +1546,6 @@ set ambiwidth=double
 
 " Wild menu
 set wildmenu
-execute 'set wildignore+=' .
-  \ join(map(copy(s:ignore_dir), 'escape(v:val, ''\,'')'), ',')
 execute 'set wildignore+=' .
   \ join(map(copy(s:ignore_ext), '''*.'' . escape(v:val, ''\,'')'), ',')
 
@@ -2711,10 +2726,8 @@ if s:has_neobundle && neobundle#tap('J6uil')
     let g:J6uil_no_default_keymappings = 1
     let g:J6uil_user                   = 'DeaR'
 
-    if has('win32') && isdirectory($PROGRAMFILES . '/ImageMagick-6.8.8-Q8')
-      let g:J6uil_display_icon = 1
-      let $PATH = $PROGRAMFILES . '\ImageMagick-6.8.8-Q8;' . $PATH
-    elseif !has('win32') && s:executable('convert')
+    if (has('win32')  && isdirectory($PROGRAMFILES . '/ImageMagick-6.9.0-Q16')) ||
+      \ (!has('win32') && s:executable('convert'))
       let g:J6uil_display_icon = 1
     endif
   endfunction
@@ -2743,12 +2756,9 @@ endif
 " Jvgrep: {{{
 if s:has_neobundle && neobundle#tap('jvgrep')
   let $JVGREP_EXCLUDE =
-    \ '(' . join(map(
-    \   copy(s:ignore_dir),
-    \   'escape(v:val, ''\*+.?{}()[]^$-|/'')'), '|') . ')$|' .
-    \ '\.(' . join(map(
+    \ join(map(
     \   copy(s:ignore_ext),
-    \   'escape(v:val, ''\*+.?{}()[]^$-|/'')'), '|') . ')$'
+    \   '''\.'' . escape(v:val, ''\*+.?{}()[]^$-|/'') . ''$'''), '|')
 endif
 
 "------------------------------------------------------------------------------
@@ -2776,7 +2786,7 @@ if s:has_neobundle && neobundle#tap('localrc')
   function! neobundle#tapped.hooks.on_post_source(bundle)
     call localrc#load(g:localrc_filename)
 
-    if &filetype != ''
+    if &l:filetype != ''
       call localrc#load(
         \ map(type(g:localrc_filetype) == type([]) ?
         \     copy(g:localrc_filetype) : [g:localrc_filetype],
@@ -2973,15 +2983,13 @@ if s:has_neobundle && neobundle#tap('neomru')
     let g:neomru#directory_mru_path  = $HOME . '/.local/.cache/neomru/directory'
     let g:neomru#file_mru_limit      = 50
     let g:neomru#directory_mru_limit = 50
+    let g:neomru#do_validate         = 0
 
     let g:neomru#file_mru_ignore_pattern =
-      \ '[/\\]doc[/\\][^/\\]\+\.\%(txt\|[:alpha:]\{2}x\)$\|' .
-      \ '[/\\]\%(' . join(map(
-      \   copy(s:ignore_dir),
-      \   'escape(v:val, ''\*.^$'')'), '\|') . '\)[/\\]\|' .
-      \ '\.\%(' . join(map(
+      \ '[/\\]doc[/\\][^/\\]\+\.\%(txt\|\a\ax\)$\|' .
+      \ join(map(
       \   copy(s:ignore_ext),
-      \   'escape(v:val, ''\*.^$'')'), '\|') . '\)$'
+      \   '''\.'' . escape(v:val, ''\*.^$'') . ''$'''), '\|')
   endfunction
 
   NXnoremap <Leader>e
@@ -3307,7 +3315,9 @@ if s:has_neobundle && neobundle#tap('precious')
     let g:textobj_precious_no_default_key_mappings = 1
     let g:precious_enable_switchers                = {
       \ 'help' : {'setfiletype' : 0}}
+  endfunction
 
+  function! neobundle#tapped.hooks.on_post_source(bundle)
     let &statusline = substitute(&statusline, '%y', '%{StatusLine_y()}', '')
   endfunction
 
@@ -3599,14 +3609,14 @@ if s:has_neobundle && neobundle#tap('switch')
     endfor
 
     call extend(g:switch_increment_definitions, [{
-      \ '\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
+      \ '\C\(-\?\d\+\)\%(TH\|ST\|ND\|RD\)' :
       \   '\=toupper(call(''myvimrc#ordinal'', [submatch(1) + 1]))',
-      \ '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
+      \ '\C\(-\?\d\+\)\%(th\|st\|nd\|rd\)' :
       \   '\=tolower(call(''myvimrc#ordinal'', [submatch(1) + 1]))'}])
     call extend(g:switch_decrement_definitions, [{
-      \ '\C\(-\?\d*\)\%(TH\|ST\|ND\|RD\)' :
+      \ '\C\(-\?\d\+\)\%(TH\|ST\|ND\|RD\)' :
       \   '\=toupper(call(''myvimrc#ordinal'', [submatch(1) - 1]))',
-      \ '\C\(-\?\d*\)\%(th\|st\|nd\|rd\)' :
+      \ '\C\(-\?\d\+\)\%(th\|st\|nd\|rd\)' :
       \   '\=tolower(call(''myvimrc#ordinal'', [submatch(1) - 1]))'}])
 
     command! -bar
@@ -4164,6 +4174,15 @@ if s:has_neobundle && neobundle#tap('unite')
     let g:unite_source_history_yank_enable = 1
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
+
+    if !has('win32') && s:executable('find')
+      let g:unite_source_rec_async_command = 'find'
+    elseif neobundle#get('files') != {} || s:executable('files')
+      let g:unite_source_rec_async_command = 'files -p'
+    elseif neobundle#get('the_silver_searcher') != {} || s:executable('ag')
+      let g:unite_source_rec_async_command =
+        \ 'ag --follow --nocolor --nogroup --hidden -g ""'
+    endif
 
     if neobundle#get('jvgrep') != {} || s:executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'

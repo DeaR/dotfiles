@@ -1,7 +1,7 @@
 " Switch ftplugin for C#
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  19-Feb-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -59,14 +59,6 @@ function! s:initialize()
       call extend(s:cst, {'\C' . l[i] : get(l, i + 1, l[0])})
     endfor
   endfor
-
-  call extend(s:cst, {
-    \ '&\@<!&&\@!' : '|',
-    \ '|\@<!||\@!' : '^',
-    \ '\^'         : '&',
-    \
-    \ '\C(\(\k\+\))'   : ' as \1',
-    \ '\C as \(\k\+\)' : '(\1)'})
 endfunction
 if !exists('s:cst') || !exists('s:inc') || !exists('s:dec')
   call s:initialize()
