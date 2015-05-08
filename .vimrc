@@ -3490,10 +3490,10 @@ if s:has_neobundle && neobundle#tap('scratch')
     call operator#user#define_ex_command(
       \ 'scratch-evaluate!',
       \ 'ScrachEvaluate!')
-
-    autocmd MyVimrc User PluginScratchInitializeAfter
-      \ nmap <buffer> sr <Plug>(operator-scratch-evaluate)
   endfunction
+
+  autocmd MyVimrc User PluginScratchInitializeAfter
+    \ nmap <buffer> sr <Plug>(operator-scratch-evaluate)
 endif
 "}}}
 
