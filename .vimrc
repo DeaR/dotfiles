@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  08-May-2015.
+" Last Change:  09-May-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2779,31 +2779,18 @@ endif
 "------------------------------------------------------------------------------
 " Localrc: {{{
 if s:has_neobundle && neobundle#tap('localrc')
-  function! neobundle#tapped.hooks.on_source(bundle)
-    augroup MyVimrc
-      autocmd BufNewFile,BufRead *
-        \ if exists("b:undo_localrc") |
-        \   execute b:undo_localrc |
-        \   unlet! b:undo_localrc |
-        \ endif
-      autocmd FileType *
-        \ if exists("b:undo_ftlocalrc") |
-        \   execute b:undo_ftlocalrc |
-        \   unlet! b:undo_ftlocalrc |
-        \ endif
-    augroup END
-  endfunction
-
-  function! neobundle#tapped.hooks.on_post_source(bundle)
-    call localrc#load(g:localrc_filename)
-
-    if &l:filetype != ''
-      call localrc#load(
-        \ map(type(g:localrc_filetype) == type([]) ?
-        \     copy(g:localrc_filetype) : [g:localrc_filetype],
-        \   'printf(v:val, &filetype)'))
-    endif
-  endfunction
+  augroup MyVimrc
+    autocmd BufNewFile,BufRead *
+      \ if exists("b:undo_localrc") |
+      \   execute b:undo_localrc |
+      \   unlet! b:undo_localrc |
+      \ endif
+    autocmd FileType *
+      \ if exists("b:undo_ftlocalrc") |
+      \   execute b:undo_ftlocalrc |
+      \   unlet! b:undo_ftlocalrc |
+      \ endif
+  augroup END
 endif
 "}}}
 
