@@ -517,9 +517,7 @@ if s:has_neobundle
 
   NeoBundleLazy 'dbakker/vim-lint'
 
-  NeoBundleLazy 'thinca/vim-localrc'
-  autocmd MyVimrc VimEnter *
-    \ NeoBundleSource localrc
+  NeoBundle 'thinca/vim-localrc'
 
   NeoBundleLazy 'https://raw.githubusercontent.com/januswel/dotfiles/master/.vim/syntax/mayu.vim', {
     \ 'name' : 'mayu',
