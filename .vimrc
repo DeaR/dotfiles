@@ -823,9 +823,7 @@ if s:has_neobundle
     \ 'autoload' : {
     \   'filetypes' : 'php'}}
 
-  NeoBundleLazy 'osyo-manga/vim-precious'
-  autocmd MyVimrc VimEnter *
-    \ NeoBundleSource precious
+  NeoBundle 'osyo-manga/vim-precious'
 
   NeoBundleLazy 'thinca/vim-prettyprint', {
     \ 'autoload' : {
