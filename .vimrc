@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-May-2015.
+" Last Change:  11-May-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -136,6 +136,18 @@ if has('win32') && !exists('$VCVARSALL')
   endif
   let &shellslash = s:save_ssl
   unlet s:save_ssl
+
+  let s:save_isi = &isident
+  set isident+=(,)
+  let s:programfiles = expand(exists('$PROGRAMFILES(X86)') ?
+    \ '$PROGRAMFILES(X86)' : '$PROGRAMFILES')
+  if isdirectory(s:programfiles . '\Microsoft SDKs\Windows\v7.1A\Include')
+    let $SDK_INCLUDE_DIR = s:programfiles . '\Microsoft SDKs\Windows\v7.1A\Include'
+  elseif isdirectory(s:programfiles . '\Microsoft SDKs\Windows\v7.1\Include')
+    let $SDK_INCLUDE_DIR = s:programfiles . '\Microsoft SDKs\Windows\v7.1\Include'
+  endif
+  let &isident = s:save_isi
+  unlet s:save_isi
 endif
 "}}}
 
@@ -2239,7 +2251,7 @@ if exists('$VCVARSALL')
     \ VCVars32
     \ call myvimrc#vcvarsall('x86')
 
-  if exists('$PROGRAMFILES(x86)')
+  if exists('$PROGRAMFILES(X86)')
     command! -bar
       \ VCVars64
       \ call myvimrc#vcvarsall(exists('PROCESSOR_ARCHITEW6432') ?
