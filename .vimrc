@@ -1493,7 +1493,7 @@ if s:has_neobundle
   call neobundle#end()
   execute 'set runtimepath+=' .
     \ join(map(filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
-    \                 'neobundle#get(fnamemodify(v:val, ":t")) != {}'),
+    \                 'neobundle#is_installed(fnamemodify(v:val, ":t"))'),
     \          'escape(v:val, " ,")'), ',')
   autocmd MyVimrc User VimrcPost
     \ call neobundle#call_hook('on_source')
@@ -1613,10 +1613,10 @@ if &t_Co > 2
 endif
 
 " Grep
-if (s:has_neobundle && neobundle#get('jvgrep') != {}) ||
+if (s:has_neobundle && neobundle#is_installed('jvgrep')) ||
   \ s:executable('jvgrep')
   set grepprg=jvgrep\ -n
-elseif (s:has_neobundle && neobundle#get('the_silver_searcher') != {}) ||
+elseif (s:has_neobundle && neobundle#is_installed('the_silver_searcher')) ||
   \ s:executable('ag')
   set grepprg=ag\ --line-numbers\ --nocolor\ --nogroup\ --hidden
 elseif s:executable('grep')
@@ -2823,7 +2823,7 @@ if s:has_neobundle && neobundle#tap('marching')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:marching_enable_neocomplete = 1
     let g:marching_backend            =
-      \ neobundle#get('snowdrop') != {} ?
+      \ neobundle#is_installed('snowdrop') ?
       \   "snowdrop" : "sync_clang_command"
   endfunction
 
@@ -3278,7 +3278,7 @@ if s:has_neobundle && neobundle#tap('operator-user')
   nmap sgg sgsg
   nmap sJJ sJsJ
 
-  if neobundle#get('unite') == {}
+  if neobundle#is_installed('unite')
     nnoremap sgsg :<C-U>execute input(':', 'grep ')<CR>
   endif
 endif
@@ -3425,7 +3425,7 @@ if s:has_neobundle && neobundle#tap('quickrun')
   endfunction
 
   nmap <expr> sr
-    \ neobundle#get('precious') != {} ?
+    \ neobundle#is_installed('precious') ?
     \   '<Plug>(precious-quickrun-op)' : '<Plug>(quickrun-op)'
   xmap sr  <Plug>(quickrun)
   omap sr  g@
@@ -4187,18 +4187,18 @@ if s:has_neobundle && neobundle#tap('unite')
 
     if !has('win32') && s:executable('find')
       let g:unite_source_rec_async_command = 'find'
-    elseif neobundle#get('files') != {} || s:executable('files')
+    elseif neobundle#is_installed('files') || s:executable('files')
       let g:unite_source_rec_async_command = 'files -p'
-    elseif neobundle#get('the_silver_searcher') != {} || s:executable('ag')
+    elseif neobundle#is_installed('the_silver_searcher') || s:executable('ag')
       let g:unite_source_rec_async_command =
         \ 'ag --follow --nocolor --nogroup --hidden -g ""'
     endif
 
-    if neobundle#get('jvgrep') != {} || s:executable('jvgrep')
+    if neobundle#is_installed('jvgrep') || s:executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '-n'
-    elseif neobundle#get('the_silver_searcher') != {} || s:executable('ag')
+    elseif neobundle#is_installed('the_silver_searcher') || s:executable('ag')
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_default_opts  =
