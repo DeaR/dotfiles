@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  11-May-2015.
+" Last Change:  14-May-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1543,7 +1543,7 @@ set clipboard=unnamed
 " Timeout
 set timeout
 set timeoutlen=3000
-set ttimeoutlen=100
+set ttimeoutlen=10
 set updatetime=1000
 
 " Hidden buffer
