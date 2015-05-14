@@ -1,7 +1,7 @@
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-Feb-2014.
+" Last Change:  14-May-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -458,9 +458,9 @@ endif
 "------------------------------------------------------------------------------
 " Operator User: {{{
 if s:has_neobundle && neobundle#tap('operator-user')
-  if neobundle#get('jvgrep') != {} || s:executable('jvgrep')
+  if neobundle#is_installed('jvgrep') || s:executable('jvgrep')
     let s:operator_grep_escape = '\[](){}|.?+*^$'
-  elseif neobundle#get('the_silver_searcher') != {} || s:executable('ag')
+  elseif neobundle#is_installed('the_silver_searcher') || s:executable('ag')
     let s:operator_grep_escape = '\[](){}|.?+*^$'
   elseif s:executable('grep')
     let s:operator_grep_escape = '\[].*^$'
@@ -483,7 +483,7 @@ if s:has_neobundle && neobundle#tap('operator-user')
         \ 'v:val[start : end]')
     endif
 
-    if neobundle#get('unite') != {}
+    if neobundle#is_installed('unite')
       execute 'Unite'
         \ (&grepprg == 'internal' ? 'vimgrep::' : 'grep:::') .
         \ escape(join(lines), s:operator_grep_escape . ' :')
