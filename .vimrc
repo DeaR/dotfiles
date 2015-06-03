@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  14-May-2015.
+" Last Change:  03-Jun-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -568,7 +568,10 @@ if s:has_neobundle
   endif
 
   if s:executable('go')
-    NeoBundleFetch 'peco/migemogrep', {
+    NeoBundleLazy 'peco/migemogrep', {
+      \ 'rtp' : 'misc/vim',
+      \ 'autoload' : {
+      \   'commands' : ['MigemoGrep']},
       \ 'build' : {
       \   'others' : 'go get -u github.com/peco/migemogrep'}}
   endif
