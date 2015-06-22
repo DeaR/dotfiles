@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  03-Jun-2015.
+" Last Change:  08-Jun-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1699,8 +1699,8 @@ if has('multi_byte')
     \ (has('guess_encode') ? 'guess,' : '') .
     \ (s:enc_jisx0213 ? 'iso-2022-jp-3,' : 'iso-2022-jp,') .
     \ 'cp932,' .
-    \ (s:enc_jisx0213 ? 'euc-jisx0213,euc-jp,' : 'euc-jp,') .
-    \ 'ucs-bom'
+    \ (s:enc_jisx0213 ? 'euc-jisx0213,' : '') .
+    \ 'euc-jp,ucs-bom'
 
   let s:last_enc = &encoding
   augroup MyVimrc
