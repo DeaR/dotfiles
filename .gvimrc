@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  17-Sep-2014.
+" Last Change:  05-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -43,9 +43,7 @@ augroup END
 
 " Script ID
 function! s:SID_PREFIX()
-  let s:_SID_PREFIX = get(s:, '_SID_PREFIX',
-    \ matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
-  return s:_SID_PREFIX
+  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
 endfunction
 
 " Check Vim version
@@ -53,7 +51,7 @@ function! s:has_patch(major, minor, patch)
   let l:version = (a:major * 100 + a:minor)
   return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
     \ (v:version > l:version) ||
-    \ (v:version == l:version && 'patch' . a:patch)
+    \ (v:version == l:version && has('patch' . a:patch))
 endfunction
 
 " Check vimproc
@@ -72,7 +70,9 @@ endfunction
 " Cached executable
 let s:_executable = get(s:, '_executable', {})
 function! s:executable(expr)
-  let s:_executable[a:expr] = get(s:_executable, a:expr, executable(a:expr))
+  if !has_key(s:_executable, a:expr)
+    let s:_executable[a:expr] = executable(a:expr)
+  endif
   return s:_executable[a:expr]
 endfunction
 

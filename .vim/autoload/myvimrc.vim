@@ -1,7 +1,8 @@
+scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  14-May-2015.
+" Last Change:  05-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -35,15 +36,15 @@ set cpo&vim
 " Common: {{{
 " Script ID
 function! s:SID_PREFIX()
-  let s:_SID_PREFIX = get(s:, '_SID_PREFIX',
-    \ matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$'))
-  return s:_SID_PREFIX
+  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
 endfunction
 
 " Check Vim version
-function! s:has_patch(version, patch)
-  return (v:version > a:version) || (v:version == a:version &&
-    \ has(type(a:patch) == type(0) ? ('patch' . a:patch) : a:patch))
+function! s:has_patch(major, minor, patch)
+  let l:version = (a:major * 100 + a:minor)
+  return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
+    \ (v:version > l:version) ||
+    \ (v:version == l:version && has('patch' . a:patch))
 endfunction
 
 " Check vimproc
@@ -62,7 +63,9 @@ endfunction
 " Cached executable
 let s:_executable = {}
 function! s:executable(expr)
-  let s:_executable[a:expr] = get(s:_executable, a:expr, executable(a:expr))
+  if !has_key(s:_executable, a:expr)
+    let s:_executable[a:expr] = executable(a:expr)
+  endif
   return s:_executable[a:expr]
 endfunction
 
@@ -110,7 +113,7 @@ function! myvimrc#cmdwin_enter()
 endfunction
 function! myvimrc#cmdline_enter(type)
   if exists('#User#CmdlineEnter')
-    execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
+    execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
       \ 'User CmdlineEnter'
   endif
   return a:type
@@ -124,7 +127,7 @@ endfunction
 " Escape Key: {{{
 function! myvimrc#escape_key()
   if exists('#User#EscapeKey')
-    execute 'doautocmd' (s:has_patch(703, 438) ? '<nomodeline>' : '')
+    execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
       \ 'User EscapeKey'
   endif
   return ":\<C-U>nohlsearch\<CR>\<Esc>"
