@@ -322,6 +322,16 @@ if s:has_neobundle
 
   NeoBundleLazy 'pekepeke/vim-csvutil'
 
+  if has('win32') || s:executable('autoreconf')
+    NeoBundleFetch 'universal-ctags/ctags', {
+      \ 'build' : {
+      \   'windows' :
+      \     'mingw32-make -f ~/.vim/tools/ctags/mk_mingw.mak && ' .
+      \     'mingw32-make -f ~/.vim/tools/ctags/mk_mingw.mak install',
+      \   'others'  :
+      \     'autoreconf -vfi && ./configure && make && sudo make install'}}
+  endif
+
   NeoBundleLazy 'JesseKPhillips/d.vim', {
     \ 'autoload' : {
     \   'filetypes' : 'd'}}
@@ -1174,6 +1184,8 @@ if s:has_neobundle
     \ 'autoload' : {
     \   'commands' : 'UndotreeToggle',
     \   'functions' : 'UndotreeToggle'}}
+
+  NeoBundleLazy 'DeaR/vim-unified-diff'
 
   NeoBundle 'Shougo/unite.vim'
   call extend(s:neocompl_vim_completefuncs, {
@@ -4181,6 +4193,13 @@ if s:has_neobundle && neobundle#tap('undotree')
   endfunction
 
   NXnoremap <M-U> :<C-U>UndotreeToggle<CR>
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" Unified Diff: {{{
+if s:has_neobundle && neobundle#tap('unified-diff')
+  set diffexpr=unified_diff#diffexpr()
 endif
 "}}}
 
