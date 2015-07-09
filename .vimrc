@@ -699,8 +699,7 @@ if s:has_neobundle
       \ 'autoload' : {
       \   'filetypes' : 'cs'},
       \ 'build' : {
-      \   'windows' :
-      \     $VCVARSALL . ' ' . $PROCESSOR_ARCHITECTURE . ' & ' .
+      \   'windows' : $VCVARSALL . ' ' . $PROCESSOR_ARCHITECTURE . ' & ' .
       \     'msbuild server/OmniSharp.sln /p:Platform="Any CPU"',
       \   'others'  :
       \     'xbuild server/OmniSharp.sln /p:Platform="Any CPU"'}}
