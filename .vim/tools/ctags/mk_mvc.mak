@@ -16,4 +16,4 @@ BINDIR = $(HOME)/bin/
 !endif
 
 install : ctags.exe
-	cp ctags.exe $(BINDIR)
+	copy ctags.exe $(BINDIR)
