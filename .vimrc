@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  05-Jul-2015.
+" Last Change:  09-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1161,7 +1161,8 @@ if s:has_neobundle
     NeoBundleFetch 'ggreer/the_silver_searcher', {
       \ 'build' : {
       \   'windows' :
-      \     'mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32',
+      \     'mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32 && ' .
+      \     'mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32 install',
       \   'others'  :
       \     './build.sh && sudo make install'}}
   endif
