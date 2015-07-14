@@ -1194,35 +1194,6 @@ let g:xml_syntax_folding  = 1
 "}}}
 
 "------------------------------------------------------------------------------
-" Justify: {{{
-source $VIMRUNTIME/macros/justify.vim
-silent! nunmap _j
-silent! vunmap _j
-silent! nunmap ,gq
-silent! vunmap ,gq
-"}}}
-
-"------------------------------------------------------------------------------
-" MatchIt: {{{
-source $VIMRUNTIME/macros/matchit.vim
-silent! sunmap %
-silent! sunmap g%
-silent! sunmap [%
-silent! sunmap ]%
-silent! sunmap a%
-
-xmap <SID>[% [%
-xmap <SID>]% ]%
-
-xnoremap <script> [% <Esc><SID>[%m'gv``
-xnoremap <script> ]% <Esc><SID>]%m'gv``
-xnoremap <script> a% <Esc><SID>[%v<SID>]%
-
-NXOmap <Space>   %
-NXOmap <S-Space> g%
-"}}}
-
-"------------------------------------------------------------------------------
 " Alignta: {{{
 if s:has_neobundle && neobundle#tap('alignta')
   function! neobundle#tapped.hooks.on_source(bundle)
@@ -1580,6 +1551,29 @@ if s:has_neobundle && neobundle#tap('localrc')
       \   unlet! b:undo_ftlocalrc |
       \ endif
   augroup END
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" MatchIt: {{{
+if s:has_neobundle && neobundle#tap('matchit')
+  function! neobundle#tapped.hooks.on_post_source(bundle)
+    sunmap %
+    sunmap g%
+    sunmap [%
+    sunmap ]%
+    sunmap a%
+  endfunction
+
+  xmap <SID>[% [%
+  xmap <SID>]% ]%
+
+  xnoremap <script> [% <Esc><SID>[%m'gv``
+  xnoremap <script> ]% <Esc><SID>]%m'gv``
+  xnoremap <script> a% <Esc><SID>[%v<SID>]%
+
+  NXOmap <Space>   %
+  NXOmap <S-Space> g%
 endif
 "}}}
 

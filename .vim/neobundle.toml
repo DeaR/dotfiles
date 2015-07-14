@@ -294,6 +294,10 @@ commands = ['LuaCheckSyntax', 'LuaCheckGlobals']
   others = 'luac'
 
 [[plugins]]
+repository = 'matchit.zip'
+mappings = ['%', 'g%', '[%', ']%', ['x', 'a%']]
+
+[[plugins]]
 repository = 'https://raw.githubusercontent.com/januswel/dotfiles/master/.vim/syntax/mayu.vim'
 name = 'mayu'
 script_type = 'syntax'
@@ -583,7 +587,7 @@ filetypes = 'php'
 
 [[plugins]]
 repository = 'osyo-manga/vim-precious'
-lazy = 0
+filename_patterns = '*'
 depends = 'Shougo/context_filetype.vim'
 
 [[plugins]]
