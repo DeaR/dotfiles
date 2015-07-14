@@ -1,0 +1,1125 @@
+[[plugins]]
+repository = 'h1mesuke/vim-alignta'
+commands = ['Align', 'Alignta']
+mappings = [['nvo', '<Plug>(operator-alignta)']]
+unite_sources = 'alignta'
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'tyru/vim-altercmd'
+
+  [[plugins.commands]]
+  name = ['AlterCommand', 'NAlterCommand', 'VAlterCommand', 'XAlterCommand', 'SAlterCommand', 'OAlterCommand', 'IAlterCommand', 'CAlterCommand', 'LAlterCommand']
+  complete = 'command'
+
+[[plugins]]
+repository = 'kana/vim-altr'
+mappings = [['nvoic', '<Plug>']]
+
+[[plugins]]
+repository = 'osyo-manga/vim-anzu'
+vim_version = '7.3.867'
+commands = ['AnzuClearSearchStatus', 'AnzuClearSearchCache', 'AnzuUpdateSearchStatus', 'AnzuUpdateSearchStatusOutput', 'AnzuSignMatchLine', 'AnzuClearSignMatchLine']
+mappings = [['n', '<Plug>', '<Plug>(anzu-jump-n)<Plug>(anzu', '<Plug>(anzu-jump-N)<Plug>(anzu']]
+
+[[plugins]]
+repository = 'gist:iori-yja/1615430'
+name = 'arm'
+script_type = 'syntax'
+filetypes = 'arm'
+
+[[plugins]]
+repository ='autodate.vim'
+commands = ['Autodate', 'AutodateON', 'AutodateOFF']
+filename_patterns = '*'
+
+[[plugins]]
+repository = 'vim-jp/autofmt'
+
+[[plugins]]
+repository = 'h1mesuke/vim-benchmark'
+
+[[plugins]]
+repository ='mattn/benchvimrc-vim'
+commands = 'BenchVimrc'
+
+[[plugins]]
+repository = 'rhysd/vim-clang-format'
+commands = ['ClangFormat', 'ClangFormatEchoFormattedCode']
+mappings = [['nvo', '<Plug>(operator-clang-format)']]
+depends = 'kana/vim-operator-user'
+
+  [plugins.external_commands]
+  others = 'clang-format'
+
+[[plugins]]
+repository = 'rhysd/clever-f.vim'
+mappings = [['nvo', '<Plug>']]
+insert = 1
+
+[[plugins]]
+repository = 'deris/columnjump'
+commands = ['ColumnJumpForward', 'ColumnJumpBackward']
+mappings = [['nvo', '<Plug>']]
+insert = 1
+
+[[plugins]]
+repository ='vim-jp/cpp-vim'
+filetypes = ['c', 'ch', 'cpp', 'cuda', 'cynlib', 'cynpp', 'dtrace', 'esqlc', 'kwt', 'objc', 'objcpp', 'rpcgen', 'splint', 'xs']
+
+[[plugins]]
+repository = 'hail2u/vim-css3-syntax'
+filetypes = ['aspperl', 'aspvbs', 'cf', 'css', 'dtml', 'groovy', 'gsp', 'haml', 'html', 'htmlcheetah', 'htmldjango', 'htmlm4', 'htmlos', 'jsp', 'markdown', 'mason', 'msql', 'php', 'plp', 'phtml', 'sass', 'scss', 'smarty', 'spyce', 'tt2html', 'webmacro', 'wml', 'xhtml']
+
+[[plugins]]
+repository = 'pekepeke/vim-csvutil'
+
+[[plugins]]
+repository = 'universal-ctags/ctags'
+fetch = 1
+
+  [plugins.build_commands]
+  windows = 'mingw32-make'
+
+  [plugins.build]
+  windows = 'mingw32-make -f ~/.vim/tools/ctags/mk_mingw.mak && mingw32-make -f ~/.vim/tools/ctags/mk_mingw.mak install'
+  others = 'autoreconf -vfi && ./configure && make && sudo make install'
+
+[[plugins]]
+repository = 'JesseKPhillips/d.vim'
+filetypes = 'd'
+
+[[plugins]]
+repository = 'tpope/vim-dispatch'
+
+  [[plugins.commands]]
+  name = ['Dispatch', 'FocusDispatch', 'Start']
+  complete = 'custom,dispatch#command_complete'
+
+  [[plugins.commands]]
+  name = 'Make'
+  complete = 'file'
+
+[[plugins]]
+repository = 'Shougo/echodoc.vim'
+commands = ['EchoDocEnable', 'EchoDocDisable']
+insert = 1
+
+[[plugins]]
+repository = 'mattn/emmet-vim'
+commands = 'Emmet'
+mappings = [['nvi', '<M-y>']]
+
+[[plugins]]
+repository = 'tyru/eskk.vim'
+filetypes = 'skkdict'
+commands = ['EskkMap', 'EskkForgetRegisteredWords', 'EskkReload', 'EskkUpdateDictionary']
+mappings = [['ic', '<Plug>']]
+
+  [[plugins.commands]]
+  name = 'EskkFixDictionary'
+  complete = 'file'
+
+[[plugins]]
+repository = 'mattn/files'
+fetch = 1
+
+  [plugins.build_commands]
+  others = 'go'
+
+  [plugins.build]
+  others = 'go get -u github.com/mattn/files'
+
+[[plugins]]
+repository = 'kana/vim-filetype-haskell'
+filetypes = 'haskell'
+
+[[plugins]]
+repository = 'thinca/vim-ft-clojure'
+filetypes = 'clojure'
+
+[[plugins]]
+repository = 'thinca/vim-ft-diff_fold'
+filetypes = 'diff'
+
+[[plugins]]
+repository = 'google/vim-ft-go'
+filetypes = 'go'
+
+[[plugins]]
+repository = 'thinca/vim-ft-help_fold'
+filetypes = 'help'
+
+[[plugins]]
+repository = 'thinca/vim-ft-markdown_fold'
+filetypes = 'markdown'
+
+[[plugins]]
+repository = 'thinca/vim-ft-vim_fold'
+filetypes = 'vim'
+
+[[plugins]]
+repository = 'tpope/vim-fugitive'
+commands = ['Git', 'Gcd', 'Glcd', 'Gstatus', 'Gcommit', 'Ggrep', 'Glgrep', 'Glog', 'Gllog', 'Ge', 'Gedit', 'Gpedit', 'Gsplit', 'Gvsplit', 'Gtabedit', 'Gread', 'Gwrite', 'Gw', 'Gwq', 'Gdiff', 'Gvdiff', 'Gsdiff', 'Gbrowse']
+
+[[plugins]]
+repository = 'kana/vim-gf-user'
+commands = 'GfUserDefaultKeyMappings'
+mappings = [['nv', '<Plug>']]
+depends = ['sgur/vim-gf-autoload', 'kana/vim-gf-diff']
+
+[[plugins]]
+repository = 'eagletmt/ghcmod-vim'
+filetypes = 'haskell'
+
+[[plugins]]
+repository = 'yomi322/vim-gitcomplete'
+
+[[plugins]]
+repository = 'gregsexton/gitv'
+commands = 'Gitv'
+depends = 'tpope/vim-fugitive'
+
+[[plugins]]
+repository = 'vim-jp/vim-go-extra'
+filetypes = 'go'
+
+[[plugins]]
+repository = 'nsf/gocode'
+fetch = 1
+
+  [plugins.build_commands]
+  others = 'go'
+
+  [plugins.build]
+  others = 'go get -u github.com/nsf/gocode'
+
+[[plugins]]
+repository = 'golang/lint'
+name = 'golint'
+fetch = 1
+
+  [plugins.build_commands]
+  others = 'go'
+
+  [plugins.build]
+  others = 'go get -u github.com/golang/lint/golint'
+
+[[plugins]]
+repository = 'kana/vim-grex'
+commands = ['Gred', 'Grey']
+mappings = [['nvo', '<Plug>(operator-grex']]
+
+[[plugins]]
+repository = 'cohama/vim-hier'
+filetypes = 'qf'
+commands = ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']
+
+[[plugins]]
+repository = 'othree/html5.vim'
+filetypes = ['aspperl', 'aspvbs', 'cf', 'dtml', 'eruby', 'groovy', 'gsp', 'haml', 'html', 'htmlcheetah', 'htmldjango', 'htmlm4', 'htmlos', 'javascript', 'jsp', 'liquid', 'markdown', 'mason', 'msql', 'php', 'phtml', 'plp', 'smarty', 'spyce', 'tt2html', 'tt2js', 'webmacro', 'wml', 'xhtml']
+
+[[plugins]]
+repository = 'HybridText'
+filetypes = ['hybrid', 'text']
+
+[[plugins]]
+repository = 'kamichidu/vim-javaclasspath'
+
+[[plugins]]
+repository = 'kamichidu/vim-javalang'
+
+[[plugins]]
+repository = 'basyura/J6uil.vim'
+commands = ['J6uilReconnect', 'J6uilDisconnect']
+mappings = [['n', '<Plug>']]
+function_prefix = 'J6uil'
+unite_sources = ['J6uil/rooms', 'J6uil/members']
+depends = 'tyru/open-browser.vim'
+
+  [[plugins.commands]]
+  name = 'J6uil'
+  complete = 'custom,J6uil#complete#room'
+
+[[plugins]]
+repository = 'jelera/vim-javascript-syntax'
+filetypes = ['javascript', 'tt2js']
+
+[[plugins]]
+repository = 'davidhalter/jedi-vim'
+disabled = '!has("python") && !has("python3")'
+filetypes = ['pyrex', 'python']
+
+  [[plugins.commands]]
+  name = 'Pyimport'
+  complete = 'custom,jedi#py_import_completions'
+
+[[plugins]]
+repository = 'elzr/vim-json'
+filetypes = 'json'
+
+[[plugins]]
+repository = 'mattn/jvgrep'
+fetch = 1
+
+  [plugins.build_commands]
+  others = 'go'
+
+  [plugins.build]
+  others = 'go get -u github.com/mattn/jvgrep'
+
+[[plugins]]
+repository = 'kwbdi.vim'
+mappings = [['nvo', '<Plug>Kwbd']]
+commands = 'Kwbd'
+
+[[plugins]]
+repository = 'dbakker/vim-lint'
+
+  [plugins.external_commands]
+  others = 'python'
+
+[[plugins]]
+repository = 'thinca/vim-localrc'
+lazy = 0
+
+[[plugins]]
+repository = 'xolox/vim-lua-ftplugin'
+disabled = '!has("lua")'
+filetypes = 'lua'
+commands = ['LuaCheckSyntax', 'LuaCheckGlobals']
+# depends = 'xolox/vim-misc'
+
+  [plugins.external_commands]
+  others = 'luac'
+
+[[plugins]]
+repository = 'https://raw.githubusercontent.com/januswel/dotfiles/master/.vim/syntax/mayu.vim'
+name = 'mayu'
+script_type = 'syntax'
+filetypes = 'mayu'
+
+[[plugins]]
+repository = 'gist:DeaR/5560785'
+name = 'map-alt-keys'
+script_type = 'plugin'
+disabled = '!has("unix")'
+terminal = 1
+lazy = 0
+
+[[plugins]]
+repository = 'gist:DeaR/5558981'
+name = 'maplist'
+script_type = 'plugin'
+commands = ['MapList', 'NMapList', 'OMapList' 'VMapList', 'XMapList', 'SMapList' 'IMapList', 'CMapList', 'LMapList']
+
+[[plugins]]
+repository = 'osyo-manga/vim-marching'
+filetypes = ['c', 'cpp']
+commands = ['MarchingBufferClearCache', 'MarchingDebugLog']
+mappings = [['i', '<Plug>']]
+
+  [plugins.external_commands]
+  others = 'clang'
+
+[[plugins]]
+repository = 'laurent22/massren'
+fetch = 1
+
+  [plugins.build_commands]
+  windows = 0
+  others = 'go'
+
+  [plugins.build]
+  others = 'go get -u github.com/laurent22/massren'
+
+[[plugins]]
+repository = 'peco/migemogrep'
+rtp = 'misc/vim'
+commands = 'MigemoGrep'
+
+  [plugins.build_commands]
+  others = 'go'
+
+  [plugins.build]
+  others = 'go get -u github.com/peco/migemogrep'
+
+[[plugins]]
+repository = 'tomasr/molokai'
+lazy = 0
+
+[[plugins]]
+repository = 'kana/vim-narrow'
+commands = ['Narrow', 'Widen']
+mappings = [['nvo', '<Plug>(operator-narrow)']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'Shougo/neobundle.vim'
+fetch = 1
+
+[[plugins]]
+repository = 'Shougo/neocomplete.vim'
+disabled = '!has("lua")'
+vim_version = '7.3.885'
+commands = ['NeoCompleteEnable', 'NeoCompleteDisable', 'NeoCompleteLock', 'NeoCompleteUnlock', 'NeoCompleteToggle', 'NeoCompleteClean', 'NeoCompleteTagMakeCache']
+unite_sources = ['file_include', 'neocomplete']
+insert = 1
+depends = ['Shougo/context_filetype.vim', 'Shougo/echodoc', 'hrsh7th/vim-neco-calc', 'eagletmt/neco-ghc', 'ujihisa/neco-look', 'Shougo/neosnippet.vim']
+
+  [[plugins.commands]]
+  name = 'NeoCompleteSetFileType'
+  complete = 'filetype'
+
+  [[plugins.commands]]
+  name = 'NeoCompleteBufferMakeCache'
+  complete = 'file'
+
+  [[plugins.commands]]
+  name = ['NeoCompleteDictionaryMakeCache', 'NeoCompleteSyntaxMakeCache']
+  complete = 'customlist,neocomplete#filetype_complete'
+
+  [[plugins.commands]]
+  name = 'NeoCompleteIncludeMakeCache'
+  complete = 'buffer'
+
+[[plugins]]
+repository = 'Shougo/neocomplcache.vim'
+disabled = 'neobundle#is_installed("neocomplete")'
+commands = ['NeoComplCacheEnable', 'NeoComplCacheDisable', 'NeoComplCacheLock', 'NeoComplCacheLockSource', 'NeoComplCacheUnlock', 'NeoComplCacheUnlockSource', 'NeoComplCacheToggle', 'NeoComplCacheClean', 'NeoComplCacheCachingTags']
+unite_sources = ['file_include', 'neocomplcache']
+insert = 1
+depends = ['Shougo/echodoc', 'hrsh7th/vim-neco-calc', 'eagletmt/neco-ghc', 'ujihisa/neco-look', 'Shougo/neosnippet.vim']
+
+  [[plugins.commands]]
+  name = 'NeoComplCacheSetFileType'
+  complete = 'filetype'
+
+  [[plugins.commands]]
+  name = 'NeoComplCacheCachingBuffer'
+  complete = 'file'
+
+  [[plugins.commands]]
+  name = ['NeoComplCachePrintSource', 'NeoComplCacheOutputKeyword', 'NeoComplCacheDisableCaching', 'NeoComplCacheEnableCaching', 'NeoComplCacheCachingInclude']
+  complete = 'buffer'
+
+  [[plugins.commands]]
+  name = ['NeoComplCacheCachingDictionary', 'NeoComplCacheCachingSyntax']
+  complete = 'customlist,neocomplcache#filetype_complete'
+
+[[plugins]]
+repository = 'Shougo/neosnippet.vim'
+filetypes = 'snippet'
+commands = ['NeoSnippetClearMarkers']
+mappings = [['vi', '<Plug>']]
+unite_sources = ['snippet', 'snippet/target', 'neosnippet/user', 'neosnippet/runtime']
+
+  [[plugins.commands]]
+  name = 'NeoSnippetEdit'
+  complete = 'customlist,neosnippet#edit_complete'
+
+  [[plugins.commands]]
+  name = 'NeoSnippetMakeCache'
+  complete = 'customlist,neosnippet#filetype_complete'
+
+  [[plugins.commands]]
+  name = 'NeoSnippetSource'
+  complete = 'file'
+
+[[plugins]]
+repository = 'evanmiller/nginx-vim-syntax'
+filetypes = 'nginx'
+
+[[plugins]]
+repository = 'Shougo/vim-nyaos'
+filetypes = 'nyaos'
+
+[[plugins]]
+repository = 'OmniSharp/omnisharp-vim'
+disabled = '!has("python")'
+filetypes = 'cs'
+
+  [plugins.build_commands]
+  # windows = '$VCVARSALL'
+  windows = 'vim'
+  others = 'xbuild'
+
+  [plugins.build]
+  windows = '$VCVARSALL $PROCESSOR_ARCHITECTURE & msbuild server/OmniSharp.sln /p:Platform="Any CPU"'
+  others = 'xbuild server/OmniSharp.sln /p:Platform="Any CPU"'
+
+[[plugins]]
+repository = 'tyru/open-browser.vim'
+commands = ['OpenBrowser']
+mappings = [['nv', '<Plug>']]
+
+  [[plugins.commands]]
+  name = 'OpenBrowserSearch'
+  complete = 'customlist,openbrowser#_cmd_complete'
+
+  [[plugins.commands]]
+  name = 'OpenBrowserSmartSearch'
+  complete = 'customlist,openbrowser#_cmd_complete'
+
+[[plugins]]
+repository = 'thinca/vim-openbuf'
+
+[[plugins]]
+repository = 'tyru/operator-camelize.vim'
+mappings = [['nvo', '<Plug>', '<Plug>(operator-decamelize)']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'tyru/operator-html-escape.vim'
+mappings = [['nvo', '<Plug>', '<Plug>(operator-html-unescape)']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'rhysd/vim-operator-filled-with-blank'
+mappings = [['nvo', '<Plug>']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'sgur/vim-operator-openbrowser'
+mappings = [['nvo', '<Plug>']]
+depends = ['tyru/open-browser.vim', 'kana/vim-operator-user']
+
+[[plugins]]
+repository = 'kana/vim-operator-replace'
+mappings = [['nvo', '<Plug>']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'tyru/operator-reverse.vim'
+commands = 'OperatorReverseLines'
+mappings = [['nvo', '<Plug>']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'osyo-manga/vim-operator-search'
+mappings = [['nvo', '<Plug>']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'thinca/vim-operator-sequence'
+functions = 'operator#sequence#map'
+depends = ['tyru/operator-camelize.vim', 'kana/vim-operator-user']
+
+[[plugins]]
+repository = 'pekepeke/vim-operator-shuffle'
+mappings = [['nvo', '<Plug>']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'emonkak/vim-operator-sort'
+mappings = [['nvo', '<Plug>']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'tyru/operator-star.vim'
+mappings = [['nvo', '<Plug>(operator-*)', '<Plug>(operator-#)', '<Plug>(operator-g*)', '<Plug>(operator-g#)']]
+depends = ['kana/vim-operator-user', 'thinca/vim-visualstar']
+
+[[plugins]]
+repository = 'yomi322/vim-operator-suddendeath'
+mappings = [['nvo', '<Plug>']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'rhysd/vim-operator-surround'
+mappings = [['nvo', '<Plug>']]
+depends = ['kana/vim-operator-user', 'osyo-manga/vim-textobj-multiblock']
+
+[[plugins]]
+repository = 'pekepeke/vim-operator-tabular'
+mappings = [['nvo', '<Plug>', '<Plug>(operator-untabularize)']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'rhysd/vim-operator-trailingspace-killer'
+mappings = [['nvo', '<Plug>']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'kana/vim-operator-user'
+mappings = [['nvo', '<Plug>(operator-grep)', '<Plug>(operator-justify)']]
+function_prefix = 'operator'
+
+[[plugins]]
+repository = 'deris/parajump'
+mappings = [['nvo', '<Plug>']]
+insert = 1
+
+[[plugins]]
+repository = 'thinca/vim-partedit'
+
+  [[plugins.commands]]
+  name = 'Partedit'
+  complete = 'customlist,partedit#complete'
+
+[[plugins]]
+repository = 'vim-perl/vim-perl'
+filetypes = ['perl', 'perl6', 'pod', 'tt2', 'tt2html', 'tt2js', 'xs']
+
+[[plugins]]
+repository = 'y-uuki/perl-local-lib-path.vim'
+commands = 'PerlLocalLibPath'
+
+[[plugins]]
+repository = 'c9s/perlomni.vim'
+filetypes = 'perl'
+
+  [plugins.external_commands]
+  others = 'perl'
+
+[[plugins]]
+repository = 'shawncplus/phpcomplete.vim'
+filetypes = 'php'
+
+[[plugins]]
+repository = '2072/PHP-Indenting-for-VIm'
+filetypes = 'php'
+
+[[plugins]]
+repository = 'osyo-manga/vim-precious'
+lazy = 0
+depends = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repository = 'thinca/vim-prettyprint'
+functions = ['PrettyPrint', 'PP']
+
+  [[plugins.commands]]
+  name = ['PrettyPrint', 'PP']
+  complete = 'expression'
+
+[[plugins]]
+repository = 'kannokanno/previm'
+filetypes = 'markdown'
+depends = 'tyru/open-browser.vim'
+
+[[plugins]]
+repository = 'thinca/vim-qfreplace'
+filetypes = ['qf', 'unite']
+
+[[plugins]]
+repository = 'dannyob/quickfixstatus'
+filetypes = 'qf'
+commands = ['QuickfixStatusEnable', 'QuickfixStatusDisable']
+
+[[plugins]]
+repository = 't9md/vim-quickhl'
+commands = ['QuickhlManualEnable', 'QuickhlManualDisable', 'QuickhlManualList', 'QuickhlManualColors', 'QuickhlManualAdd', 'QuickhlManualDelete', 'QuickhlManualLock', 'QuickhlManualLockWindow', 'QuickhlManualUnlock', 'QuickhlManualLockToggle', 'QuickhlManualReset', 'QuickhlManualLockWindowToggle', 'QuickhlCwordEnable', 'QuickhlTagEnable', 'QuickhlCwordDisable', 'QuickhlTagDisable', 'QuickhlCwordToggle', 'QuickhlTagToggle']
+mappings = [['nv', '<Plug>'], ['nvo', '<Plug>(operator-quickhl']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'thinca/vim-quickrun'
+mappings = [['nv', '<Plug>']]
+depends = ['osyo-manga/quickrun-hook-vcvarsall', 'osyo-manga/shabadou.vim', 'osyo-manga/vim-watchdogs']
+
+  [[plugins.commands]]
+  name = 'QuickRun'
+  complete = 'customlist,quickrun#complete'
+
+[[plugins]]
+repository = 'osyo-manga/vim-reanimate'
+commands = ['ReanimateSave', 'ReanimateSaveInput', 'ReanimateSaveCursorHold', 'ReanimateLoad', 'ReanimateLoadInput', 'ReanimateLoadLatest', 'ReanimateSwitch', 'ReanimateUnload', 'ReanimateEditVimrcLocal']
+unite_sources = 'reanimate'
+
+[[plugins]]
+repository = 'thinca/vim-ref'
+mappings = [['nv', '<Plug>']]
+unite_sources = 'ref'
+depends = 'ujihisa/ref-hoogle'
+
+  [[plugins.commands]]
+  name = 'Ref'
+  complete = 'customlist,ref#complete'
+
+[[plugins]]
+repository = 'deris/vim-rengbang'
+commands = ['RengBang', 'RengBangUsePrev', 'RengBangConfirm']
+mappings = [['nvo', '<Plug>(operator-rengbang']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'tpope/vim-repeat'
+
+[[plugins]]
+repository = 'osyo-manga/vim-reunions'
+
+[[plugins]]
+repository = 'vim-ruby/vim-ruby'
+filetypes = ['eruby', 'haml', 'ruby']
+
+[[plugins]]
+repository = 'thinca/vim-scouter'
+
+  [[plugins.commands]]
+  name = 'Scouter'
+  complete = 'file'
+
+[[plugins]]
+repository = 'DeaR/vim-scratch'
+commands = ['ScratchOpen', 'ScratchClose', 'ScratchEvaluate']
+mappings = [['nvo', '<Plug>']]
+
+[[plugins]]
+repository = 'jiangmiao/simple-javascript-indenter'
+filetypes = 'javascript'
+
+[[plugins]]
+repository = 'thinca/vim-singleton'
+disabled = '!has("clientserver")'
+fetch = 1
+
+[[plugins]]
+repository = 'kana/vim-smartword'
+mappings = [['nvo', '<Plug>']]
+insert = 1
+
+[[plugins]]
+repository = 'osyo-manga/vim-snowdrop'
+disabled =  '!has("python")'
+filetypes = ['c', 'cpp']
+commands = ['SnowdropVerify', 'SnowdropEchoClangVersion']
+unite_sources = ['snowdrop/includes', 'snowdrop/outline']
+
+  [plugins.external_commands]
+  others = 'clang'
+
+[[plugins]]
+repository = 'AndrewRadev/switch.vim'
+commands = ['Switch', 'SwitchIncrement', 'SwitchDecrement']
+
+[[plugins]]
+repository = 'marijnh/tern_for_vim'
+name = 'tern'
+disabled = '!has("python")'
+filetypes = 'javascript'
+
+  [plugins.build_commands]
+  others = 'node'
+
+  [plugins.build]
+  others = 'npm install'
+
+[[plugins]]
+repository = 'tomtom/tcomment_vim'
+name = 'tcomment'
+mappings = [['nvo', '<Plug>(operator-tcomment']]
+depends = 'kana/vim-operator-user'
+
+  [[plugins.commands]]
+  name = ['TComment', 'TCommentRight', 'TCommentBlock', 'TCommentInline', 'TCommentMaybeInline']
+  complete = 'customlist,tcomment#CompleteArgs'
+
+  [[plugins.commands]]
+  name = 'TCommentAs'
+  complete = 'customlist,tcomment#Complete'
+
+[[plugins]]
+repository = 't9md/vim-textmanip'
+mappings = [['nv', '<Plug>'], ['nvo', '<Plug>(operator-textmanip']]
+depends = 'kana/vim-operator-user'
+
+[[plugins]]
+repository = 'thinca/vim-textobj-between'
+commands = 'TextobjBetweenDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'thinca/vim-textobj-comment'
+commands = 'TextobjCommentDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'rhysd/vim-textobj-continuous-line'
+commands = 'TextobjContinuousDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'kana/vim-textobj-datetime'
+commands = 'TextobjDatetimeDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'kana/vim-textobj-diff'
+commands = 'TextobjDiffDefaultKeyMappings'
+mappings = [['nvo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'deris/vim-textobj-enclosedsyntax'
+commands = 'TextobjEnclosedsyntaxDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'kana/vim-textobj-entire'
+commands = 'TextobjEntireDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'kana/vim-textobj-fold'
+commands = 'TextobjFoldDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'kana/vim-textobj-function'
+commands = 'TextobjFunctionDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = ['thinca/vim-textobj-function-javascript', 'thinca/vim-textobj-function-perl', 't9md/vim-textobj-function-ruby', 'kana/vim-textobj-user']
+
+[[plugins]]
+repository = 'anyakichi/vim-textobj-ifdef'
+commands = 'TextobjIfdefDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'glts/vim-textobj-indblock'
+commands = 'TextobjIndblockDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'kana/vim-textobj-indent'
+commands = 'TextobjIndentDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'kana/vim-textobj-jabraces'
+commands = 'TextobjJabracesDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'kana/vim-textobj-line'
+commands = 'TextobjLineDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'hchbaw/textobj-motionmotion.vim'
+commands = 'TextobjMotionmotionDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'osyo-manga/vim-textobj-multiblock'
+commands = 'TextobjMultiblockDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'osyo-manga/vim-textobj-multitextobj'
+commands = 'TextobjMultitextobjDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+functions = ['textobj#multitextobj#mapexpr_a', 'textobj#multitextobj#mapexpr_i']
+depends = ['kana/vim-textobj-jabraces', 'kana/vim-textobj-user']
+
+[[plugins]]
+repository = 'sgur/vim-textobj-parameter'
+commands = 'TextobjParameterDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'akiyan/vim-textobj-php'
+commands = 'TextobjPhpDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'bps/vim-textobj-python'
+commands = 'TextobjPythonDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'rhysd/vim-textobj-ruby'
+commands = 'TextobjRubyDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'vimtaku/vim-textobj-sigil'
+commands = 'TextobjSigilDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'saihoooooooo/vim-textobj-space'
+commands = 'TextobjSpaceDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'kana/vim-textobj-syntax'
+commands = 'TextobjSyntaxDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'mattn/vim-textobj-url'
+commands = 'TextobjUrlDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'kana/vim-textobj-user'
+function_prefix = 'textobj'
+
+[[plugins]]
+repository = 'DeaR/vim-textobj-wiw'
+commands = 'TextobjWiwDefaultKeyMappings'
+mappings = [['nvo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'rhysd/textobj-word-column.vim'
+commands = 'TextobjWordcolumnDefaultKeyMappings'
+mappings = [['nvo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'akiyan/vim-textobj-xml-attribute'
+commands = 'TextobjXmlattributeDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+[[plugins]]
+repository = 'ggreer/the_silver_searcher'
+fetch = 1
+
+  [plugins.build_commands]
+  windows = 'mingw32-make'
+
+  [plugins.build]
+  windows = 'mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32 && mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32 install'
+  others = './build.sh && sudo make install'
+
+[[plugins]]
+repository = 'zaiste/tmux.vim'
+filetypes = 'tmux'
+
+[[plugins]]
+repository = 'cespare/vim-toml'
+filetypes = 'toml'
+
+[[plugins]]
+repository = 'mbbill/undotree'
+commands = 'UndotreeToggle'
+functions = 'UndotreeToggle'
+
+[[plugins]]
+repository = 'DeaR/vim-unified-diff'
+
+[[plugins]]
+repository = 'Shougo/unite.vim'
+lazy = 0
+depends = 'Shougo/neomru.vim'
+
+[[plugins]]
+repository = 'Shougo/unite-build'
+unite_sources = 'build'
+
+[[plugins]]
+repository = 'osyo-manga/unite-filetype'
+unite_sources = 'filetype'
+
+[[plugins]]
+repository = 'osyo-manga/unite-fold'
+unite_sources = 'fold'
+
+[[plugins]]
+repository = 'ujihisa/unite-haskellimport'
+commands = 'Haskellimport'
+unite_sources = 'haskellimport'
+
+[[plugins]]
+repository = 'tsukkee/unite-help'
+unite_sources = 'help'
+
+[[plugins]]
+repository = 'thinca/vim-unite-history'
+unite_sources = ['history/command', 'history/search']
+
+[[plugins]]
+repository = 'KamunagiChiduru/unite-javaimport'
+unite_sources = 'javaimport'
+
+[[plugins]]
+repository = 'ujihisa/unite-locate'
+unite_sources = 'locate'
+
+[[plugins]]
+repository = 'tacroe/unite-mark'
+unite_sources = 'mark'
+
+[[plugins]]
+repository = 'Shougo/unite-outline'
+unite_sources = 'outline'
+
+[[plugins]]
+repository = 'y-uuki/unite-perl-module.vim'
+unite_sources = ['perl/global', 'perl/local']
+
+[[plugins]]
+repository = 'osyo-manga/unite-quickfix'
+unite_sources = ['location_list', 'quickfix']
+
+[[plugins]]
+repository = 'osyo-manga/unite-quickrun_config'
+unite_sources = 'quickrun_config'
+depends = 'thinca/vim-quickrun'
+
+[[plugins]]
+repository = 'mattn/unite-remotefile'
+disabled = '!has("clientserver")'
+unite_sources = 'remotefile'
+
+[[plugins]]
+repository = 'rhysd/unite-ruby-require.vim'
+unite_sources = 'ruby/require'
+
+[[plugins]]
+repository = 'Shougo/unite-ssh'
+unite_sources = 'ssh'
+depends = 'Shougo/vimfiler.vim'
+
+[[plugins]]
+repository = 'Shougo/unite-sudo'
+unite_sources = 'sudo'
+depends = 'Shougo/vimfiler.vim'
+
+[[plugins]]
+repository = 'tsukkee/unite-tag'
+unite_sources = 'tag'
+
+[[plugins]]
+repository = 'pasela/unite-webcolorname'
+unite_sources = 'webcolorname'
+
+[[plugins]]
+repository = 'vbnet.vim'
+filetypes = 'vbnet'
+
+[[plugins]]
+repository = 'koron/verifyenc-vim'
+disabled = '!has("iconv")'
+commands = 'VerifyEnc'
+
+[[plugins]]
+repository = 'Shougo/vim-vcs'
+
+  [[plugins.commands]]
+  name = 'Vcs'
+  complete = 'customlist,vcs#complete'
+
+[[plugins]]
+repository = 'rbtnn/vimconsole.vim'
+commands = ['VimConsoleOpen', 'VimConsoleClose', 'VimConsoleToggle', 'VimConsoleTest', 'VimConsoleClear', 'VimConsoleRedraw', 'VimConsoleDump']
+
+  [[plugins.commands]]
+  name = ['VimConsole', 'VimConsoleLog', 'VimConsoleWarn', 'VimConsoleError']
+  complete = 'expression'
+
+[[plugins]]
+repository = 'vim-jp/vimdoc-ja'
+disabled = '!has("multi_lang")'
+filetypes = 'help'
+
+[[plugins]]
+repository = 'Shougo/vimfiler.vim'
+commands = ['VimFilerDetectDrives', 'VimFilerClose']
+unite_sources = ['vimfiler/drive', 'vimfiler/execute', 'vimfiler/history', 'vimfiler/mask', 'vimfiler/popd', 'vimfiler/sort']
+explorer = 1
+
+  [[plugins.commands]]
+  name = ['VimFiler', 'VimFilerDouble', 'VimFilerCurrentDir', 'VimFilerBufferDir', 'VimFilerCreate', 'VimFilerSimple', 'VimFilerSplit', 'VimFilerTab', 'VimFilerExplorer', 'Edit', 'Read', 'Source', 'Write']
+  complete = 'customlist,vimfiler#complete'
+
+[[plugins]]
+repository = 'syngan/vim-vimlint'
+depends = 'ynkdir/vim-vimlparser'
+
+[[plugins]]
+repository = 'Shougo/vimproc.vim'
+
+  [[plugins.commands]]
+  name = ['VimProcBang', 'VimProcRead']
+  complete = 'shellcmd'
+
+  [plugins.build_commands]
+  # windows = '$VCVARSALL'
+  windows = 'vim'
+
+  [plugins.build]
+  windows = '$VCVARSALL $PROCESSOR_ARCHITECTURE & nmake -f Make_msvc.mak nodebug=1'
+  others = 'make'
+
+[[plugins]]
+repository = 'Shougo/vimshell.vim'
+filetypes = 'vimshrc'
+commands = ['VimShellSendString', 'VimShellSendBuffer']
+unite_sources = ['vimshell/external_history', 'vimshell/history']
+depends = ['yomi322/vim-gitcomplete', 'Shougo/vimproc.vim', 'ujihisa/vimshell-ssh']
+
+  [[plugins.commands]]
+  name = ['VimShell', 'VimShellCreate', 'VimShellTab', 'VimShellPop', 'VimShellCurrentDir', 'VimShellBufferDir']
+  complete = 'customlist,vimshell#complete'
+
+  [[plugins.commands]]
+  name = ['VimShellExecute', 'VimShellInteractive', 'VimShellTerminal']
+  complete = 'customlist,vimshell#vimshell_execute_complete'
+
+[[plugins]]
+repository = 'Shougo/vinarise.vim'
+unite_sources = 'vinarise/analysis'
+
+  [[plugins.commands]]
+  name = ['Vinarise', 'VinariseDump']
+  complete = 'customlist,vinarise#complete'
+
+[[plugins]]
+repository = 'thinca/vim-visualstar'
+mappings = [['nvo', '<Plug>']]
+
+[[plugins]]
+repository = 'taku25/vim-visualstudio'
+commands = ['VSFindResult1', 'VSFindResult2', 'VSBuild', 'VSBuildNoWait', 'VSReBuild', 'VSReBuildNoWait', 'VSClean', 'VSCleanNoWait', 'VSCompile', 'VSCompileNoWait', 'VSOpenFile', 'VSGetFile', 'VSOutput', 'VSErorrList', 'VSAddBreakPoint']
+
+[[plugins]]
+repository = 'taku25/VisualStudioController'
+fetch = 1
+
+[[plugins]]
+repository = 'vim-jp/vital.vim'
+commands = 'Vitalize'
+
+[[plugins]]
+repository = 'osyo-manga/vim-watchdogs'
+commands = ['WatchdogsRunSweep']
+filename_patterns = '*'
+depends = ['dbakker/vim-lint', 'thinca/vim-quickrun', 'syngan/vim-vimlint']
+
+  [[plugins.commands]]
+  name = ['WatchdogsRun', 'WatchdogsRunSilent']
+  complete = 'customlist,quickrun#complete'
+
+[[plugins]]
+repository = 'mattn/webapi-vim'
+
+[[plugins]]
+repository = 'xolox/vim-misc'
+name = 'xolox'
