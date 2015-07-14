@@ -216,15 +216,14 @@ if s:has_neobundle
     let g:neobundle#types#git#default_protocol = 'ssh'
     let g:neobundle#types#hg#default_protocol  = 'ssh'
   endif
-  call neobundle#begin($HOME . '/.local/bundle')
 
+  call neobundle#begin($HOME . '/.local/bundle')
   if has('win32') && v:progname !=# 'gvim.exe'
     call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
   elseif neobundle#load_cache($HOME . '/.vim/neobundle.toml')
     call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
     NeoBundleSaveCache
   endif
-
   call neobundle#end()
 
   execute 'set runtimepath+=' .
