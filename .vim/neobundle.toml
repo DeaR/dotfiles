@@ -311,7 +311,7 @@ lazy = 0
 repository = 'gist:DeaR/5558981'
 name = 'maplist'
 script_type = 'plugin'
-commands = ['MapList', 'NMapList', 'OMapList' 'VMapList', 'XMapList', 'SMapList' 'IMapList', 'CMapList', 'LMapList']
+commands = ['MapList', 'NMapList', 'OMapList', 'VMapList', 'XMapList', 'SMapList' 'IMapList', 'CMapList', 'LMapList']
 
 [[plugins]]
 repository = 'osyo-manga/vim-marching'
