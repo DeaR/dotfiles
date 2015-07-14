@@ -1194,6 +1194,15 @@ let g:xml_syntax_folding  = 1
 "}}}
 
 "------------------------------------------------------------------------------
+" Justify: {{{
+source $VIMRUNTIME/macros/justify.vim
+silent! nunmap _j
+silent! vunmap _j
+silent! nunmap ,gq
+silent! vunmap ,gq
+"}}}
+
+"------------------------------------------------------------------------------
 " Alignta: {{{
 if s:has_neobundle && neobundle#tap('alignta')
   function! neobundle#tapped.hooks.on_source(bundle)

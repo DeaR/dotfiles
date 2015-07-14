@@ -1,7 +1,7 @@
 [[plugins]]
 repository = 'h1mesuke/vim-alignta'
 commands = ['Align', 'Alignta']
-mappings = [['nvo', '<Plug>(operator-alignta)']]
+mappings = [['nvo', '<Plug>(operator-alignta']]
 unite_sources = 'alignta'
 depends = 'kana/vim-operator-user'
 
@@ -20,7 +20,7 @@ mappings = [['nvoic', '<Plug>']]
 repository = 'osyo-manga/vim-anzu'
 vim_version = '7.3.867'
 commands = ['AnzuClearSearchStatus', 'AnzuClearSearchCache', 'AnzuUpdateSearchStatus', 'AnzuUpdateSearchStatusOutput', 'AnzuSignMatchLine', 'AnzuClearSignMatchLine']
-mappings = [['n', '<Plug>', '<Plug>(anzu-jump-n)<Plug>(anzu', '<Plug>(anzu-jump-N)<Plug>(anzu']]
+mappings = [['n', '<Plug>'], ['n', '<Plug>(anzu-jump-n)<Plug>(anzu', '<Plug>(anzu-jump-N)<Plug>(anzu']]
 
 [[plugins]]
 repository = 'gist:iori-yja/1615430'
@@ -46,7 +46,7 @@ commands = 'BenchVimrc'
 [[plugins]]
 repository = 'rhysd/vim-clang-format'
 commands = ['ClangFormat', 'ClangFormatEchoFormattedCode']
-mappings = [['nvo', '<Plug>(operator-clang-format)']]
+mappings = [['nvo', '<Plug>(operator-clang-format']]
 depends = 'kana/vim-operator-user'
 
   [plugins.external_commands]
@@ -355,7 +355,7 @@ lazy = 0
 [[plugins]]
 repository = 'kana/vim-narrow'
 commands = ['Narrow', 'Widen']
-mappings = [['nvo', '<Plug>(operator-narrow)']]
+mappings = [['nvo', '<Plug>(operator-narrow']]
 depends = 'kana/vim-operator-user'
 
 [[plugins]]
@@ -470,12 +470,12 @@ repository = 'thinca/vim-openbuf'
 
 [[plugins]]
 repository = 'tyru/operator-camelize.vim'
-mappings = [['nvo', '<Plug>', '<Plug>(operator-decamelize)']]
+mappings = [['nvo', '<Plug>'], ['nvo', '<Plug>(operator-decamelize']]
 depends = 'kana/vim-operator-user'
 
 [[plugins]]
 repository = 'tyru/operator-html-escape.vim'
-mappings = [['nvo', '<Plug>', '<Plug>(operator-html-unescape)']]
+mappings = [['nvo', '<Plug>'], ['nvo', '<Plug>(operator-html-unescape']]
 depends = 'kana/vim-operator-user'
 
 [[plugins]]
@@ -521,7 +521,7 @@ depends = 'kana/vim-operator-user'
 
 [[plugins]]
 repository = 'tyru/operator-star.vim'
-mappings = [['nvo', '<Plug>(operator-*)', '<Plug>(operator-#)', '<Plug>(operator-g*)', '<Plug>(operator-g#)']]
+mappings = [['nvo', '<Plug>(operator-*', '<Plug>(operator-#', '<Plug>(operator-g*', '<Plug>(operator-g#']]
 depends = ['kana/vim-operator-user', 'thinca/vim-visualstar']
 
 [[plugins]]
@@ -536,7 +536,7 @@ depends = ['kana/vim-operator-user', 'osyo-manga/vim-textobj-multiblock']
 
 [[plugins]]
 repository = 'pekepeke/vim-operator-tabular'
-mappings = [['nvo', '<Plug>', '<Plug>(operator-untabularize)']]
+mappings = [['nvo', '<Plug>'], ['nvo', '<Plug>(operator-untabularize']]
 depends = 'kana/vim-operator-user'
 
 [[plugins]]
@@ -546,7 +546,7 @@ depends = 'kana/vim-operator-user'
 
 [[plugins]]
 repository = 'kana/vim-operator-user'
-mappings = [['nvo', '<Plug>(operator-grep)', '<Plug>(operator-justify)']]
+mappings = [['nvo', '<Plug>(operator-grep', '<Plug>(operator-justify']]
 function_prefix = 'operator'
 
 [[plugins]]
