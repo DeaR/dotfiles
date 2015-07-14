@@ -578,6 +578,7 @@ filetypes = 'php'
 
 [[plugins]]
 repository = '2072/PHP-Indenting-for-VIm'
+name = 'PHP-Indenting'
 filetypes = 'php'
 
 [[plugins]]
@@ -707,7 +708,6 @@ filetypes = 'javascript'
 
 [[plugins]]
 repository = 'tomtom/tcomment_vim'
-name = 'tcomment'
 mappings = [['nvo', '<Plug>(operator-tcomment']]
 depends = 'kana/vim-operator-user'
 
