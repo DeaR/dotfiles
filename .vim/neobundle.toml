@@ -307,7 +307,7 @@ filetypes = 'mayu'
 repository = 'gist:DeaR/5560785'
 name = 'map-alt-keys'
 script_type = 'plugin'
-disabled = '!has("unix")'
+disabled = 'has("win32")'
 terminal = 1
 lazy = 0
 
@@ -361,6 +361,7 @@ depends = 'kana/vim-operator-user'
 [[plugins]]
 repository = 'Shougo/neobundle.vim'
 fetch = 1
+type = 'nosync'
 
 [[plugins]]
 repository = 'Shougo/neocomplete.vim'
@@ -433,6 +434,17 @@ unite_sources = ['snippet', 'snippet/target', 'neosnippet/user', 'neosnippet/run
 [[plugins]]
 repository = 'evanmiller/nginx-vim-syntax'
 filetypes = 'nginx'
+
+[[plugins]]
+repository = 'http://scm.osdn.jp/gitroot/nkf/nkf.git'
+fetch = 1
+
+  [plugins.build_commands]
+  windows = 'mingw32-make'
+
+  [plugins.build]
+  windows = 'mingw32-make -f ~/.vim/tools/nkf/Makefile && mingw32-make -f ~/.vim/tools/nkf/Makefile install'
+  others = 'make && sudo make install'
 
 [[plugins]]
 repository = 'Shougo/vim-nyaos'
@@ -695,6 +707,17 @@ unite_sources = ['snowdrop/includes', 'snowdrop/outline']
   others = 'clang'
 
 [[plugins]]
+repository = 'bb:wantora/sudo'
+disabled = '!has("win32")'
+fetch = 1
+
+  [plugins.build_commands]
+  windows = 'mingw32-make'
+
+  [plugins.build]
+  windows = 'mingw32-make -f ~/.vim/tools/sudo/Makefile && mingw32-make -f ~/.vim/tools/sudo/Makefile install'
+
+[[plugins]]
 repository = 'AndrewRadev/switch.vim'
 commands = ['Switch', 'SwitchIncrement', 'SwitchDecrement']
 
@@ -926,7 +949,7 @@ commands = 'UndotreeToggle'
 functions = 'UndotreeToggle'
 
 [[plugins]]
-repository = 'DeaR/vim-unified-diff'
+repository = 'lambdalisue/vim-unified-diff'
 
 [[plugins]]
 repository = 'Shougo/unite.vim'

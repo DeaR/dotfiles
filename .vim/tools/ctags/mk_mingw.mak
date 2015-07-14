@@ -1,4 +1,4 @@
 include mk_mingw.mak
 
-install : ctags.exe
+install:
 	cp ctags.exe $(HOME)/bin/
