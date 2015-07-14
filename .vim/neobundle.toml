@@ -328,10 +328,10 @@ mappings = [['i', '<Plug>']]
 
 [[plugins]]
 repository = 'laurent22/massren'
+disabled = 'has("win32")'
 fetch = 1
 
   [plugins.build_commands]
-  windows = 0
   others = 'go'
 
   [plugins.build]
