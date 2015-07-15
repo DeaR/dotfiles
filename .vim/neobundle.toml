@@ -359,6 +359,10 @@ mappings = [['nvo', '<Plug>(operator-narrow']]
 depends = 'kana/vim-operator-user'
 
 [[plugins]]
+repository = 'eagletmt/neco-ghc'
+commands = 'NecoGhcDiagnostics'
+
+[[plugins]]
 repository = 'Shougo/neobundle.vim'
 fetch = 1
 type = 'nosync'

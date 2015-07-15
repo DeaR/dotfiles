@@ -1,7 +1,7 @@
 include Makefile
 
 install-main:
-	cp nkf $(HOME)/bin/
+	cp nkf.exe $(HOME)/bin/
 
 install-man:
 	@:

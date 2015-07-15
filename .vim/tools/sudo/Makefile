@@ -1,5 +1,5 @@
 include Makefile
 
 install:
-	cp sudo $(HOME)/bin/
-	cp sudow $(HOME)/bin/
+	cp sudo.exe $(HOME)/bin/
+	cp sudow.exe $(HOME)/bin/
