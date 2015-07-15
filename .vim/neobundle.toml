@@ -1085,6 +1085,7 @@ depends = 'ynkdir/vim-vimlparser'
 
 [[plugins]]
 repository = 'Shougo/vimproc.vim'
+commands = ['VimProcInstall']
 
   [[plugins.commands]]
   name = ['VimProcBang', 'VimProcRead']
