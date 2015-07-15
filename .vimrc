@@ -3320,6 +3320,8 @@ if s:has_neobundle && neobundle#tap('vimfiler')
     let g:vimfiler_as_default_explorer = 1
   endfunction
 
+  let g:loaded_netrwPlugin = 1
+
   NXnoremap <Leader>E     :<C-U>VimFiler<CR>
   NXnoremap <Leader><C-E> :<C-U>VimFilerExplorer<CR>
 
