@@ -38,7 +38,7 @@ depends = 'kana/vim-operator-user'
 repository = 'tyru/vim-altercmd'
 
   [[plugins.commands]]
-  name = ['AlterCommand', 'NAlterCommand', 'VAlterCommand', 'XAlterCommand', 'SAlterCommand', 'OAlterCommand', 'IAlterCommand', 'CAlterCommand', 'LAlterCommand']
+  name = ['AlterCommand', 'CAlterCommand', 'IAlterCommand', 'NAlterCommand', 'VAlterCommand', 'XAlterCommand', 'SAlterCommand', 'OAlterCommand', 'LAlterCommand']
   complete = 'command'
 
 #------------------------------------------------------------------------------
