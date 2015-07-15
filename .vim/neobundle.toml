@@ -354,7 +354,6 @@ lazy = 0
 
 [[plugins]]
 repository = 'kana/vim-narrow'
-commands = ['Narrow', 'Widen']
 mappings = [['nvo', '<Plug>(operator-narrow']]
 depends = 'kana/vim-operator-user'
 

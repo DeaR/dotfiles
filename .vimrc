@@ -1619,10 +1619,16 @@ if s:has_neobundle && neobundle#tap('narrow')
     call operator#user#define_ex_command(
       \ 'narrow',
       \ 'Narrow')
-
-    NXnoremap sN :<C-U>Widen<CR>
   endfunction
 
+  command! -bar -range
+    \ Narrow
+    \ call narrow#Narrow(<line1>, <line2>)
+  command! -bar
+    \ Widen
+    \ call narrow#Widen()
+
+  NXnoremap sN :<C-U>Widen<CR>
   NXOmap sn <Plug>(operator-narrow)
 
   nmap snn snsn
