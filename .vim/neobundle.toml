@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  15-Jul-2015.
+# Last Change:  16-Jul-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -383,12 +383,6 @@ commands = 'MigemoGrep'
 [[plugins]]
 repository = 'tomasr/molokai'
 lazy = 0
-
-[[plugins]]
-repository = 'ujihisa/neco-look'
-
-  [plugins.external_commands]
-  others = 'look'
 
 [[plugins]]
 repository = 'kana/vim-narrow'
