@@ -25,6 +25,7 @@
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'h1mesuke/vim-alignta'
 commands = ['Align', 'Alignta']
@@ -32,6 +33,7 @@ mappings = [['nvo', '<Plug>(operator-alignta']]
 unite_sources = 'alignta'
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tyru/vim-altercmd'
 
@@ -39,33 +41,40 @@ repository = 'tyru/vim-altercmd'
   name = ['AlterCommand', 'NAlterCommand', 'VAlterCommand', 'XAlterCommand', 'SAlterCommand', 'OAlterCommand', 'IAlterCommand', 'CAlterCommand', 'LAlterCommand']
   complete = 'command'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-altr'
 mappings = [['nvoic', '<Plug>']]
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/vim-anzu'
 vim_version = '7.3.867'
 commands = ['AnzuClearSearchStatus', 'AnzuClearSearchCache', 'AnzuUpdateSearchStatus', 'AnzuUpdateSearchStatusOutput', 'AnzuSignMatchLine', 'AnzuClearSignMatchLine']
 mappings = [['n', '<Plug>'], ['n', '<Plug>(anzu-jump-n)<Plug>(anzu', '<Plug>(anzu-jump-N)<Plug>(anzu']]
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'gist:iori-yja/1615430'
 name = 'arm'
 script_type = 'syntax'
 filetypes = 'arm'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository ='autodate.vim'
 filetypes = 'all'
 commands = ['Autodate', 'AutodateOFF', 'AutodateON']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'vim-jp/autofmt'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'h1mesuke/vim-benchmark'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository ='mattn/benchvimrc-vim'
 
@@ -73,6 +82,7 @@ repository ='mattn/benchvimrc-vim'
   name = 'BenchVimrc'
   complete = 'file'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rhysd/vim-clang-format'
 commands = ['ClangFormat', 'ClangFormatEchoFormattedCode']
@@ -82,28 +92,34 @@ depends = 'kana/vim-operator-user'
   [plugins.external_commands]
   others = 'clang-format'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rhysd/clever-f.vim'
 mappings = [['nvo', '<Plug>']]
 insert = 1
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'deris/columnjump'
 commands = ['ColumnJumpBackward', 'ColumnJumpForward']
 mappings = [['nvo', '<Plug>']]
 insert = 1
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository ='vim-jp/cpp-vim'
 filetypes = ['c', 'ch', 'cpp', 'cuda', 'cynlib', 'cynpp', 'dtrace', 'esqlc', 'kwt', 'objc', 'objcpp', 'rpcgen', 'splint', 'xs']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'hail2u/vim-css3-syntax'
 filetypes = ['aspperl', 'aspvbs', 'cf', 'css', 'dtml', 'groovy', 'gsp', 'haml', 'html', 'htmlcheetah', 'htmldjango', 'htmlm4', 'htmlos', 'jsp', 'markdown', 'mason', 'msql', 'php', 'plp', 'phtml', 'sass', 'scss', 'smarty', 'spyce', 'tt2html', 'webmacro', 'wml', 'xhtml']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'pekepeke/vim-csvutil'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'universal-ctags/ctags'
 fetch = 1
@@ -115,10 +131,12 @@ fetch = 1
   windows = '..\\..\\..\\.vim\\tools\\ctags\\build.bat'
   others = 'autoreconf -vfi && ./configure && make && sudo make install'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'JesseKPhillips/d.vim'
 filetypes = 'd'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tpope/vim-dispatch'
 
@@ -130,16 +148,19 @@ repository = 'tpope/vim-dispatch'
   name = 'Make'
   complete = 'customlist,dispatch#make_complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/echodoc.vim'
 commands = ['EchoDocEnable', 'EchoDocDisable']
 insert = 1
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'mattn/emmet-vim'
 commands = ['Emmet', 'EmmetInstall']
 mappings = [['nvi', '<Plug>'], ['nvi', '<M-y>']]
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tyru/eskk.vim'
 filetypes = 'skkdict'
@@ -150,6 +171,7 @@ mappings = [['ic', '<Plug>']]
   name = 'EskkFixDictionary'
   complete = 'file'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'mattn/files'
 fetch = 1
@@ -160,31 +182,38 @@ fetch = 1
   [plugins.build]
   others = 'go get -u github.com/mattn/files'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-ft-diff_fold'
 filetypes = 'diff'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'google/vim-ft-go'
 filetypes = 'go'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-ft-help_fold'
 filetypes = 'help'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-ft-markdown_fold'
 filetypes = 'markdown'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-ft-vim_fold'
 filetypes = 'vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tpope/vim-fugitive'
 commands = ['Git', 'Gcd', 'Glcd', 'Gstatus', 'Gcommit', 'Gmerge', 'Gpull', 'Ggrep', 'Glgrep', 'Glog', 'Gllog', 'Ge', 'Gedit', 'Gpedit', 'Gsplit', 'Gvsplit', 'Gtabedit', 'Gread', 'Gwrite', 'Gw', 'Gwq', 'Gpush', 'Gfetch', 'Gdiff', 'Gvdiff', 'Gsdiff', 'Gbrowse']
 augroup = 'fugitive'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-gf-user'
 commands = 'GfUserDefaultKeyMappings'
@@ -192,14 +221,17 @@ mappings = [['nv', '<Plug>']]
 functions = ['gf#user#extend', 'gf#user#set_priority', 'gf#autoload#find', 'gf#diff#find']
 depends = ['sgur/vim-gf-autoload', 'kana/vim-gf-diff']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'yomi322/vim-gitcomplete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'gregsexton/gitv'
 commands = 'Gitv'
 depends = 'tpope/vim-fugitive'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'vim-jp/vim-go-extra'
 filetypes = 'go'
@@ -210,6 +242,7 @@ functions = 'gocomplete#Complete'
   name = 'GoDoc'
   complete = 'customlist,go#complete#Package'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'nsf/gocode'
 fetch = 1
@@ -220,6 +253,7 @@ fetch = 1
   [plugins.build]
   others = 'go get -u github.com/nsf/gocode'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'golang/lint'
 name = 'golint'
@@ -231,31 +265,38 @@ fetch = 1
   [plugins.build]
   others = 'go get -u github.com/golang/lint/golint'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-grex'
 commands = ['Gred', 'Grey']
 mappings = [['nvo', '<Plug>(operator-grex']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'cohama/vim-hier'
 filetypes = 'qf'
 commands = ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'othree/html5.vim'
 filetypes = ['aspperl', 'aspvbs', 'cf', 'dtml', 'eruby', 'groovy', 'gsp', 'haml', 'html', 'htmlcheetah', 'htmldjango', 'htmlm4', 'htmlos', 'javascript', 'jsp', 'liquid', 'markdown', 'mason', 'msql', 'php', 'phtml', 'plp', 'smarty', 'spyce', 'tt2html', 'tt2js', 'webmacro', 'wml', 'xhtml']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'HybridText'
 filetypes = ['hybrid', 'text']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kamichidu/vim-javaclasspath'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kamichidu/vim-javalang'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'basyura/J6uil.vim'
 commands = ['J6uilReconnect', 'J6uilDisconnect', 'J6uilNextRoom', 'J6uilPrevRoom']
@@ -271,10 +312,12 @@ depends = ['tyru/open-browser.vim', 'Shougo/vimproc.vim']
   [plugins.external_commands]
   others = 'curl'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'jelera/vim-javascript-syntax'
 filetypes = ['javascript', 'tt2js']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'davidhalter/jedi-vim'
 disabled = '!has("python") && !has("python3")'
@@ -284,10 +327,12 @@ filetypes = ['pyrex', 'python']
   name = 'Pyimport'
   complete = 'custom,jedi#py_import_completions'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'elzr/vim-json'
 filetypes = 'json'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'mattn/jvgrep'
 fetch = 1
@@ -298,21 +343,25 @@ fetch = 1
   [plugins.build]
   others = 'go get -u github.com/mattn/jvgrep'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kwbdi.vim'
 mappings = [['nvo', '<Plug>Kwbd']]
 commands = 'Kwbd'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'dbakker/vim-lint'
 
   [plugins.external_commands]
   others = 'python'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-localrc'
 lazy = 0
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'xolox/vim-lua-ftplugin'
 disabled = '!has("lua")'
@@ -323,17 +372,20 @@ commands = ['LuaCheckSyntax', 'LuaCheckGlobals']
   [plugins.external_commands]
   others = 'luac'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'matchit.zip'
 commands = 'MatchDebug'
 mappings = ['%', 'g%', '[%', ']%', ['x', 'a%']]
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'https://raw.githubusercontent.com/januswel/dotfiles/master/.vim/syntax/mayu.vim'
 name = 'mayu'
 script_type = 'syntax'
 filetypes = 'mayu'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'gist:DeaR/5560785'
 name = 'map-alt-keys'
@@ -342,12 +394,14 @@ disabled = 'has("win32")'
 terminal = 1
 lazy = 0
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'gist:DeaR/5558981'
 name = 'maplist'
 script_type = 'plugin'
 commands = ['MapList', 'NMapList', 'OMapList', 'VMapList', 'XMapList', 'SMapList', 'IMapList', 'CMapList', 'LMapList']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/vim-marching'
 filetypes = ['c', 'cpp']
@@ -358,6 +412,7 @@ depends = 'Shougo/vimproc.vim'
   [plugins.external_commands]
   others = 'clang'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'laurent22/massren'
 disabled = 'has("win32")'
@@ -369,6 +424,7 @@ fetch = 1
   [plugins.build]
   others = 'go get -u github.com/laurent22/massren'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'peco/migemogrep'
 rtp = 'misc/vim'
@@ -380,21 +436,25 @@ commands = 'MigemoGrep'
   [plugins.build]
   others = 'go get -u github.com/peco/migemogrep'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tomasr/molokai'
 lazy = 0
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-narrow'
 commands = ['Narrow', 'Widen']
 mappings = [['nvo', '<Plug>(operator-narrow']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/neobundle.vim'
 fetch = 1
 type = 'nosync'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/neocomplete.vim'
 disabled = '!has("lua")'
@@ -420,6 +480,7 @@ depends = ['Shougo/context_filetype.vim', 'Shougo/echodoc', 'hrsh7th/vim-neco-ca
   name = 'NeoCompleteIncludeMakeCache'
   complete = 'buffer'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/neocomplcache.vim'
 disabled = 'neobundle#is_installed("neocomplete")'
@@ -444,6 +505,7 @@ depends = ['Shougo/echodoc', 'hrsh7th/vim-neco-calc', 'ujihisa/neco-look', 'Shou
   name = ['NeoComplCacheCachingDictionary', 'NeoComplCacheCachingSyntax']
   complete = 'customlist,neocomplcache#filetype_complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/neomru.vim'
 filetypes = 'all'
@@ -456,6 +518,7 @@ depends = 'Shougo/unite.vim'
   name = ['NeoMRUImportFile', 'NeoMRUImportDirectory']
   complete = 'file'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/neosnippet.vim'
 filetypes = 'snippet'
@@ -476,6 +539,7 @@ depends = 'Shougo/context_filetype.vim'
   name = 'NeoSnippetSource'
   complete = 'file'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/neossh.vim'
 unite_sources = 'ssh'
@@ -484,10 +548,12 @@ depends = ['Shougo/unite.vim', 'Shougo/vimfiler.vim']
   [plugins.external_commands]
   others = 'ssh'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'evanmiller/nginx-vim-syntax'
 filetypes = 'nginx'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'http://scm.osdn.jp/gitroot/nkf/nkf.git'
 fetch = 1
@@ -499,10 +565,12 @@ fetch = 1
   windows = '..\\..\\..\\.vim\\tools\\nkf\\build.bat'
   others = 'make && sudo make install'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/vim-nyaos'
 filetypes = 'nyaos'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'OmniSharp/omnisharp-vim'
 disabled = '!has("python")'
@@ -516,6 +584,7 @@ filetypes = 'cs'
   windows = '..\\..\\..\\.vim\\tools\\omnisharp\\build.bat'
   others = 'xbuild server/OmniSharp.sln /p:Platform="Any CPU"'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tyru/open-browser.vim'
 commands = ['OpenBrowser']
@@ -525,92 +594,110 @@ mappings = [['nv', '<Plug>']]
   name = ['OpenBrowserSearch', 'OpenBrowserSmartSearch']
   complete = 'customlist,openbrowser#_cmd_complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tyru/operator-camelize.vim'
 mappings = [['nvo', '<Plug>'], ['nvo', '<Plug>(operator-decamelize']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tyru/operator-html-escape.vim'
 mappings = [['nvo', '<Plug>'], ['nvo', '<Plug>(operator-html-unescape']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rhysd/vim-operator-filled-with-blank'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'sgur/vim-operator-openbrowser'
 mappings = [['nvo', '<Plug>']]
 depends = ['tyru/open-browser.vim', 'kana/vim-operator-user']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-operator-replace'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tyru/operator-reverse.vim'
 commands = 'OperatorReverseLines'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/vim-operator-search'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-operator-sequence'
 functions = 'operator#sequence#map'
 depends = ['tyru/operator-camelize.vim', 'kana/vim-operator-user']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'pekepeke/vim-operator-shuffle'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'emonkak/vim-operator-sort'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tyru/operator-star.vim'
 mappings = [['nvo', '<Plug>(operator-*', '<Plug>(operator-#', '<Plug>(operator-g*', '<Plug>(operator-g#']]
 depends = ['kana/vim-operator-user', 'thinca/vim-visualstar']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'yomi322/vim-operator-suddendeath'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rhysd/vim-operator-surround'
 mappings = [['nvo', '<Plug>']]
 depends = ['kana/vim-operator-user', 'osyo-manga/vim-textobj-multiblock']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'pekepeke/vim-operator-tabular'
 mappings = [['nvo', '<Plug>'], ['nvo', '<Plug>(operator-untabularize']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rhysd/vim-operator-trailingspace-killer'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-operator-user'
 mappings = [['nvo', '<Plug>(operator-grep', '<Plug>(operator-justify']]
 function_prefix = 'operator'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'deris/parajump'
 mappings = [['nvo', '<Plug>']]
 insert = 1
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-partedit'
 
@@ -618,14 +705,17 @@ repository = 'thinca/vim-partedit'
   name = 'Partedit'
   complete = 'customlist,partedit#complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'vim-perl/vim-perl'
 filetypes = ['perl', 'perl6', 'pod', 'tt2', 'tt2html', 'tt2js', 'xs']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'y-uuki/perl-local-lib-path.vim'
 commands = 'PerlLocalLibPath'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'c9s/perlomni.vim'
 filetypes = 'perl'
@@ -633,15 +723,18 @@ filetypes = 'perl'
   [plugins.external_commands]
   others = 'perl'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'shawncplus/phpcomplete.vim'
 filetypes = 'php'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = '2072/PHP-Indenting-for-VIm'
 name = 'PHP-Indenting'
 filetypes = 'php'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/vim-precious'
 filetypes = 'all'
@@ -652,6 +745,7 @@ depends = ['Shougo/context_filetype.vim', 'thinca/vim-quickrun', 'kana/vim-texto
   name = ['PreciousSwitch', 'PreciousSwitchAutcmd']
   complete = 'filetype'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-prettyprint'
 functions = ['PrettyPrint', 'PP']
@@ -660,27 +754,32 @@ functions = ['PrettyPrint', 'PP']
   name = ['PrettyPrint', 'PP']
   complete = 'expression'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kannokanno/previm'
 filetypes = ['mkd', 'markdown', 'rst', 'textile']
 depends = 'tyru/open-browser.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-qfreplace'
 filetypes = ['qf', 'unite']
 commands = 'Qfreplace'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'dannyob/quickfixstatus'
 filetypes = 'qf'
 commands = ['QuickfixStatusEnable', 'QuickfixStatusDisable']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 't9md/vim-quickhl'
 commands = ['QuickhlManualEnable', 'QuickhlManualDisable', 'QuickhlManualList', 'QuickhlManualDump', 'QuickhlManualReset', 'QuickhlManualColors', 'QuickhlManualAdd', 'QuickhlManualDelete', 'QuickhlManualLock', 'QuickhlManualUnlock', 'QuickhlManualLockToggle', 'QuickhlManualLockWindow', 'QuickhlManualUnlockWindow', 'QuickhlManualLockWindowToggle', 'QuickhlCwordEnable', 'QuickhlCwordDisable', 'QuickhlCwordToggle', 'QuickhlTagEnable', 'QuickhlTagDisable', 'QuickhlTagToggle']
 mappings = [['nv', '<Plug>'], ['nvo', '<Plug>(operator-quickhl']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-quickrun'
 mappings = [['nv', '<Plug>']]
@@ -690,11 +789,13 @@ depends = ['osyo-manga/quickrun-hook-vcvarsall', 'osyo-manga/shabadou.vim', 'osy
   name = 'QuickRun'
   complete = 'customlist,quickrun#complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/vim-reanimate'
 commands = ['ReanimateSave', 'ReanimateSaveCursorHold', 'ReanimateSaveInput', 'ReanimateLoad', 'ReanimateLoadInput', 'ReanimateLoadLatest', 'ReanimateSwitch', 'ReanimateEditVimrcLocal', 'ReanimateUnload']
 unite_sources = 'reanimate'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-ref'
 mappings = [['nv', '<Plug>']]
@@ -705,23 +806,28 @@ depends = 'ujihisa/ref-hoogle'
   name = 'Ref'
   complete = 'customlist,ref#complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'deris/vim-rengbang'
 commands = ['RengBang', 'RengBangUsePrev', 'RengBangConfirm']
 mappings = [['nvo', '<Plug>(operator-rengbang']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tpope/vim-repeat'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/vim-reunions'
 depends = 'Shougo/vimproc.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'vim-ruby/vim-ruby'
 filetypes = ['eruby', 'haml', 'ruby']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-scouter'
 
@@ -729,25 +835,30 @@ repository = 'thinca/vim-scouter'
   name = 'Scouter'
   complete = 'file'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'DeaR/vim-scratch'
 commands = ['ScratchOpen', 'ScratchClose', 'ScratchEvaluate']
 mappings = [['nvo', '<Plug>']]
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'jiangmiao/simple-javascript-indenter'
 filetypes = 'javascript'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-singleton'
 disabled = '!has("clientserver")'
 fetch = 1
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-smartword'
 mappings = [['nvo', '<Plug>']]
 insert = 1
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/vim-snowdrop'
 disabled =  '!has("python")'
@@ -758,6 +869,7 @@ unite_sources = ['snowdrop/includes', 'snowdrop/outline']
   [plugins.external_commands]
   others = 'clang'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'bb:wantora/sudo'
 disabled = '!has("win32")'
@@ -769,10 +881,12 @@ fetch = 1
   [plugins.build]
   windows = '..\\..\\..\\.vim\\tools\\sudo\\build.bat'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'AndrewRadev/switch.vim'
 commands = ['Switch', 'SwitchIncrement', 'SwitchDecrement']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'marijnh/tern_for_vim'
 name = 'tern'
@@ -785,6 +899,7 @@ filetypes = 'javascript'
   [plugins.build]
   others = 'npm install'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tomtom/tcomment_vim'
 commands = ['TCommentMap']
@@ -799,108 +914,126 @@ depends = 'kana/vim-operator-user'
   name = 'TCommentAs'
   complete = 'customlist,tcomment#Complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 't9md/vim-textmanip'
 commands = ['TextmanipToggleMode', 'TextmanipToggleIgnoreShiftWidth']
 mappings = [['nv', '<Plug>'], ['nvo', '<Plug>(operator-textmanip']]
 depends = 'kana/vim-operator-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-textobj-between'
 commands = 'TextobjBetweenDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-textobj-comment'
 commands = 'TextobjCommentDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rhysd/vim-textobj-continuous-line'
 commands = 'TextobjContinuousDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-datetime'
 commands = 'TextobjDatetimeDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-diff'
 commands = 'TextobjDiffDefaultKeyMappings'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'deris/vim-textobj-enclosedsyntax'
 commands = 'TextobjEnclosedsyntaxDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-entire'
 commands = 'TextobjEntireDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-fold'
 commands = 'TextobjFoldDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-function'
 commands = 'TextobjFunctionDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = ['thinca/vim-textobj-function-javascript', 'thinca/vim-textobj-function-perl', 't9md/vim-textobj-function-ruby', 'kana/vim-textobj-user']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'anyakichi/vim-textobj-ifdef'
 commands = 'TextobjIfdefDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'glts/vim-textobj-indblock'
 commands = 'TextobjIndblockDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-indent'
 commands = 'TextobjIndentDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-jabraces'
 commands = 'TextobjJabracesDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-line'
 commands = 'TextobjLineDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'hchbaw/textobj-motionmotion.vim'
 commands = 'TextobjMotionmotionDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/vim-textobj-multiblock'
 commands = 'TextobjMultiblockDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/vim-textobj-multitextobj'
 commands = 'TextobjMultitextobjDefaultKeyMappings'
@@ -908,76 +1041,89 @@ mappings = [['vo', '<Plug>']]
 functions = ['textobj#multitextobj#mapexpr_a', 'textobj#multitextobj#mapexpr_i']
 depends = ['kana/vim-textobj-jabraces', 'kana/vim-textobj-user']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'sgur/vim-textobj-parameter'
 commands = 'TextobjParameterDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'akiyan/vim-textobj-php'
 commands = 'TextobjPhpDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'bps/vim-textobj-python'
 commands = 'TextobjPythonDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rhysd/vim-textobj-ruby'
 commands = 'TextobjRubyDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'vimtaku/vim-textobj-sigil'
 commands = 'TextobjSigilDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'saihoooooooo/vim-textobj-space'
 commands = 'TextobjSpaceDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-syntax'
 commands = 'TextobjSyntaxDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'mattn/vim-textobj-url'
 commands = 'TextobjUrlDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-user'
 function_prefix = 'textobj'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'DeaR/vim-textobj-wiw'
 commands = 'TextobjWiwDefaultKeyMappings'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rhysd/textobj-word-column.vim'
 commands = 'TextobjWordcolumnDefaultKeyMappings'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'akiyan/vim-textobj-xml-attribute'
 commands = 'TextobjXmlattributeDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'ggreer/the_silver_searcher'
 fetch = 1
@@ -989,51 +1135,62 @@ fetch = 1
   windows = '..\\..\\..\\.vim\\tools\\the_silver_searcher\\build.bat'
   others = './build.sh && sudo make install'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'zaiste/tmux.vim'
 filetypes = 'tmux'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'cespare/vim-toml'
 filetypes = 'toml'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'mbbill/undotree'
 commands = ['UndotreeToggle', 'UndotreeHidew', 'UndotreeShow', 'UndotreeFocus']
 functions = 'UndotreeToggle'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'lambdalisue/vim-unified-diff'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/unite.vim'
 lazy = 0
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/unite-build'
 unite_sources = 'build'
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/unite-filetype'
 unite_sources = 'filetype'
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/unite-fold'
 unite_sources = 'fold'
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tsukkee/unite-help'
 unite_sources = 'help'
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-unite-history'
 unite_sources = ['history/command', 'history/search']
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'KamunagiChiduru/unite-javaimport'
 commsnds = ['JavaImportClearCache', 'JavaImportSortStatements', 'JavaImportRemoveUnnecessaries', 'CtrlPJavaImportClass', 'CtrlPJavaImportField', 'CtrlPJavaImportMethod']
@@ -1044,47 +1201,56 @@ depends = ['universal-ctags/ctags', 'kamichidu/vim-javaclasspath', 'Shougo/unite
   windows = 'javaw'
   others = 'java'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'ujihisa/unite-locate'
 unite_sources = 'locate'
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tacroe/unite-mark'
 unite_sources = 'mark'
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/unite-outline'
 unite_sources = 'outline'
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'y-uuki/unite-perl-module.vim'
 unite_sources = ['perl/global', 'perl/local']
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/unite-quickfix'
 unite_sources = ['location_list', 'quickfix']
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/unite-quickrun_config'
 unite_sources = 'quickrun_config'
 depends = ['thinca/vim-quickrun', 'Shougo/unite.vim']
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'mattn/unite-remotefile'
 disabled = '!has("clientserver")'
 unite_sources = 'remotefile'
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rhysd/unite-ruby-require.vim'
 unite_sources = 'ruby/require'
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/unite-sudo'
 disabled = 'has("win32")'
@@ -1094,20 +1260,24 @@ depends = ['Shougo/unite.vim', 'Shougo/vimfiler.vim']
   [plugins.external_commands]
   others = 'sudo'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tsukkee/unite-tag'
 unite_sources = 'tag'
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'pasela/unite-webcolorname'
 unite_sources = 'webcolorname'
 depends = 'Shougo/unite.vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'vbnet.vim'
 filetypes = 'vbnet'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/vim-vcs'
 depends = ['thinca/vim-openbuf', 'Shougo/vimproc.vim']
@@ -1116,11 +1286,13 @@ depends = ['thinca/vim-openbuf', 'Shougo/vimproc.vim']
   name = 'Vcs'
   complete = 'customlist,vcs#complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'koron/verifyenc-vim'
 disabled = '!has("iconv")'
 commands = 'VerifyEnc'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rbtnn/vimconsole.vim'
 commands = ['VimConsoleOpen', 'VimConsoleClose', 'VimConsoleToggle', 'VimConsoleTest', 'VimConsoleClear', 'VimConsoleRedraw', 'VimConsoleDump']
@@ -1130,11 +1302,13 @@ depends = 'thinca/vim-prettyprint'
   name = ['VimConsole', 'VimConsoleLog', 'VimConsoleWarn', 'VimConsoleError']
   complete = 'expression'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'vim-jp/vimdoc-ja'
 disabled = '!has("multi_lang")'
 filetypes = 'help'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/vimfiler.vim'
 commands = ['VimFilerClose']
@@ -1145,6 +1319,7 @@ explorer = 1
   name = ['VimFiler', 'VimFilerDouble', 'VimFilerCurrentDir', 'VimFilerBufferDir', 'VimFilerCreate', 'VimFilerSimple', 'VimFilerSplit', 'VimFilerTab', 'VimFilerExplorer', 'VimFilerEdit', 'VimFilerRead', 'VimFilerSource', 'VimFilerWrite']
   complete = 'customlist,vimfiler#complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'syngan/vim-vimlint'
 depends = 'ynkdir/vim-vimlparser'
@@ -1153,6 +1328,7 @@ depends = 'ynkdir/vim-vimlparser'
   name = 'VimLint'
   complete = 'customlist,vimlint#util#complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/vimproc.vim'
 commands = ['VimProcInstall']
@@ -1165,6 +1341,7 @@ commands = ['VimProcInstall']
   windows = '..\\..\\..\\.vim\\tools\\vimproc\\build.bat nodebug=1'
   others = 'make'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/vimshell.vim'
 filetypes = 'vimshrc'
@@ -1180,6 +1357,7 @@ depends = ['yomi322/vim-gitcomplete', 'Shougo/vimproc.vim', 'ujihisa/vimshell-ss
   name = ['VimShellExecute', 'VimShellInteractive', 'VimShellTerminal']
   complete = 'customlist,vimshell#vimshell_execute_complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/vinarise.vim'
 unite_sources = 'vinarise/analysis'
@@ -1188,23 +1366,28 @@ unite_sources = 'vinarise/analysis'
   name = ['Vinarise', 'VinariseDump']
   complete = 'customlist,vinarise#complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-visualstar'
 mappings = [['nvo', '<Plug>']]
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'taku25/vim-visualstudio'
 commands = ['VSCompile', 'VSBuild', 'VSReBuild', 'VSBuildProject', 'VSReBuildProject', 'VSCompileNoWait', 'VSBuildNoWait', 'VSReBuildNoWait', 'VSBuildProjectNoWait', 'VSReBuildProjectNoWait', 'VSSetBuildConfig', 'VSSetPlatform', 'VSCancelBuild', 'VSClean', 'VSOutput', 'VSErorrList', 'VSRun', 'VSDebugRun', 'VSSetStartupProject', 'VSStopDebugRun', 'VSFindSolution1', 'VSFindSolution2', 'VSFindSolutionNoWait1', 'VSFindSolutionNoWait2', 'VSFindProject1', 'VSFindProject2', 'VSFindProjectNoWait1', 'VSFindProjectNoWait2', 'VSFindSymbol', 'VSFindSymbolNoWait', 'VSFindResult1', 'VSFindResult2', 'VSFindSymbolResult', 'VSOpenFile', 'VSGetFile', 'VSAddBreakPoint', 'VSChangeDirectory', 'VSGoToDefinition']
 # depends = 'taku25/VisualStudioController'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'taku25/VisualStudioController'
 fetch = 1
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'vim-jp/vital.vim'
 lazy = 0
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/vim-watchdogs'
 filetypes = 'all'
@@ -1215,9 +1398,11 @@ depends = ['dbakker/vim-lint', 'thinca/vim-quickrun', 'osyo-manga/shabadou.vim',
   name = ['WatchdogsRun', 'WatchdogsRunSilent']
   complete = 'customlist,quickrun#complete'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'mattn/webapi-vim'
 
+#------------------------------------------------------------------------------
 [[plugins]]
 repository = 'xolox/vim-misc'
 name = 'xolox'
