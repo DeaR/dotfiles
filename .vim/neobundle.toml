@@ -465,7 +465,6 @@ disabled = '!has("python")'
 filetypes = 'cs'
 
   [plugins.build_commands]
-  # windows = '$VCVARSALL'
   windows = 'vim'
   others = 'xbuild'
 
