@@ -107,8 +107,8 @@ insert = 1
 
 [[plugins]]
 repository = 'mattn/emmet-vim'
-commands = 'Emmet'
-mappings = [['nvi', '<M-y>']]
+commands = ['Emmet', 'EmmetInstall']
+mappings = [['nvi', '<Plug>'], ['nvi', '<M-y>']]
 
 [[plugins]]
 repository = 'tyru/eskk.vim'
