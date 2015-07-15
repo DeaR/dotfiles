@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  14-Jul-2015.
+" Last Change:  15-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1461,6 +1461,16 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
+" Go Extra: {{{
+if s:has_neobundle && neobundle#tap('go-extra')
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'gocomplete#Complete' : '\.\h\w*'})
+  call extend(s:neocompl_vim_completefuncs, {
+    \ 'GoDoc' : 'go#complete#Package'})
+endif
+"}}}
+
+"------------------------------------------------------------------------------
 " Grex: {{{
 if s:has_neobundle && neobundle#tap('grex')
   NXOmap sD <Plug>(operator-grex-delete)
@@ -1840,6 +1850,16 @@ if s:has_neobundle && neobundle#tap('neosnippet')
   call extend(s:neocompl_vim_completefuncs, {
     \ 'NeoSnippetEdit'      : 'neosnippet#edit_complete',
     \ 'NeoSnippetMakeCache' : 'neosnippet#filetype_complete'})
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" NeoSSH: {{{
+if s:has_neobundle && neobundle#tap('neossh')
+  autocmd MyVimrc User VimrcPost
+    \ if has('vim_starting') && filter(argv(), 'v:val =~# "^ssh:"') != [] |
+    \   NeoBundleSource neossh |
+    \ endif
 endif
 "}}}
 
@@ -3247,16 +3267,6 @@ if s:has_neobundle && neobundle#tap('unite-quickrun_config')
   NXnoremap <Leader>ur
     \ :<C-U>Unite quickrun_config
     \ -buffer-name=register -no-empty<CR>
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" Unite SSH: {{{
-if s:has_neobundle && neobundle#tap('unite-ssh')
-  autocmd MyVimrc User VimrcPost
-    \ if has('vim_starting') && filter(argv(), 'v:val =~# "^ssh:"') != [] |
-    \   NeoBundleSource unite-ssh |
-    \ endif
 endif
 "}}}
 
