@@ -27,7 +27,7 @@ if "%CPU%"=="AMD64" (
 )
 set vimproc_dllname=vimproc_win%vimproc_arch%.dll
 
-nmake -f make_msvc.mak %*
+nmake /f make_msvc.mak %*
 if ERRORLEVEL 1 (
   rem Build failed.
 
@@ -37,5 +37,5 @@ if ERRORLEVEL 1 (
   rem If the DLL couldn't delete (may be it is in use), rename it.
   if exist autoload\%vimproc_dllname%     ren autoload\%vimproc_dllname% %vimproc_dllname%.old
 
-  nmake -f make_msvc.mak %*
+  nmake /f make_msvc.mak %*
 )

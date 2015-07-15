@@ -19,4 +19,4 @@ if "%VCVARSALL%"=="" (
 
 call "%VCVARSALL%" %PROCESSOR_ARCHITECTURE%
 
-msbuild server\OmniSharp.sln /p:Platform="Any CPU"
+msbuild server\OmniSharp.sln /p:Platform="Any CPU" %*
