@@ -3345,7 +3345,7 @@ endif
 if s:has_neobundle && neobundle#tap('vimproc')
   function! neobundle#tapped.hooks.on_source(bundle)
     if s:is_android
-      let g:vimproc_dll_path = expand('/data/local/vimproc_unix.so')
+      let g:vimproc_dll_path = '/data/local/vimproc_unix.so'
     endif
   endfunction
 endif
