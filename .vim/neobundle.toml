@@ -1049,9 +1049,6 @@ repository = 'ujihisa/unite-locate'
 unite_sources = 'locate'
 depends = 'Shougo/unite.vim'
 
-  [plugins.external_commands]
-  others = 'locate'
-
 [[plugins]]
 repository = 'tacroe/unite-mark'
 unite_sources = 'mark'
