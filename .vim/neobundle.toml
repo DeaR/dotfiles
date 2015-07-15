@@ -164,6 +164,7 @@ filetypes = 'vim'
 [[plugins]]
 repository = 'tpope/vim-fugitive'
 commands = ['Git', 'Gcd', 'Glcd', 'Gstatus', 'Gcommit', 'Gmerge', 'Gpull', 'Ggrep', 'Glgrep', 'Glog', 'Gllog', 'Ge', 'Gedit', 'Gpedit', 'Gsplit', 'Gvsplit', 'Gtabedit', 'Gread', 'Gwrite', 'Gw', 'Gwq', 'Gpush', 'Gfetch', 'Gdiff', 'Gvdiff', 'Gsdiff', 'Gbrowse']
+augroup = 'fugitive'
 
 [[plugins]]
 repository = 'kana/vim-gf-user'
