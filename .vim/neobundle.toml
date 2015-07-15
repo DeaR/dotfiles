@@ -30,7 +30,7 @@ filetypes = 'arm'
 
 [[plugins]]
 repository ='autodate.vim'
-commands = ['Autodate', 'AutodateON', 'AutodateOFF']
+commands = ['Autodate', 'AutodateOFF', 'AutodateON']
 filename_patterns = '*'
 
 [[plugins]]
@@ -41,7 +41,10 @@ repository = 'h1mesuke/vim-benchmark'
 
 [[plugins]]
 repository ='mattn/benchvimrc-vim'
-commands = 'BenchVimrc'
+
+  [[plugins.commands]]
+  name = 'BenchVimrc'
+  complete = 'file'
 
 [[plugins]]
 repository = 'rhysd/vim-clang-format'
@@ -59,7 +62,7 @@ insert = 1
 
 [[plugins]]
 repository = 'deris/columnjump'
-commands = ['ColumnJumpForward', 'ColumnJumpBackward']
+commands = ['ColumnJumpBackward', 'ColumnJumpForward']
 mappings = [['nvo', '<Plug>']]
 insert = 1
 
@@ -93,12 +96,12 @@ filetypes = 'd'
 repository = 'tpope/vim-dispatch'
 
   [[plugins.commands]]
-  name = ['Dispatch', 'FocusDispatch', 'Start']
-  complete = 'custom,dispatch#command_complete'
+  name = ['Dispatch', 'FocusDispatch', 'Spawn', 'Start']
+  complete = 'customlist,dispatch#command_complete '
 
   [[plugins.commands]]
   name = 'Make'
-  complete = 'file'
+  complete = 'customlist,dispatch#make_complete'
 
 [[plugins]]
 repository = 'Shougo/echodoc.vim'
@@ -160,7 +163,7 @@ filetypes = 'vim'
 
 [[plugins]]
 repository = 'tpope/vim-fugitive'
-commands = ['Git', 'Gcd', 'Glcd', 'Gstatus', 'Gcommit', 'Ggrep', 'Glgrep', 'Glog', 'Gllog', 'Ge', 'Gedit', 'Gpedit', 'Gsplit', 'Gvsplit', 'Gtabedit', 'Gread', 'Gwrite', 'Gw', 'Gwq', 'Gdiff', 'Gvdiff', 'Gsdiff', 'Gbrowse']
+commands = ['Git', 'Gcd', 'Glcd', 'Gstatus', 'Gcommit', 'Gmerge', 'Gpull', 'Ggrep', 'Glgrep', 'Glog', 'Gllog', 'Ge', 'Gedit', 'Gpedit', 'Gsplit', 'Gvsplit', 'Gtabedit', 'Gread', 'Gwrite', 'Gw', 'Gwq', 'Gpush', 'Gfetch', 'Gdiff', 'Gvdiff', 'Gsdiff', 'Gbrowse']
 
 [[plugins]]
 repository = 'kana/vim-gf-user'
@@ -171,6 +174,7 @@ depends = ['sgur/vim-gf-autoload', 'kana/vim-gf-diff']
 [[plugins]]
 repository = 'eagletmt/ghcmod-vim'
 filetypes = 'haskell'
+commands = 'GhcModDiagnostics'
 
 [[plugins]]
 repository = 'yomi322/vim-gitcomplete'
@@ -231,7 +235,7 @@ repository = 'kamichidu/vim-javalang'
 
 [[plugins]]
 repository = 'basyura/J6uil.vim'
-commands = ['J6uilReconnect', 'J6uilDisconnect']
+commands = ['J6uilReconnect', 'J6uilDisconnect', 'J6uilNextRoom', 'J6uilPrevRoom']
 mappings = [['n', '<Plug>']]
 function_prefix = 'J6uil'
 unite_sources = ['J6uil/rooms', 'J6uil/members']
@@ -295,6 +299,7 @@ commands = ['LuaCheckSyntax', 'LuaCheckGlobals']
 
 [[plugins]]
 repository = 'matchit.zip'
+commands = 'MatchDebug'
 mappings = ['%', 'g%', '[%', ']%', ['x', 'a%']]
 
 [[plugins]]
@@ -320,7 +325,7 @@ commands = ['MapList', 'NMapList', 'OMapList', 'VMapList', 'XMapList', 'SMapList
 [[plugins]]
 repository = 'osyo-manga/vim-marching'
 filetypes = ['c', 'cpp']
-commands = ['MarchingBufferClearCache', 'MarchingDebugLog']
+commands = ['MarchingBufferClearCache', 'MarchingDebugLog', 'MarchingDebugClearLog', 'MarchingEnableDebug', 'MarchingDisableDebug', 'MarchingDebugCheck']
 mappings = [['i', '<Plug>']]
 
   [plugins.external_commands]
@@ -354,6 +359,7 @@ lazy = 0
 
 [[plugins]]
 repository = 'kana/vim-narrow'
+commands = ['Narrow', 'Widen']
 mappings = [['nvo', '<Plug>(operator-narrow']]
 depends = 'kana/vim-operator-user'
 
@@ -473,11 +479,7 @@ commands = ['OpenBrowser']
 mappings = [['nv', '<Plug>']]
 
   [[plugins.commands]]
-  name = 'OpenBrowserSearch'
-  complete = 'customlist,openbrowser#_cmd_complete'
-
-  [[plugins.commands]]
-  name = 'OpenBrowserSmartSearch'
+  name = ['OpenBrowserSearch', 'OpenBrowserSmartSearch']
   complete = 'customlist,openbrowser#_cmd_complete'
 
 [[plugins]]
@@ -603,7 +605,12 @@ filetypes = 'php'
 [[plugins]]
 repository = 'osyo-manga/vim-precious'
 filename_patterns = '*'
+commands = ['PreciousReset', 'PreciousSetContextLocal']
 depends = 'Shougo/context_filetype.vim'
+
+  [[plugins.commands]]
+  name = ['PreciousSwitch', 'PreciousSwitchAutcmd']
+  complete = 'filetype'
 
 [[plugins]]
 repository = 'thinca/vim-prettyprint'
@@ -615,12 +622,13 @@ functions = ['PrettyPrint', 'PP']
 
 [[plugins]]
 repository = 'kannokanno/previm'
-filetypes = 'markdown'
+filetypes = ['mkd', 'markdown', 'rst', 'textile']
 depends = 'tyru/open-browser.vim'
 
 [[plugins]]
 repository = 'thinca/vim-qfreplace'
 filetypes = ['qf', 'unite']
+commands = 'Qfreplace'
 
 [[plugins]]
 repository = 'dannyob/quickfixstatus'
@@ -629,7 +637,7 @@ commands = ['QuickfixStatusEnable', 'QuickfixStatusDisable']
 
 [[plugins]]
 repository = 't9md/vim-quickhl'
-commands = ['QuickhlManualEnable', 'QuickhlManualDisable', 'QuickhlManualList', 'QuickhlManualColors', 'QuickhlManualAdd', 'QuickhlManualDelete', 'QuickhlManualLock', 'QuickhlManualLockWindow', 'QuickhlManualUnlock', 'QuickhlManualLockToggle', 'QuickhlManualReset', 'QuickhlManualLockWindowToggle', 'QuickhlCwordEnable', 'QuickhlTagEnable', 'QuickhlCwordDisable', 'QuickhlTagDisable', 'QuickhlCwordToggle', 'QuickhlTagToggle']
+commands = ['QuickhlManualEnable', 'QuickhlManualDisable', 'QuickhlManualList', 'QuickhlManualDump', 'QuickhlManualReset', 'QuickhlManualColors', 'QuickhlManualAdd', 'QuickhlManualDelete', 'QuickhlManualLock', 'QuickhlManualUnlock', 'QuickhlManualLockToggle', 'QuickhlManualLockWindow', 'QuickhlManualUnlockWindow', 'QuickhlManualLockWindowToggle', 'QuickhlCwordEnable', 'QuickhlCwordDisable', 'QuickhlCwordToggle', 'QuickhlTagEnable', 'QuickhlTagDisable', 'QuickhlTagToggle']
 mappings = [['nv', '<Plug>'], ['nvo', '<Plug>(operator-quickhl']]
 depends = 'kana/vim-operator-user'
 
@@ -644,7 +652,7 @@ depends = ['osyo-manga/quickrun-hook-vcvarsall', 'osyo-manga/shabadou.vim', 'osy
 
 [[plugins]]
 repository = 'osyo-manga/vim-reanimate'
-commands = ['ReanimateSave', 'ReanimateSaveInput', 'ReanimateSaveCursorHold', 'ReanimateLoad', 'ReanimateLoadInput', 'ReanimateLoadLatest', 'ReanimateSwitch', 'ReanimateUnload', 'ReanimateEditVimrcLocal']
+commands = ['ReanimateSave', 'ReanimateSaveCursorHold', 'ReanimateSaveInput', 'ReanimateLoad', 'ReanimateLoadInput', 'ReanimateLoadLatest', 'ReanimateSwitch', 'ReanimateEditVimrcLocal', 'ReanimateUnload']
 unite_sources = 'reanimate'
 
 [[plugins]]
@@ -703,7 +711,7 @@ insert = 1
 repository = 'osyo-manga/vim-snowdrop'
 disabled =  '!has("python")'
 filetypes = ['c', 'cpp']
-commands = ['SnowdropVerify', 'SnowdropEchoClangVersion']
+commands = ['SnowdropVerify', 'SnowdropEchoClangVersion', 'SnowdropLogs', 'SnowdropClearLogs']
 unite_sources = ['snowdrop/includes', 'snowdrop/outline']
 
   [plugins.external_commands]
@@ -738,6 +746,7 @@ filetypes = 'javascript'
 
 [[plugins]]
 repository = 'tomtom/tcomment_vim'
+commands = ['TCommentMap']
 mappings = [['nvo', '<Plug>(operator-tcomment']]
 depends = 'kana/vim-operator-user'
 
@@ -751,6 +760,7 @@ depends = 'kana/vim-operator-user'
 
 [[plugins]]
 repository = 't9md/vim-textmanip'
+commands = ['TextmanipToggleMode', 'TextmanipToggleIgnoreShiftWidth']
 mappings = [['nv', '<Plug>'], ['nvo', '<Plug>(operator-textmanip']]
 depends = 'kana/vim-operator-user'
 
@@ -948,7 +958,7 @@ filetypes = 'toml'
 
 [[plugins]]
 repository = 'mbbill/undotree'
-commands = 'UndotreeToggle'
+commands = ['UndotreeToggle', 'UndotreeHidew', 'UndotreeShow', 'UndotreeFocus']
 functions = 'UndotreeToggle'
 
 [[plugins]]
@@ -986,6 +996,7 @@ unite_sources = ['history/command', 'history/search']
 
 [[plugins]]
 repository = 'KamunagiChiduru/unite-javaimport'
+commsnds = ['JavaImportClearCache', 'JavaImportSortStatements', 'JavaImportRemoveUnnecessaries', 'CtrlPJavaImportClass', 'CtrlPJavaImportField', 'CtrlPJavaImportMethod']
 unite_sources = 'javaimport'
 
 [[plugins]]
@@ -1045,16 +1056,16 @@ repository = 'vbnet.vim'
 filetypes = 'vbnet'
 
 [[plugins]]
-repository = 'koron/verifyenc-vim'
-disabled = '!has("iconv")'
-commands = 'VerifyEnc'
-
-[[plugins]]
 repository = 'Shougo/vim-vcs'
 
   [[plugins.commands]]
   name = 'Vcs'
   complete = 'customlist,vcs#complete'
+
+[[plugins]]
+repository = 'koron/verifyenc-vim'
+disabled = '!has("iconv")'
+commands = 'VerifyEnc'
 
 [[plugins]]
 repository = 'rbtnn/vimconsole.vim'
@@ -1071,17 +1082,21 @@ filetypes = 'help'
 
 [[plugins]]
 repository = 'Shougo/vimfiler.vim'
-commands = ['VimFilerDetectDrives', 'VimFilerClose']
+commands = ['VimFilerClose']
 unite_sources = ['vimfiler/drive', 'vimfiler/execute', 'vimfiler/history', 'vimfiler/mask', 'vimfiler/popd', 'vimfiler/sort']
 explorer = 1
 
   [[plugins.commands]]
-  name = ['VimFiler', 'VimFilerDouble', 'VimFilerCurrentDir', 'VimFilerBufferDir', 'VimFilerCreate', 'VimFilerSimple', 'VimFilerSplit', 'VimFilerTab', 'VimFilerExplorer', 'Edit', 'Read', 'Source', 'Write']
+  name = ['VimFiler', 'VimFilerDouble', 'VimFilerCurrentDir', 'VimFilerBufferDir', 'VimFilerCreate', 'VimFilerSimple', 'VimFilerSplit', 'VimFilerTab', 'VimFilerExplorer', 'VimFilerEdit', 'VimFilerRead', 'VimFilerSource', 'VimFilerWrite']
   complete = 'customlist,vimfiler#complete'
 
 [[plugins]]
 repository = 'syngan/vim-vimlint'
 depends = 'ynkdir/vim-vimlparser'
+
+  [[plugins.commands]]
+  name = 'VimLint'
+  complete = 'customlist,vimlint#util#complete'
 
 [[plugins]]
 repository = 'Shougo/vimproc.vim'
@@ -1124,7 +1139,7 @@ mappings = [['nvo', '<Plug>']]
 
 [[plugins]]
 repository = 'taku25/vim-visualstudio'
-commands = ['VSFindResult1', 'VSFindResult2', 'VSBuild', 'VSBuildNoWait', 'VSReBuild', 'VSReBuildNoWait', 'VSClean', 'VSCleanNoWait', 'VSCompile', 'VSCompileNoWait', 'VSOpenFile', 'VSGetFile', 'VSOutput', 'VSErorrList', 'VSAddBreakPoint']
+commands = ['VSCompile', 'VSBuild', 'VSReBuild', 'VSBuildProject', 'VSReBuildProject', 'VSCompileNoWait', 'VSBuildNoWait', 'VSReBuildNoWait', 'VSBuildProjectNoWait', 'VSReBuildProjectNoWait', 'VSSetBuildConfig', 'VSSetPlatform', 'VSCancelBuild', 'VSClean', 'VSOutput', 'VSErorrList', 'VSRun', 'VSDebugRun', 'VSSetStartupProject', 'VSStopDebugRun', 'VSFindSolution1', 'VSFindSolution2', 'VSFindSolutionNoWait1', 'VSFindSolutionNoWait2', 'VSFindProject1', 'VSFindProject2', 'VSFindProjectNoWait1', 'VSFindProjectNoWait2', 'VSFindSymbol', 'VSFindSymbolNoWait', 'VSFindResult1', 'VSFindResult2', 'VSFindSymbolResult', 'VSOpenFile', 'VSGetFile', 'VSAddBreakPoint', 'VSChangeDirectory', 'VSGoToDefinition']
 
 [[plugins]]
 repository = 'taku25/VisualStudioController'
@@ -1132,7 +1147,10 @@ fetch = 1
 
 [[plugins]]
 repository = 'vim-jp/vital.vim'
-commands = 'Vitalize'
+
+  [[plugins.commands]]
+  name = 'Vitalize'
+  complete = 'customlist,vitalizer#complete'
 
 [[plugins]]
 repository = 'osyo-manga/vim-watchdogs'

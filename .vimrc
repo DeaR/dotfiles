@@ -1337,7 +1337,9 @@ if s:has_neobundle && neobundle#tap('dispatch')
   call extend(s:neocompl_vim_completefuncs, {
     \ 'Dispatch'      : 'dispatch#command_complete',
     \ 'FocusDispatch' : 'dispatch#command_complete',
-    \ 'Start'         : 'dispatch#command_complete'})
+    \ 'Make'          : 'dispatch#make_complete',
+    \ 'Start'         : 'dispatch#command_complete',
+    \ 'Spawn'         : 'dispatch#command_complete'})
 endif
 "}}}
 
@@ -1567,11 +1569,11 @@ endif
 " MatchIt: {{{
 if s:has_neobundle && neobundle#tap('matchit')
   function! neobundle#tapped.hooks.on_post_source(bundle)
-    sunmap %
-    sunmap g%
-    sunmap [%
-    sunmap ]%
-    sunmap a%
+    silent! sunmap %
+    silent! sunmap g%
+    silent! sunmap [%
+    silent! sunmap ]%
+    silent! sunmap a%
   endfunction
 
   xmap <SID>[% [%
@@ -1619,14 +1621,10 @@ if s:has_neobundle && neobundle#tap('narrow')
     call operator#user#define_ex_command(
       \ 'narrow',
       \ 'Narrow')
-  endfunction
 
-  command! -bar -range
-    \ Narrow
-    \ call narrow#Narrow(<line1>, <line2>)
-  command! -bar
-    \ Widen
-    \ call narrow#Widen()
+    silent! delcommand Narrow
+    silent! delcommand Widen
+  endfunction
 
   NXnoremap sN :<C-U>Widen<CR>
   NXOmap sn <Plug>(operator-narrow)
@@ -3335,10 +3333,10 @@ if s:has_neobundle && neobundle#tap('vimfiler')
     \ 'VimFilerSplit'      : 'vimfiler#complete',
     \ 'VimFilerTab'        : 'vimfiler#complete',
     \ 'VimFilerExplorer'   : 'vimfiler#complete',
-    \ 'Edit'               : 'vimfiler#complete',
-    \ 'Read'               : 'vimfiler#complete',
-    \ 'Source'             : 'vimfiler#complete',
-    \ 'Write'              : 'vimfiler#complete'})
+    \ 'VimFilerEdit'       : 'vimfiler#complete',
+    \ 'VimFilerRead'       : 'vimfiler#complete',
+    \ 'VimFilerSource'     : 'vimfiler#complete',
+    \ 'VimFilerWrite'      : 'vimfiler#complete'})
 endif
 "}}}
 
@@ -3463,6 +3461,14 @@ if s:has_neobundle && neobundle#tap('visualstudio')
       \ neobundle#get('VisualStudioController').path .
       \ '/bin/VisualStudioController.exe'
   endfunction
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" Vital: {{{
+if s:has_neobundle && neobundle#tap('vital')
+  call extend(s:neocompl_vim_completefuncs, {
+    \ 'Vitalize' : 'vitalizer#complete'})
 endif
 "}}}
 
