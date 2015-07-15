@@ -1147,10 +1147,7 @@ fetch = 1
 
 [[plugins]]
 repository = 'vim-jp/vital.vim'
-
-  [[plugins.commands]]
-  name = 'Vitalize'
-  complete = 'customlist,vitalizer#complete'
+lazy = 0
 
 [[plugins]]
 repository = 'osyo-manga/vim-watchdogs'
