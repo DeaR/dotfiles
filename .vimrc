@@ -124,15 +124,15 @@ if has('win32') && !exists('$VCVARSALL')
   let s:save_ssl = &shellslash
   set noshellslash
   if exists('$VS120COMNTOOLS')
-    let $VCVARSALL = shellescape($VS120COMNTOOLS . '..\..\VC\vcvarsall.bat')
+    let $VCVARSALL = $VS120COMNTOOLS . '..\..\VC\vcvarsall.bat'
   elseif exists('$VS110COMNTOOLS')
-    let $VCVARSALL = shellescape($VS110COMNTOOLS . '..\..\VC\vcvarsall.bat')
+    let $VCVARSALL = $VS110COMNTOOLS . '..\..\VC\vcvarsall.bat'
   elseif exists('$VS100COMNTOOLS')
-    let $VCVARSALL = shellescape($VS100COMNTOOLS . '..\..\VC\vcvarsall.bat')
+    let $VCVARSALL = $VS100COMNTOOLS . '..\..\VC\vcvarsall.bat'
   elseif exists('$VS90COMNTOOLS')
-    let $VCVARSALL = shellescape($VS90COMNTOOLS  . '..\..\VC\vcvarsall.bat')
+    let $VCVARSALL = $VS90COMNTOOLS  . '..\..\VC\vcvarsall.bat'
   elseif exists('$VS80COMNTOOLS')
-    let $VCVARSALL = shellescape($VS80COMNTOOLS  . '..\..\VC\vcvarsall.bat')
+    let $VCVARSALL = $VS80COMNTOOLS  . '..\..\VC\vcvarsall.bat'
   endif
   let &shellslash = s:save_ssl
   unlet s:save_ssl
@@ -2189,7 +2189,7 @@ if s:has_neobundle && neobundle#tap('quickrun')
       \ 'c/vc' : {
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-      \   'hook/vcvarsall/bat' : $VCVARSALL},
+      \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)},
       \
       \ 'cpp' : {
       \   'type' :
@@ -2200,7 +2200,7 @@ if s:has_neobundle && neobundle#tap('quickrun')
       \ 'cpp/vc' : {
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-      \   'hook/vcvarsall/bat' : $VCVARSALL},
+      \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)},
       \
       \ 'cs' : {
       \   'type' :
@@ -2213,7 +2213,7 @@ if s:has_neobundle && neobundle#tap('quickrun')
       \ 'cs/csc' : {
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-      \   'hook/vcvarsall/bat' : $VCVARSALL},
+      \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)},
       \
       \ 'vbnet' : {
       \   'type' :
@@ -2228,7 +2228,7 @@ if s:has_neobundle && neobundle#tap('quickrun')
       \   'hook/sweep/files' : ['%s:p:r.exe'],
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-      \   'hook/vcvarsall/bat' : $VCVARSALL}})
+      \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)}})
 
     nnoremap <expr> <C-C>
       \ quickrun#is_running() ? quickrun#sweep_sessions() : '<C-C>'
@@ -3492,7 +3492,7 @@ if s:has_neobundle && neobundle#tap('watchdogs')
       \ 'watchdogs_checker/msvc' : {
       \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
       \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-      \   'hook/vcvarsall/bat' : $VCVARSALL},
+      \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)},
       \
       \ 'vim/watchdogs_checker' : {
       \   'type' :

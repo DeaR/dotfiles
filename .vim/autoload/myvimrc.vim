@@ -256,7 +256,7 @@ function! myvimrc#vcvarsall(arch)
   let save_isi   = &isident
   set isident+=( isident+=)
   try
-    let env = system($VCVARSALL . ' ' . a:arch . ' & set')
+    let env = system(shellescape($VCVARSALL) . ' ' . a:arch . ' & set')
     for matches in filter(map(split(env, '\n'),
       \ 'matchlist(v:val, ''\([^=]\+\)=\(.*\)'')'), 'len(v:val) > 1')
       execute 'let $' . matches[1] . '=' . string(matches[2])

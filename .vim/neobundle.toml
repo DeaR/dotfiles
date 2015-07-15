@@ -82,7 +82,7 @@ fetch = 1
   windows = 'mingw32-make'
 
   [plugins.build]
-  windows = 'mingw32-make -f ~/.vim/tools/ctags/mk_mingw.mak && mingw32-make -f ~/.vim/tools/ctags/mk_mingw.mak install'
+  windows = '..\\..\\..\\.vim\\tools\\ctags\\build.bat'
   others = 'autoreconf -vfi && ./configure && make && sudo make install'
 
 [[plugins]]
@@ -446,7 +446,7 @@ fetch = 1
   windows = 'mingw32-make'
 
   [plugins.build]
-  windows = 'mingw32-make -f ~/.vim/tools/nkf/Makefile && mingw32-make -f ~/.vim/tools/nkf/Makefile install'
+  windows = '..\\..\\..\\.vim\\tools\\nkf\\build.bat'
   others = 'make && sudo make install'
 
 [[plugins]]
@@ -464,7 +464,7 @@ filetypes = 'cs'
   others = 'xbuild'
 
   [plugins.build]
-  windows = '$VCVARSALL $PROCESSOR_ARCHITECTURE & msbuild server/OmniSharp.sln /p:Platform="Any CPU"'
+  windows = '..\\..\\..\\.vim\\tools\\omnisharp\\build.bat'
   others = 'xbuild server/OmniSharp.sln /p:Platform="Any CPU"'
 
 [[plugins]]
@@ -718,7 +718,7 @@ fetch = 1
   windows = 'mingw32-make'
 
   [plugins.build]
-  windows = 'mingw32-make -f ~/.vim/tools/sudo/Makefile && mingw32-make -f ~/.vim/tools/sudo/Makefile install'
+  windows = '..\\..\\..\\.vim\\tools\\sudo\\build.bat'
 
 [[plugins]]
 repository = 'AndrewRadev/switch.vim'
@@ -935,7 +935,7 @@ fetch = 1
   windows = 'mingw32-make'
 
   [plugins.build]
-  windows = 'mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32 && mingw32-make -f ~/.vim/tools/the_silver_searcher/Makefile.w32 install'
+  windows = '..\\..\\..\\.vim\\tools\\the_silver_searcher\\build.bat'
   others = './build.sh && sudo make install'
 
 [[plugins]]
@@ -1090,12 +1090,8 @@ repository = 'Shougo/vimproc.vim'
   name = ['VimProcBang', 'VimProcRead']
   complete = 'shellcmd'
 
-  [plugins.build_commands]
-  # windows = '$VCVARSALL'
-  windows = 'vim'
-
   [plugins.build]
-  windows = '$VCVARSALL $PROCESSOR_ARCHITECTURE & nmake -f Make_msvc.mak nodebug=1'
+  windows = '..\\..\\..\\.vim\\tools\\vimproc\\build.bat nodebug=1'
   others = 'make'
 
 [[plugins]]
