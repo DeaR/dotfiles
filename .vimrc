@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  15-Jul-2015.
+" Last Change:  16-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1195,11 +1195,13 @@ let g:xml_syntax_folding  = 1
 
 "------------------------------------------------------------------------------
 " Justify: {{{
-source $VIMRUNTIME/macros/justify.vim
-silent! nunmap _j
-silent! vunmap _j
-silent! nunmap ,gq
-silent! vunmap ,gq
+if filereadable($VIMRUNTIME . '/macros/justify.vim')
+  source $VIMRUNTIME/macros/justify.vim
+  silent! nunmap _j
+  silent! vunmap _j
+  silent! nunmap ,gq
+  silent! vunmap ,gq
+endif
 "}}}
 
 "------------------------------------------------------------------------------
