@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  16-Jul-2015.
+" Last Change:  18-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -251,16 +251,14 @@ endif
 "------------------------------------------------------------------------------
 " System: {{{
 " GUI options
-if has('gui_running')
-  set guioptions+=M
-endif
+set guioptions+=M
 
 " Message
 set shortmess+=a
 set title
 set confirm
 
-" Use beep
+" Beep
 set errorbells
 set novisualbell
 set t_vb=
@@ -314,6 +312,7 @@ set lazyredraw
 
 " Line number, Ruler, Wrap
 set number
+set relativenumber
 set ruler
 set wrap
 set display=lastline
@@ -383,18 +382,19 @@ set nrformats=hex
 set formatoptions+=m
 set formatoptions+=B
 
-" Free cursor
+" Cursor
 set virtualedit=block
-
-" Cursor can move to bol & eol
 set backspace=indent,eol,start
 
 " Ctags
 set showfulltag
 
-" Default file format
+" File format
 set fileformat=unix
 set fileformats=unix,dos,mac
+if s:has_patch(7, 4, 785)
+  set nofixendofline
+endif
 
 " Indent
 set shiftwidth=2
