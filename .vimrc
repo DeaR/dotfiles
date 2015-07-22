@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-Jul-2015.
+" Last Change:  21-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -218,7 +218,8 @@ if s:has_neobundle
   endif
 
   call neobundle#begin($HOME . '/.local/bundle')
-  if has('win32') && v:progname !=# 'gvim.exe'
+  if (!has('win32') && v:progname !=# 'gvim') ||
+    \ (has('win32') && v:progname !=# 'gvim.exe')
     call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
   elseif neobundle#load_cache($HOME . '/.vim/neobundle.toml')
     call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
