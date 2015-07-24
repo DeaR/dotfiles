@@ -2318,6 +2318,17 @@ endif
 "------------------------------------------------------------------------------
 " Repeat: {{{
 if s:has_neobundle && neobundle#tap('repeat')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:repeat_no_default_key_mappings = 1
+  endfunction
+
+  nmap .     <Plug>(repeat-.)
+  nmap u     <Plug>(repeat-u)
+  nmap U     <Plug>(repeat-U)
+  nmap <C-R> <Plug>(repeat-<C-r>)
+  nmap g-    <Plug>(repeat-g-)
+  nmap g+    <Plug>(repeat-g+)
+
   nnoremap <M-o>
     \ :<C-U>call append(line('.'), repeat([''], v:count1))<Bar>
     \ call repeat#set('<M-o>', v:count1)<CR>

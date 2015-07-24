@@ -223,6 +223,11 @@ depends = ['sgur/vim-gf-autoload', 'kana/vim-gf-diff']
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repository = 'lambdalisue/vim-gita'
+commands = 'Gita'
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repository = 'yomi322/vim-gitcomplete'
 
 #------------------------------------------------------------------------------
@@ -815,7 +820,9 @@ depends = 'kana/vim-operator-user'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repository = 'tpope/vim-repeat'
+repository = 'kana/vim-repeat'
+commands = ['RepeatDefaultKeyMappings']
+mappings = [['n', '<Plug>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
