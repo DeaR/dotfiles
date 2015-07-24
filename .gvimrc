@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  05-Jul-2015.
+" Last Change:  24-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -101,6 +101,8 @@ set guioptions-=T
 set guioptions-=r
 set guioptions-=l
 set guioptions-=L
+set guioptions-=b
+set guioptions-=h
 set guicursor+=i-ci:ver50-Cursor/lCursor
 
 " Use beep

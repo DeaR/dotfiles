@@ -328,6 +328,9 @@ set cmdheight=2
 set laststatus=2
 set showcmd
 
+" Tab line
+set showtabline=2
+
 " Display NonText
 set list
 set listchars=eol:$,tab:>-,extends:>,precedes:<
