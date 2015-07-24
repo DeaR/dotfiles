@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  16-Jul-2015.
+# Last Change:  24-Jul-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -452,7 +452,6 @@ depends = 'kana/vim-operator-user'
 [[plugins]]
 repository = 'Shougo/neobundle.vim'
 fetch = 1
-type = 'nosync'
 
 #------------------------------------------------------------------------------
 [[plugins]]
