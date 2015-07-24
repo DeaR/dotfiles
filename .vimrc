@@ -1413,7 +1413,7 @@ if s:has_neobundle && neobundle#tap('fugitive')
   NXnoremap <Leader>gC :<C-U>Gcommit --amend<CR>
   NXnoremap <Leader>gb :<C-U>Gblame<CR>
   NXnoremap <expr> <Leader>gl
-    \ exists(':Gitv') ? ':<C-U>Gitv<CR>' : ':<C-U>Glog<CR>'
+    \ neobundle#is_installed('gitv') ? ':<C-U>Gitv<CR>' : ':<C-U>Glog<CR>'
 
   NXnoremap <script> <Leader>gg <SID>:<C-U>Git<Space>
 endif
