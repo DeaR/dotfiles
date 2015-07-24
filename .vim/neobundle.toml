@@ -574,6 +574,7 @@ filetypes = 'nyaos'
 repository = 'OmniSharp/omnisharp-vim'
 disabled = '!has("python")'
 filetypes = 'cs'
+unite_sources = ['OmniSharp/findcodeactions', 'OmniSharp/findsymbols', 'OmniSharp/findtype']
 
   [plugins.build_commands]
   windows = 'vim'
