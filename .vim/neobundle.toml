@@ -1286,15 +1286,6 @@ filetypes = 'vbnet'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repository = 'Shougo/vim-vcs'
-depends = ['thinca/vim-openbuf', 'Shougo/vimproc.vim']
-
-  [[plugins.commands]]
-  name = 'Vcs'
-  complete = 'customlist,vcs#complete'
-
-#------------------------------------------------------------------------------
-[[plugins]]
 repository = 'koron/verifyenc-vim'
 disabled = '!has("iconv")'
 commands = 'VerifyEnc'

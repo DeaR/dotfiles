@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  21-Jul-2015.
+" Last Change:  24-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -3300,14 +3300,6 @@ if s:has_neobundle && neobundle#tap('unite-tag')
   NXnoremap <Leader>ut
     \ :<C-U>UniteWithCursorWord tag tag/include
     \ -buffer-name=outline -no-split -no-start-insert<CR>
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" VCS: {{{
-if s:has_neobundle && neobundle#tap('vcs')
-  call extend(s:neocompl_vim_completefuncs, {
-    \ 'Vcs' : 'vcs#complete'})
 endif
 "}}}
 
