@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  24-Jul-2015.
+" Last Change:  25-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1736,7 +1736,7 @@ if s:has_neobundle && neobundle#tap('neocomplete')
 
     let g:neocomplete#sources#dictionary#dictionaryies =
       \ s:neocompl_dictionary_filetype_lists
-    let g:neocomplete#sources#vim#complete_functions   =
+    let g:necovim#complete_functions                   =
       \ s:neocompl_vim_completefuncs
     " let g:neocomplete#sources#omni#input_patterns      =
     "   \ s:neocompl_omni_patterns
