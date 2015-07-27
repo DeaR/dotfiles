@@ -12,7 +12,7 @@ if not "%VS120COMNTOOLS%"=="" (
   set "VCVARSALL=%VS80COMNTOOLS%..\..\VC\vcvarsall.bat"
 ) else (
   echo MSVC not found.
-  goto :EOF
+  exit /b 1
 )
 call "%VCVARSALL%" %PROCESSOR_ARCHITECTURE%
 
