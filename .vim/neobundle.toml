@@ -491,7 +491,7 @@ disabled = 'neobundle#is_installed("neocomplete")'
 commands = ['NeoComplCacheEnable', 'NeoComplCacheDisable', 'NeoComplCacheLock', 'NeoComplCacheLockSource', 'NeoComplCacheUnlock', 'NeoComplCacheUnlockSource', 'NeoComplCacheToggle', 'NeoComplCacheClean', 'NeoComplCacheCachingTags']
 insert = 1
 unite_sources = ['file_include', 'neocomplcache']
-depends = ['Shougo/echodoc', 'hrsh7th/vim-neco-calc', 'ujihisa/neco-look', 'Shougo/neosnippet.vim']
+depends = ['Shougo/echodoc', 'hrsh7th/vim-neco-calc', 'ujihisa/neco-look']
 
   [[plugins.commands]]
   name = 'NeoComplCacheSetFileType'
