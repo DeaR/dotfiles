@@ -1433,23 +1433,11 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
-" Go: {{{
-if s:has_neobundle && neobundle#tap('go')
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:go_bin_path            = $HOME . '/.local/.vim-go'
-    let g:go_disable_autoinstall = 1
-  endfunction
-
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'go#complete#Complete' : '\.\h\w*'})
-endif
-"}}}
-
-"------------------------------------------------------------------------------
 " Go Extra: {{{
 if s:has_neobundle && neobundle#tap('go-extra')
   call extend(s:neocompl_force_omni_patterns, {
-    \ 'gocomplete#Complete' : '\.\h\w*'})
+    \ 'go#complete#Complete' : '\.\h\w*',
+    \ 'gocomplete#Complete'  : '\.\h\w*'})
   call extend(s:neocompl_vim_completefuncs, {
     \ 'GoDoc' : 'go#complete#Package'})
 endif
