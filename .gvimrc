@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  24-Jul-2015.
+" Last Change:  28-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -68,7 +68,7 @@ function! s:has_vimproc()
 endfunction
 
 " Cached executable
-let s:_executable = get(s:, '_executable', {})
+let s:_executable = {}
 function! s:executable(expr)
   if !has_key(s:_executable, a:expr)
     let s:_executable[a:expr] = executable(a:expr)
