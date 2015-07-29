@@ -3490,7 +3490,7 @@ if s:has_neobundle && neobundle#tap('watchdogs')
       \
       \ 'vim/watchdogs_checker' : {
       \   'type' :
-      \     has('python') ? 'watchdogs_checker/vimlint_by_dbakker' : ''}})
+      \     s:executable('python') ? 'watchdogs_checker/vimlint_by_dbakker' : ''}})
 
     call watchdogs#setup(g:quickrun_config)
   endfunction
