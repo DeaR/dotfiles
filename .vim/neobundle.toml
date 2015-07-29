@@ -218,12 +218,6 @@ filetypes = 'vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repository = 'tpope/vim-fugitive'
-commands = ['Git', 'Gcd', 'Glcd', 'Gstatus', 'Gcommit', 'Gmerge', 'Gpull', 'Ggrep', 'Glgrep', 'Glog', 'Gllog', 'Ge', 'Gedit', 'Gpedit', 'Gsplit', 'Gvsplit', 'Gtabedit', 'Gread', 'Gwrite', 'Gw', 'Gwq', 'Gpush', 'Gfetch', 'Gdiff', 'Gvdiff', 'Gsdiff', 'Gbrowse']
-augroup = 'fugitive'
-
-#------------------------------------------------------------------------------
-[[plugins]]
 repository = 'kana/vim-gf-user'
 commands = 'GfUserDefaultKeyMappings'
 mappings = [['nv', '<Plug>']]
@@ -238,12 +232,6 @@ commands = 'Gita'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'yomi322/vim-gitcomplete'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repository = 'gregsexton/gitv'
-commands = 'Gitv'
-depends = 'tpope/vim-fugitive'
 
 #------------------------------------------------------------------------------
 [[plugins]]

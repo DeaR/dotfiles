@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Jul-2015.
+" Last Change:  29-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1398,27 +1398,6 @@ if s:has_neobundle && neobundle#tap('eskk')
 
   autocmd MyVimrc User CmdlineEnter
     \ NeoBundleSource eskk
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" Fugitive: {{{
-if s:has_neobundle && neobundle#tap('fugitive')
-  function! neobundle#tapped.hooks.on_post_source(bundle)
-    call fugitive#detect(expand('%') == '' ? getcwd() : expand('%:p'))
-  endfunction
-
-  NXnoremap <Leader>g <Nop>
-  NXnoremap <Leader>gd :<C-U>Gdiff<CR>
-  NXnoremap <Leader>gs :<C-U>Gstatus<CR>
-  NXnoremap <Leader>ga :<C-U>Gwrite<CR>
-  NXnoremap <Leader>gc :<C-U>Gcommit<CR>
-  NXnoremap <Leader>gC :<C-U>Gcommit --amend<CR>
-  NXnoremap <Leader>gb :<C-U>Gblame<CR>
-  NXnoremap <expr> <Leader>gl
-    \ neobundle#is_installed('gitv') ? ':<C-U>Gitv<CR>' : ':<C-U>Glog<CR>'
-
-  NXnoremap <script> <Leader>gg <SID>:<C-U>Git<Space>
 endif
 "}}}
 
