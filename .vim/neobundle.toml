@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  25-Jul-2015.
+# Last Change:  29-Jul-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -24,6 +24,15 @@
 #     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'cohama/agit.vim'
+mappings = [['n', '<Plug>']]
+
+  [[plugins.commands]]
+  name = ['Agit', 'AgitFile']
+  complete = 'customlist,agit#complete_command'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -466,7 +475,7 @@ vim_version = '7.3.885'
 commands = ['NeoCompleteEnable', 'NeoCompleteDisable', 'NeoCompleteLock', 'NeoCompleteUnlock', 'NeoCompleteToggle', 'NeoCompleteClean', 'NeoCompleteTagMakeCache']
 insert = 1
 unite_sources = ['file_include', 'neocomplete']
-depends = ['Shougo/context_filetype.vim', 'Shougo/echodoc', 'hrsh7th/vim-neco-calc', 'ujihisa/neco-look', 'Shougo/neco-vim', 'Shougo/neoinclude.vim']
+depends = ['Shougo/context_filetype.vim', 'Shougo/echodoc', 'hrsh7th/vim-neco-calc', 'ujihisa/neco-look', 'Shougo/neco-syntax', 'Shougo/neco-vim', 'Shougo/neoinclude.vim']
 
   [[plugins.commands]]
   name = 'NeoCompleteSetFileType'
@@ -858,6 +867,11 @@ filetypes = 'javascript'
 repository = 'thinca/vim-singleton'
 disabled = '!has("clientserver")'
 fetch = 1
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'tyru/skkdict.vim'
+filetypes = 'skkdict'
 
 #------------------------------------------------------------------------------
 [[plugins]]
