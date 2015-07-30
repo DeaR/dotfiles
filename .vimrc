@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  29-Jul-2015.
+" Last Change:  30-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -757,9 +757,9 @@ NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
 
 NXOnoremap <expr> n
-  \ myvimrc#search_forward_expr() ? 'n' : 'N'
+  \ myvimrc#search_forward_expr() ? 'nzv' : 'Nzv'
 NXOnoremap <expr> N
-  \ myvimrc#search_forward_expr() ? 'N' : 'n'
+  \ myvimrc#search_forward_expr() ? 'Nzv' : 'nzv'
 "}}}
 
 "------------------------------------------------------------------------------
@@ -1261,12 +1261,12 @@ if s:has_neobundle && neobundle#tap('anzu')
 
   nmap <expr> n
     \ myvimrc#search_forward_expr() ?
-    \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)' :
-    \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)'
+    \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)zv' :
+    \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)zv'
   nmap <expr> N
     \ myvimrc#search_forward_expr() ?
-    \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)' :
-    \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)'
+    \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)zv' :
+    \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)zv'
 endif
 "}}}
 
