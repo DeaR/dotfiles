@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  05-Jul-2015.
+" Last Change:  30-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -416,6 +416,31 @@ if s:has_neobundle && neobundle#tap('neocomplete')
       \ col('.') == 1 && getline('.') == '' ?
       \   '<Esc>:<C-U>quit<CR>' :
       \   (neocomplete#smart_close_popup() . '<BS>')
+  endfunction
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" Operator Star: {{{
+if s:has_neobundle && neobundle#tap('operator-star')
+  function! myvimrc#operator_star_star(wiseness)
+    call operator#star#star(a:wiseness)
+    normal! zv
+  endfunction
+
+  function! myvimrc#operator_star_sharp(wiseness)
+    call operator#star#sharp(a:wiseness)
+    normal! zv
+  endfunction
+
+  function! myvimrc#operator_star_gstar(wiseness)
+    call operator#star#gstar(a:wiseness)
+    normal! zv
+  endfunction
+
+  function! myvimrc#operator_star_gsharp(wiseness)
+    call operator#star#gsharp(a:wiseness)
+    normal! zv
   endfunction
 endif
 "}}}

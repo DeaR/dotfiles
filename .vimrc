@@ -1963,15 +1963,24 @@ endif
 "------------------------------------------------------------------------------
 " Operator Star: {{{
 if s:has_neobundle && neobundle#tap('operator-star')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:loaded_operator_star = 1
+
+    call operator#user#define('*',  'myvimrc#operator_star_star')
+    call operator#user#define('#',  'myvimrc#operator_star_sharp')
+    call operator#user#define('g*', 'myvimrc#operator_star_gstar')
+    call operator#user#define('g#', 'myvimrc#operator_star_gsharp')
+  endfunction
+
   NOmap *  <Plug>(operator-*)
   NOmap #  <Plug>(operator-#)
   NOmap g* <Plug>(operator-g*)
   NOmap g# <Plug>(operator-g#)
 
-  NOnoremap **   *
-  NOnoremap ##   #
-  NOnoremap g*g* g*
-  NOnoremap g#g# g#
+  NOnoremap **   *zv
+  NOnoremap ##   #zv
+  NOnoremap g*g* g*zv
+  NOnoremap g#g# g#zv
 
   NOmap g/g/ **
   NOmap g?g? ##
@@ -1985,10 +1994,10 @@ if s:has_neobundle && neobundle#tap('operator-star')
   nmap <C-W>g* <SID>(split-nicely)<Plug>(operator-g*)
   nmap <C-W>g# <SID>(split-nicely)<Plug>(operator-g#)
 
-  nnoremap <script> <C-W>**   <SID>(split-nicely)*
-  nnoremap <script> <C-W>##   <SID>(split-nicely)#
-  nnoremap <script> <C-W>g*g* <SID>(split-nicely)g*
-  nnoremap <script> <C-W>g#g# <SID>(split-nicely)g#
+  nnoremap <script> <C-W>**   <SID>(split-nicely)*zv
+  nnoremap <script> <C-W>##   <SID>(split-nicely)#zv
+  nnoremap <script> <C-W>g*g* <SID>(split-nicely)g*zv
+  nnoremap <script> <C-W>g#g# <SID>(split-nicely)g#zv
 
   nmap <C-W>g/g/ <C-W>**
   nmap <C-W>g?g? <C-W>##
