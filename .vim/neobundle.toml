@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  29-Jul-2015.
+# Last Change:  30-Jul-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -105,14 +105,12 @@ depends = 'kana/vim-operator-user'
 [[plugins]]
 repository = 'rhysd/clever-f.vim'
 mappings = [['nvo', '<Plug>']]
-insert = 1
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'deris/columnjump'
 commands = ['ColumnJumpBackward', 'ColumnJumpForward']
 mappings = [['nvo', '<Plug>']]
-insert = 1
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -161,7 +159,6 @@ repository = 'tpope/vim-dispatch'
 [[plugins]]
 repository = 'Shougo/echodoc.vim'
 commands = ['EchoDocEnable', 'EchoDocDisable']
-insert = 1
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -525,6 +522,7 @@ repository = 'Shougo/neosnippet.vim'
 filetypes = 'snippet'
 commands = ['NeoSnippetClearMarkers']
 mappings = [['vi', '<Plug>']]
+insert = 1
 unite_sources = ['snippet', 'snippet/target', 'neosnippet/user', 'neosnippet/runtime']
 depends = 'Shougo/context_filetype.vim'
 
@@ -697,7 +695,6 @@ function_prefix = 'operator'
 [[plugins]]
 repository = 'deris/parajump'
 mappings = [['nvo', '<Plug>']]
-insert = 1
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -865,7 +862,6 @@ filetypes = 'skkdict'
 [[plugins]]
 repository = 'kana/vim-smartword'
 mappings = [['nvo', '<Plug>']]
-insert = 1
 
 #------------------------------------------------------------------------------
 [[plugins]]
