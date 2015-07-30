@@ -3420,24 +3420,24 @@ if s:has_neobundle && neobundle#tap('visualstar')
     let g:visualstar_no_default_key_mappings = 1
   endfunction
 
-  xmap *  <Plug>(visualstar-*)
-  xmap #  <Plug>(visualstar-#)
-  xmap g* <Plug>(visualstar-g*)
-  xmap g# <Plug>(visualstar-g#)
-
   xmap <SID>(visualstar-*)  <Plug>(visualstar-*)
   xmap <SID>(visualstar-#)  <Plug>(visualstar-#)
   xmap <SID>(visualstar-g*) <Plug>(visualstar-g*)
   xmap <SID>(visualstar-g#) <Plug>(visualstar-g#)
 
+  xnoremap <script> *  <SID>(visualstar-*)zv
+  xnoremap <script> #  <SID>(visualstar-#)zv
+  xnoremap <script> g* <SID>(visualstar-g*)zv
+  xnoremap <script> g# <SID>(visualstar-g#)zv
+
   xnoremap <script> <C-W>*
-    \ <SID>(split-nicely)gv<SID>(visualstar-*)
+    \ <SID>(split-nicely)gv<SID>(visualstar-*)zv
   xnoremap <script> <C-W>#
-    \ <SID>(split-nicely)gv<SID>(visualstar-#)
+    \ <SID>(split-nicely)gv<SID>(visualstar-#)zv
   xnoremap <script> <C-W>g*
-    \ <SID>(split-nicely)gv<SID>(visualstar-g*)
+    \ <SID>(split-nicely)gv<SID>(visualstar-g*)zv
   xnoremap <script> <C-W>g#
-    \ <SID>(split-nicely)gv<SID>(visualstar-g#)
+    \ <SID>(split-nicely)gv<SID>(visualstar-g#)zv
 endif
 "}}}
 
