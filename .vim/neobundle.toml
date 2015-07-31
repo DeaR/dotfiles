@@ -672,7 +672,7 @@ depends = ['kana/vim-operator-user', 'thinca/vim-visualstar']
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repository = 'yomi322/vim-operator-suddendeath'
+repository = 'DeaR/vim-operator-suddendeath'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-operator-user'
 

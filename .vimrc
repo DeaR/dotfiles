@@ -2650,6 +2650,13 @@ if s:has_neobundle && neobundle#tap('textobj-continuous-line')
     let g:textobj_continuous_line_no_default_key_mappings = 1
     let g:textobj_continuous_line_no_default_mappings     = 1
   endfunction
+
+  " XOmap a<Bslash> <Plug>(textobj-continuous-cpp-a)
+  " XOmap a<Bslash> <Plug>(textobj-continuous-python-a)
+  " XOmap a<Bslash> <Plug>(textobj-continuous-vim-a)
+  " XOmap i<Bslash> <Plug>(textobj-continuous-cpp-i)
+  " XOmap i<Bslash> <Plug>(textobj-continuous-python-i)
+  " XOmap i<Bslash> <Plug>(textobj-continuous-vim-i)
 endif
 "}}}
 
@@ -2663,16 +2670,16 @@ if s:has_neobundle && neobundle#tap('textobj-datetime')
   XOnoremap ad <Nop>
   XOmap ada <Plug>(textobj-datetime-auto)
   XOmap add <Plug>(textobj-datetime-date)
-  XOmap adf <Plug>(textobj-datetime-full)
+  XOmap adD <Plug>(textobj-datetime-full)
   XOmap adt <Plug>(textobj-datetime-time)
-  XOmap adz <Plug>(textobj-datetime-tz)
+  XOmap adT <Plug>(textobj-datetime-tz)
 
   XOnoremap id <Nop>
   XOmap ida <Plug>(textobj-datetime-auto)
   XOmap idd <Plug>(textobj-datetime-date)
-  XOmap idf <Plug>(textobj-datetime-full)
+  XOmap idD <Plug>(textobj-datetime-full)
   XOmap idt <Plug>(textobj-datetime-time)
-  XOmap idz <Plug>(textobj-datetime-tz)
+  XOmap idT <Plug>(textobj-datetime-tz)
 endif
 "}}}
 
@@ -2682,6 +2689,14 @@ if s:has_neobundle && neobundle#tap('textobj-diff')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_diff_no_default_key_mappings = 1
   endfunction
+
+  " XOnoremap ad <Nop>
+  " XOmap adf <Plug>(textobj-diff-file)
+  " XOmap adh <Plug>(textobj-diff-hunk)
+  "
+  " XOnoremap id <Nop>
+  " XOmap idf <Plug>(textobj-diff-file)
+  " XOmap idh <Plug>(textobj-diff-hunk)
 endif
 "}}}
 
@@ -2703,6 +2718,9 @@ if s:has_neobundle && neobundle#tap('textobj-enclosedsyntax')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_enclosedsyntax_no_default_key_mappings = 1
   endfunction
+
+  " XOmap aq <Plug>(textobj-enclosedsyntax-a)
+  " XOmap iq <Plug>(textobj-enclosedsyntax-i)
 endif
 "}}}
 
@@ -2724,6 +2742,9 @@ if s:has_neobundle && neobundle#tap('textobj-function')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_function_no_default_key_mappings = 1
   endfunction
+
+  " XOmap aF <Plug>(textobj-function-a)
+  " XOmap iF <Plug>(textobj-function-i)
 endif
 "}}}
 
@@ -2733,6 +2754,9 @@ if s:has_neobundle && neobundle#tap('textobj-ifdef')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_ifdef_no_default_key_mappings = 1
   endfunction
+
+  " XOmap a# <Plug>(textobj-ifdef-a)
+  " XOmap i# <Plug>(textobj-ifdef-i)
 endif
 "}}}
 
@@ -2918,6 +2942,11 @@ if s:has_neobundle && neobundle#tap('textobj-php')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_php_no_default_key_mappings = 1
   endfunction
+
+  " XOmap aP <Plug>(textobj-php-phptag-a)
+  " XOmap aa <Plug>(textobj-php-phparray-a)
+  " XOmap iP <Plug>(textobj-php-phptag-i)
+  " XOmap ia <Plug>(textobj-php-phparray-i)
 endif
 "}}}
 
@@ -2939,6 +2968,11 @@ if s:has_neobundle && neobundle#tap('textobj-python')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_python_no_default_key_mappings = 1
   endfunction
+
+  " XOmap aF <Plug>(textobj-python-function-a)
+  " XOmap aC <Plug>(textobj-python-class-a)
+  " XOmap iF <Plug>(textobj-python-function-i)
+  " XOmap iC <Plug>(textobj-python-class-i)
 endif
 "}}}
 
@@ -2949,6 +2983,11 @@ if s:has_neobundle && neobundle#tap('textobj-ruby')
     let g:textobj_ruby_no_default_key_mappings = 1
     let g:textobj_ruby_more_mappings           = 1
   endfunction
+
+  " XOmap aC <Plug>(textobj-ruby-definition-a)
+  " XOmap iC <Plug>(textobj-ruby-definition-i)
+  " XOmap ar <Plug>(textobj-ruby-any-a)
+  " XOmap ir <Plug>(textobj-ruby-any-i)
 endif
 "}}}
 
@@ -2958,6 +2997,9 @@ if s:has_neobundle && neobundle#tap('textobj-sigil')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_sigil_no_default_key_mappings = 1
   endfunction
+
+  " XOmap ag <Plug>(textobj-sigil-a)
+  " XOmap ig <Plug>(textobj-sigil-i)
 endif
 "}}}
 
@@ -3034,6 +3076,9 @@ if s:has_neobundle && neobundle#tap('textobj-xml-attribute')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_xmlattribute_no_default_key_mappings = 1
   endfunction
+
+  " XOmap aa <Plug>(textobj-xmlattribute-xmlattribute)
+  " XOmap ia <Plug>(textobj-xmlattribute-xmlattributenospace)
 endif
 "}}}
 
