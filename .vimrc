@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  30-Jul-2015.
+" Last Change:  31-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -355,7 +355,7 @@ set incsearch
 set wrapscan
 
 " Highlight
-if &t_Co > 2
+if has('gui_running') || &t_Co > 2
   set hlsearch
 endif
 
@@ -418,7 +418,7 @@ set foldlevelstart=99
 
 "------------------------------------------------------------------------------
 " Status Line: {{{
-set statusline=%<%f\ %m%r[
+set statusline=%f%<\ %m%r[
 if has('multi_byte')
   set statusline+=%{&fenc!=''?&fenc:&enc}:
 endif
@@ -427,7 +427,7 @@ set statusline+=%{&ff}]%y%=
 if has('multi_byte')
   set statusline+=\ [U+%04B]
 endif
-set statusline+=\ (%v,%l)/%L
+set statusline+=\ (%l,%v)/%L
 
 if s:is_lang_ja
   set statusline+=\ %4P
@@ -573,7 +573,7 @@ NOnoremap  <C-G> <Nop>
 cnoremap   <C-G> <Nop>
 
 " Split Nicely
-NXnoremap <expr> <SID>(split-nicely)
+noremap <expr> <SID>(split-nicely)
   \ myvimrc#split_nicely_expr() ? '<C-W>s' : '<C-W>v'
 "}}}
 
@@ -589,28 +589,68 @@ else
   noremap <expr> <SID>? myvimrc#cmdline_enter('?')
 endif
 
-NXmap ;; <SID>:
-NXmap :  <SID>:
-NXmap /  <SID>/
-NXmap ?  <SID>?
+NXOmap ;; <SID>:
+NXOmap :  <SID>:
+NXOmap /  <SID>/
+NXOmap ?  <SID>?
 
-NXnoremap <expr> ;: myvimrc#cmdline_enter(':')
-NXnoremap <expr> ;/ myvimrc#cmdline_enter('/')
-NXnoremap <expr> ;? myvimrc#cmdline_enter('?')
+NXOnoremap <expr> ;: myvimrc#cmdline_enter(':')
+NXOnoremap <expr> ;/ myvimrc#cmdline_enter('/')
+NXOnoremap <expr> ;? myvimrc#cmdline_enter('?')
+
+NXnoremap <script> <C-W>/ <SID>(split-nicely)<SID>/
+NXnoremap <script> <C-W>? <SID>(split-nicely)<SID>?
+
+NXnoremap <script> <C-W>q/ <SID>(split-nicely)q/
+NXnoremap <script> <C-W>q? <SID>(split-nicely)q?
+
+NXnoremap <script><expr> <C-W>;/
+  \ '<SID>(split-nicely)' . myvimrc#cmdline_enter('/')
+NXnoremap <script><expr> <C-W>;?
+  \ '<SID>(split-nicely)' . myvimrc#cmdline_enter('?')
 
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 
 augroup MyVimrc
   autocmd CmdwinEnter *
-    \ call myvimrc#cmdwin_enter()
+    \ call myvimrc#cmdwin_enter(expand('<afile>:s?\\?/?'))
   autocmd CmdwinLeave *
-    \ call myvimrc#cmdwin_leave()
-  autocmd CmdwinEnter /
-    \ inoremap <buffer> / \/
-  autocmd CmdwinEnter ?
-    \ inoremap <buffer> ? \?
+    \ call myvimrc#cmdwin_leave(expand('<afile>:s?\\?/?'))
 augroup END
+"}}}
+
+"------------------------------------------------------------------------------
+" Search: {{{
+noremap <SID>*  *zv
+noremap <SID>#  #zv
+noremap <SID>g* g*zv
+noremap <SID>g# g#zv
+noremap <SID>n  nzv
+noremap <SID>N  Nzv
+
+NXOmap *  <SID>*
+NXOmap #  <SID>#
+NXOmap g* <SID>g*
+NXOmap g# <SID>g#
+NXOmap g/ *
+NXOmap g? #
+
+nmap <C-W>*  <SID>(split-nicely)<SID>*
+nmap <C-W>#  <SID>(split-nicely)<SID>#
+nmap <C-W>g* <SID>(split-nicely)<SID>g*
+nmap <C-W>g# <SID>(split-nicely)<SID>g#
+xnoremap <script> <C-W>*  <SID>(split-nicely)gv<SID>*
+xnoremap <script> <C-W>#  <SID>(split-nicely)gv<SID>#
+xnoremap <script> <C-W>g* <SID>(split-nicely)gv<SID>g*
+xnoremap <script> <C-W>g# <SID>(split-nicely)gv<SID>g#
+NXmap <C-W>g/ <C-W>*
+NXmap <C-W>g? <C-W>#
+
+NXOmap <expr> n
+  \ myvimrc#search_forward_expr() ? '<SID>n' : '<SID>N'
+NXOmap <expr> N
+  \ myvimrc#search_forward_expr() ? '<SID>N' : '<SID>n'
 "}}}
 
 "------------------------------------------------------------------------------
@@ -727,7 +767,7 @@ NXnoremap <Leader>J     :<C-U>changes<CR>
 NXnoremap <Leader><C-D> :<C-U>pwd<CR>
 NXnoremap <script> <Leader>e <SID>:<C-U>edit<Space>
 NXnoremap <script> <Leader>b <SID>:<C-U>buffer<Space>
-NXnoremap <script> <Leader>t <SID>:<C-U>tabm<Space>
+NXnoremap <script> <Leader>t <SID>:<C-U>tabnext<Space>
 NXnoremap <script> <Leader>d <SID>:<C-U>lcd<Space>
 NXnoremap <script> <Leader>D <SID>:<C-U>cd<Space>
 NXnoremap <expr> <Leader>Q
@@ -740,26 +780,6 @@ NXnoremap <script><expr> <Leader><M-D>
   \ '<SID>:<C-U>cd ' .
   \ expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '')) .
   \ '/'
-"}}}
-
-"------------------------------------------------------------------------------
-" Search: {{{
-NXOmap g/ *
-NXOmap g? #
-
-NXnoremap <script> <C-W>/  <SID>(split-nicely)<SID>/
-NXnoremap <script> <C-W>?  <SID>(split-nicely)<SID>?
-NXnoremap <script> <C-W>*  <SID>(split-nicely)*
-NXnoremap <script> <C-W>#  <SID>(split-nicely)#
-NXnoremap <script> <C-W>g* <SID>(split-nicely)g*
-NXnoremap <script> <C-W>g# <SID>(split-nicely)g#
-NXmap <C-W>g/ <C-W>*
-NXmap <C-W>g? <C-W>#
-
-NXOnoremap <expr> n
-  \ myvimrc#search_forward_expr() ? 'nzv' : 'Nzv'
-NXOnoremap <expr> N
-  \ myvimrc#search_forward_expr() ? 'Nzv' : 'nzv'
 "}}}
 
 "------------------------------------------------------------------------------
@@ -799,7 +819,7 @@ inoremap <expr> <M-L> '<C-O>' . myvimrc#smart_eol()
 " Smart Close: {{{
 autocmd MyVimrc FileType *
   \ if (&readonly || !&modifiable) && maparg('q', 'n') == '' |
-  \   nnoremap <buffer><expr> q
+  \   nnoremap <buffer><silent><expr> q
   \     winnr('$') != 1 ? ':<C-U>close<CR>' : ''|
   \ endif
 "}}}
@@ -1107,35 +1127,37 @@ endfunction
 
 "------------------------------------------------------------------------------
 " Reverse Status Line Color At Insert Mode: {{{
-function! s:set_status_line_color(is_enter, force)
-  if !exists('s:hi_status_line') || !exists('s:hi_status_line_i') || a:force
-    silent! let s:hi_status_line   = s:get_highlight('StatusLine')
-    silent! let s:hi_status_line_i = s:reverse_highlight(s:hi_status_line)
-  endif
-
-  if exists('s:hi_status_line') && exists('s:hi_status_line_i')
-    highlight clear StatusLine
-    if a:is_enter
-      execute 'highlight StatusLine' s:hi_status_line_i
-    else
-      execute 'highlight StatusLine' s:hi_status_line
+if has('gui_running') || &t_Co > 255
+  function! s:set_status_line_color(is_enter, force)
+    if !exists('s:hi_status_line') || !exists('s:hi_status_line_i') || a:force
+      silent! let s:hi_status_line   = s:get_highlight('StatusLine')
+      silent! let s:hi_status_line_i = s:reverse_highlight(s:hi_status_line)
     endif
-  endif
-endfunction
 
-augroup MyVimrc
-  autocmd ColorScheme *
-    \ call s:set_status_line_color(mode() =~# '[iR]', 1)
-  autocmd InsertEnter *
-    \ call s:set_status_line_color(1, 0)
-  autocmd InsertLeave *
-    \ call s:set_status_line_color(0, 0)
-augroup END
+    if exists('s:hi_status_line') && exists('s:hi_status_line_i')
+      highlight clear StatusLine
+      if a:is_enter
+        execute 'highlight StatusLine' s:hi_status_line_i
+      else
+        execute 'highlight StatusLine' s:hi_status_line
+      endif
+    endif
+  endfunction
+
+  augroup MyVimrc
+    autocmd ColorScheme *
+      \ call s:set_status_line_color(mode() =~# '[iR]', 1)
+    autocmd InsertEnter *
+      \ call s:set_status_line_color(1, 0)
+    autocmd InsertLeave *
+      \ call s:set_status_line_color(0, 0)
+  augroup END
+endif
 "}}}
 
 "------------------------------------------------------------------------------
 " Highlight Ideographic Space: {{{
-if has('multi_byte')
+if has('multi_byte') && (has('gui_running') || &t_Co > 255)
   function! s:set_ideographic_space(force)
     if !exists('s:hi_ideographic_space') || a:force
       silent! let s:hi_ideographic_space =
@@ -1248,9 +1270,6 @@ if s:has_neobundle && neobundle#tap('altr')
   nmap g<M-F>     <Plug>(altr-back)
   nmap <C-W><M-f> <SID>(split-nicely)<Plug>(altr-forward)
   nmap <C-W><M-F> <SID>(split-nicely)<Plug>(altr-back)
-
-  autocmd MyVimrc User CmdlineEnter
-    \ NeoBundleSource altr
 endif
 "}}}
 
@@ -1259,14 +1278,19 @@ endif
 if s:has_neobundle && neobundle#tap('anzu')
   set shortmess+=s
 
-  nmap <expr> n
-    \ myvimrc#search_forward_expr() ?
-    \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)zv' :
-    \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)zv'
-  nmap <expr> N
-    \ myvimrc#search_forward_expr() ?
-    \   '<Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)zv' :
-    \   '<Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)zv'
+  nmap <SID>(anzu-jump-n) <Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)
+  nmap <SID>(anzu-jump-N) <Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)
+  nmap <SID>(anzu-echo)   <Plug>(anzu-update-search-status-with-echo)
+
+  nnoremap <script> <SID>*  *<SID>(anzu-echo)zv
+  nnoremap <script> <SID>#  #<SID>(anzu-echo)zv
+  nnoremap <script> <SID>g* g*<SID>(anzu-echo)zv
+  nnoremap <script> <SID>g# g#<SID>(anzu-echo)zv
+  nnoremap <script> <SID>n  <SID>(anzu-jump-n)zv
+  nnoremap <script> <SID>N  <SID>(anzu-jump-N)zv
+
+  cnoremap <script><expr> <CR>
+    \ '<C-]><CR>' . (getcmdtype() =~ '[/?]' ? '<SID>(anzu-echo)zv' : '')
 endif
 "}}}
 
@@ -1395,9 +1419,6 @@ if s:has_neobundle && neobundle#tap('eskk')
 
   map! <C-J> <Plug>(eskk:toggle)
   lmap <C-J> <Plug>(eskk:toggle)
-
-  autocmd MyVimrc User CmdlineEnter
-    \ NeoBundleSource eskk
 endif
 "}}}
 
@@ -1977,27 +1998,27 @@ if s:has_neobundle && neobundle#tap('operator-star')
   NOmap g* <Plug>(operator-g*)
   NOmap g# <Plug>(operator-g#)
 
-  NOnoremap **   *zv
-  NOnoremap ##   #zv
-  NOnoremap g*g* g*zv
-  NOnoremap g#g# g#zv
-
-  NOmap g/g/ **
-  NOmap g?g? ##
-  NOmap g//  **
-  NOmap g??  ##
-  NOmap g**  g*g*
-  NOmap g##  g#g#
-
   nmap <C-W>*  <SID>(split-nicely)<Plug>(operator-*)
   nmap <C-W>#  <SID>(split-nicely)<Plug>(operator-#)
   nmap <C-W>g* <SID>(split-nicely)<Plug>(operator-g*)
   nmap <C-W>g# <SID>(split-nicely)<Plug>(operator-g#)
 
-  nnoremap <script> <C-W>**   <SID>(split-nicely)*zv
-  nnoremap <script> <C-W>##   <SID>(split-nicely)#zv
-  nnoremap <script> <C-W>g*g* <SID>(split-nicely)g*zv
-  nnoremap <script> <C-W>g#g# <SID>(split-nicely)g#zv
+  nnoremap <script> **   <SID>*
+  nnoremap <script> ##   <SID>#
+  nnoremap <script> g*g* <SID>g*
+  nnoremap <script> g#g# <SID>g#
+
+  nnoremap <script> <C-W>**   <SID>(split-nicely)<SID>*
+  nnoremap <script> <C-W>##   <SID>(split-nicely)<SID>#
+  nnoremap <script> <C-W>g*g* <SID>(split-nicely)<SID>g*
+  nnoremap <script> <C-W>g#g# <SID>(split-nicely)<SID>g#
+
+  nmap g/g/ **
+  nmap g?g? ##
+  nmap g//  **
+  nmap g??  ##
+  nmap g**  g*g*
+  nmap g##  g#g#
 
   nmap <C-W>g/g/ <C-W>**
   nmap <C-W>g?g? <C-W>##
@@ -2080,7 +2101,7 @@ if s:has_neobundle && neobundle#tap('operator-user')
   nmap sgg sgsg
   nmap sJJ sJsJ
 
-  if neobundle#is_installed('unite')
+  if !neobundle#is_installed('unite')
     nnoremap sgsg :<C-U>execute input(':', 'grep ')<CR>
   endif
 endif
@@ -2239,6 +2260,7 @@ if s:has_neobundle && neobundle#tap('quickrun')
     \   '<Plug>(precious-quickrun-op)' : '<Plug>(quickrun-op)'
   xmap sr  <Plug>(quickrun)
   omap sr  g@
+  nmap srr srsr
   nmap srr srsr
 
   NXmap <Leader>r <Plug>(quickrun)
@@ -2414,10 +2436,10 @@ if s:has_neobundle && neobundle#tap('switch')
         let s1 = l[i]
         let s2 = get(l, i + 1, l[0])
         if len(s1) > 3
-          call extend(inc, {'\C' . s1[0:3] . '\@!' : s2[:2]})
+          call extend(inc, {'\C\<' . s1[:2] . '\>' : s2[:2]})
         endif
         if len(s2) > 3
-          call extend(dec, {'\C' . s2[0:3] . '\@!' : s1[:2]})
+          call extend(dec, {'\C\<' . s2[:2] . '\>' : s1[:2]})
         endif
       endfor
       call add(g:switch_increment_definitions, inc)
@@ -3429,24 +3451,26 @@ if s:has_neobundle && neobundle#tap('visualstar')
     let g:visualstar_no_default_key_mappings = 1
   endfunction
 
-  xmap <SID>(visualstar-*)  <Plug>(visualstar-*)
-  xmap <SID>(visualstar-#)  <Plug>(visualstar-#)
-  xmap <SID>(visualstar-g*) <Plug>(visualstar-g*)
-  xmap <SID>(visualstar-g#) <Plug>(visualstar-g#)
+  if neobundle#is_installed('anzu')
+    xmap <SID>(visualstar-*)
+      \ <Plug>(visualstar-*)<Plug>(anzu-update-search-status-with-echo)
+    xmap <SID>(visualstar-#)
+      \ <Plug>(visualstar-#)<Plug>(anzu-update-search-status-with-echo)
+    xmap <SID>(visualstar-g*)
+      \ <Plug>(visualstar-g*)<Plug>(anzu-update-search-status-with-echo)
+    xmap <SID>(visualstar-g#)
+      \ <Plug>(visualstar-g#)<Plug>(anzu-update-search-status-with-echo)
+  else
+    xmap <SID>(visualstar-*)  <Plug>(visualstar-*)
+    xmap <SID>(visualstar-#)  <Plug>(visualstar-#)
+    xmap <SID>(visualstar-g*) <Plug>(visualstar-g*)
+    xmap <SID>(visualstar-g#) <Plug>(visualstar-g#)
+  endif
 
-  xnoremap <script> *  <SID>(visualstar-*)zv
-  xnoremap <script> #  <SID>(visualstar-#)zv
-  xnoremap <script> g* <SID>(visualstar-g*)zv
-  xnoremap <script> g# <SID>(visualstar-g#)zv
-
-  xnoremap <script> <C-W>*
-    \ <SID>(split-nicely)gv<SID>(visualstar-*)zv
-  xnoremap <script> <C-W>#
-    \ <SID>(split-nicely)gv<SID>(visualstar-#)zv
-  xnoremap <script> <C-W>g*
-    \ <SID>(split-nicely)gv<SID>(visualstar-g*)zv
-  xnoremap <script> <C-W>g#
-    \ <SID>(split-nicely)gv<SID>(visualstar-g#)zv
+  xnoremap <script> <SID>*  <SID>(visualstar-*)zv
+  xnoremap <script> <SID>#  <SID>(visualstar-#)zv
+  xnoremap <script> <SID>g* <SID>(visualstar-g*)zv
+  xnoremap <script> <SID>g# <SID>(visualstar-g#)zv
 endif
 "}}}
 

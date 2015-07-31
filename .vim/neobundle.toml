@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  30-Jul-2015.
+# Last Change:  31-Jul-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -105,12 +105,14 @@ depends = 'kana/vim-operator-user'
 [[plugins]]
 repository = 'rhysd/clever-f.vim'
 mappings = [['nvo', '<Plug>']]
+insert = 1
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'deris/columnjump'
 commands = ['ColumnJumpBackward', 'ColumnJumpForward']
 mappings = [['nvo', '<Plug>']]
+insert = 1
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -451,6 +453,7 @@ depends = 'kana/vim-operator-user'
 [[plugins]]
 repository = 'Shougo/neobundle.vim'
 fetch = 1
+type = 'nosync'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -695,6 +698,7 @@ function_prefix = 'operator'
 [[plugins]]
 repository = 'deris/parajump'
 mappings = [['nvo', '<Plug>']]
+insert = 1
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -862,6 +866,7 @@ filetypes = 'skkdict'
 [[plugins]]
 repository = 'kana/vim-smartword'
 mappings = [['nvo', '<Plug>']]
+insert = 1
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -1370,12 +1375,14 @@ mappings = [['nvo', '<Plug>']]
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'taku25/vim-visualstudio'
+disabled = '!has("win32")'
 commands = ['VSCompile', 'VSBuild', 'VSReBuild', 'VSBuildProject', 'VSReBuildProject', 'VSCompileNoWait', 'VSBuildNoWait', 'VSReBuildNoWait', 'VSBuildProjectNoWait', 'VSReBuildProjectNoWait', 'VSSetBuildConfig', 'VSSetPlatform', 'VSCancelBuild', 'VSClean', 'VSOutput', 'VSErorrList', 'VSRun', 'VSDebugRun', 'VSSetStartupProject', 'VSStopDebugRun', 'VSFindSolution1', 'VSFindSolution2', 'VSFindSolutionNoWait1', 'VSFindSolutionNoWait2', 'VSFindProject1', 'VSFindProject2', 'VSFindProjectNoWait1', 'VSFindProjectNoWait2', 'VSFindSymbol', 'VSFindSymbolNoWait', 'VSFindResult1', 'VSFindResult2', 'VSFindSymbolResult', 'VSOpenFile', 'VSGetFile', 'VSAddBreakPoint', 'VSChangeDirectory', 'VSGoToDefinition']
 # depends = 'taku25/VisualStudioController'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'taku25/VisualStudioController'
+disabled = '!has("win32")'
 fetch = 1
 
 #------------------------------------------------------------------------------

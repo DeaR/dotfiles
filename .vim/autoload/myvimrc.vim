@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  30-Jul-2015.
+" Last Change:  31-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -94,7 +94,7 @@ endfunction
 
 "------------------------------------------------------------------------------
 " Command Line: {{{
-function! myvimrc#cmdwin_enter()
+function! myvimrc#cmdwin_enter(type)
   let s:save_bs = &backspace
   set backspace=
   setlocal nocursorcolumn
@@ -104,22 +104,29 @@ function! myvimrc#cmdwin_enter()
   setlocal norelativenumber
   startinsert!
 
-  nnoremap <buffer><silent> q :<C-U>quit<CR>
+  if a:type == '/'
+    inoremap <buffer> / \/
+  elseif a:type == '?'
+    inoremap <buffer> ? \?
+  endif
 
   inoremap <buffer><silent><expr> <C-H>
     \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<C-H>'
   inoremap <buffer><silent><expr> <BS>
     \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<BS>'
+
+  nnoremap <buffer><silent> q :<C-U>quit<CR>
 endfunction
+function! myvimrc#cmdwin_leave(type)
+  let &backspace = s:save_bs
+endfunction
+
 function! myvimrc#cmdline_enter(type)
   if exists('#User#CmdlineEnter')
     execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
       \ 'User CmdlineEnter'
   endif
   return a:type
-endfunction
-function! myvimrc#cmdwin_leave()
-  let &backspace = s:save_bs
 endfunction
 "}}}
 
@@ -195,21 +202,12 @@ endfunction
 "------------------------------------------------------------------------------
 " Smart BOL: {{{
 function! myvimrc#smart_bol()
-  if v:count
-    return repeat("\<Del>", len(v:count)) . (v:count % 2 ? '^' : '0')
-  else
-    let col = col('.')
-    return col <= 1 || col > match(getline('.'), '^\s*\zs') + 1 ? '^' : '0'
-  endif
+  return col('.') <= 1 || col('.') > match(getline('.'), '^\s*\zs') + 1 ? '^' : '0'
 endfunction
 function! myvimrc#smart_eol()
-  if v:count
-    return repeat("\<Del>", len(v:count)) . (v:count % 2 ? '$' : 'g_')
-  else
-    return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
-  endif
+  return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Line Number: {{{
@@ -423,24 +421,29 @@ endif
 "------------------------------------------------------------------------------
 " Operator Star: {{{
 if s:has_neobundle && neobundle#tap('operator-star')
+  function! s:operator_star_post()
+    normal! zv
+    call feedkeys(":\<C-U>let &hls=&hls\<CR>", 'n')
+    if neobundle#is_installed('anzu')
+      call feedkeys(":\<C-U>AnzuUpdateSearchStatusOutput\<CR>", 'n')
+    endif
+  endfunction
+
   function! myvimrc#operator_star_star(wiseness)
     call operator#star#star(a:wiseness)
-    normal! zv
+    call s:operator_star_post()
   endfunction
-
   function! myvimrc#operator_star_sharp(wiseness)
     call operator#star#sharp(a:wiseness)
-    normal! zv
+    call s:operator_star_post()
   endfunction
-
   function! myvimrc#operator_star_gstar(wiseness)
     call operator#star#gstar(a:wiseness)
-    normal! zv
+    call s:operator_star_post()
   endfunction
-
   function! myvimrc#operator_star_gsharp(wiseness)
     call operator#star#gsharp(a:wiseness)
-    normal! zv
+    call s:operator_star_post()
   endfunction
 endif
 "}}}

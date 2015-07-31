@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Jul-2015.
+" Last Change:  30-Jul-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -120,12 +120,6 @@ endif
 if has('kaoriya')
   set ambiwidth=auto
 endif
-"}}}
-
-"------------------------------------------------------------------------------
-" Search: {{{
-" Highlight
-set hlsearch
 "}}}
 
 "------------------------------------------------------------------------------
