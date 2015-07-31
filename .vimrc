@@ -1907,6 +1907,29 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
+" Operator Furround: {{{
+if s:has_neobundle && neobundle#tap('operator-furround')
+  NXOmap sa <Plug>(operator-furround-append-input)
+  NXOmap sA <Plug>(operator-furround-append-reg)
+  NXOmap sd <Plug>(operator-furround-delete)
+  NXOmap sc <Plug>(operator-furround-replace-input)
+  NXOmap sC <Plug>(operator-furround-replace-reg)
+
+  nmap sasa <Plug>(operator-furround-append-input)<Plug>(textobj-multiblock-a)
+  nmap sAsA <Plug>(operator-furround-append-reg)<Plug>(textobj-multiblock-a)
+  nmap sdsd <Plug>(operator-furround-delete)<Plug>(textobj-multiblock-a)
+  nmap scsc <Plug>(operator-furround-replace-input)<Plug>(textobj-multiblock-a)
+  nmap sCsC <Plug>(operator-furround-replace-reg)<Plug>(textobj-multiblock-a)
+
+  nmap saa sasa
+  nmap sAA sAsA
+  nmap sdd sdsd
+  nmap scc scsc
+  nmap sCC sCsC
+endif
+"}}}
+
+"------------------------------------------------------------------------------
 " Operator HTML Escape: {{{
 if s:has_neobundle && neobundle#tap('operator-html-escape')
   NXOmap se <Plug>(operator-html-escape)
@@ -2911,6 +2934,18 @@ if s:has_neobundle && neobundle#tap('textobj-php')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:textobj_php_no_default_key_mappings = 1
   endfunction
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" TextObj PostExpr: {{{
+if s:has_neobundle && neobundle#tap('textobj-postexpr')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:textobj_postexpr_no_default_key_mappings = 1
+  endfunction
+
+  XOmap aX <Plug>(textobj-postexpr-a)
+  XOmap iX <Plug>(textobj-postexpr-i)
 endif
 "}}}
 

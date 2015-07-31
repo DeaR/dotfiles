@@ -617,6 +617,12 @@ depends = 'kana/vim-operator-user'
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repository = 'DeaR/vim-operator-furround'
+mappings = [['nvo', '<Plug>']]
+depends = ['kana/vim-operator-user', 'osyo-manga/vim-textobj-multiblock']
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repository = 'sgur/vim-operator-openbrowser'
 mappings = [['nvo', '<Plug>']]
 depends = ['tyru/open-browser.vim', 'kana/vim-operator-user']
@@ -1069,6 +1075,13 @@ depends = 'kana/vim-textobj-user'
 [[plugins]]
 repository = 'bps/vim-textobj-python'
 commands = 'TextobjPythonDefaultKeyMappings'
+mappings = [['vo', '<Plug>']]
+depends = 'kana/vim-textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'syngan/vim-textobj-postexpr'
+commands = 'TextobjPostexprDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
 depends = 'kana/vim-textobj-user'
 
