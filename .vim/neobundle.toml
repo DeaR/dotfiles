@@ -678,12 +678,6 @@ depends = 'kana/vim-operator-user'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repository = 'rhysd/vim-operator-surround'
-mappings = [['nvo', '<Plug>']]
-depends = ['kana/vim-operator-user', 'osyo-manga/vim-textobj-multiblock']
-
-#------------------------------------------------------------------------------
-[[plugins]]
 repository = 'pekepeke/vim-operator-tabular'
 mappings = [['nvo', '<Plug>'], ['nvo', '<Plug>(operator-untabularize']]
 depends = 'kana/vim-operator-user'

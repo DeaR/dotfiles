@@ -2062,22 +2062,6 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
-" Operator Surround: {{{
-if s:has_neobundle && neobundle#tap('operator-surround')
-  NXOmap sa <Plug>(operator-surround-append)
-  NXOmap sd <Plug>(operator-surround-delete)
-  NXOmap sc <Plug>(operator-surround-replace)
-
-  nmap sdsd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
-  nmap scsc <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
-
-  nmap saa sasa
-  nmap sdd sdsd
-  nmap scc scsc
-endif
-"}}}
-
-"------------------------------------------------------------------------------
 " Operator Tabular: {{{
 if s:has_neobundle && neobundle#tap('operator-tabular')
   function! neobundle#tapped.hooks.on_source(bundle)
