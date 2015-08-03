@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  31-Jul-2015.
+" Last Change:  03-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -320,6 +320,27 @@ if s:has_neobundle && neobundle#tap('altercmd')
     for [key, value] in items(a:define)
       execute 'IAlterCommand <buffer>' key value
     endfor
+  endfunction
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" IncSearch: {{{
+if s:has_neobundle && neobundle#tap('incsearch')
+  function! myvimrc#incsearch_next()
+    return incsearch#go({
+      \ 'command' : '/',
+      \ 'keymap' : {
+      \   '/' : {'key' : '\/', 'noremap' : 1}}})
+  endfunction
+
+  function! myvimrc#incsearch_prev()
+    return incsearch#go({
+      \ 'command' : '?',
+      \ 'keymap' : {
+      \   '?' : {'key' : '\?', 'noremap' : 1},
+      \   "\<Tab>" : {'key' : '<Over>(incsearch-prev)', 'noremap' : 1},
+      \   "\<S-Tab>" : {'key' : '<Over>(incsearch-next)', 'noremap' : 1}}})
   endfunction
 endif
 "}}}

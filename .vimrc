@@ -1486,10 +1486,8 @@ endif
 "------------------------------------------------------------------------------
 " IncSearch: {{{
 if s:has_neobundle && neobundle#tap('incsearch')
-  NXOnoremap <silent><expr> /
-    \ incsearch#go({'command':'/','keymap':{'/':{'key':'\/','noremap':1}}})
-  NXOnoremap <silent><expr> ?
-    \ incsearch#go({'command':'?','keymap':{'?':{'key':'\?','noremap':1}}})
+  NXOnoremap <silent><expr> / myvimrc#incsearch_next()
+  NXOnoremap <silent><expr> ? myvimrc#incsearch_prev()
 
   if neobundle#is_installed('anzu')
     autocmd MyVimrc User IncSearchExecute
