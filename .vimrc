@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  31-Jul-2015.
+" Last Change:  03-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1480,6 +1480,21 @@ endif
 if s:has_neobundle && neobundle#tap('hier')
   autocmd MyVimrc User EscapeKey
     \ HierClear
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" IncSearch: {{{
+if s:has_neobundle && neobundle#tap('incsearch')
+  NXOnoremap <silent><expr> /
+    \ incsearch#go({'command':'/','keymap':{'/':{'key':'\/','noremap':1}}})
+  NXOnoremap <silent><expr> ?
+    \ incsearch#go({'command':'?','keymap':{'?':{'key':'\?','noremap':1}}})
+
+  if neobundle#is_installed('anzu')
+    autocmd MyVimrc User IncSearchExecute
+      \ call feedkeys(":\<C-U>AnzuUpdateSearchStatusOutput\<CR>", 'n')
+  endif
 endif
 "}}}
 

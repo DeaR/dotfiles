@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  31-Jul-2015.
+# Last Change:  03-Aug-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -288,6 +288,12 @@ filetypes = ['aspperl', 'aspvbs', 'cf', 'dtml', 'eruby', 'groovy', 'gsp', 'haml'
 [[plugins]]
 repository = 'HybridText'
 filetypes = ['hybrid', 'text']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'haya14busa/incsearch.vim'
+commands = ['IncSearchNoreMap', 'IncSearchMap']
+mappings = [['nvo', '<Plug>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
