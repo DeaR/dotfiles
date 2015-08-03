@@ -623,7 +623,7 @@ depends = 'kana/vim-operator-user'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repository = 'DeaR/vim-operator-furround'
+repository = 'syngan/vim-operator-furround'
 mappings = [['nvo', '<Plug>']]
 depends = ['kana/vim-operator-user', 'osyo-manga/vim-textobj-multiblock']
 
@@ -678,7 +678,7 @@ depends = ['kana/vim-operator-user', 'thinca/vim-visualstar']
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repository = 'DeaR/vim-operator-suddendeath'
+repository = 'yomi322/vim-operator-suddendeath'
 mappings = [['nvo', '<Plug>']]
 depends = 'kana/vim-operator-user'
 
@@ -848,6 +848,7 @@ repository = 'thinca/vim-scouter'
 
 #------------------------------------------------------------------------------
 [[plugins]]
+# repository = 'kana/vim-scratch'
 repository = 'DeaR/vim-scratch'
 commands = ['ScratchOpen', 'ScratchClose', 'ScratchEvaluate']
 mappings = [['nvo', '<Plug>']]
