@@ -3128,7 +3128,7 @@ if s:has_neobundle && neobundle#tap('unite')
     let g:unite_source_grep_encoding       = 'utf-8'
 
     if !has('win32') && s:executable('find')
-      let g:unite_source_rec_async_command = 'find'
+      let g:unite_source_rec_async_command = 'find -L'
     elseif neobundle#is_installed('files') || s:executable('files')
       let g:unite_source_rec_async_command = 'files -p'
     elseif neobundle#is_installed('the_silver_searcher') || s:executable('ag')
