@@ -76,7 +76,8 @@ let g:maplocalleader = ','
 let s:gips_enable = 0
 
 " Command line window
-let s:cmdwin_enable = 0
+let s:cmdwin_ex_enable     = 0
+let s:cmdwin_search_enable = 0
 
 " Ignore pattern
 let s:ignore_ext = [
@@ -579,12 +580,15 @@ noremap <expr> <SID>(split-nicely)
 
 "------------------------------------------------------------------------------
 " Command Line: {{{
-if s:cmdwin_enable
+if s:cmdwin_ex_enable
   noremap <SID>: q:
+else
+  noremap <expr> <SID>: myvimrc#cmdline_enter(':')
+endif
+if s:cmdwin_search_enable
   noremap <SID>/ q/
   noremap <SID>? q?
 else
-  noremap <expr> <SID>: myvimrc#cmdline_enter(':')
   noremap <expr> <SID>/ myvimrc#cmdline_enter('/')
   noremap <expr> <SID>? myvimrc#cmdline_enter('?')
 endif
@@ -614,9 +618,9 @@ cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 
 augroup MyVimrc
   autocmd CmdwinEnter *
-    \ call myvimrc#cmdwin_enter(expand('<afile>:s?\\?/?'))
+    \ call myvimrc#cmdwin_enter(expand('<afile>'))
   autocmd CmdwinLeave *
-    \ call myvimrc#cmdwin_leave(expand('<afile>:s?\\?/?'))
+    \ call myvimrc#cmdwin_leave(expand('<afile>'))
 augroup END
 "}}}
 

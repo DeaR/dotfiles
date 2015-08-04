@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  03-Aug-2015.
+" Last Change:  04-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -104,9 +104,9 @@ function! myvimrc#cmdwin_enter(type)
   setlocal norelativenumber
   startinsert!
 
-  if a:type == '/'
+  if a:type =~# '[\/]'
     inoremap <buffer> / \/
-  elseif a:type == '?'
+  elseif a:type =~# '?'
     inoremap <buffer> ? \?
   endif
 
