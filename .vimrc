@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  03-Aug-2015.
+" Last Change:  04-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1486,8 +1486,8 @@ endif
 "------------------------------------------------------------------------------
 " IncSearch: {{{
 if s:has_neobundle && neobundle#tap('incsearch')
-  NXOnoremap <silent><expr> / myvimrc#incsearch_next()
-  NXOnoremap <silent><expr> ? myvimrc#incsearch_prev()
+  NXOnoremap <silent><expr> <SID>/ myvimrc#incsearch_next()
+  NXOnoremap <silent><expr> <SID>? myvimrc#incsearch_prev()
 
   if neobundle#is_installed('anzu')
     autocmd MyVimrc User IncSearchExecute
