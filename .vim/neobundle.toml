@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  03-Aug-2015.
+# Last Change:  04-Aug-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -426,6 +426,7 @@ disabled = 'has("win32")'
 fetch = 1
 
   [plugins.build_commands]
+  windows = 0
   others = 'go'
 
   [plugins.build]

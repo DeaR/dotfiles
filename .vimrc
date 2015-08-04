@@ -1506,8 +1506,8 @@ if s:has_neobundle && neobundle#tap('J6uil')
     let g:J6uil_no_default_keymappings = 1
     let g:J6uil_user                   = 'DeaR'
 
-    if (has('win32')  && isdirectory($PROGRAMFILES . '/ImageMagick-6.9.0-Q16')) ||
-      \ (!has('win32') && s:executable('convert'))
+    if (!has('win32') && s:executable('convert')) ||
+      \ (has('win32') && isdirectory($PROGRAMFILES . '/ImageMagick-6.9.0-Q16'))
       let g:J6uil_display_icon = 1
     endif
   endfunction
