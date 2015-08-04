@@ -283,6 +283,9 @@ autocmd MyVimrc BufNewFile,BufRead *
 
 " ClipBoard
 set clipboard=unnamed
+if has('unnamedplus')
+  set clipboard^=unnamedplus
+endif
 
 " Timeout
 set timeout

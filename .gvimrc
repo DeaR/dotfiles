@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  30-Jul-2015.
+" Last Change:  04-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -168,16 +168,6 @@ autocmd MyGVimrc GUIEnter,ColorScheme *
   \ highlight clear CursorIM |
   \ highlight Cursor   guifg=#000000 guibg=#eedd82 |
   \ highlight CursorIM guifg=#000000 guibg=#6495ed
-"}}}
-"}}}
-
-"==============================================================================
-" Mappings: {{{
-
-"------------------------------------------------------------------------------
-" From Example: {{{
-map  <S-Insert> <MiddleMouse>
-map! <S-Insert> <MiddleMouse>
 "}}}
 "}}}
 
