@@ -1249,6 +1249,13 @@ if filereadable($VIMRUNTIME . '/macros/matchit.vim')
   silent! sunmap ]%
   silent! sunmap a%
 
+  NXmap <SID>[% [%
+  NXmap <SID>]% ]%
+
+  xnoremap <script> [% <Esc><SID>[%m'gv``
+  xnoremap <script> ]% <Esc><SID>]%m'gv``
+  xnoremap <script> a% <Esc><SID>[%v<SID>]%
+
   NXOmap <Space>   %
   NXOmap <S-Space> g%
 endif
