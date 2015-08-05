@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Aug-2015.
+" Last Change:  05-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1238,6 +1238,21 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
+" MatchIt: {{{
+if filereadable($VIMRUNTIME . '/macros/matchit.vim')
+  source $VIMRUNTIME/macros/matchit.vim
+  silent! sunmap %
+  silent! sunmap g%
+  silent! sunmap [%
+  silent! sunmap ]%
+  silent! sunmap a%
+
+  NXOmap <Space>   %
+  NXOmap <S-Space> g%
+endif
+"}}}
+
+"------------------------------------------------------------------------------
 " Alignta: {{{
 if s:has_neobundle && neobundle#tap('alignta')
   function! neobundle#tapped.hooks.on_source(bundle)
@@ -1586,29 +1601,6 @@ if s:has_neobundle && neobundle#tap('localrc')
       \   unlet! b:undo_ftlocalrc |
       \ endif
   augroup END
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" MatchIt: {{{
-if s:has_neobundle && neobundle#tap('matchit')
-  function! neobundle#tapped.hooks.on_post_source(bundle)
-    silent! sunmap %
-    silent! sunmap g%
-    silent! sunmap [%
-    silent! sunmap ]%
-    silent! sunmap a%
-  endfunction
-
-  xmap <SID>[% [%
-  xmap <SID>]% ]%
-
-  xnoremap <script> [% <Esc><SID>[%m'gv``
-  xnoremap <script> ]% <Esc><SID>]%m'gv``
-  xnoremap <script> a% <Esc><SID>[%v<SID>]%
-
-  NXOmap <Space>   %
-  NXOmap <S-Space> g%
 endif
 "}}}
 

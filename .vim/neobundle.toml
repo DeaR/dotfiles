@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  04-Aug-2015.
+# Last Change:  05-Aug-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -378,12 +378,6 @@ commands = ['LuaCheckSyntax', 'LuaCheckGlobals']
 
   [plugins.external_commands]
   others = 'luac'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repository = 'matchit.zip'
-commands = 'MatchDebug'
-mappings = ['%', 'g%', '[%', ']%', ['x', 'a%']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
