@@ -888,8 +888,10 @@ inoremap <C-U> <C-G>u<C-U>
 " Increment: {{{
 silent! vunmap <C-X>
 if s:has_patch(7, 4, 754)
-  xnoremap <C-A> <C-A>gv
-  xnoremap <C-X> <C-X>gv
+  xnoremap <C-A>  <C-A>gv
+  xnoremap <C-X>  <C-X>gv
+  xnoremap g<C-A> g<C-A>gv
+  xnoremap g<C-X> g<C-X>gv
 endif
 "}}}
 
