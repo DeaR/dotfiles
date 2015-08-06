@@ -1892,12 +1892,10 @@ endif
 
 "------------------------------------------------------------------------------
 " OmniSharp: {{{
-if s:neobundle_tap('Omnisharp')
+if s:neobundle_tap('omnisharp')
   function! neobundle#tapped.hooks.on_source(bundle)
-    let g:OmniSharp_typeLookupInPreview    = 0
-    let g:OmniSharp_timeout                = 5
-    let g:OmniSharp_BufWritePreSyntaxCheck = 1
-    let g:Omnisharp_stop_server            = 2
+    let g:OmniSharp_server_path =
+      \ a:bundle.path . '/server/OmniSharp/bin/Release/OmniSharp.exe'
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {

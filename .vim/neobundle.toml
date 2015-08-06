@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  05-Aug-2015.
+# Last Change:  06-Aug-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -585,7 +585,7 @@ unite_sources = ['OmniSharp/findcodeactions', 'OmniSharp/findsymbols', 'OmniShar
 
   [plugins.build]
   windows = '..\\..\\..\\.vim\\tools\\omnisharp\\build.bat'
-  others = 'xbuild server/OmniSharp.sln /p:Platform="Any CPU"'
+  others = 'xbuild server/OmniSharp.sln /p:Configuration="Release" /p:Platform="Any CPU"'
 
 #------------------------------------------------------------------------------
 [[plugins]]

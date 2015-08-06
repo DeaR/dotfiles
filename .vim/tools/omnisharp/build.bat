@@ -16,4 +16,4 @@ if not "%VS120COMNTOOLS%"=="" (
 )
 call "%VCVARSALL%" %PROCESSOR_ARCHITECTURE%
 
-msbuild server\OmniSharp.sln /p:Platform="Any CPU" %*
+msbuild server\OmniSharp.sln /p:Configuration="Release" /p:Platform="Any CPU" %*
