@@ -3152,7 +3152,8 @@ if s:neobundle_tap('unite')
     if !has('win32') && s:executable('find')
       let g:unite_source_rec_async_command = 'find -L'
     elseif s:executable_or_enabled('files', 'files')
-      let g:unite_source_rec_async_command = 'files -p'
+      let g:unite_source_rec_async_command =
+        \ s:has_cpucore() > 1 ? 'files -A' : 'files'
     elseif s:executable_or_enabled('ag', 'the_silver_searcher')
       let g:unite_source_rec_async_command =
         \ 'ag --follow --nocolor --nogroup --hidden -g ""'
