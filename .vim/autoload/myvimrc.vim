@@ -540,16 +540,6 @@ endif
 "------------------------------------------------------------------------------
 " Operator User: {{{
 if s:neobundle_tap('operator-user')
-  if s:executable_or_enabled('jvgrep', 'jvgrep')
-    let s:operator_grep_escape = '\[](){}|.?+*^$'
-  elseif s:executable_or_enabled('ag', 'the_silver_searcher')
-    let s:operator_grep_escape = '\[](){}|.?+*^$'
-  elseif s:executable('grep')
-    let s:operator_grep_escape = '\[].*^$'
-  else
-    let s:operator_grep_escape = '\[].*^$'
-  endif
-
   function! myvimrc#operator_grep(motion_wise)
     if a:motion_wise == 'char'
       let lines = getline(line("'["), line("']"))
@@ -565,10 +555,20 @@ if s:neobundle_tap('operator-user')
         \ 'v:val[start : end]')
     endif
 
+    if &grepprg =~ '^jvgrep'
+      let esc = '\[](){}|.?+*^$'
+    elseif &grepprg =~ '^ag'
+      let esc = '\[](){}|.?+*^$'
+    elseif &grepprg =~ '^grep'
+      let esc = '\[].*^$'
+    else
+      let esc = '\[].*^$'
+    endif
+
     if s:is_enabled_bundle('unite')
       execute 'Unite'
         \ (&grepprg == 'internal' ? 'vimgrep::' : 'grep:::') .
-        \ escape(join(lines), s:operator_grep_escape . ' :')
+        \ escape(join(lines), esc . ' :')
         \ '-buffer-name=grep -no-split -wrap'
     else
       execute input(':',
