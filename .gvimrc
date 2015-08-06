@@ -54,6 +54,18 @@ function! s:has_patch(major, minor, patch)
     \ (v:version == l:version && has('patch' . a:patch))
 endfunction
 
+" CPU Core
+function! s:has_cpucore()
+  if !exists('s:_has_cpucore')
+    let s:_has_cpucore = str2nr(
+      \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
+      \ s:executable('nproc')           ? system('nproc') :
+      \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
+      \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+  endif
+  return s:_has_cpucore
+endfunction
+
 " Check vimproc
 function! s:has_vimproc()
   if !exists('s:exists_vimproc')

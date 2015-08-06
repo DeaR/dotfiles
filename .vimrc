@@ -172,6 +172,18 @@ function! s:has_patch(major, minor, patch)
     \ (v:version == l:version && has('patch' . a:patch))
 endfunction
 
+" CPU Core
+function! s:has_cpucore()
+  if !exists('s:_has_cpucore')
+    let s:_has_cpucore = str2nr(
+      \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
+      \ s:executable('nproc')           ? system('nproc') :
+      \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
+      \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+  endif
+  return s:_has_cpucore
+endfunction
+
 " Check vimproc
 function! s:has_vimproc()
   if !exists('s:exists_vimproc')
@@ -229,15 +241,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   set runtimepath+=~/.local/bundle/neobundle
   let g:neobundle#enable_name_conversion = 1
   let g:neobundle#enable_tail_path       = 1
-  if has('win32')
-    let g:neobundle#install_max_processes = str2nr(
-      \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS : '1')
-  else
-    let g:neobundle#install_max_processes = str2nr(
-      \ s:executable('nproc')         ? system('nproc') :
-      \ s:executable('getconf')       ? system('getconf _NPROCESSORS_ONLN') :
-      \ filereadable('/proc/cpuinfo') ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
-  endif
+  let g:neobundle#install_max_processes  = s:has_cpucore()
 
   call neobundle#begin($HOME . '/.local/bundle')
   if (!has('win32') && v:progname !=# 'gvim') ||
