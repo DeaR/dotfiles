@@ -1,7 +1,7 @@
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Aug-2015.
+" Last Change:  06-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -67,6 +67,19 @@ function! s:has_vimproc()
   return s:exists_vimproc
 endfunction
 
+" Wrapped neobundle#tap
+function! s:neobundle_tap(name)
+  return exists('*neobundle#tap') && neobundle#tap(a:name)
+endfunction
+function! s:neobundle_untap()
+  return exists('*neobundle#untap') && neobundle#untap()
+endfunction
+
+" Check enabled bundle
+function! s:is_enabled_bundle(name)
+  return exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1)
+endfunction
+
 " Cached executable
 let s:_executable = {}
 function! s:executable(expr)
@@ -76,15 +89,20 @@ function! s:executable(expr)
   return s:_executable[a:expr]
 endfunction
 
-" Check Android OS
-let s:is_android = has('unix') &&
-  \ ($HOSTNAME ==? 'android' || $VIM =~? 'net\.momodalo\.app\.vimtouch')
+" Check executable or enabled
+function! s:executable_or_enabled(expr, name)
+  return s:is_enabled_bundle(a:name) || s:executable(a:expr)
+endfunction
 
 " Check japanese
 let s:is_lang_ja = has('multi_lang') && v:lang =~? '^ja'
 
-" Check NeoBundle
-let s:has_neobundle = isdirectory($HOME . '/.local/bundle/neobundle')
+" Check colored UI
+let s:is_colored = has('gui_running') || &t_Co > 255
+
+" Check JIS X 0213
+let s:has_jisx0213 = has('iconv') &&
+  \ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
 "}}}
 "}}}
 
@@ -173,6 +191,8 @@ autocmd MyGVimrc GUIEnter,ColorScheme *
 
 "==============================================================================
 " Post Init: {{{
+call s:neobundle_untap()
+
 if filereadable($HOME . '/.local/.gvimrc_local.vim')
   source ~/.local/.gvimrc_local.vim
 endif

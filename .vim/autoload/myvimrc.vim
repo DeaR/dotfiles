@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Aug-2015.
+" Last Change:  06-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -60,6 +60,19 @@ function! s:has_vimproc()
   return s:exists_vimproc
 endfunction
 
+" Wrapped neobundle#tap
+function! s:neobundle_tap(name)
+  return exists('*neobundle#tap') && neobundle#tap(a:name)
+endfunction
+function! s:neobundle_untap()
+  return exists('*neobundle#untap') && neobundle#untap()
+endfunction
+
+" Check enabled bundle
+function! s:is_enabled_bundle(name)
+  return exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1)
+endfunction
+
 " Cached executable
 let s:_executable = {}
 function! s:executable(expr)
@@ -69,15 +82,20 @@ function! s:executable(expr)
   return s:_executable[a:expr]
 endfunction
 
-" Check Android OS
-let s:is_android = has('unix') &&
-  \ ($HOSTNAME ==? 'android' || $VIM =~? 'net\.momodalo\.app\.vimtouch')
+" Check executable or enabled
+function! s:executable_or_enabled(expr, name)
+  return s:is_enabled_bundle(a:name) || s:executable(a:expr)
+endfunction
 
 " Check japanese
 let s:is_lang_ja = has('multi_lang') && v:lang =~? '^ja'
 
-" Check NeoBundle
-let s:has_neobundle = isdirectory($HOME . '/.local/bundle/neobundle')
+" Check colored UI
+let s:is_colored = has('gui_running') || &t_Co > 255
+
+" Check JIS X 0213
+let s:has_jisx0213 = has('iconv') &&
+  \ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
 "}}}
 "}}}
 
@@ -305,7 +323,7 @@ endfunction
 
 "------------------------------------------------------------------------------
 " Alignta: {{{
-if s:has_neobundle && neobundle#tap('alignta')
+if s:neobundle_tap('alignta')
   function! myvimrc#operator_alignta(motion_wise)
     let range = line("'[") . ',' . line("']")
     execute range . input(':' . range, 'Alignta ')
@@ -315,7 +333,7 @@ endif
 
 "------------------------------------------------------------------------------
 " AlterCommand: {{{
-if s:has_neobundle && neobundle#tap('altercmd')
+if s:neobundle_tap('altercmd')
   function! myvimrc#cmdwin_enter_altercmd(define)
     for [key, value] in items(a:define)
       execute 'IAlterCommand <buffer>' key value
@@ -326,7 +344,7 @@ endif
 
 "------------------------------------------------------------------------------
 " IncSearch: {{{
-if s:has_neobundle && neobundle#tap('incsearch')
+if s:neobundle_tap('incsearch')
   function! myvimrc#incsearch_next()
     return incsearch#go({
       \ 'command' : '/',
@@ -347,7 +365,7 @@ endif
 
 "------------------------------------------------------------------------------
 " Kwbdi: {{{
-if s:has_neobundle && neobundle#tap('kwbdi')
+if s:neobundle_tap('kwbdi')
   function! myvimrc#kwbd()
     if &l:modified
       if s:is_lang_ja
@@ -373,7 +391,7 @@ endif
 
 "------------------------------------------------------------------------------
 " NeoComplCache: {{{
-if s:has_neobundle && neobundle#tap('neocomplcache')
+if s:neobundle_tap('neocomplcache')
   function! myvimrc#check_back_space()
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~ '\s'
@@ -407,7 +425,7 @@ endif
 
 "------------------------------------------------------------------------------
 " NeoComplete: {{{
-if s:has_neobundle && neobundle#tap('neocomplete')
+if s:neobundle_tap('neocomplete')
   function! myvimrc#check_back_space()
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~ '\s'
@@ -441,11 +459,11 @@ endif
 
 "------------------------------------------------------------------------------
 " Operator Star: {{{
-if s:has_neobundle && neobundle#tap('operator-star')
+if s:neobundle_tap('operator-star')
   function! s:operator_star_post()
     normal! zv
     call feedkeys(":\<C-U>let &hls=&hls\<CR>", 'n')
-    if neobundle#is_installed('anzu')
+    if s:is_enabled_bundle('anzu')
       call feedkeys(":\<C-U>AnzuUpdateSearchStatusOutput\<CR>", 'n')
     endif
   endfunction
@@ -471,7 +489,7 @@ endif
 
 "------------------------------------------------------------------------------
 " Operator Tabular: {{{
-if s:has_neobundle && neobundle#tap('operator-tabular')
+if s:neobundle_tap('operator-tabular')
   let s:operator_tabular_kind = 'markdown'
   let s:operator_tabular_ext  = 'csv'
 
@@ -509,10 +527,10 @@ endif
 
 "------------------------------------------------------------------------------
 " Operator User: {{{
-if s:has_neobundle && neobundle#tap('operator-user')
-  if neobundle#is_installed('jvgrep') || s:executable('jvgrep')
+if s:neobundle_tap('operator-user')
+  if s:executable_or_enabled('jvgrep', 'jvgrep')
     let s:operator_grep_escape = '\[](){}|.?+*^$'
-  elseif neobundle#is_installed('the_silver_searcher') || s:executable('ag')
+  elseif s:executable_or_enabled('ag', 'the_silver_searcher')
     let s:operator_grep_escape = '\[](){}|.?+*^$'
   elseif s:executable('grep')
     let s:operator_grep_escape = '\[].*^$'
@@ -535,7 +553,7 @@ if s:has_neobundle && neobundle#tap('operator-user')
         \ 'v:val[start : end]')
     endif
 
-    if neobundle#is_installed('unite')
+    if s:is_enabled_bundle('unite')
       execute 'Unite'
         \ (&grepprg == 'internal' ? 'vimgrep::' : 'grep:::') .
         \ escape(join(lines), s:operator_grep_escape . ' :')
@@ -555,7 +573,7 @@ endif
 
 "------------------------------------------------------------------------------
 " Switch: {{{
-if s:has_neobundle && neobundle#tap('switch')
+if s:neobundle_tap('switch')
   let s:ordinal_suffixes = [
     \ 'th', 'st', 'nd', 'rd', 'th',
     \ 'th', 'th', 'th', 'th', 'th']
@@ -609,7 +627,7 @@ endif
 
 "------------------------------------------------------------------------------
 " TComment: {{{
-if s:has_neobundle && neobundle#tap('tcomment')
+if s:neobundle_tap('tcomment')
   function! myvimrc#operator_tcomment_setup(options)
     let w:tcommentPos = getpos('.')
     call tcomment#SetOption('count', v:count)
@@ -626,7 +644,7 @@ endif
 
 "------------------------------------------------------------------------------
 " TextManipilate: {{{
-if s:has_neobundle && neobundle#tap('textmanip')
+if s:neobundle_tap('textmanip')
   function! s:operator_textmanip(function, motion_wise)
     let save_sel = &l:selection
     try
@@ -668,13 +686,19 @@ endif
 
 "------------------------------------------------------------------------------
 " Unite Mark: {{{
-if s:has_neobundle && neobundle#tap('unite-mark')
+if s:neobundle_tap('unite-mark')
   function! myvimrc#unite_source_mark_marks()
     return join(s:mark_char, '') . toupper(join(s:mark_char, ''))
   endfunction
 endif
 "}}}
+"}}}
 
+
+"==============================================================================
+" Post Init: {{{
+call s:neobundle_untap()
+"}}}
 "}}}
 
 let &cpo = s:save_cpo
