@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  06-Aug-2015.
+" Last Change:  07-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -172,16 +172,14 @@ function! s:has_patch(major, minor, patch)
     \ (v:version == l:version && has('patch' . a:patch))
 endfunction
 
-" CPU Core
-function! s:has_cpucore()
-  if !exists('s:_has_cpucore')
-    let s:_has_cpucore = str2nr(
-      \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
-      \ s:executable('nproc')           ? system('nproc') :
-      \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
-      \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
-  endif
-  return s:_has_cpucore
+" CPU Cores
+function! s:cpucores()
+  let s:_cpucores = get(s:, '_cpucores', str2nr(
+    \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
+    \ s:executable('nproc')           ? system('nproc') :
+    \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
+    \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1'))
+  return s:_cpucores
 endfunction
 
 " Check vimproc
@@ -241,7 +239,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   set runtimepath+=~/.local/bundle/neobundle
   let g:neobundle#enable_name_conversion = 1
   let g:neobundle#enable_tail_path       = 1
-  let g:neobundle#install_max_processes  = s:has_cpucore()
+  let g:neobundle#install_max_processes  = s:cpucores()
 
   call neobundle#begin($HOME . '/.local/bundle')
   if (!has('win32') && v:progname !=# 'gvim') ||
@@ -1172,6 +1170,8 @@ if s:is_colored
   augroup MyVimrc
     autocmd ColorScheme *
       \ call s:set_status_line_color(mode() =~# '[iR]', 1)
+    autocmd VimEnter *
+      \ call s:set_status_line_color(mode() =~# '[iR]', 0)
     autocmd InsertEnter *
       \ call s:set_status_line_color(1, 0)
     autocmd InsertLeave *
@@ -1199,7 +1199,7 @@ if has('multi_byte') && s:is_colored
   augroup MyVimrc
     autocmd ColorScheme *
       \ call s:set_ideographic_space(1)
-    autocmd Syntax *
+    autocmd VimEnter,Syntax *
       \ call s:set_ideographic_space(0)
   augroup END
 endif
@@ -1652,6 +1652,27 @@ if s:neobundle_tap('marching')
 
   call extend(s:neocompl_force_omni_patterns, {
     \ 'marching#complete' : '\%(\.\|->\|::\)\h\w*'})
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" Molokai: {{{
+if s:neobundle_tap('molokai')
+  function! s:molokai_after(colors_name)
+    if a:colors_name != 'molokai'
+      return
+    endif
+
+    highlight TabLine     guibg=#808080 guifg=#080808 gui=NONE
+    highlight TabLineFill guifg=#808080 guibg=#080808 gui=reverse
+  endfunction
+
+  augroup MyVimrc
+    autocmd ColorScheme *
+      \ call s:molokai_after(expand('<amatch>'))
+    autocmd VimEnter *
+      \ call s:molokai_after(get(g:, 'colors_name', ''))
+  augroup END
 endif
 "}}}
 
@@ -3153,7 +3174,7 @@ if s:neobundle_tap('unite')
       let g:unite_source_rec_async_command = 'find -L'
     elseif s:executable_or_enabled('files', 'files')
       let g:unite_source_rec_async_command =
-        \ s:has_cpucore() > 1 ? 'files -A' : 'files'
+        \ s:cpucores() > 1 ? 'files -A' : 'files'
     elseif s:executable_or_enabled('ag', 'the_silver_searcher')
       let g:unite_source_rec_async_command =
         \ 'ag --follow --nocolor --nogroup --hidden -g ""'
