@@ -28,6 +28,14 @@ scriptencoding utf-8
 
 "==============================================================================
 " Pre Init: {{{
+" Skip vim-tiny, vim-small, below vim-7.2
+if v:version < 703 | finish | endif
+
+" Be iMproved
+if &compatible
+  set nocompatible
+endif
+
 " Encoding
 if has('multi_byte')
   set encoding=utf-8
@@ -39,10 +47,8 @@ endif
 
 if has('win32')
   " Language
-  if has('multi_lang')
-    language japanese
-    language time C
-  endif
+  language japanese
+  language time C
 
   " Shell
   let s:default_shell =
@@ -205,7 +211,9 @@ endfunction
 
 " Check enabled bundle
 function! s:is_enabled_bundle(name)
-  return exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1)
+  return
+    \ exists('*neobundle#is_installed') && neobundle#is_installed(a:name) &&
+    \ exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1)
 endfunction
 
 " Cached executable
@@ -223,7 +231,7 @@ function! s:executable_or_enabled(expr, name)
 endfunction
 
 " Check japanese
-let s:is_lang_ja = has('multi_lang') && v:lang =~? '^ja'
+let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
 
 " Check colored UI
 let s:is_colored = has('gui_running') || &t_Co > 255

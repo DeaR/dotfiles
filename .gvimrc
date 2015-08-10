@@ -1,7 +1,8 @@
+scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  07-Aug-2015.
+" Last Change:  10-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -27,6 +28,8 @@
 
 "==============================================================================
 " Pre Init: {{{
+" Skip vim-tiny, vim-small, below vim-7.2
+if v:version < 703 | finish | endif
 
 "------------------------------------------------------------------------------
 " Variable: {{{
@@ -74,7 +77,9 @@ endfunction
 
 " Check enabled bundle
 function! s:is_enabled_bundle(name)
-  return exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1)
+  return
+    \ exists('*neobundle#is_installed') && neobundle#is_installed(a:name) &&
+    \ exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1)
 endfunction
 
 " Cached executable
@@ -92,7 +97,7 @@ function! s:executable_or_enabled(expr, name)
 endfunction
 
 " Check japanese
-let s:is_lang_ja = has('multi_lang') && v:lang =~? '^ja'
+let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
 
 " Check colored UI
 let s:is_colored = has('gui_running') || &t_Co > 255
