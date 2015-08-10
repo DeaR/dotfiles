@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  07-Aug-2015.
+" Last Change:  10-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -2886,6 +2886,20 @@ if s:neobundle_tap('textobj-jabraces')
   XOmap ijY <Plug>(textobj-jabraces-double-yama-kakko-i)
   XOmap ijt <Plug>(textobj-jabraces-kikkou-kakko-i)
   XOmap ijs <Plug>(textobj-jabraces-sumi-kakko-i)
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" TextObj LastPat: {{{
+if s:neobundle_tap('textobj-lastpat')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:textobj_lastpat_no_default_key_mappings = 1
+  endfunction
+
+  if !s:has_patch(7, 3, 610)
+    XOmap gn <Plug>(textobj-lastpat-n)
+    XOmap gN <Plug>(textobj-lastpat-N)
+  endif
 endif
 "}}}
 
