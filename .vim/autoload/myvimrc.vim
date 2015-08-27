@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Aug-2015.
+" Last Change:  23-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -72,7 +72,8 @@ endfunction
 
 " Wrapped neobundle#tap
 function! s:neobundle_tap(name)
-  return exists('*neobundle#tap') && neobundle#tap(a:name)
+  return s:is_enabled_bundle(a:name) &&
+    \ exists('*neobundle#tap') && neobundle#tap(a:name)
 endfunction
 function! s:neobundle_untap()
   return exists('*neobundle#untap') && neobundle#untap()
@@ -230,11 +231,11 @@ endfunction
 " }}}
 
 "------------------------------------------------------------------------------
-" Smart BOL: {{{
-function! myvimrc#smart_bol()
+" BOL Toggle: {{{
+function! myvimrc#bol_toggle()
   return col('.') <= 1 || col('.') > match(getline('.'), '^\s*\zs') + 1 ? '^' : '0'
 endfunction
-function! myvimrc#smart_eol()
+function! myvimrc#eol_toggle()
   return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
 endfunction
 " }}}
@@ -282,15 +283,20 @@ endfunction
 " VC Vars: {{{
 function! myvimrc#vcvarsall(arch)
   let save_isi   = &isident
-  set isident+=( isident+=)
+  let save_shell = myvimrc#get_shell()
   try
+    set isident+=( isident+=)
+    ShellCmd
+
     let env = system(shellescape($VCVARSALL) . ' ' . a:arch . ' & set')
     for matches in filter(map(split(env, '\n'),
       \ 'matchlist(v:val, ''\([^=]\+\)=\(.*\)'')'), 'len(v:val) > 1')
+      " let ${matches[1]} = string(matches[2])
       execute 'let $' . matches[1] . '=' . string(matches[2])
     endfor
   finally
     let &isident = save_isi
+    call myvimrc#set_shell(save_shell)
   endtry
 endfunction
 "}}}
@@ -371,32 +377,6 @@ if s:neobundle_tap('incsearch')
       \   '?' : {'key' : '\?', 'noremap' : 1},
       \   "\<Tab>" : {'key' : '<Over>(incsearch-prev)', 'noremap' : 1},
       \   "\<S-Tab>" : {'key' : '<Over>(incsearch-next)', 'noremap' : 1}}})
-  endfunction
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" Kwbdi: {{{
-if s:neobundle_tap('kwbdi')
-  function! myvimrc#kwbd()
-    if &l:modified
-      if s:is_lang_ja
-        let msg = '変更を "' . expand('%:t') . '" に保存しますか?'
-        let choices = "はい(&Y)\nいいえ(&N)\nキャンセル(&C)"
-      else
-        let msg = 'Save changes to "' . expand('%:t') . '"?'
-        let choices = "&Yes\n&No\n&Cancel"
-      endif
-
-      let ret = confirm(msg, choices, 1, 'Question')
-      if ret == 1
-        silent write!
-      elseif ret == 3
-        return
-      endif
-    endif
-
-    silent execute "normal \<Plug>Kwbd"
   endfunction
 endif
 "}}}
@@ -518,9 +498,9 @@ if s:neobundle_tap('operator-tabular')
       let s:operator_tabular_ext = ext
     endif
 
-    execute 'call' 'operator#tabular#' . s:operator_tabular_kind .
+    call operator#tabular#{s:operator_tabular_kind . 
       \ (a:0 && a:1 ? '#untabularize_' : '#tabularize_') .
-      \ s:operator_tabular_ext . '(a:motion_wise)'
+      \ s:operator_tabular_ext}(a:motion_wise)
   endfunction
 
   function! myvimrc#operator_untabularize(motion_wise)
@@ -657,41 +637,45 @@ endif
 "------------------------------------------------------------------------------
 " TextManipilate: {{{
 if s:neobundle_tap('textmanip')
-  function! s:operator_textmanip(function, motion_wise)
-    let save_sel = &l:selection
-    try
-      let &l:selection = 'inclusive'
-      execute 'normal! `[' .
-        \ operator#user#visual_command_from_wise_name(a:motion_wise) .
-        \ "`]:\<C-U>call " . a:function . "\<CR>\<Esc>"
-    finally
-      let &l:selection = save_sel
-    endtry
+  function! s:operator_textmanip(motion_wise, map)
+    if getpos("'[")[1] == getpos("']")[1] &&
+      \ getpos("']")[2] < getpos("'[")[2]
+      let save_sel = &l:selection
+      try
+        let &l:selection = 'inclusive'
+        execute 'normal! `[' .
+          \ operator#user#visual_command_from_wise_name(a:motion_wise) .
+          \ "`]"
+      finally
+        let &l:selection = save_sel
+      endtry
+    endif
+    execute 'normal' a:map
   endfunction
 
   function! myvimrc#operator_textmanip_duplicate_down(motion_wise)
     call s:operator_textmanip(
-      \ 'textmanip#duplicate("down", "v")', a:motion_wise)
+      \ a:motion_wise, "\<Plug>(textmanip-duplicate-down)")
   endfunction
   function! myvimrc#operator_textmanip_duplicate_up(motion_wise)
     call s:operator_textmanip(
-      \ 'textmanip#duplicate("up", "v")', a:motion_wise)
+      \ a:motion_wise, "\<Plug>(textmanip-duplicate-up)")
   endfunction
   function! myvimrc#operator_textmanip_move_left(motion_wise)
     call s:operator_textmanip(
-      \ 'textmanip#move("left")', a:motion_wise)
+      \ a:motion_wise, "\<Plug>(textmanip-move-left)")
   endfunction
   function! myvimrc#operator_textmanip_move_right(motion_wise)
     call s:operator_textmanip(
-      \ 'textmanip#move("right")', a:motion_wise)
+      \ a:motion_wise, "\<Plug>(textmanip-move-right)")
   endfunction
   function! myvimrc#operator_textmanip_move_down(motion_wise)
     call s:operator_textmanip(
-      \ 'textmanip#move("down")', a:motion_wise)
+      \ a:motion_wise, "\<Plug>(textmanip-move-down)")
   endfunction
   function! myvimrc#operator_textmanip_move_up(motion_wise)
     call s:operator_textmanip(
-      \ 'textmanip#move("up")', a:motion_wise)
+      \ a:motion_wise, "\<Plug>(textmanip-move-up)")
   endfunction
 endif
 "}}}

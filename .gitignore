@@ -10,6 +10,7 @@
 /.gitconfig
 /.hgrc
 
+/.vim/dict/GENE.TXT
 /.vim/tools/the_silver_searcher/pcre.h
 
 /.xyzzy.d/projects.lisp

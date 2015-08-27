@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Aug-2015.
+" Last Change:  27-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -51,8 +51,8 @@ if has('win32')
   language time C
 
   " Shell
-  let s:default_shell =
-    \ [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
+  let s:shell_cmd = get(s:, 'shell_cmd',
+    \ [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote])
   " set shell=sh
   " set shellslash
 
@@ -203,7 +203,8 @@ endfunction
 
 " Wrapped neobundle#tap
 function! s:neobundle_tap(name)
-  return exists('*neobundle#tap') && neobundle#tap(a:name)
+  return s:is_enabled_bundle(a:name) &&
+    \ exists('*neobundle#tap') && neobundle#tap(a:name)
 endfunction
 function! s:neobundle_untap()
   return exists('*neobundle#untap') && neobundle#untap()
@@ -246,7 +247,6 @@ let s:has_jisx0213 = has('iconv') &&
 if isdirectory($HOME . '/.local/bundle/neobundle')
   set runtimepath+=~/.local/bundle/neobundle
   let g:neobundle#enable_name_conversion = 1
-  let g:neobundle#enable_tail_path       = 1
   let g:neobundle#install_max_processes  = s:cpucores()
 
   call neobundle#begin($HOME . '/.local/bundle')
@@ -261,7 +261,7 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   execute 'set runtimepath+=' .
     \ join(map(filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
-    \                 s:SID_PREFIX() . 'is_enabled_bundle(fnamemodify(v:val, ":t"))'),
+    \                 's:is_enabled_bundle(fnamemodify(v:val, ":t"))'),
     \          'escape(v:val, " ,")'), ',')
 
   autocmd MyVimrc User VimrcPost
@@ -394,7 +394,7 @@ endif
 if s:executable_or_enabled('jvgrep', 'jvgrep')
   set grepprg=jvgrep\ -n
 elseif s:executable_or_enabled('ag', 'the_silver_searcher')
-  set grepprg=ag\ --line-numbers\ --nocolor\ --nogroup\ --hidden
+  set grepprg=ag\ --vimgrep\ --hidden
 elseif s:executable('grep')
   set grepprg=grep\ -Hn
 else
@@ -468,12 +468,14 @@ endif
 "------------------------------------------------------------------------------
 " File Encodings: {{{
 if has('multi_byte')
-  let &fileencodings =
-    \ (has('guess_encode') ? 'guess,' : '') .
-    \ (s:has_jisx0213 ? 'iso-2022-jp-3,' : 'iso-2022-jp,') .
-    \ 'cp932,' .
-    \ (s:has_jisx0213 ? 'euc-jisx0213,' : '') .
-    \ 'euc-jp,ucs-bom'
+  if s:has_jisx0213
+    set fileencodings=iso-2022-jp-3,cp932,euc-jisx0213,euc-jp,ucs-bom
+  else
+    set fileencodings=iso-2022-jp,cp932,euc-jp,ucs-bom
+  endif
+  if has('guess_encode')
+    set fileencodings^=guess
+  endif
 
   let s:last_enc = &encoding
   augroup MyVimrc
@@ -781,12 +783,14 @@ NXnoremap <M-Bar> <C-W><Bar>
 "------------------------------------------------------------------------------
 " Leader Prefix: {{{
 NXnoremap <Leader>c     :<C-U>close<CR>
-NXnoremap <Leader>C     :<C-U>only<CR>
 NXnoremap <Leader><M-c> :<C-U>tabclose<CR>
+NXnoremap <Leader>C     :<C-U>only<CR>
 NXnoremap <Leader><M-C> :<C-U>tabonly<CR>
+NXnoremap <Leader>n     :<C-U>enew<CR>
+NXnoremap <Leader><M-n> :<C-U>tabnew<CR>
 NXnoremap <Leader>w     :<C-U>update<CR>
 NXnoremap <Leader>W     :<C-U>wall<CR>
-NXnoremap <Leader>q     :<C-U>bdelete<CR>
+NXnoremap <Leader>q     :<C-U>bwipeout<CR>
 NXnoremap <Leader>!     :<C-U>shell<CR>
 NXnoremap <Leader>B     :<C-U>buffers<CR>
 NXnoremap <Leader>E     :<C-U>Explorer<CR>
@@ -800,7 +804,7 @@ NXnoremap <script> <Leader>t <SID>:<C-U>tabnext<Space>
 NXnoremap <script> <Leader>d <SID>:<C-U>lcd<Space>
 NXnoremap <script> <Leader>D <SID>:<C-U>cd<Space>
 NXnoremap <expr> <Leader>Q
-  \ ':<C-U>1,' . bufnr('$') . 'bdelete<CR>'
+  \ ':<C-U>1,' . bufnr('$') . 'bwipeout<CR>'
 NXnoremap <script><expr> <Leader><M-d>
   \ '<SID>:<C-U>lcd ' .
   \ expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '')) .
@@ -813,18 +817,10 @@ NXnoremap <script><expr> <Leader><M-D>
 
 "------------------------------------------------------------------------------
 " Help: {{{
-inoremap <expr> <F1>
-  \ myvimrc#split_nicely_expr() ?
-  \   '<Esc>:<C-U>help<Space>' :
-  \   '<Esc>:<C-U>vertical help<Space>'
 nnoremap <expr> <F1>
   \ myvimrc#split_nicely_expr() ?
   \   ':<C-U>help<Space>' :
   \   ':<C-U>vertical help<Space>'
-nnoremap <expr> <F2>
-  \ myvimrc#split_nicely_expr() ?
-  \   ':<C-U>help ' . expand('<cword>') . '<CR>' :
-  \   ':<C-U>vertical help ' . expand('<cword>') . '<CR>'
 "}}}
 
 "------------------------------------------------------------------------------
@@ -837,15 +833,15 @@ nnoremap <expr> ml myvimrc#marks()
 "}}}
 
 "------------------------------------------------------------------------------
-" Smart BOL: {{{
-NXOnoremap <expr> H myvimrc#smart_bol()
-NXOnoremap <expr> L myvimrc#smart_eol()
-inoremap <expr> <M-H> '<C-O>' . myvimrc#smart_bol()
-inoremap <expr> <M-L> '<C-O>' . myvimrc#smart_eol()
+" BOL Toggle: {{{
+NXOnoremap <expr> H myvimrc#bol_toggle()
+NXOnoremap <expr> L myvimrc#eol_toggle()
+inoremap <expr> <M-H> '<C-O>' . myvimrc#bol_toggle()
+inoremap <expr> <M-L> '<C-O>' . myvimrc#eol_toggle()
 "}}}
 
 "------------------------------------------------------------------------------
-" Smart Close: {{{
+" Quick Close: {{{
 autocmd MyVimrc FileType *
   \ if (&readonly || !&modifiable) && maparg('q', 'n') == '' |
   \   nnoremap <buffer><silent><expr> q
@@ -873,7 +869,8 @@ set pastetoggle=<F11>
 nnoremap  <F11> :<C-U>set paste! paste?<CR>
 NXnoremap <C-P> :<C-U>registers<CR>
 inoremap  <C-P> <C-O>:<C-U>registers<CR>
-noremap!  <M-p> <C-R>"
+noremap! <expr> <M-p>
+  \ '<C-R>' . v:register
 
 " BackSpace
 nnoremap <BS> X
@@ -1047,7 +1044,7 @@ endif
 if has('win32')
   command! -bar
     \ ShellCmd
-    \ call myvimrc#set_shell(s:default_shell)
+    \ call myvimrc#set_shell(s:shell_cmd)
   command! -bar -nargs=?
     \ ShellSh
     \ call myvimrc#set_shell([<q-args> != '' ? <q-args> : 'sh', 1, '-c', '', '"'])
@@ -1315,6 +1312,30 @@ if s:neobundle_tap('altercmd')
     autocmd CmdwinEnter :
       \ call myvimrc#cmdwin_enter_altercmd(s:altercmd_define)
   augroup END
+
+  if !s:is_enabled_bundle('tabpagebuffer-misc')
+    call extend(s:altercmd_define, {
+      \ 'vb[uffer]'    : 'vertical sbuffer',
+      \ 'tb[uffer]'    : 'tab sbuffer',
+      \ 'vbn[ext]'     : 'vertical sbnext',
+      \ 'vbN[ext]'     : 'vertical sbNext',
+      \ 'vbp[revious]' : 'vertical sbprevious',
+      \ 'vbm[odified]' : 'vertical sbmodified',
+      \ 'tbn[ext]'     : 'tab sbnext',
+      \ 'tbN[ext]'     : 'tab sbNext',
+      \ 'tbp[revious]' : 'tab sbprevious',
+      \ 'tbm[odified]' : 'tab sbmodified',
+      \ 'vbr[ewind]'   : 'vertical sbrewind',
+      \ 'vbf[irst]'    : 'vertical sbfirst',
+      \ 'vbl[ast]'     : 'vertical sblast',
+      \ 'tbr[ewind]'   : 'tab sbrewind',
+      \ 'tbf[irst]'    : 'tab sbfirst',
+      \ 'tbl[ast]'     : 'tab sblast',
+      \ 'vunh[ide]'    : 'vertical unhide',
+      \ 'vba[ll]'      : 'vertical ball',
+      \ 'tun[hide]'    : 'tab unhide',
+      \ 'tba[ll]'      : 'tab ball'})
+  endif
 endif
 "}}}
 
@@ -1599,25 +1620,6 @@ if s:neobundle_tap('jvgrep')
     \   copy(s:ignore_ext),
     \   '''\.'' . escape(v:val, ''\*+.?{}()[]^$-|/'') . ''$'''), '|')
 endif
-
-"------------------------------------------------------------------------------
-" Kwbdi: {{{
-if s:neobundle_tap('kwbdi')
-  function! neobundle#tapped.hooks.on_source(bundle)
-    command! -bar
-      \ Kwbd
-      \ call myvimrc#kwbd()
-  endfunction
-
-  NXnoremap <Leader>q :<C-U>Kwbd<CR>
-  map <SID>Kwbd <Plug>Kwbd
-
-  call extend(s:altercmd_define, {
-    \ 'bd[elete]' : 'Kwbd',
-    \
-    \ '_bd[elete]' : 'bdelete'})
-endif
-"}}}
 
 "------------------------------------------------------------------------------
 " Localrc: {{{
@@ -1915,12 +1917,12 @@ endif
 
 "------------------------------------------------------------------------------
 " NeoSSH: {{{
-if s:neobundle_tap('neossh')
-  autocmd MyVimrc User VimrcPost
-    \ if has('vim_starting') && filter(argv(), 'v:val =~# "^ssh:"') != [] |
-    \   NeoBundleSource neossh |
-    \ endif
-endif
+" if s:neobundle_tap('neossh')
+"   autocmd MyVimrc User VimrcPost
+"     \ if has('vim_starting') && filter(argv(), 'v:val =~# "^ssh:"') != [] |
+"     \   NeoBundleSource neossh |
+"     \ endif
+" endif
 "}}}
 
 "------------------------------------------------------------------------------
@@ -2567,6 +2569,135 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
+" Tabpage Buffer Misc: {{{
+if s:neobundle_tap('tabpagebuffer-misc')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:tabpagebuffer#command#bdelete_keeptabpage = 1
+  endfunction
+
+  NXnoremap <Leader>B :<C-U>TpbBuffers<CR>
+  NXnoremap <Leader>q :<C-U>TpbWipeout<CR>
+  NXnoremap <Leader>Q :<C-U>TpbWipeoutAll<CR>
+
+  call extend(s:altercmd_define, {
+    \ 'bmn[ext]'      : 'TpbModifiedNext',
+    \ 'bmN[ext]'      : 'TpbModifiedPrevious',
+    \ 'bmp[revious]'  : 'TpbModifiedPrevious',
+    \ 'sbmn[ext]'     : 'STpbModifiedNext',
+    \ 'sbmN[ext]'     : 'STpbModifiedPrevious',
+    \ 'sbmp[revious]' : 'STpbModifiedPrevious',
+    \ 'vbmn[ext]'     : 'VTpbModifiedNext',
+    \ 'vbmN[ext]'     : 'VTpbModifiedPrevious',
+    \ 'vbmp[revious]' : 'VTpbModifiedPrevious',
+    \ 'bmr[ewind]'    : 'TpbModifiedRewind',
+    \ 'bmf[irst]'     : 'TpbModifiedFirst',
+    \ 'bml[ast]'      : 'TpbModifiedLast',
+    \ 'sbmr[ewind]'   : 'STpbModifiedRewind',
+    \ 'sbmf[irst]'    : 'STpbModifiedFirst',
+    \ 'sbml[ast]'     : 'STpbModifiedLast',
+    \ 'vbmr[ewind]'   : 'VTpbModifiedRewind',
+    \ 'vbmf[irst]'    : 'VTpbModifiedFirst',
+    \ 'vbml[ast]'     : 'VTpbModifiedLast',
+    \
+    \ 'vb[uffer]'    : 'VTpbBuffer',
+    \ 'tb[uffer]'    : 'TTpbBuffer',
+    \ 'vbn[ext]'     : 'VTpbNext',
+    \ 'vbN[ext]'     : 'VTpbPrevious',
+    \ 'vbp[revious]' : 'VTpbPrevious',
+    \ 'vbm[odified]' : 'VTpbModified',
+    \ 'tbn[ext]'     : 'TTpbNext',
+    \ 'tbN[ext]'     : 'TTpbPrevious',
+    \ 'tbp[revious]' : 'TTpbPrevious',
+    \ 'tbm[odified]' : 'TTpbModified',
+    \ 'vbr[ewind]'   : 'VTpbRewind',
+    \ 'vbf[irst]'    : 'VTpbFirst',
+    \ 'vbl[ast]'     : 'VTpbLast',
+    \ 'tbr[ewind]'   : 'TTpbRewind',
+    \ 'tbf[irst]'    : 'TTpbFirst',
+    \ 'tbl[ast]'     : 'TTpbLast',
+    \ 'vunh[ide]'    : 'VTpbUnhide',
+    \ 'vba[ll]'      : 'VTpbAll',
+    \ 'tun[hide]'    : 'TTpbUnhide',
+    \ 'tba[ll]'      : 'TTpbAll',
+    \
+    \ '_vb[uffer]'    : 'vertical sbuffer',
+    \ '_tb[uffer]'    : 'tab sbuffer',
+    \ '_vbn[ext]'     : 'vertical sbnext',
+    \ '_vbN[ext]'     : 'vertical sbNext',
+    \ '_vbp[revious]' : 'vertical sbprevious',
+    \ '_vbm[odified]' : 'vertical sbmodified',
+    \ '_tbn[ext]'     : 'tab sbnext',
+    \ '_tbN[ext]'     : 'tab sbNext',
+    \ '_tbp[revious]' : 'tab sbprevious',
+    \ '_tbm[odified]' : 'tab sbmodified',
+    \ '_vbr[ewind]'   : 'vertical sbrewind',
+    \ '_vbf[irst]'    : 'vertical sbfirst',
+    \ '_vbl[ast]'     : 'vertical sblast',
+    \ '_tbr[ewind]'   : 'tab sbrewind',
+    \ '_tbf[irst]'    : 'tab sbfirst',
+    \ '_tbl[ast]'     : 'tab sblast',
+    \ '_vunh[ide]'    : 'vertical unhide',
+    \ '_vba[ll]'      : 'vertical all',
+    \ '_tun[hide]'    : 'tab unhide',
+    \ '_tba[ll]'      : 'tab ball',
+    \
+    \ 'files'        : 'TpbFiles',
+    \ 'buffers'      : 'TpbBuffers',
+    \ 'ls'           : 'TpbLs',
+    \ 'bd[elete]'    : 'TpbDelete',
+    \ 'bw[ipeout]'   : 'TpbWipeout',
+    \ 'bun[load]'    : 'TpbUnload',
+    \ 'b[uffer]'     : 'TpbBuffer',
+    \ 'sb[uffer]'    : 'STpbBuffer',
+    \ 'bn[ext]'      : 'TpbNext',
+    \ 'bN[ext]'      : 'TpbPrevious',
+    \ 'bp[revious]'  : 'TpbPrevious',
+    \ 'bm[odified]'  : 'TpbModified',
+    \ 'sbn[ext]'     : 'STpbNext',
+    \ 'sbN[ext]'     : 'STpbPrevious',
+    \ 'sbp[revious]' : 'STpbPrevious',
+    \ 'sbm[odified]' : 'STpbModified',
+    \ 'br[ewind]'    : 'TpbRewind',
+    \ 'bf[irst]'     : 'TpbFirst',
+    \ 'bl[ast]'      : 'TpbLast',
+    \ 'sbr[ewind]'   : 'STpbRewind',
+    \ 'sbf[irst]'    : 'STpbFirst',
+    \ 'sbl[ast]'     : 'STpbLast',
+    \ 'unh[ide]'     : 'TpbUnhide',
+    \ 'sun[hide]'    : 'STpbUnhide',
+    \ 'ba[ll]'       : 'TpbAll',
+    \ 'sba[ll]'      : 'STpbBall',
+    \
+    \ '_files'        : 'files',
+    \ '_buffers'      : 'buffers',
+    \ '_ls'           : 'ls',
+    \ '_bd[elete]'    : 'bdelete',
+    \ '_bw[ipeout]'   : 'bwipeout',
+    \ '_bun[load]'    : 'bunload',
+    \ '_b[uffer]'     : 'buffer',
+    \ '_sb[uffer]'    : 'sbuffer',
+    \ '_bn[ext]'      : 'bnext',
+    \ '_bN[ext]'      : 'bNext',
+    \ '_bp[revious]'  : 'bprevious',
+    \ '_bm[odified]'  : 'bmodified',
+    \ '_sbn[ext]'     : 'sbnext',
+    \ '_sbN[ext]'     : 'sbNext',
+    \ '_sbp[revious]' : 'sbprevious',
+    \ '_sbm[odified]' : 'sbmodified',
+    \ '_br[ewind]'    : 'brewind',
+    \ '_bf[irst]'     : 'bfirst',
+    \ '_bl[ast]'      : 'blast',
+    \ '_sbr[ewind]'   : 'sbrewind',
+    \ '_sbf[irst]'    : 'sbfirst',
+    \ '_sbl[ast]'     : 'sblast',
+    \ '_unh[ide]'     : 'unhide',
+    \ '_sun[hide]'    : 'sunhide',
+    \ '_ba[ll]'       : 'ball',
+    \ '_sba[ll]'      : 'sball'})
+endif
+"}}}
+
+"------------------------------------------------------------------------------
 " TComment: {{{
 if s:neobundle_tap('tcomment')
   function! neobundle#tapped.hooks.on_source(bundle)
@@ -2662,19 +2793,13 @@ if s:neobundle_tap('textmanip')
       \ 'myvimrc#operator_textmanip_move_up')
   endfunction
 
-  NOmap <M-p> <Plug>(operator-textmanip-duplicate-down)
-  NOmap <M-P> <Plug>(operator-textmanip-duplicate-up)
-  xmap  <M-p> <Plug>(textmanip-duplicate-down)
-  xmap  <M-P> <Plug>(textmanip-duplicate-up)
+  NXOmap <M-p> <Plug>(operator-textmanip-duplicate-down)
+  NXOmap <M-P> <Plug>(operator-textmanip-duplicate-up)
 
-  NOmap sj <Plug>(operator-textmanip-move-down)
-  NOmap sk <Plug>(operator-textmanip-move-up)
-  NOmap sh <Plug>(operator-textmanip-move-left)
-  NOmap sl <Plug>(operator-textmanip-move-right)
-  xmap  sj <Plug>(textmanip-move-down)
-  xmap  sk <Plug>(textmanip-move-up)
-  xmap  sh <Plug>(textmanip-move-left)
-  xmap  sl <Plug>(textmanip-move-right)
+  NXOmap sj <Plug>(operator-textmanip-move-down)
+  NXOmap sk <Plug>(operator-textmanip-move-up)
+  NXOmap sh <Plug>(operator-textmanip-move-left)
+  NXOmap sl <Plug>(operator-textmanip-move-right)
 
   nmap sjj sjsj
   nmap skk sksk
@@ -3167,7 +3292,7 @@ if s:neobundle_tap('undotree')
     let g:undotree_SetFocusWhenToggle = 1
   endfunction
 
-  NXnoremap <M-U> :<C-U>UndotreeToggle<CR>
+  nnoremap <M-u> :<C-U>UndotreeToggle<CR>
 endif
 "}}}
 
@@ -3209,8 +3334,7 @@ if s:neobundle_tap('unite')
     elseif s:executable_or_enabled('ag', 'the_silver_searcher')
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
-      let g:unite_source_grep_default_opts  =
-        \ '--line-numbers --nocolor --nogroup --hidden'
+      let g:unite_source_grep_default_opts  = '--vimgrep --hidden'
     elseif s:executable('grep')
       let g:unite_source_grep_command       = 'grep'
       let g:unite_source_grep_recursive_opt = '-r'
@@ -3302,7 +3426,7 @@ if s:neobundle_tap('unite')
   endif
 
   NXnoremap <Leader>b
-    \ :<C-U>Unite buffer
+    \ :<C-U>Unite buffer_tab
     \ -buffer-name=files -no-split<CR>
   NXnoremap <Leader>t
     \ :<C-U>Unite tab
@@ -3430,12 +3554,12 @@ endif
 
 "------------------------------------------------------------------------------
 " Unite SUDO: {{{
-if s:neobundle_tap('unite-sudo')
-  autocmd MyVimrc User VimrcPost
-    \ if has('vim_starting') && filter(argv(), 'v:val =~# "^sudo:"') != [] |
-    \   NeoBundleSource unite-sudo |
-    \ endif
-endif
+" if s:neobundle_tap('unite-sudo')
+"   autocmd MyVimrc User VimrcPost
+"     \ if has('vim_starting') && filter(argv(), 'v:val =~# "^sudo:"') != [] |
+"     \   NeoBundleSource unite-sudo |
+"     \ endif
+" endif
 "}}}
 
 "------------------------------------------------------------------------------
@@ -3654,8 +3778,7 @@ if s:neobundle_tap('watchdogs')
       \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)},
       \
       \ 'vim/watchdogs_checker' : {
-      \   'type' :
-      \     s:executable('python') ? 'watchdogs_checker/vimlint_by_dbakker' : ''}})
+      \   'type' : ''}})
 
     call watchdogs#setup(g:quickrun_config)
   endfunction

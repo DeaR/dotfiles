@@ -2,7 +2,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Aug-2015.
+" Last Change:  18-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -69,7 +69,8 @@ endfunction
 
 " Wrapped neobundle#tap
 function! s:neobundle_tap(name)
-  return exists('*neobundle#tap') && neobundle#tap(a:name)
+  return s:is_enabled_bundle(a:name) &&
+    \ exists('*neobundle#tap') && neobundle#tap(a:name)
 endfunction
 function! s:neobundle_untap()
   return exists('*neobundle#untap') && neobundle#untap()

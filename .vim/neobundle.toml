@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  10-Aug-2015.
+# Last Change:  27-Aug-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -220,15 +220,7 @@ filetypes = 'vim'
 repository = 'kana/vim-gf-user'
 commands = 'GfUserDefaultKeyMappings'
 mappings = [['nv', '<Plug>']]
-functions = ['gf#user#extend', 'gf#user#set_priority']
-
-  [[plugins.depends]]
-  repository = 'sgur/vim-gf-autoload'
-  functions = 'gf#autoload#find'
-
-  [[plugins.depends]]
-  repository = 'kana/vim-gf-diff'
-  functions = 'gf#diff#find'
+depends = ['sgur/vim-gf-autoload', 'kana/vim-gf-diff']
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -315,18 +307,9 @@ mappings = [['nvo', '<Plug>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repository = 'kamichidu/vim-javaclasspath'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repository = 'kamichidu/vim-javalang'
-
-#------------------------------------------------------------------------------
-[[plugins]]
 repository = 'basyura/J6uil.vim'
 commands = ['J6uilReconnect', 'J6uilDisconnect', 'J6uilNextRoom', 'J6uilPrevRoom']
 mappings = [['n', '<Plug>']]
-function_prefix = 'J6uil'
 unite_sources = ['J6uil/rooms', 'J6uil/members']
 depends = ['tyru/open-browser.vim', 'Shougo/vimproc.vim']
 
@@ -367,19 +350,6 @@ fetch = 1
 
   [plugins.build]
   others = 'go get -u github.com/mattn/jvgrep'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repository = 'kwbdi.vim'
-mappings = [['nvo', '<Plug>Kwbd']]
-commands = 'Kwbd'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repository = 'dbakker/vim-lint'
-
-  [plugins.external_commands]
-  others = 'python'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -441,6 +411,7 @@ disabled = 'has("win32")'
 fetch = 1
 
   [plugins.build_commands]
+  windows = 0
   others = 'go'
 
   [plugins.build]
@@ -568,6 +539,7 @@ depends = 'Shougo/context_filetype.vim'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/neossh.vim'
+filename_patterns = '^ssh:'
 unite_sources = 'ssh'
 depends = ['Shougo/unite.vim', 'Shougo/vimfiler.vim']
 
@@ -602,6 +574,7 @@ repository = 'OmniSharp/omnisharp-vim'
 disabled = '!has("python")'
 filetypes = 'cs'
 unite_sources = ['OmniSharp/findcodeactions', 'OmniSharp/findsymbols', 'OmniSharp/findtype']
+depends = 'tpope/vim-dispatch'
 
   [plugins.build_commands]
   windows = 'vim'
@@ -673,8 +646,7 @@ depends = 'kana/vim-operator-user'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-operator-sequence'
-functions = 'operator#sequence#map'
-depends = ['tyru/operator-camelize.vim', 'kana/vim-operator-user']
+depends = 'tyru/operator-camelize.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -704,7 +676,7 @@ depends = 'kana/vim-operator-user'
 [[plugins]]
 repository = 'pekepeke/vim-operator-tabular'
 mappings = [['nvo', '<Plug>'], ['nvo', '<Plug>(operator-untabularize']]
-depends = 'kana/vim-operator-user'
+depends = ['pekepeke/vim-csvutil', 'kana/vim-operator-user']
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -716,7 +688,6 @@ depends = 'kana/vim-operator-user'
 [[plugins]]
 repository = 'kana/vim-operator-user'
 mappings = [['nvo', '<Plug>(operator-grep', '<Plug>(operator-justify']]
-function_prefix = 'operator'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -827,7 +798,7 @@ unite_sources = 'reanimate'
 repository = 'thinca/vim-ref'
 mappings = [['nv', '<Plug>']]
 unite_sources = 'ref'
-depends = 'ujihisa/ref-hoogle'
+depends = ['h1mesuke/ref-dicts-en', 'hujo/ref-doshelp', 'Jagua/vim-ref-gene', 'eiiches/vim-ref-info']
 
   [[plugins.commands]]
   name = 'Ref'
@@ -923,12 +894,25 @@ commands = ['Switch', 'SwitchIncrement', 'SwitchDecrement']
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repository = 'DeaR/vim-tabpagebuffer-misc'
+commands = ['TpbFiles', 'TpbBuffers', 'TpbLs', 'TpbDeleteAll', 'TpbWipeoutAll', 'TpbUnloadAll', 'TpbNext', 'TpbPrevious', 'TpbModified', 'TpbModifiedNext', 'TpbModifiedPrevious', 'STpbNext', 'STpbPrevious', 'STpbModified', 'STpbModifiedNext', 'STpbModifiedPrevious', 'VTpbNext', 'VTpbPrevious', 'VTpbModified', 'VTpbModifiedNext', 'VTpbModifiedPrevious', 'TTpbNext', 'TTpbPrevious', 'TTpbModified', 'TTpbModifiedNext', 'TTpbModifiedPrevious', 'TpbRewind', 'TpbFirst', 'TpbLast', 'TpbModifiedRewind', 'TpbModifiedFirst', 'TpbModifiedLast', 'STpbRewind', 'STpbFirst', 'STpbLast', 'STpbModifiedRewind', 'STpbModifiedFirst', 'STpbModifiedLast', 'VTpbRewind', 'VTpbFirst', 'VTpbLast', 'VTpbModifiedRewind', 'VTpbModifiedFirst', 'VTpbModifiedLast', 'TTpbRewind', 'TTpbFirst', 'TTpbLast', 'TTpbModifiedRewind', 'TTpbModifiedFirst', 'TTpbModifiedLast', 'TpbUnhide', 'STpbUnhide', 'VTpbUnhide', 'TTpbUnhide', 'TpbAll', 'STpbAll', 'VTpbAll', 'TTpbAll']
+
+  [[plugins.commands]]
+  name = ['TpbUnload', 'TpbDelete', 'TpbWipeout', 'TpbBuffer', 'STpbBuffer', 'VTpbBuffer', 'TTpbBuffer']
+  complete = 'buffer'
+
+  [[plugins.depends]]
+  repository = 'Shougo/tabpagebuffer.vim'
+  lazy = 0
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repository = 'marijnh/tern_for_vim'
 name = 'tern'
 disabled = '!has("python")'
 filetypes = 'javascript'
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   others = 'node'
 
   [plugins.build]
@@ -1080,7 +1064,6 @@ depends = 'kana/vim-textobj-user'
 repository = 'osyo-manga/vim-textobj-multitextobj'
 commands = 'TextobjMultitextobjDefaultKeyMappings'
 mappings = [['vo', '<Plug>']]
-functions = ['textobj#multitextobj#mapexpr_a', 'textobj#multitextobj#mapexpr_i']
 depends = ['kana/vim-textobj-jabraces', 'kana/vim-textobj-user']
 
 #------------------------------------------------------------------------------
@@ -1149,7 +1132,6 @@ depends = 'kana/vim-textobj-user'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-user'
-function_prefix = 'textobj'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -1304,6 +1286,7 @@ depends = 'Shougo/unite.vim'
 [[plugins]]
 repository = 'Shougo/unite-sudo'
 disabled = 'has("win32")'
+filename_patterns = '^sudo:'
 unite_sources = 'sudo'
 depends = ['Shougo/unite.vim', 'Shougo/vimfiler.vim']
 
@@ -1433,7 +1416,7 @@ lazy = 0
 repository = 'osyo-manga/vim-watchdogs'
 filetypes = 'all'
 commands = ['WatchdogsRunSweep']
-depends = ['dbakker/vim-lint', 'thinca/vim-quickrun', 'osyo-manga/shabadou.vim', 'syngan/vim-vimlint', 'Shougo/vimproc.vim']
+depends = ['thinca/vim-quickrun', 'osyo-manga/shabadou.vim', 'syngan/vim-vimlint', 'Shougo/vimproc.vim']
 
   [[plugins.commands]]
   name = ['WatchdogsRun', 'WatchdogsRunSilent']

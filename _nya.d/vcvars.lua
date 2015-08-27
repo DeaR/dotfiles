@@ -1,7 +1,7 @@
 -- Visual Studio prompt for NYAOS 3.x
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  13-Aug-2013.
+-- Last Change:  20-Aug-2015.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -36,6 +36,17 @@ if nyaos.command.cmdsource then
       nyaos.putenv('CPLUS_INCLUDE_PATH', nil)
       nyaos.putenv('LIBRARY_PATH', nil)
       nyaos.command.cmdsource(vscomntools .. '../../VC/vcvarsall.bat', 'x86')
+
+      local programfiles = os.getenv(os.getenv('PROGRAMFILES(X86)') and 'PROGRAMFILES(X86)' or 'PROGRAMFILES')
+      local dir71a       = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1A\\Include'
+      local dir71        = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1\\Include'
+      local stat71a      = nyaos.stat(dir71a)
+      local stat71       = nyaos.stat(dir71)
+      if stat71a and stat71a.directory then
+        nyaos.putenv('SDK_INCLUDE_DIR', dir71a)
+      elseif stat71 and stat71.directory then
+        nyaos.putenv('SDK_INCLUDE_DIR', dir71)
+      end
     end
     local arch = os.getenv('PROCESSOR_ARCHITEW6432') or os.getenv('PROCESSOR_ARCHITECTURE')
     if arch and os.getenv('PROGRAMFILES(X86)') then
@@ -47,6 +58,17 @@ if nyaos.command.cmdsource then
         nyaos.putenv('CPLUS_INCLUDE_PATH', nil)
         nyaos.putenv('LIBRARY_PATH', nil)
         nyaos.command.cmdsource(vscomntools .. '../../VC/vcvarsall.bat', arch)
+
+        local programfiles = os.getenv(os.getenv('PROGRAMFILES(X86)') and 'PROGRAMFILES(X86)' or 'PROGRAMFILES')
+        local dir71a       = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1A\\Include'
+        local dir71        = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1\\Include'
+        local stat71a      = nyaos.stat(dir71a)
+        local stat71       = nyaos.stat(dir71)
+        if stat71a and stat71a.directory then
+          nyaos.putenv('SDK_INCLUDE_DIR', dir71a)
+        elseif stat71 and stat71.directory then
+          nyaos.putenv('SDK_INCLUDE_DIR', dir71)
+        end
       end
     end
   end
