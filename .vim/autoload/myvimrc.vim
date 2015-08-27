@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  23-Aug-2015.
+" Last Change:  27-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -252,7 +252,7 @@ endfunction
 
 "------------------------------------------------------------------------------
 " Insert One Character: {{{
-function! myvimrc#insert_one_char(cmd)
+function! myvimrc#insert_one_char(key)
   echohl ModeMsg
   if s:is_lang_ja
     echo '-- 挿入 (1文字) --'
@@ -260,7 +260,20 @@ function! myvimrc#insert_one_char(cmd)
     echo '-- INSERT (one char) --'
   endif
   echohl None
-  return a:cmd . nr2char(getchar()) . "\<Esc>"
+  return a:key . nr2char(getchar()) . "\<Esc>"
+endfunction
+"}}}
+
+"------------------------------------------------------------------------------
+" Force Blockwise Insert: {{{
+function! myvimrc#force_blockwise_insert(key)
+  if mode() ==# 'v'
+    return "\<C-V>" . a:key
+  elseif mode() ==# 'V'
+    return "\<C-V>Oo$" . a:key
+  else
+    return a:key
+  endif
 endfunction
 "}}}
 "}}}

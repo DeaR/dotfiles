@@ -527,59 +527,59 @@ endif
 
 "------------------------------------------------------------------------------
 " Multi Mode Mapping: {{{
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NVmap
   \ nmap <args>| vmap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NXmap
   \ nmap <args>| xmap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NSmap
   \ nmap <args>| smap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NOmap
   \ nmap <args>| omap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ VOmap
   \ vmap <args>| omap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ XOmap
   \ xmap <args>| omap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ SOmap
   \ smap <args>| omap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NXOmap
   \ nmap <args>| xmap <args>| omap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NSOmap
   \ nmap <args>| smap <args>| omap <args>
 
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NVnoremap
   \ nnoremap <args>| vnoremap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NXnoremap
   \ nnoremap <args>| xnoremap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NSnoremap
   \ nnoremap <args>| snoremap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NOnoremap
   \ nnoremap <args>| onoremap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ VOnoremap
   \ vnoremap <args>| onoremap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ XOnoremap
   \ xnoremap <args>| onoremap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ SOnoremap
   \ snoremap <args>| onoremap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NXOnoremap
   \ nnoremap <args>| xnoremap <args>| onoremap <args>
-command! -complete=mapping -nargs=*
+command! -nargs=* -complete=mapping
   \ NSOnoremap
   \ nnoremap <args>| snoremap <args>| onoremap <args>
 "}}}
@@ -821,6 +821,10 @@ nnoremap <expr> <F1>
   \ myvimrc#split_nicely_expr() ?
   \   ':<C-U>help<Space>' :
   \   ':<C-U>vertical help<Space>'
+inoremap <expr> <F1>
+  \ myvimrc#split_nicely_expr() ?
+  \   '<C-O>:<C-U>help<Space>' :
+  \   '<C-O>:<C-U>vertical help<Space>'
 "}}}
 
 "------------------------------------------------------------------------------
@@ -860,6 +864,12 @@ nnoremap  <expr> <M-a> myvimrc#insert_one_char('a')
 NXnoremap <expr> <M-A> myvimrc#insert_one_char('A')
 nnoremap  <expr> <M-i> myvimrc#insert_one_char('i')
 NXnoremap <expr> <M-I> myvimrc#insert_one_char('I')
+"}}}
+
+"------------------------------------------------------------------------------
+" Force Blockwise Insert: {{{
+xnoremap <expr> A myvimrc#force_blockwise_insert('A')
+xnoremap <expr> I myvimrc#force_blockwise_insert('I')
 "}}}
 
 "------------------------------------------------------------------------------
@@ -1009,30 +1019,30 @@ endif
 "------------------------------------------------------------------------------
 " Open With A Specific Character Code Again: {{{
 if has('multi_byte')
-  command! -bang -bar -complete=file -nargs=?
+  command! -bang -bar -nargs=* -complete=file
     \ EditUtf8
     \ edit<bang> ++enc=utf-8 <args>
-  command! -bang -bar -complete=file -nargs=?
+  command! -bang -bar -nargs=* -complete=file
     \ EditUtf16le
     \ edit<bang> ++enc=utf-16le <args>
-  command! -bang -bar -complete=file -nargs=?
+  command! -bang -bar -nargs=* -complete=file
     \ EditUtf16
     \ edit<bang> ++enc=utf-16 <args>
-  command! -bang -bar -complete=file -nargs=?
+  command! -bang -bar -nargs=* -complete=file
     \ EditCp932
     \ edit<bang> ++enc=cp932 <args>
-  command! -bang -bar -complete=file -nargs=?
+  command! -bang -bar -nargs=* -complete=file
     \ EditEucjp
     \ edit<bang> ++enc=euc-jp <args>
   if s:has_jisx0213
-    command! -bang -bar -complete=file -nargs=?
+    command! -bang -bar -nargs=* -complete=file
       \ EditEucJisx0213
       \ edit<bang> ++enc=euc-jisx0213 <args>
-    command! -bang -bar -complete=file -nargs=?
+    command! -bang -bar -nargs=* -complete=file
       \ EditIso2022jp
       \ edit<bang> ++enc=iso-2022-jp-3 <args>
   else
-    command! -bang -bar -complete=file -nargs=?
+    command! -bang -bar -nargs=* -complete=file
       \ EditIso2022jp
       \ edit<bang> ++enc=iso-2022-jp <args>
   endif
