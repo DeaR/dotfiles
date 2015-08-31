@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  27-Aug-2015.
+# Last Change:  31-Aug-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -118,6 +118,11 @@ insert = 1
 [[plugins]]
 repository ='vim-jp/cpp-vim'
 filetypes = ['c', 'ch', 'cpp', 'cuda', 'cynlib', 'cynpp', 'dtrace', 'esqlc', 'kwt', 'objc', 'objcpp', 'rpcgen', 'splint', 'xs']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'JulesWang/css.vim'
+filetypes = ['aspperl', 'aspvbs', 'cf', 'css', 'dtml', 'groovy', 'gsp', 'haml', 'html', 'htmlcheetah', 'htmldjango', 'htmlm4', 'htmlos', 'jsp', 'markdown', 'mason', 'msql', 'php', 'plp', 'phtml', 'sass', 'scss', 'smarty', 'spyce', 'tt2html', 'webmacro', 'wml', 'xhtml']
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -508,7 +513,7 @@ filetypes = 'all'
 commands = ['NeoMRUReload', 'NeoMRUSave']
 augroup = 'neomru'
 unite_sources = ['file_mru', 'directory_mru', 'neomru/file', 'neomru/directory']
-depends = 'Shougo/unite.vim'
+lazy = 0
 
   [[plugins.commands]]
   name = ['NeoMRUImportFile', 'NeoMRUImportDirectory']
@@ -894,6 +899,11 @@ commands = ['Switch', 'SwitchIncrement', 'SwitchDecrement']
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repository = 'Shougo/tabpagebuffer.vim'
+lazy = 0
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repository = 'DeaR/vim-tabpagebuffer-misc'
 commands = ['TpbFiles', 'TpbBuffers', 'TpbLs', 'TpbDeleteAll', 'TpbWipeoutAll', 'TpbUnloadAll', 'TpbNext', 'TpbPrevious', 'TpbModified', 'TpbModifiedNext', 'TpbModifiedPrevious', 'STpbNext', 'STpbPrevious', 'STpbModified', 'STpbModifiedNext', 'STpbModifiedPrevious', 'VTpbNext', 'VTpbPrevious', 'VTpbModified', 'VTpbModifiedNext', 'VTpbModifiedPrevious', 'TTpbNext', 'TTpbPrevious', 'TTpbModified', 'TTpbModifiedNext', 'TTpbModifiedPrevious', 'TpbRewind', 'TpbFirst', 'TpbLast', 'TpbModifiedRewind', 'TpbModifiedFirst', 'TpbModifiedLast', 'STpbRewind', 'STpbFirst', 'STpbLast', 'STpbModifiedRewind', 'STpbModifiedFirst', 'STpbModifiedLast', 'VTpbRewind', 'VTpbFirst', 'VTpbLast', 'VTpbModifiedRewind', 'VTpbModifiedFirst', 'VTpbModifiedLast', 'TTpbRewind', 'TTpbFirst', 'TTpbLast', 'TTpbModifiedRewind', 'TTpbModifiedFirst', 'TTpbModifiedLast', 'TpbUnhide', 'STpbUnhide', 'VTpbUnhide', 'TTpbUnhide', 'TpbAll', 'STpbAll', 'VTpbAll', 'TTpbAll']
 
@@ -1189,45 +1199,52 @@ repository = 'lambdalisue/vim-unified-diff'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/unite.vim'
-depends = 'Shougo/tabpagebuffer.vim'
-lazy = 0
+
+  [[plugins.commands]]
+  name = ['Unite', 'UniteWithCurrentDir', 'UniteWithBufferDir', 'UniteWithProjectDir', 'UniteWithInputDirector', 'UniteWithCursorWord', 'UniteWithInput']
+  complete = 'customlist,unite#complete#source'
+
+  [[plugins.commands]]
+  name = ['UniteResume', 'UniteClose', 'UniteNext', 'UnitePrevious', 'UniteFirst', 'UniteLast']
+  complete = 'customlist,unite#complete#buffer_name'
+
+  [[plugins.depends]]
+  repository = 'Shougo/tabpagebuffer.vim'
+  lazy = 0
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/unite-build'
 unite_sources = 'build'
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/unite-filetype'
 unite_sources = 'filetype'
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/unite-fold'
 unite_sources = 'fold'
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tsukkee/unite-help'
 unite_sources = 'help'
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-unite-history'
 unite_sources = ['history/command', 'history/search']
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'KamunagiChiduru/unite-javaimport'
-commsnds = ['JavaImportClearCache', 'JavaImportSortStatements', 'JavaImportRemoveUnnecessaries', 'CtrlPJavaImportClass', 'CtrlPJavaImportField', 'CtrlPJavaImportMethod']
+# commsnds = ['JavaImportClearCache', 'JavaImportSortStatements', 'JavaImportRemoveUnnecessaries', 'CtrlPJavaImportClass', 'CtrlPJavaImportField', 'CtrlPJavaImportMethod']
+commsnds = ['JavaImportClearCache', 'JavaImportSortStatements', 'JavaImportRemoveUnnecessaries']
+mappings = [['n', '<Plug>(javaimport-quickimport)']]
 unite_sources = 'javaimport'
-depends = ['universal-ctags/ctags', 'kamichidu/vim-javaclasspath', 'Shougo/unite.vim', 'Shougo/vimproc.vim']
+depends = ['universal-ctags/ctags', 'kamichidu/vim-javaclasspath', 'Shougo/vimproc.vim']
 
   [plugins.external_commands]
   windows = 'javaw'
@@ -1237,50 +1254,43 @@ depends = ['universal-ctags/ctags', 'kamichidu/vim-javaclasspath', 'Shougo/unite
 [[plugins]]
 repository = 'ujihisa/unite-locate'
 unite_sources = 'locate'
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tacroe/unite-mark'
 unite_sources = 'mark'
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/unite-outline'
 unite_sources = 'outline'
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'y-uuki/unite-perl-module.vim'
 unite_sources = ['perl/global', 'perl/local']
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/unite-quickfix'
 unite_sources = ['location_list', 'quickfix']
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/unite-quickrun_config'
 unite_sources = 'quickrun_config'
-depends = ['thinca/vim-quickrun', 'Shougo/unite.vim']
+depends = 'thinca/vim-quickrun'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'mattn/unite-remotefile'
 disabled = '!has("clientserver")'
 unite_sources = 'remotefile'
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rhysd/unite-ruby-require.vim'
 unite_sources = 'ruby/require'
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -1297,13 +1307,11 @@ depends = ['Shougo/unite.vim', 'Shougo/vimfiler.vim']
 [[plugins]]
 repository = 'tsukkee/unite-tag'
 unite_sources = 'tag'
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'pasela/unite-webcolorname'
 unite_sources = 'webcolorname'
-depends = 'Shougo/unite.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -1411,12 +1419,16 @@ commands = ['VSCompile', 'VSBuild', 'VSReBuild', 'VSBuildProject', 'VSReBuildPro
 repository = 'vim-jp/vital.vim'
 lazy = 0
 
+  [[plugins.commands]]
+  name = 'Vitalize'
+  complete = 'customlist,vitalizer#complete'
+
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'osyo-manga/vim-watchdogs'
 filetypes = 'all'
 commands = ['WatchdogsRunSweep']
-depends = ['thinca/vim-quickrun', 'osyo-manga/shabadou.vim', 'syngan/vim-vimlint', 'Shougo/vimproc.vim']
+depends = ['thinca/vim-quickrun', 'osyo-manga/shabadou.vim', 'syngan/vim-vimlint', 'ynkdir/vim-vimlparser', 'Shougo/vimproc.vim']
 
   [[plugins.commands]]
   name = ['WatchdogsRun', 'WatchdogsRunSilent']
@@ -1425,3 +1437,16 @@ depends = ['thinca/vim-quickrun', 'osyo-manga/shabadou.vim', 'syngan/vim-vimlint
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'mattn/webapi-vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'LeafCage/yankround.vim'
+# commands = 'CtrlPYankRound'
+mappings = [['nxc', '<Plug>']]
+unite_sources = 'yankround'
+lazy = 0
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'chrisbra/vim-zsh'
+filetypes = 'zsh'

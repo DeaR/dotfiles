@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-Aug-2015.
+" Last Change:  31-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -261,8 +261,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
 
   execute 'set runtimepath+=' .
     \ join(map(filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
-    \                 's:is_enabled_bundle(fnamemodify(v:val, ":t"))'),
-    \          'escape(v:val, " ,")'), ',')
+    \   's:is_enabled_bundle(fnamemodify(v:val, ":t"))'),
+    \ 'escape(v:val, " ,")'), ',')
 
   autocmd MyVimrc User VimrcPost
     \ call neobundle#call_hook('on_source')
@@ -877,10 +877,7 @@ xnoremap <expr> I myvimrc#force_blockwise_insert('I')
 " Paste
 set pastetoggle=<F11>
 nnoremap  <F11> :<C-U>set paste! paste?<CR>
-NXnoremap <C-P> :<C-U>registers<CR>
-inoremap  <C-P> <C-O>:<C-U>registers<CR>
-noremap! <expr> <M-p>
-  \ '<C-R>' . v:register
+NXnoremap <M-p> :<C-U>registers<CR>
 
 " BackSpace
 nnoremap <BS> X
@@ -2026,9 +2023,9 @@ endif
 "------------------------------------------------------------------------------
 " Operator Replace: {{{
 if s:neobundle_tap('operator-replace')
-  NXOmap p <Plug>(operator-replace)
+  NXOmap sr <Plug>(operator-replace)
 
-  nnoremap pp p
+  nnoremap srr srsr
 endif
 "}}}
 
@@ -2338,13 +2335,13 @@ if s:neobundle_tap('quickrun')
       \ quickrun#is_running() ? quickrun#sweep_sessions() : '<C-C>'
   endfunction
 
-  nmap <expr> sr
+  nmap <expr> sR
     \ s:is_enabled_bundle('precious') ?
     \   '<Plug>(precious-quickrun-op)' : '<Plug>(quickrun-op)'
-  xmap sr  <Plug>(quickrun)
-  omap sr  g@
-  nmap srr srsr
-  nmap srr srsr
+  xmap sR  <Plug>(quickrun)
+  omap sR  g@
+  nmap sRR sRsR
+  nmap sRR sRsR
 
   NXmap <Leader>r <Plug>(quickrun)
   NXmap <F5>      <Plug>(quickrun)
@@ -2374,7 +2371,7 @@ endif
 if s:neobundle_tap('ref')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:ref_no_default_key_mappings = 1
-    let g:ref_cache_dir               = $HOME . '/.local/.vim_ref_cache'
+    let g:ref_cache_dir               = $HOME . '/.local/.cache/vim-ref'
   endfunction
 
   NXmap K <Plug>(ref-keyword)
@@ -2437,7 +2434,7 @@ if s:neobundle_tap('scratch')
   endfunction
 
   autocmd MyVimrc User PluginScratchInitializeAfter
-    \ nmap <buffer> sr <Plug>(operator-scratch-evaluate)
+    \ nmap <buffer> sR <Plug>(operator-scratch-evaluate)
 endif
 "}}}
 
@@ -2803,14 +2800,15 @@ if s:neobundle_tap('textmanip')
       \ 'myvimrc#operator_textmanip_move_up')
   endfunction
 
-  NXOmap <M-p> <Plug>(operator-textmanip-duplicate-down)
-  NXOmap <M-P> <Plug>(operator-textmanip-duplicate-up)
-
+  NXOmap sp <Plug>(operator-textmanip-duplicate-down)
+  NXOmap sP <Plug>(operator-textmanip-duplicate-up)
   NXOmap sj <Plug>(operator-textmanip-move-down)
   NXOmap sk <Plug>(operator-textmanip-move-up)
   NXOmap sh <Plug>(operator-textmanip-move-left)
   NXOmap sl <Plug>(operator-textmanip-move-right)
 
+  nmap spp spsp
+  nmap sPP sPsP
   nmap sjj sjsj
   nmap skk sksk
   nmap shh shsh
@@ -3323,7 +3321,7 @@ if s:neobundle_tap('unite')
     let g:unite_candidate_icon             = "-"
     let g:unite_marked_icon                = "+"
     let g:unite_cursor_line_highlight      = 'CursorLine'
-    let g:unite_source_history_yank_enable = 1
+    let g:unite_source_history_yank_enable = 0
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
 
@@ -3461,17 +3459,6 @@ if s:neobundle_tap('unite')
   NXnoremap <Leader>J
     \ :<C-U>Unite change
     \ -buffer-name=register -no-empty<CR>
-  nnoremap <C-P>
-    \ :<C-U>Unite history/yank
-    \ -buffer-name=register -no-empty -wrap<CR>
-  xnoremap <C-P>
-    \ d:<C-U>Unite history/yank
-    \ -buffer-name=register -no-empty -wrap<CR>
-  inoremap <expr> <C-P>
-    \ unite#start_complete('history/yank', {
-    \   'buffer_name': 'register',
-    \   'is_multi_line' : 1,
-    \   'direction' : 'leftabove'})
 
   NXnoremap <Leader>un
     \ :<C-U>UniteResume search -start-insert<CR>
@@ -3498,10 +3485,16 @@ if s:neobundle_tap('unite')
     \ 'Unite'                   : 'unite#complete_source',
     \ 'UniteWithCurrentDir'     : 'unite#complete_source',
     \ 'UniteWithBufferDir'      : 'unite#complete_source',
+    \ 'UniteWithProjectDir'     : 'unite#complete_source',
+    \ 'UniteWithInputDirectory' : 'unite#complete_source',
     \ 'UniteWithCursorWord'     : 'unite#complete_source',
     \ 'UniteWithInput'          : 'unite#complete_source',
-    \ 'UniteWithInputDirectory' : 'unite#complete_source',
-    \ 'UniteResume'             : 'unite#complete_buffer_name'})
+    \ 'UniteResume'             : 'unite#complete_buffer_name',
+    \ 'UniteClose'              : 'unite#complete_buffer_name',
+    \ 'UniteNext'               : 'unite#complete_buffer_name',
+    \ 'UnitePrevious'           : 'unite#complete_buffer_name',
+    \ 'UniteFirst'              : 'unite#complete_buffer_name',
+    \ 'UniteLast'               : 'unite#complete_buffer_name'})
 endif
 "}}}
 
@@ -3796,6 +3789,43 @@ if s:neobundle_tap('watchdogs')
   call extend(s:neocompl_vim_completefuncs, {
     \ 'WatchdogsRun'       : 'quickrun#complete',
     \ 'WatchdogsRunSilent' : 'quickrun#complete'})
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" YankRound: {{{
+if s:neobundle_tap('yankround')
+  function! neobundle#tapped.hooks.on_source(bundle)
+    let g:yankround_dir                 = $HOME . '/.local/.config/yankround'
+    let g:yankround_use_region_hl       = 1
+    let g:yankround_region_hl_groupname = 'SpellLocal'
+  endfunction
+
+  cnoremap <SID><C-N> <C-N>
+  cnoremap <SID><C-P> <C-P>
+
+  NXmap p    <Plug>(yankround-p)
+  NXmap P    <Plug>(yankround-P)
+  NXmap gp   <Plug>(yankround-gp)
+  NXmap gP   <Plug>(yankround-gP)
+  nmap <C-N> <Plug>(yankround-next)
+  nmap <C-P> <Plug>(yankround-prev)
+  cmap <C-R> <Plug>(yankround-insert-register)
+  cmap <expr> <C-N>
+    \ yankround#is_cmdline_popable() ?
+    \   '<Plug>(yankround-pop)' :
+    \   '<SID><C-N>'
+  cmap <expr> <C-P>
+    \ yankround#is_cmdline_popable() ?
+    \   '<Plug>(yankround-backpop)' :
+    \   '<SID><C-P>'
+
+  nnoremap <M-p>
+    \ :<C-U>Unite yankround
+    \ -buffer-name=register -no-empty -wrap<CR>
+  xnoremap <M-p>
+    \ d:<C-U>Unite yankround
+    \ -buffer-name=register -no-empty -wrap<CR>
 endif
 "}}}
 
