@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-Aug-2015.
+" Last Change:  03-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -24,7 +24,7 @@ scriptencoding utf-8
 "     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
 "     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-" }}}
+"}}}
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -36,7 +36,22 @@ set cpo&vim
 " Common: {{{
 " Script ID
 function! s:SID_PREFIX()
-  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+  if !exists('s:_SID_PREFIX')
+    let s:_SID_PREFIX = matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+  endif
+  return s:_SID_PREFIX
+endfunction
+
+" CPU Cores
+function! s:cpucores()
+  if !exists('s:_cpucores')
+    let s:_cpucores = str2nr(
+      \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
+      \ s:executable('nproc')           ? system('nproc') :
+      \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
+      \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+  endif
+  return s:_cpucores
 endfunction
 
 " Check Vim version
@@ -47,33 +62,22 @@ function! s:has_patch(major, minor, patch)
     \ (v:version == l:version && has('patch' . a:patch))
 endfunction
 
-" CPU Cores
-function! s:cpucores()
-  let s:_cpucores = get(s:, '_cpucores', str2nr(
-    \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
-    \ s:executable('nproc')           ? system('nproc') :
-    \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
-    \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1'))
-  return s:_cpucores
-endfunction
-
 " Check vimproc
 function! s:has_vimproc()
-  if !exists('s:exists_vimproc')
+  if !exists('s:has_vimproc')
     try
       call vimproc#version()
-      let s:exists_vimproc = 1
+      let s:has_vimproc = 1
     catch
-      let s:exists_vimproc = 0
+      let s:has_vimproc = 0
     endtry
   endif
-  return s:exists_vimproc
+  return s:has_vimproc
 endfunction
 
 " Wrapped neobundle#tap
 function! s:neobundle_tap(name)
-  return s:is_enabled_bundle(a:name) &&
-    \ exists('*neobundle#tap') && neobundle#tap(a:name)
+  return exists('*neobundle#tap') && neobundle#tap(a:name)
 endfunction
 function! s:neobundle_untap()
   return exists('*neobundle#untap') && neobundle#untap()
@@ -228,7 +232,7 @@ function! myvimrc#marks()
   let char = join(s:mark_char, '')
   return (":\<C-U>marks " . char . toupper(char) . "\<CR>")
 endfunction
-" }}}
+"}}}
 
 "------------------------------------------------------------------------------
 " BOL Toggle: {{{
@@ -238,7 +242,7 @@ endfunction
 function! myvimrc#eol_toggle()
   return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
 endfunction
-" }}}
+"}}}
 
 "------------------------------------------------------------------------------
 " Line Number: {{{
@@ -564,14 +568,43 @@ if s:neobundle_tap('operator-user')
         \ escape(join(lines), esc . ' :')
         \ '-buffer-name=grep -no-split -wrap'
     else
-      execute input(':',
-        \ 'grep "' . escape(join(lines), s:operator_grep_escape) . '" ')
+      execute input(':', 'grep "' . escape(join(lines), esc) . '" ')
     endif
   endfunction
 
   function! myvimrc#operator_justify(motion_wise)
     let range = line("'[") . ',' . line("']")
     execute range . input(':' . range, 'Justify ')
+  endfunction
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" SubMode: {{{
+if s:neobundle_tap('submode')
+  function! s:get_default_register()
+    return
+      \ &clipboard =~# 'unnamedplus' ? '+' :
+      \ &clipboard =~# 'unnamed' ? '*' : '"'
+  endfunction
+
+  function! myvimrc#submode_delchar_enter(forward)
+    let s:submode_register = v:register
+    return a:forward ? 'x' : 'X'
+  endfunction
+
+  function! myvimrc#submode_delchar(forward)
+    let r1 = getreg(s:submode_register)
+    undojoin
+    execute 'normal!' '"' . s:submode_register . (a:forward ? 'x' : 'X')
+    let r2 = getreg(s:submode_register)
+    if r1 != r2
+      let r3 = a:forward ? (r1 . r2) : (r2 . r1)
+      call setreg(s:submode_register, r3)
+      if s:submode_register == s:get_default_register()
+        call setreg('-', r3)
+      endif
+    endif
   endfunction
 endif
 "}}}
@@ -701,13 +734,8 @@ if s:neobundle_tap('unite-mark')
   endfunction
 endif
 "}}}
-"}}}
 
-
-"==============================================================================
-" Post Init: {{{
 call s:neobundle_untap()
-"}}}
 "}}}
 
 let &cpo = s:save_cpo

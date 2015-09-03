@@ -2,7 +2,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-Aug-2015.
+" Last Change:  03-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -24,7 +24,7 @@ scriptencoding utf-8
 "     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
 "     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-" }}}
+"}}}
 
 "==============================================================================
 " Pre Init: {{{
@@ -35,7 +35,7 @@ if v:version < 703 | finish | endif
 " Variable: {{{
 " Direct Write
 let s:directx_enable = 0
-" }}}
+"}}}
 
 "------------------------------------------------------------------------------
 " Common: {{{
@@ -46,7 +46,22 @@ augroup END
 
 " Script ID
 function! s:SID_PREFIX()
-  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+  if !exists('s:_SID_PREFIX')
+    let s:_SID_PREFIX = matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+  endif
+  return s:_SID_PREFIX
+endfunction
+
+" CPU Cores
+function! s:cpucores()
+  if !exists('s:_cpucores')
+    let s:_cpucores = str2nr(
+      \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
+      \ s:executable('nproc')           ? system('nproc') :
+      \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
+      \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+  endif
+  return s:_cpucores
 endfunction
 
 " Check Vim version
@@ -57,20 +72,22 @@ function! s:has_patch(major, minor, patch)
     \ (v:version == l:version && has('patch' . a:patch))
 endfunction
 
-" CPU Cores
-function! s:cpucores()
-  let s:_cpucores = get(s:, '_cpucores', str2nr(
-    \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
-    \ s:executable('nproc')           ? system('nproc') :
-    \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
-    \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1'))
-  return s:_cpucores
+" Check vimproc
+function! s:has_vimproc()
+  if !exists('s:has_vimproc')
+    try
+      call vimproc#version()
+      let s:has_vimproc = 1
+    catch
+      let s:has_vimproc = 0
+    endtry
+  endif
+  return s:has_vimproc
 endfunction
 
 " Wrapped neobundle#tap
 function! s:neobundle_tap(name)
-  return s:is_enabled_bundle(a:name) &&
-    \ exists('*neobundle#tap') && neobundle#tap(a:name)
+  return exists('*neobundle#tap') && neobundle#tap(a:name)
 endfunction
 function! s:neobundle_untap()
   return exists('*neobundle#untap') && neobundle#untap()
@@ -169,40 +186,35 @@ if s:directx_enable && has('directx')
 endif
 
 " Full screen
-" if has('win32')
-"   autocmd MyGVimrc GUIEnter *
-"     \ simalt ~x
-" else
-  autocmd MyGVimrc GUIEnter *
-    \ winpos 0 0 |
-    \ set lines=999 columns=9999
-" endif
+autocmd MyGVimrc GUIEnter *
+  \ winpos 0 0 |
+  \ set lines=999 columns=9999
 "}}}
 
 "------------------------------------------------------------------------------
 " Colors: {{{
-" Colorscheme
-silent! colorscheme molokai
-
 " Cursor color
-autocmd MyGVimrc GUIEnter,ColorScheme *
-  \ highlight clear Cursor |
-  \ highlight clear CursorIM |
-  \ highlight Cursor   guifg=#000000 guibg=#eedd82 |
-  \ highlight CursorIM guifg=#000000 guibg=#6495ed
+autocmd MyGVimrc ColorScheme *
+  \ highlight Cursor   guifg=#000000 guibg=#eedd82 gui=NONE |
+  \ highlight CursorIM guifg=#000000 guibg=#6495ed gui=NONE
 "}}}
 "}}}
 
 "==============================================================================
 " Post Init: {{{
-call s:neobundle_untap()
+" Do PostInit Event
+if exists('#User#MyGVimrcPost')
+  execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
+    \ 'User MyGVimrcPost'
+endif
 
+" Local gvimrc
 if filereadable($HOME . '/.local/.gvimrc_local.vim')
   source ~/.local/.gvimrc_local.vim
 endif
 
-if exists('#User#GVimrcPost')
-  execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
-    \ 'User GVimrcPost'
+" ColorScheme
+if !exists('g:colors_name')
+  silent! colorscheme molokai
 endif
 "}}}
