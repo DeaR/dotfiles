@@ -80,9 +80,6 @@ endfunction
 function! s:neobundle_tap(name)
   return exists('*neobundle#tap') && neobundle#tap(a:name)
 endfunction
-function! s:neobundle_untap()
-  return exists('*neobundle#untap') && neobundle#untap()
-endfunction
 
 " Check enabled bundle
 function! s:is_enabled_bundle(name)
@@ -727,7 +724,7 @@ if s:neobundle_tap('unite-mark')
 endif
 "}}}
 
-call s:neobundle_untap()
+silent! call neobundle#untap()
 "}}}
 
 let &cpo = s:save_cpo

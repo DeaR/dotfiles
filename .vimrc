@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Sep-2015.
+" Last Change:  05-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -177,9 +177,6 @@ endfunction
 function! s:neobundle_tap(name)
   return exists('*neobundle#tap') && neobundle#tap(a:name)
 endfunction
-function! s:neobundle_untap()
-  return exists('*neobundle#untap') && neobundle#untap()
-endfunction
 
 " Check enabled bundle
 function! s:is_enabled_bundle(name)
@@ -220,10 +217,8 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
   let g:neobundle#enable_name_conversion = 1
   let g:neobundle#install_max_processes  = s:cpucores()
   call neobundle#begin($HOME . '/.local/bundle')
-  autocmd MyVimrc User MyVimrcPost
-    \ call neobundle#end()
 
-  if (!has('win32') && v:progname !=# 'vim') ||
+  if (!has('win32') && v:progname !~# '^g\=vim$') ||
     \ (has('win32') && v:progname !=# 'gvim.exe')
     call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
   elseif neobundle#load_cache($HOME . '/.vim/neobundle.toml')
@@ -532,6 +527,34 @@ command! -nargs=* -complete=mapping
 command! -nargs=* -complete=mapping
   \ NSOnoremap
   \ nnoremap <args>| snoremap <args>| onoremap <args>
+
+command! -nargs=* -complete=mapping
+  \ NVunmap
+  \ nunmap <args>| vunmap <args>
+command! -nargs=* -complete=mapping
+  \ NXunmap
+  \ nunmap <args>| xunmap <args>
+command! -nargs=* -complete=mapping
+  \ NSunmap
+  \ nunmap <args>| sunmap <args>
+command! -nargs=* -complete=mapping
+  \ NOunmap
+  \ nunmap <args>| ounmap <args>
+command! -nargs=* -complete=mapping
+  \ VOunmap
+  \ vunmap <args>| ounmap <args>
+command! -nargs=* -complete=mapping
+  \ XOunmap
+  \ xunmap <args>| ounmap <args>
+command! -nargs=* -complete=mapping
+  \ SOunmap
+  \ sunmap <args>| ounmap <args>
+command! -nargs=* -complete=mapping
+  \ NXOunmap
+  \ nunmap <args>| xunmap <args>| ounmap <args>
+command! -nargs=* -complete=mapping
+  \ NSOunmap
+  \ nunmap <args>| sunmap <args>| ounmap <args>
 "}}}
 
 "------------------------------------------------------------------------------
@@ -1449,10 +1472,8 @@ let g:xml_syntax_folding = 1
 " Justify: {{{
 if filereadable($VIMRUNTIME . '/macros/justify.vim')
   source $VIMRUNTIME/macros/justify.vim
-  silent! nunmap _j
-  silent! vunmap _j
-  silent! nunmap ,gq
-  silent! vunmap ,gq
+  silent! NVunmap _j
+  silent! NVunmap ,gq
 endif
 "}}}
 
@@ -1799,12 +1820,12 @@ endif
 if s:neobundle_tap('localrc')
   augroup MyVimrc
     autocmd BufNewFile,BufRead *
-      \ if exists("b:undo_localrc") |
+      \ if exists('b:undo_localrc') |
       \   execute b:undo_localrc |
       \   unlet! b:undo_localrc |
       \ endif
     autocmd FileType *
-      \ if exists("b:undo_ftlocalrc") |
+      \ if exists('b:undo_ftlocalrc') |
       \   execute b:undo_ftlocalrc |
       \   unlet! b:undo_ftlocalrc |
       \ endif
@@ -1830,7 +1851,7 @@ if s:neobundle_tap('marching')
     let g:marching_enable_neocomplete = 1
     let g:marching_backend            =
       \ s:is_enabled_bundle('snowdrop') ?
-      \   "snowdrop" : "sync_clang_command"
+      \   'snowdrop' : 'sync_clang_command'
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
@@ -2581,8 +2602,6 @@ if s:neobundle_tap('repeat')
   nmap u     <Plug>(repeat-u)
   nmap U     <Plug>(repeat-U)
   nmap <C-R> <Plug>(repeat-<C-r>)
-  nmap g-    <Plug>(repeat-g-)
-  nmap g+    <Plug>(repeat-g+)
 
   nnoremap <M-o>
     \ :<C-U>call append(line('.'), repeat([''], v:count1))<Bar>
@@ -3524,8 +3543,8 @@ if s:neobundle_tap('unite')
     let g:unite_data_directory             = $HOME . '/.local/.cache/unite'
     let g:unite_enable_start_insert        = 1
     let g:unite_winheight                  = 25
-    let g:unite_candidate_icon             = "-"
-    let g:unite_marked_icon                = "+"
+    let g:unite_candidate_icon             = '-'
+    let g:unite_marked_icon                = '+'
     let g:unite_cursor_line_highlight      = 'CursorLine'
     let g:unite_source_history_yank_enable = 0
     let g:unite_source_grep_max_candidates = 1000
@@ -4032,7 +4051,7 @@ if s:neobundle_tap('yankround')
 endif
 "}}}
 
-call s:neobundle_untap()
+silent! call neobundle#untap()
 "}}}
 
 "==============================================================================
@@ -4047,6 +4066,9 @@ endif
 if filereadable($HOME . '/.local/.vimrc_local.vim')
   source ~/.local/.vimrc_local.vim
 endif
+
+" Enable NeoBundle
+silent! call neobundle#end()
 
 " Enable plugin
 filetype plugin indent on

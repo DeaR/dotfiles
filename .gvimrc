@@ -89,9 +89,6 @@ endfunction
 function! s:neobundle_tap(name)
   return exists('*neobundle#tap') && neobundle#tap(a:name)
 endfunction
-function! s:neobundle_untap()
-  return exists('*neobundle#untap') && neobundle#untap()
-endfunction
 
 " Check enabled bundle
 function! s:is_enabled_bundle(name)

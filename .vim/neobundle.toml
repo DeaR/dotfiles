@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  04-Sep-2015.
+# Last Change:  05-Sep-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -404,7 +404,7 @@ repository = 'osyo-manga/vim-marching'
 filetypes = ['c', 'cpp']
 commands = ['MarchingBufferClearCache', 'MarchingDebugLog', 'MarchingDebugClearLog', 'MarchingEnableDebug', 'MarchingDisableDebug', 'MarchingDebugCheck']
 mappings = [['i', '<Plug>']]
-depends = 'Shougo/vimproc.vim'
+depends = ['Shougo/vimproc.vim']
 
   [plugins.external_commands]
   others = 'clang'
