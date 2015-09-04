@@ -1153,7 +1153,7 @@ if has('multi_byte') && s:is_colored
     endif
 
     if exists('s:hi_specialkey') && !exists('w:ideographic_space')
-      let w:idographic_space = matchadd('IdeographicSpace', "\U3000")
+      let w:idographic_space = matchadd('IdeographicSpace', '　')
     endif
   endfunction
 
