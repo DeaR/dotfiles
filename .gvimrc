@@ -2,7 +2,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  03-Sep-2015.
+" Last Change:  04-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -45,11 +45,11 @@ augroup MyGVimrc
 augroup END
 
 " Script ID
-function! s:SID_PREFIX()
-  if !exists('s:_SID_PREFIX')
-    let s:_SID_PREFIX = matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+function! s:SID()
+  if !exists('s:_SID')
+    let s:_SID = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
   endif
-  return s:_SID_PREFIX
+  return s:_SID
 endfunction
 
 " CPU Cores
@@ -74,15 +74,15 @@ endfunction
 
 " Check vimproc
 function! s:has_vimproc()
-  if !exists('s:has_vimproc')
+  if !exists('s:_has_vimproc')
     try
       call vimproc#version()
-      let s:has_vimproc = 1
+      let s:_has_vimproc = 1
     catch
-      let s:has_vimproc = 0
+      let s:_has_vimproc = 0
     endtry
   endif
-  return s:has_vimproc
+  return s:_has_vimproc
 endfunction
 
 " Wrapped neobundle#tap

@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  03-Sep-2015.
+" Last Change:  04-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -171,11 +171,11 @@ augroup MyVimrc
 augroup END
 
 " Script ID
-function! s:SID_PREFIX()
-  if !exists('s:_SID_PREFIX')
-    let s:_SID_PREFIX = matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+function! s:SID()
+  if !exists('s:_SID')
+    let s:_SID = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
   endif
-  return s:_SID_PREFIX
+  return s:_SID
 endfunction
 
 " CPU Cores
@@ -200,15 +200,15 @@ endfunction
 
 " Check vimproc
 function! s:has_vimproc()
-  if !exists('s:has_vimproc')
+  if !exists('s:_has_vimproc')
     try
       call vimproc#version()
-      let s:has_vimproc = 1
+      let s:_has_vimproc = 1
     catch
-      let s:has_vimproc = 0
+      let s:_has_vimproc = 0
     endtry
   endif
-  return s:has_vimproc
+  return s:_has_vimproc
 endfunction
 
 " Wrapped neobundle#tap
@@ -784,7 +784,7 @@ NXnoremap <Leader>n     :<C-U>enew<CR>
 NXnoremap <Leader><M-n> :<C-U>tabnew<CR>
 NXnoremap <Leader>w     :<C-U>update<CR>
 NXnoremap <Leader>W     :<C-U>wall<CR>
-NXnoremap <Leader>q     :<C-U>bwipeout<CR>
+NXnoremap <Leader>q     :<C-U>bdelete<CR>
 NXnoremap <Leader>!     :<C-U>shell<CR>
 NXnoremap <Leader>B     :<C-U>buffers<CR>
 NXnoremap <Leader>E     :<C-U>Explorer<CR>
@@ -799,7 +799,7 @@ NXnoremap <script> <Leader>t <SID>:<C-U>tabnext<Space>
 NXnoremap <script> <Leader>d <SID>:<C-U>lcd<Space>
 NXnoremap <script> <Leader>D <SID>:<C-U>cd<Space>
 NXnoremap <expr> <Leader>Q
-  \ ':<C-U>1,' . bufnr('$') . 'bwipeout<CR>'
+  \ ':<C-U>1,' . bufnr('$') . 'bdelete<CR>'
 NXnoremap <script><expr> <Leader><M-d>
   \ '<SID>:<C-U>lcd ' .
   \ expand('%:p:h' . (has('win32') ? ':gs?\\?/?' : '')) .
@@ -1857,8 +1857,8 @@ if s:neobundle_tap('neomru')
   function! neobundle#hooks.on_source(bundle)
     let g:neomru#file_mru_path       = $HOME . '/.local/.cache/neomru/file'
     let g:neomru#directory_mru_path  = $HOME . '/.local/.cache/neomru/directory'
-    let g:neomru#file_mru_limit      = 50
-    let g:neomru#directory_mru_limit = 50
+    let g:neomru#file_mru_limit      = 100
+    let g:neomru#directory_mru_limit = 100
     let g:neomru#do_validate         = 0
 
     let g:neomru#file_mru_ignore_pattern =
@@ -2789,8 +2789,8 @@ if s:neobundle_tap('tabpagebuffer-misc')
   endfunction
 
   NXnoremap <Leader>B :<C-U>TpbBuffers<CR>
-  NXnoremap <Leader>q :<C-U>TpbWipeout<CR>
-  NXnoremap <Leader>Q :<C-U>TpbWipeoutAll<CR>
+  NXnoremap <Leader>q :<C-U>TpbDelete<CR>
+  NXnoremap <Leader>Q :<C-U>TpbDeleteAll<CR>
 
   call extend(s:altercmd_define, {
     \ 'bmn[ext]'      : 'TpbModifiedNext',
@@ -3009,15 +3009,26 @@ if s:neobundle_tap('textmanip')
   NXOmap <M-p> <Plug>(operator-textmanip-duplicate-down)
   NXOmap <M-P> <Plug>(operator-textmanip-duplicate-up)
 
-  NXOmap sj <Plug>(operator-textmanip-move-down)
-  NXOmap sk <Plug>(operator-textmanip-move-up)
-  NXOmap sh <Plug>(operator-textmanip-move-left)
-  NXOmap sl <Plug>(operator-textmanip-move-right)
+  NOmap sj <Plug>(operator-textmanip-move-down)
+  NOmap sk <Plug>(operator-textmanip-move-up)
+  NOmap sh <Plug>(operator-textmanip-move-left)
+  NOmap sl <Plug>(operator-textmanip-move-right)
 
   nmap sjj sjsj
   nmap skk sksk
   nmap shh shsh
   nmap sll slsl
+
+  call extend(s:submode_define, {
+    \ 'tm/move' : [
+    \   ['enter_with', 'x', 'r', 'sj', '<Plug>(textmanip-move-down)'],
+    \   ['enter_with', 'x', 'r', 'sk', '<Plug>(textmanip-move-up)'],
+    \   ['enter_with', 'x', 'r', 'sh', '<Plug>(textmanip-move-left)'],
+    \   ['enter_with', 'x', 'r', 'sl', '<Plug>(textmanip-move-right)'],
+    \   ['map',        'x', 'r',  'j', '<Plug>(textmanip-move-down)'],
+    \   ['map',        'x', 'r',  'k', '<Plug>(textmanip-move-up)'],
+    \   ['map',        'x', 'r',  'h', '<Plug>(textmanip-move-left)'],
+    \   ['map',        'x', 'r',  'l', '<Plug>(textmanip-move-right)']]})
 endif
 "}}}
 

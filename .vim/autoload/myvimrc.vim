@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  03-Sep-2015.
+" Last Change:  04-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -35,11 +35,11 @@ set cpo&vim
 "------------------------------------------------------------------------------
 " Common: {{{
 " Script ID
-function! s:SID_PREFIX()
-  if !exists('s:_SID_PREFIX')
-    let s:_SID_PREFIX = matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+function! s:SID()
+  if !exists('s:_SID')
+    let s:_SID = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
   endif
-  return s:_SID_PREFIX
+  return s:_SID
 endfunction
 
 " CPU Cores
@@ -60,19 +60,20 @@ function! s:has_patch(major, minor, patch)
   return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
     \ (v:version > l:version) ||
     \ (v:version == l:version && has('patch' . a:patch))
+--------------------------------------------------------
 endfunction
 
 " Check vimproc
 function! s:has_vimproc()
-  if !exists('s:has_vimproc')
+  if !exists('s:_has_vimproc')
     try
       call vimproc#version()
-      let s:has_vimproc = 1
+      let s:_has_vimproc = 1
     catch
-      let s:has_vimproc = 0
+      let s:_has_vimproc = 0
     endtry
   endif
-  return s:has_vimproc
+  return s:_has_vimproc
 endfunction
 
 " Wrapped neobundle#tap
@@ -504,13 +505,13 @@ if s:neobundle_tap('operator-tabular')
 
   function! myvimrc#operator_tabularize(motion_wise, ...)
     let kind = input('Kind: ', s:operator_tabular_kind,
-      \ 'customlist,' . s:SID_PREFIX() . 'operator_tabular_kind_complete')
+      \ 'customlist,s:operator_tabular_kind_complete')
     if kind == 'markdown' || kind == 'textile' || kind == 'backlog'
       let s:operator_tabular_kind = kind
     endif
 
     let ext = input('Kind: ', s:operator_tabular_ext,
-      \ 'customlist,' . s:SID_PREFIX() . 'operator_tabular_ext_complete')
+      \ 'customlist,s:operator_tabular_ext_complete')
     if ext == 'csv'  || ext == 'tsv'
       let s:operator_tabular_ext = ext
     endif
@@ -684,19 +685,10 @@ endif
 " TextManipilate: {{{
 if s:neobundle_tap('textmanip')
   function! s:operator_textmanip(motion_wise, map)
-    if getpos("'[")[1] == getpos("']")[1] &&
-      \ getpos("']")[2] < getpos("'[")[2]
-      let save_sel = &l:selection
-      try
-        let &l:selection = 'inclusive'
-        execute 'normal! `[' .
-          \ operator#user#visual_command_from_wise_name(a:motion_wise) .
-          \ "`]"
-      finally
-        let &l:selection = save_sel
-      endtry
-    endif
-    execute 'normal' a:map
+    let vis = operator#user#visual_command_from_wise_name(a:motion_wise)
+    execute 'nnoremap <SID>(reselect)' '`[' . vis . '`]'
+    let sel = "\<SNR>" . s:SID() . '_(reselect)'
+    execute 'normal' sel . a:map
   endfunction
 
   function! myvimrc#operator_textmanip_duplicate_down(motion_wise)
