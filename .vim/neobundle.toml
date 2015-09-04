@@ -138,7 +138,7 @@ repository = 'pekepeke/vim-csvutil'
 repository = 'universal-ctags/ctags'
 fetch = 1
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   windows = 'mingw32-make'
 
   [plugins.build]
@@ -189,7 +189,7 @@ mappings = [['ic', '<Plug>']]
 repository = 'mattn/files'
 fetch = 1
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   others = 'go'
 
   [plugins.build]
@@ -252,7 +252,7 @@ functions = 'gocomplete#Complete'
 repository = 'nsf/gocode'
 fetch = 1
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   others = 'go'
 
   [plugins.build]
@@ -264,7 +264,7 @@ repository = 'golang/lint'
 name = 'golint'
 fetch = 1
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   others = 'go'
 
   [plugins.build]
@@ -293,7 +293,7 @@ filetypes = ['aspperl', 'aspvbs', 'cf', 'dtml', 'eruby', 'groovy', 'gsp', 'haml'
 repository = 'github/hub'
 fetch = 1
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   others = 'go'
 
   [plugins.build]
@@ -350,7 +350,7 @@ filetypes = 'json'
 repository = 'mattn/jvgrep'
 fetch = 1
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   others = 'go'
 
   [plugins.build]
@@ -415,9 +415,11 @@ repository = 'laurent22/massren'
 disabled = 'has("win32")'
 fetch = 1
 
+  [plugins.external_commands]
+  others = 'go'
+
   [plugins.build_commands]
   windows = 0
-  others = 'go'
 
   [plugins.build]
   others = 'go get -u github.com/laurent22/massren'
@@ -428,7 +430,7 @@ repository = 'peco/migemogrep'
 rtp = 'misc/vim'
 commands = 'MigemoGrep'
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   others = 'go'
 
   [plugins.build]
@@ -561,7 +563,7 @@ filetypes = 'nginx'
 repository = 'http://scm.osdn.jp/gitroot/nkf/nkf.git'
 fetch = 1
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   windows = 'mingw32-make'
 
   [plugins.build]
@@ -581,7 +583,7 @@ filetypes = 'cs'
 unite_sources = ['OmniSharp/findcodeactions', 'OmniSharp/findsymbols', 'OmniSharp/findtype']
 depends = 'tpope/vim-dispatch'
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   windows = 'vim'
   others = 'xbuild'
 
@@ -821,6 +823,7 @@ depends = 'kana/vim-operator-user'
 repository = 'kana/vim-repeat'
 commands = ['RepeatDefaultKeyMappings']
 mappings = [['n', '<Plug>']]
+depends = 'kana/vim-submode'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -891,7 +894,7 @@ repository = 'bb:wantora/sudo'
 disabled = '!has("win32")'
 fetch = 1
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   windows = 'mingw32-make'
 
   [plugins.build]
@@ -1174,7 +1177,7 @@ depends = 'kana/vim-textobj-user'
 repository = 'ggreer/the_silver_searcher'
 fetch = 1
 
-  [plugins.build_commands]
+  [plugins.external_commands]
   windows = 'mingw32-make'
 
   [plugins.build]

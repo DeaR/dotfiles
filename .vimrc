@@ -93,44 +93,6 @@ let s:ignore_ext = [
 let s:ignore_ft = [
   \ 'gitcommit', 'gitrebase', 'hgcommit']
 
-" AlterCommand
-" {original} : {alternative}
-let s:altercmd_define = {}
-
-" SubMode
-" {submode} : {[[{function}, {modes}, {options}, {lhs}, {rhs}], ...]}
-let s:submode_define = {}
-
-" NeoComplete and NeoComplCache
-let s:neocompl_dictionary_filetype_lists = {
-  \ 'default' : ''}
-let s:neocompl_vim_completefuncs = {
-  \ 'SQLSetType' : 'SQL_GetList'}
-let s:neocompl_omni_patterns = {
-  \ 'CucumberComplete'              : '\h\w*',
-  \ 'adacomplete#Complete'          : '\h\w*',
-  \ 'clojurecomplete#Complete'      : '\h\w*',
-  \ 'csscomplete#CompleteCSS'       : '\h\w*\|[@!]',
-  \ 'sqlcomplete#Complete'          : '\h\w*'}
-let s:neocompl_force_omni_patterns = {
-  \ 'ccomplete#Complete'            : '\%(\.\|->\|::\)\h\w*',
-  \ 'htmlcomplete#CompleteTags'     : '<[^>]*',
-  \ 'javascriptcomplete#CompleteJS' : '\.\h\w*',
-  \ 'phpcomplete#CompletePHP'       : '\%(->\|::\)\h\w*',
-  \ 'xmlcomplete#CompleteTags'      : '<[^>]*'}
-if has('python3')
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'python3complete#Complete' : '\.\h\w*'})
-endif
-if has('python')
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'pythoncomplete#Complete' : '\.\h\w*'})
-endif
-if has('ruby')
-  call extend(s:neocompl_force_omni_patterns, {
-    \ 'rubycomplete#Complete' : '\%(\.\|::\)\h\w*'})
-endif
-
 " VCvarsall.bat
 if has('win32') && !exists('$VCVARSALL')
   let s:save_ssl = &shellslash
@@ -268,14 +230,6 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
     NeoBundleSaveCache
   endif
-
-  call extend(s:neocompl_vim_completefuncs, {
-    \ 'NeoBundleSource'    : 'neobundle#complete_lazy_bundles',
-    \ 'NeoBundleDisable'   : 'neobundle#complete_bundles',
-    \ 'NeoBundleInstall'   : 'neobundle#complete_bundles',
-    \ 'NeoBundleUpdate'    : 'neobundle#complete_bundles',
-    \ 'NeoBundleClean'     : 'neobundle#complete_deleted_bundles',
-    \ 'NeoBundleReinstall' : 'neobundle#complete_bundles'})
 
   execute 'set runtimepath+=' .
     \ join(map(filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
@@ -1224,6 +1178,249 @@ autocmd MyVimrc FileType *
 
 "==============================================================================
 " Plugins: {{{
+" AlterCommand
+" {original} : {alternative}
+let s:altercmd_define = {
+  \ 'vb[uffer]'    : 'vertical sbuffer',
+  \ 'tb[uffer]'    : 'tab sbuffer',
+  \ 'vbn[ext]'     : 'vertical sbnext',
+  \ 'vbN[ext]'     : 'vertical sbNext',
+  \ 'vbp[revious]' : 'vertical sbprevious',
+  \ 'vbm[odified]' : 'vertical sbmodified',
+  \ 'tbn[ext]'     : 'tab sbnext',
+  \ 'tbN[ext]'     : 'tab sbNext',
+  \ 'tbp[revious]' : 'tab sbprevious',
+  \ 'tbm[odified]' : 'tab sbmodified',
+  \ 'vbr[ewind]'   : 'vertical sbrewind',
+  \ 'vbf[irst]'    : 'vertical sbfirst',
+  \ 'vbl[ast]'     : 'vertical sblast',
+  \ 'tbr[ewind]'   : 'tab sbrewind',
+  \ 'tbf[irst]'    : 'tab sbfirst',
+  \ 'tbl[ast]'     : 'tab sblast',
+  \ 'vunh[ide]'    : 'vertical unhide',
+  \ 'vba[ll]'      : 'vertical ball',
+  \ 'tun[hide]'    : 'tab unhide',
+  \ 'tba[ll]'      : 'tab ball'}
+
+" NeoComplete, NeoComplCache
+" {filetype} : {dictionary}
+let s:neocompl_dictionary_filetype_lists = {
+  \ 'default' : ''}
+" {command} : {function}
+let s:neocompl_vim_completefuncs = {
+  \ 'SQLSetType' : 'SQL_GetList'}
+" {omnifunc} : {pattern}
+let s:neocompl_omni_patterns = {
+  \ 'CucumberComplete'              : '\h\w*',
+  \ 'adacomplete#Complete'          : '\h\w*',
+  \ 'clojurecomplete#Complete'      : '\h\w*',
+  \ 'csscomplete#CompleteCSS'       : '\h\w*\|[@!]',
+  \ 'sqlcomplete#Complete'          : '\h\w*'}
+" {omnifunc} : {pattern}
+let s:neocompl_force_omni_patterns = {
+  \ 'ccomplete#Complete'            : '\%(\.\|->\|::\)\h\w*',
+  \ 'htmlcomplete#CompleteTags'     : '<[^>]*',
+  \ 'javascriptcomplete#CompleteJS' : '\.\h\w*',
+  \ 'phpcomplete#CompletePHP'       : '\%(->\|::\)\h\w*',
+  \ 'xmlcomplete#CompleteTags'      : '<[^>]*'}
+if has('python3')
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'python3complete#Complete' : '\.\h\w*'})
+endif
+if has('python')
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'pythoncomplete#Complete' : '\.\h\w*'})
+endif
+if has('ruby')
+  call extend(s:neocompl_force_omni_patterns, {
+    \ 'rubycomplete#Complete' : '\%(\.\|::\)\h\w*'})
+endif
+
+" SubMode
+" {submode} : {[[{function}, {modes}, {options}, {lhs}, {rhs}], ...]}
+let s:submode_define = {
+  \ 'undo' : [
+  \   ['enter_with', 'n', '', 'g-', 'g-'],
+  \   ['enter_with', 'n', '', 'g+', 'g+'],
+  \   ['map',        'n', '',  '-', 'g-'],
+  \   ['map',        'n', '',  '+', 'g+']],
+  \ 'change' : [
+  \   ['enter_with', 'n', '', 'g;', 'g;'],
+  \   ['enter_with', 'n', '', 'g,', 'g,'],
+  \   ['map',        'n', '',  ';', 'g;'],
+  \   ['map',        'n', '',  ',', 'g,']],
+  \ 'sq/ifdef' : [
+  \   ['enter_with', 'nx', '', '[#', '[#'],
+  \   ['enter_with', 'nx', '', ']#', ']#'],
+  \   ['map',        'nx', '', '[',  '[#'],
+  \   ['map',        'nx', '', ']',  ']#']],
+  \ 'sq/mark/l' : [
+  \   ['enter_with', 'nx', '', '[''', '['''],
+  \   ['enter_with', 'nx', '', ']''', ']'''],
+  \   ['map',        'nx', '', '[',   '['''],
+  \   ['map',        'nx', '', ']',   ']''']],
+  \ 'sq/paren' : [
+  \   ['enter_with', 'nx', '', '[(', '[('],
+  \   ['enter_with', 'nx', '', '])', '])'],
+  \   ['map',        'nx', '', '[',  '[('],
+  \   ['map',        'nx', '', ']',  '])']],
+  \ 'sq/cc' : [
+  \   ['enter_with', 'nx', '', '[*', '[*'],
+  \   ['enter_with', 'nx', '', ']*', ']*'],
+  \   ['enter_with', 'nx', '', '[/', '[/'],
+  \   ['enter_with', 'nx', '', ']/', ']/'],
+  \   ['map',        'nx', '', '[',  '[/'],
+  \   ['map',        'nx', '', ']',  ']/']],
+  \ 'sq/mark/c' : [
+  \   ['enter_with', 'nx', '', '[`', '[`'],
+  \   ['enter_with', 'nx', '', ']`', ']`'],
+  \   ['map',        'nx', '', '[',  '[`'],
+  \   ['map',        'nx', '', ']',  ']`']],
+  \ 'sq/sec/b' : [
+  \   ['enter_with', 'nx', '', '[[', '[['],
+  \   ['enter_with', 'nx', '', ']]', ']]'],
+  \   ['map',        'nx', '', '[',  '[['],
+  \   ['map',        'nx', '', ']',  ']]']],
+  \ 'sq/sec/e' : [
+  \   ['enter_with', 'nx', '', '[]', '[]'],
+  \   ['enter_with', 'nx', '', '][', ']['],
+  \   ['map',        'nx', '', '[',  '[]'],
+  \   ['map',        'nx', '', ']',  '][']],
+  \ 'sq/meth/b' : [
+  \   ['enter_with', 'nx', '', '[m', '[m'],
+  \   ['enter_with', 'nx', '', ']m', ']m'],
+  \   ['map',        'nx', '', '[',  '[m'],
+  \   ['map',        'nx', '', ']',  ']m']],
+  \ 'sq/meth/e' : [
+  \   ['enter_with', 'nx', '', '[M', '[M'],
+  \   ['enter_with', 'nx', '', ']M', ']M'],
+  \   ['map',        'nx', '', '[',  '[M'],
+  \   ['map',        'nx', '', ']',  ']M']],
+  \ 'sq/diff' : [
+  \   ['enter_with', 'nx', '', '[c', '[c'],
+  \   ['enter_with', 'nx', '', ']c', ']c'],
+  \   ['map',        'nx', '', '[',  '[c'],
+  \   ['map',        'nx', '', ']',  ']c']],
+  \ 'sq/typo/m' : [
+  \   ['enter_with', 'nx', '', '[s', '[s'],
+  \   ['enter_with', 'nx', '', ']s', ']s'],
+  \   ['map',        'nx', '', '[',  '[s'],
+  \   ['map',        'nx', '', ']',  ']s']],
+  \ 'sq/typo/b' : [
+  \   ['enter_with', 'nx', '', '[S', '[S'],
+  \   ['enter_with', 'nx', '', ']S', ']S'],
+  \   ['map',        'nx', '', '[',  '[S'],
+  \   ['map',        'nx', '', ']',  ']S']],
+  \ 'sq/fold' : [
+  \   ['enter_with', 'nx', '', '[z', '[z'],
+  \   ['enter_with', 'nx', '', ']z', ']z'],
+  \   ['map',        'nx', '', '[',  '[z'],
+  \   ['map',        'nx', '', ']',  ']z']],
+  \ 'sq/brkt' : [
+  \   ['enter_with', 'nx', '', '[{', '[{'],
+  \   ['enter_with', 'nx', '', ']}', ']}'],
+  \   ['map',        'nx', '', '[',  '[{'],
+  \   ['map',        'nx', '', ']',  ']}']],
+  \ 'win/jump' : [
+  \   ['enter_with', 'nx', '', '<C-W><Down>',  '<C-W><Down>'],
+  \   ['enter_with', 'nx', '', '<C-W><C-J>',   '<C-W><C-J>'],
+  \   ['enter_with', 'nx', '', '<C-W>j',       '<C-W>j'],
+  \   ['enter_with', 'nx', '', '<C-W><Up>',    '<C-W><Up>'],
+  \   ['enter_with', 'nx', '', '<C-W><C-K>',   '<C-W><C-K>'],
+  \   ['enter_with', 'nx', '', '<C-W>k',       '<C-W>k'],
+  \   ['enter_with', 'nx', '', '<C-W><Left>',  '<C-W><Left>'],
+  \   ['enter_with', 'nx', '', '<C-W><C-H>',   '<C-W><C-H>'],
+  \   ['enter_with', 'nx', '', '<C-W><BS>',    '<C-W><BS>'],
+  \   ['enter_with', 'nx', '', '<C-W>h',       '<C-W>h'],
+  \   ['enter_with', 'nx', '', '<C-W><Right>', '<C-W><Right>'],
+  \   ['enter_with', 'nx', '', '<C-W><C-L>',   '<C-W><C-L>'],
+  \   ['enter_with', 'nx', '', '<C-W>l',       '<C-W>l'],
+  \   ['enter_with', 'nx', '', '<C-W>w',       '<C-W>w'],
+  \   ['enter_with', 'nx', '', '<C-W><C-W>',   '<C-W><C-W>'],
+  \   ['enter_with', 'nx', '', '<C-W>W',       '<C-W>W'],
+  \   ['enter_with', 'nx', '', '<C-W>t',       '<C-W>t'],
+  \   ['enter_with', 'nx', '', '<C-W><C-T>',   '<C-W><C-T>'],
+  \   ['enter_with', 'nx', '', '<C-W>b',       '<C-W>b'],
+  \   ['enter_with', 'nx', '', '<C-W><C-B>',   '<C-W><C-B>'],
+  \   ['enter_with', 'nx', '', '<C-W>p',       '<C-W>p'],
+  \   ['enter_with', 'nx', '', '<C-W><C-P>',   '<C-W><C-P>'],
+  \   ['map',        'nx', '',      '<Down>',  '<C-W><Down>'],
+  \   ['map',        'nx', '',      '<C-J>',   '<C-W><C-J>'],
+  \   ['map',        'nx', '',      'j',       '<C-W>j'],
+  \   ['map',        'nx', '',      '<Up>',    '<C-W><Up>'],
+  \   ['map',        'nx', '',      '<C-K>',   '<C-W><C-K>'],
+  \   ['map',        'nx', '',      'k',       '<C-W>k'],
+  \   ['map',        'nx', '',      '<Left>',  '<C-W><Left>'],
+  \   ['map',        'nx', '',      '<C-H>',   '<C-W><C-H>'],
+  \   ['map',        'nx', '',      '<BS>',    '<C-W><BS>'],
+  \   ['map',        'nx', '',      'h',       '<C-W>h'],
+  \   ['map',        'nx', '',      '<Right>', '<C-W><Right>'],
+  \   ['map',        'nx', '',      '<C-L>',   '<C-W><C-L>'],
+  \   ['map',        'nx', '',      'l',       '<C-W>l'],
+  \   ['map',        'nx', '',      'w',       '<C-W>w'],
+  \   ['map',        'nx', '',      '<C-W>',   '<C-W><C-W>'],
+  \   ['map',        'nx', '',      'W',       '<C-W>W'],
+  \   ['map',        'nx', '',      't',       '<C-W>t'],
+  \   ['map',        'nx', '',      '<C-T>',   '<C-W><C-T>'],
+  \   ['map',        'nx', '',      'b',       '<C-W>b'],
+  \   ['map',        'nx', '',      '<C-B>',   '<C-W><C-B>'],
+  \   ['map',        'nx', '',      'p',       '<C-W>p'],
+  \   ['map',        'nx', '',      '<C-P>',   '<C-W><C-P>']],
+  \ 'win/move' : [
+  \   ['enter_with', 'nx', '', '<C-W>r',     '<C-W>r'],
+  \   ['enter_with', 'nx', '', '<C-W><C-R>', '<C-W><C-R>'],
+  \   ['enter_with', 'nx', '', '<C-W>R',     '<C-W>R'],
+  \   ['enter_with', 'nx', '', '<C-W>x',     '<C-W>x'],
+  \   ['enter_with', 'nx', '', '<C-W><C-X>', '<C-W><C-X>'],
+  \   ['enter_with', 'nx', '', '<C-W>K',     '<C-W>K'],
+  \   ['enter_with', 'nx', '', '<C-W>J',     '<C-W>J'],
+  \   ['enter_with', 'nx', '', '<C-W>H',     '<C-W>H'],
+  \   ['enter_with', 'nx', '', '<C-W>L',     '<C-W>L'],
+  \   ['map',        'nx', '',      'r',     '<C-W>r'],
+  \   ['map',        'nx', '',      '<C-R>', '<C-W><C-R>'],
+  \   ['map',        'nx', '',      'R',     '<C-W>R'],
+  \   ['map',        'nx', '',      'x',     '<C-W>x'],
+  \   ['map',        'nx', '',      '<C-X>', '<C-W><C-X>'],
+  \   ['map',        'nx', '',      'K',     '<C-W>K'],
+  \   ['map',        'nx', '',      'J',     '<C-W>J'],
+  \   ['map',        'nx', '',      'H',     '<C-W>H'],
+  \   ['map',        'nx', '',      'L',     '<C-W>L']],
+  \ 'win/size' : [
+  \   ['enter_with', 'nx', '', '<C-W>=',     '<C-W>='],
+  \   ['enter_with', 'nx', '', '<C-W>-',     '<C-W>-'],
+  \   ['enter_with', 'nx', '', '<C-W>+',     '<C-W>+'],
+  \   ['enter_with', 'nx', '', '<C-W><C-_>', '<C-W><C-_>'],
+  \   ['enter_with', 'nx', '', '<C-W>_',     '<C-W>_'],
+  \   ['enter_with', 'nx', '', '<C-W><',     '<C-W><'],
+  \   ['enter_with', 'nx', '', '<C-W>>',     '<C-W>>'],
+  \   ['enter_with', 'nx', '', '<C-W><Bar>', '<C-W><Bar>'],
+  \   ['map',        'nx', '',      '=',     '<C-W>='],
+  \   ['map',        'nx', '',      '-',     '<C-W>-'],
+  \   ['map',        'nx', '',      '+',     '<C-W>+'],
+  \   ['map',        'nx', '',      '<C-_>', '<C-W><C-_>'],
+  \   ['map',        'nx', '',      '_',     '<C-W>_'],
+  \   ['map',        'nx', '',      '<',     '<C-W><'],
+  \   ['map',        'nx', '',      '>',     '<C-W>>'],
+  \   ['map',        'nx', '',      '<Bar>', '<C-W><Bar>']],
+  \ 'tab/jump' : [
+  \   ['enter_with', 'nx', '', 'gt', 'gt'],
+  \   ['enter_with', 'nx', '', 'gT', 'gT'],
+  \   ['map',        'nx', '',  't', 'gt'],
+  \   ['map',        'nx', '',  'T', 'gT']],
+  \ 'tab/move' : [
+  \   ['enter_with', 'nx', 'e', 'g<M-t>',
+  \    '":\<C-U>tabmove +" . v:count1 . "\<CR>"'],
+  \   ['enter_with', 'nx', 'e', 'g<M-T>',
+  \    '":\<C-U>tabmove -" . v:count1 . "\<CR>"'],
+  \   ['map',        'nx', '',   '<M-t>',  ':<C-U>tabmove +1<CR>'],
+  \   ['map',        'nx', '',   '<M-T>',  ':<C-U>tabmove -1<CR>']],
+  \ 'delchar' : [
+  \   ['enter_with', 'n', 'e', 'x', 'myvimrc#submode_delchar_enter(1)'],
+  \   ['enter_with', 'n', 'e', 'X', 'myvimrc#submode_delchar_enter(0)'],
+  \   ['map',        'n', '',  'x',
+  \    ':<C-U>call myvimrc#submode_delchar(1)<CR>'],
+  \   ['map',        'n', '',  'X',
+  \    ':<C-U>call myvimrc#submode_delchar(0)<CR>']]}
 
 "------------------------------------------------------------------------------
 " Built In: {{{
@@ -1311,29 +1508,6 @@ if s:neobundle_tap('altercmd')
     autocmd CmdwinEnter :
       \ call myvimrc#cmdwin_enter_altercmd(s:altercmd_define)
   augroup END
-
-  call extend(s:altercmd_define, {
-    \ 'vb[uffer]'    : 'vertical sbuffer',
-    \ 'tb[uffer]'    : 'tab sbuffer',
-    \ 'vbn[ext]'     : 'vertical sbnext',
-    \ 'vbN[ext]'     : 'vertical sbNext',
-    \ 'vbp[revious]' : 'vertical sbprevious',
-    \ 'vbm[odified]' : 'vertical sbmodified',
-    \ 'tbn[ext]'     : 'tab sbnext',
-    \ 'tbN[ext]'     : 'tab sbNext',
-    \ 'tbp[revious]' : 'tab sbprevious',
-    \ 'tbm[odified]' : 'tab sbmodified',
-    \ 'vbr[ewind]'   : 'vertical sbrewind',
-    \ 'vbf[irst]'    : 'vertical sbfirst',
-    \ 'vbl[ast]'     : 'vertical sblast',
-    \ 'tbr[ewind]'   : 'tab sbrewind',
-    \ 'tbf[irst]'    : 'tab sbfirst',
-    \ 'tbl[ast]'     : 'tab sblast',
-    \ 'vunh[ide]'    : 'vertical unhide',
-    \ 'vba[ll]'      : 'vertical ball',
-    \ 'tun[hide]'    : 'tab unhide',
-    \ 'tba[ll]'      : 'tab ball'},
-    \ 'keep')
 endif
 "}}}
 
@@ -1672,19 +1846,21 @@ if s:neobundle_tap('molokai')
     let g:rehash256        = 1
   endfunction
 
-  function! s:molokai_after(colors_name)
-    if a:colors_name != 'molokai'
+  function! s:molokai_after()
+    if get(g:, 'colors_name', '') != 'molokai'
       return
     endif
 
-    highlight TabLine     ctermfg=244 ctermbg=232 cterm=NONE
-    highlight TabLineFill ctermfg=244 ctermbg=232 cterm=reverse
-    highlight TabLine     guibg=#808080 guifg=#080808 gui=NONE
-    highlight TabLineFill guifg=#808080 guibg=#080808 gui=reverse
+    highlight TabLine
+      \ ctermbg=244 ctermfg=232 cterm=NONE
+      \ guibg=#808080 guifg=#080808 gui=NONE
+    highlight TabLineFill
+      \ ctermfg=244 ctermbg=232 cterm=reverse
+      \ guifg=#808080 guibg=#080808 gui=reverse
   endfunction
 
   autocmd MyVimrc ColorScheme *
-    \ call s:molokai_after(expand('<amatch>'))
+    \ call s:molokai_after()
 endif
 "}}}
 
@@ -1704,6 +1880,19 @@ if s:neobundle_tap('narrow')
   NXOmap sn <Plug>(operator-narrow)
 
   nmap snn snsn
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" NeBundle: {{{
+if s:neobundle_tap('neobundle')
+  call extend(s:neocompl_vim_completefuncs, {
+    \ 'NeoBundleSource'    : 'neobundle#complete_lazy_bundles',
+    \ 'NeoBundleDisable'   : 'neobundle#complete_bundles',
+    \ 'NeoBundleInstall'   : 'neobundle#complete_bundles',
+    \ 'NeoBundleUpdate'    : 'neobundle#complete_bundles',
+    \ 'NeoBundleClean'     : 'neobundle#complete_deleted_bundles',
+    \ 'NeoBundleReinstall' : 'neobundle#complete_bundles'})
 endif
 "}}}
 
@@ -2401,6 +2590,13 @@ if s:neobundle_tap('repeat')
   nnoremap <M-O>
     \ :<C-U>call append(line('.') - 1, repeat([''], v:count1))<Bar>
     \ call repeat#set('<M-O>', v:count1)<CR>
+
+  call extend(s:submode_define, {
+    \ 'undo' : [
+    \   ['enter_with', 'n', 'r', 'g-', '<Plug>(repeat-g-)'],
+    \   ['enter_with', 'n', 'r', 'g+', '<Plug>(repeat-g+)'],
+    \   ['map',        'n', 'r',  '-', '<Plug>(repeat-g-)'],
+    \   ['map',        'n', 'r',  '+', '<Plug>(repeat-g+)']]})
 endif
 "}}}
 
@@ -2481,212 +2677,6 @@ if s:neobundle_tap('submode')
       endfor
     endfor
   endfunction
-
-  call extend(s:submode_define, {
-    \ 'undo' : [
-    \   ['enter_with', 'n', '', 'g-', 'g-'],
-    \   ['enter_with', 'n', '', 'g+', 'g+'],
-    \   ['map',        'n', '',  '-', 'g-'],
-    \   ['map',        'n', '',  '+', 'g+']],
-    \
-    \ 'change' : [
-    \   ['enter_with', 'n', '', 'g;', 'g;'],
-    \   ['enter_with', 'n', '', 'g,', 'g,'],
-    \   ['map',        'n', '',  ';', 'g;'],
-    \   ['map',        'n', '',  ',', 'g,']],
-    \
-    \ 'sq/ifdef' : [
-    \   ['enter_with', 'nx', '', '[#', '[#'],
-    \   ['enter_with', 'nx', '', ']#', ']#'],
-    \   ['map',        'nx', '', '[',  '[#'],
-    \   ['map',        'nx', '', ']',  ']#']],
-    \
-    \ 'sq/mark/l' : [
-    \   ['enter_with', 'nx', '', '[''', '['''],
-    \   ['enter_with', 'nx', '', ']''', ']'''],
-    \   ['map',        'nx', '', '[',   '['''],
-    \   ['map',        'nx', '', ']',   ']''']],
-    \
-    \ 'sq/paren' : [
-    \   ['enter_with', 'nx', '', '[(', '[('],
-    \   ['enter_with', 'nx', '', '])', '])'],
-    \   ['map',        'nx', '', '[',  '[('],
-    \   ['map',        'nx', '', ']',  '])']],
-    \
-    \ 'sq/cc' : [
-    \   ['enter_with', 'nx', '', '[*', '[*'],
-    \   ['enter_with', 'nx', '', ']*', ']*'],
-    \   ['enter_with', 'nx', '', '[/', '[/'],
-    \   ['enter_with', 'nx', '', ']/', ']/'],
-    \   ['map',        'nx', '', '[',  '[/'],
-    \   ['map',        'nx', '', ']',  ']/']],
-    \
-    \ 'sq/mark/c' : [
-    \   ['enter_with', 'nx', '', '[`', '[`'],
-    \   ['enter_with', 'nx', '', ']`', ']`'],
-    \   ['map',        'nx', '', '[',  '[`'],
-    \   ['map',        'nx', '', ']',  ']`']],
-    \
-    \ 'sq/sec/b' : [
-    \   ['enter_with', 'nx', '', '[[', '[['],
-    \   ['enter_with', 'nx', '', ']]', ']]'],
-    \   ['map',        'nx', '', '[',  '[['],
-    \   ['map',        'nx', '', ']',  ']]']],
-    \
-    \ 'sq/sec/e' : [
-    \   ['enter_with', 'nx', '', '[]', '[]'],
-    \   ['enter_with', 'nx', '', '][', ']['],
-    \   ['map',        'nx', '', '[',  '[]'],
-    \   ['map',        'nx', '', ']',  '][']],
-    \
-    \ 'sq/meth/b' : [
-    \   ['enter_with', 'nx', '', '[m', '[m'],
-    \   ['enter_with', 'nx', '', ']m', ']m'],
-    \   ['map',        'nx', '', '[',  '[m'],
-    \   ['map',        'nx', '', ']',  ']m']],
-    \
-    \ 'sq/meth/e' : [
-    \   ['enter_with', 'nx', '', '[M', '[M'],
-    \   ['enter_with', 'nx', '', ']M', ']M'],
-    \   ['map',        'nx', '', '[',  '[M'],
-    \   ['map',        'nx', '', ']',  ']M']],
-    \
-    \ 'sq/diff' : [
-    \   ['enter_with', 'nx', '', '[c', '[c'],
-    \   ['enter_with', 'nx', '', ']c', ']c'],
-    \   ['map',        'nx', '', '[',  '[c'],
-    \   ['map',        'nx', '', ']',  ']c']],
-    \
-    \ 'sq/typo/m' : [
-    \   ['enter_with', 'nx', '', '[s', '[s'],
-    \   ['enter_with', 'nx', '', ']s', ']s'],
-    \   ['map',        'nx', '', '[',  '[s'],
-    \   ['map',        'nx', '', ']',  ']s']],
-    \
-    \ 'sq/typo/b' : [
-    \   ['enter_with', 'nx', '', '[S', '[S'],
-    \   ['enter_with', 'nx', '', ']S', ']S'],
-    \   ['map',        'nx', '', '[',  '[S'],
-    \   ['map',        'nx', '', ']',  ']S']],
-    \
-    \ 'sq/fold' : [
-    \   ['enter_with', 'nx', '', '[z', '[z'],
-    \   ['enter_with', 'nx', '', ']z', ']z'],
-    \   ['map',        'nx', '', '[',  '[z'],
-    \   ['map',        'nx', '', ']',  ']z']],
-    \
-    \ 'sq/brkt' : [
-    \   ['enter_with', 'nx', '', '[{', '[{'],
-    \   ['enter_with', 'nx', '', ']}', ']}'],
-    \   ['map',        'nx', '', '[',  '[{'],
-    \   ['map',        'nx', '', ']',  ']}']],
-    \
-    \ 'win/jump' : [
-    \   ['enter_with', 'nx', '', '<C-W><Down>',  '<C-W><Down>'],
-    \   ['enter_with', 'nx', '', '<C-W><C-J>',   '<C-W><C-J>'],
-    \   ['enter_with', 'nx', '', '<C-W>j',       '<C-W>j'],
-    \   ['enter_with', 'nx', '', '<C-W><Up>',    '<C-W><Up>'],
-    \   ['enter_with', 'nx', '', '<C-W><C-K>',   '<C-W><C-K>'],
-    \   ['enter_with', 'nx', '', '<C-W>k',       '<C-W>k'],
-    \   ['enter_with', 'nx', '', '<C-W><Left>',  '<C-W><Left>'],
-    \   ['enter_with', 'nx', '', '<C-W><C-H>',   '<C-W><C-H>'],
-    \   ['enter_with', 'nx', '', '<C-W><BS>',    '<C-W><BS>'],
-    \   ['enter_with', 'nx', '', '<C-W>h',       '<C-W>h'],
-    \   ['enter_with', 'nx', '', '<C-W><Right>', '<C-W><Right>'],
-    \   ['enter_with', 'nx', '', '<C-W><C-L>',   '<C-W><C-L>'],
-    \   ['enter_with', 'nx', '', '<C-W>l',       '<C-W>l'],
-    \   ['enter_with', 'nx', '', '<C-W>w',       '<C-W>w'],
-    \   ['enter_with', 'nx', '', '<C-W><C-W>',   '<C-W><C-W>'],
-    \   ['enter_with', 'nx', '', '<C-W>W',       '<C-W>W'],
-    \   ['enter_with', 'nx', '', '<C-W>t',       '<C-W>t'],
-    \   ['enter_with', 'nx', '', '<C-W><C-T>',   '<C-W><C-T>'],
-    \   ['enter_with', 'nx', '', '<C-W>b',       '<C-W>b'],
-    \   ['enter_with', 'nx', '', '<C-W><C-B>',   '<C-W><C-B>'],
-    \   ['enter_with', 'nx', '', '<C-W>p',       '<C-W>p'],
-    \   ['enter_with', 'nx', '', '<C-W><C-P>',   '<C-W><C-P>'],
-    \   ['map',        'nx', '',      '<Down>',  '<C-W><Down>'],
-    \   ['map',        'nx', '',      '<C-J>',   '<C-W><C-J>'],
-    \   ['map',        'nx', '',      'j',       '<C-W>j'],
-    \   ['map',        'nx', '',      '<Up>',    '<C-W><Up>'],
-    \   ['map',        'nx', '',      '<C-K>',   '<C-W><C-K>'],
-    \   ['map',        'nx', '',      'k',       '<C-W>k'],
-    \   ['map',        'nx', '',      '<Left>',  '<C-W><Left>'],
-    \   ['map',        'nx', '',      '<C-H>',   '<C-W><C-H>'],
-    \   ['map',        'nx', '',      '<BS>',    '<C-W><BS>'],
-    \   ['map',        'nx', '',      'h',       '<C-W>h'],
-    \   ['map',        'nx', '',      '<Right>', '<C-W><Right>'],
-    \   ['map',        'nx', '',      '<C-L>',   '<C-W><C-L>'],
-    \   ['map',        'nx', '',      'l',       '<C-W>l'],
-    \   ['map',        'nx', '',      'w',       '<C-W>w'],
-    \   ['map',        'nx', '',      '<C-W>',   '<C-W><C-W>'],
-    \   ['map',        'nx', '',      'W',       '<C-W>W'],
-    \   ['map',        'nx', '',      't',       '<C-W>t'],
-    \   ['map',        'nx', '',      '<C-T>',   '<C-W><C-T>'],
-    \   ['map',        'nx', '',      'b',       '<C-W>b'],
-    \   ['map',        'nx', '',      '<C-B>',   '<C-W><C-B>'],
-    \   ['map',        'nx', '',      'p',       '<C-W>p'],
-    \   ['map',        'nx', '',      '<C-P>',   '<C-W><C-P>']],
-    \
-    \ 'win/move' : [
-    \   ['enter_with', 'nx', '', '<C-W>r',     '<C-W>r'],
-    \   ['enter_with', 'nx', '', '<C-W><C-R>', '<C-W><C-R>'],
-    \   ['enter_with', 'nx', '', '<C-W>R',     '<C-W>R'],
-    \   ['enter_with', 'nx', '', '<C-W>x',     '<C-W>x'],
-    \   ['enter_with', 'nx', '', '<C-W><C-X>', '<C-W><C-X>'],
-    \   ['enter_with', 'nx', '', '<C-W>K',     '<C-W>K'],
-    \   ['enter_with', 'nx', '', '<C-W>J',     '<C-W>J'],
-    \   ['enter_with', 'nx', '', '<C-W>H',     '<C-W>H'],
-    \   ['enter_with', 'nx', '', '<C-W>L',     '<C-W>L'],
-    \   ['map',        'nx', '',      'r',     '<C-W>r'],
-    \   ['map',        'nx', '',      '<C-R>', '<C-W><C-R>'],
-    \   ['map',        'nx', '',      'R',     '<C-W>R'],
-    \   ['map',        'nx', '',      'x',     '<C-W>x'],
-    \   ['map',        'nx', '',      '<C-X>', '<C-W><C-X>'],
-    \   ['map',        'nx', '',      'K',     '<C-W>K'],
-    \   ['map',        'nx', '',      'J',     '<C-W>J'],
-    \   ['map',        'nx', '',      'H',     '<C-W>H'],
-    \   ['map',        'nx', '',      'L',     '<C-W>L']],
-    \
-    \ 'win/size' : [
-    \   ['enter_with', 'nx', '', '<C-W>=',     '<C-W>='],
-    \   ['enter_with', 'nx', '', '<C-W>-',     '<C-W>-'],
-    \   ['enter_with', 'nx', '', '<C-W>+',     '<C-W>+'],
-    \   ['enter_with', 'nx', '', '<C-W><C-_>', '<C-W><C-_>'],
-    \   ['enter_with', 'nx', '', '<C-W>_',     '<C-W>_'],
-    \   ['enter_with', 'nx', '', '<C-W><',     '<C-W><'],
-    \   ['enter_with', 'nx', '', '<C-W>>',     '<C-W>>'],
-    \   ['enter_with', 'nx', '', '<C-W><Bar>', '<C-W><Bar>'],
-    \   ['map',        'nx', '',      '=',     '<C-W>='],
-    \   ['map',        'nx', '',      '-',     '<C-W>-'],
-    \   ['map',        'nx', '',      '+',     '<C-W>+'],
-    \   ['map',        'nx', '',      '<C-_>', '<C-W><C-_>'],
-    \   ['map',        'nx', '',      '_',     '<C-W>_'],
-    \   ['map',        'nx', '',      '<',     '<C-W><'],
-    \   ['map',        'nx', '',      '>',     '<C-W>>'],
-    \   ['map',        'nx', '',      '<Bar>', '<C-W><Bar>']],
-    \
-    \ 'tab/jump' : [
-    \   ['enter_with', 'nx', '', 'gt', 'gt'],
-    \   ['enter_with', 'nx', '', 'gT', 'gT'],
-    \   ['map',        'nx', '',  't', 'gt'],
-    \   ['map',        'nx', '',  'T', 'gT']],
-    \
-    \ 'tab/move' : [
-    \   ['enter_with', 'nx', 'e', 'g<M-t>',
-    \    '":\<C-U>tabmove +" . v:count1 . "\<CR>"'],
-    \   ['enter_with', 'nx', 'e', 'g<M-T>',
-    \    '":\<C-U>tabmove -" . v:count1 . "\<CR>"'],
-    \   ['map',        'nx', '',   '<M-t>',  ':<C-U>tabmove +1<CR>'],
-    \   ['map',        'nx', '',   '<M-T>',  ':<C-U>tabmove -1<CR>']],
-    \
-    \ 'delchar' : [
-    \   ['enter_with', 'n', 'e', 'x', 'myvimrc#submode_delchar_enter(1)'],
-    \   ['enter_with', 'n', 'e', 'X', 'myvimrc#submode_delchar_enter(0)'],
-    \   ['map',        'n', '',  'x',
-    \    ':<C-U>call myvimrc#submode_delchar(1)<CR>'],
-    \   ['map',        'n', '',  'X',
-    \    ':<C-U>call myvimrc#submode_delchar(0)<CR>']]},
-    \ 'keep')
 endif
 "}}}
 
