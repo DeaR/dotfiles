@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Sep-2015.
+" Last Change:  07-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -46,10 +46,10 @@ endfunction
 function! s:cpucores()
   if !exists('s:_cpucores')
     let s:_cpucores = str2nr(
-      \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
-      \ s:executable('nproc')           ? system('nproc') :
-      \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
-      \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+    \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
+    \ s:executable('nproc')           ? system('nproc') :
+    \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
+    \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
   endif
   return s:_cpucores
 endfunction
@@ -58,9 +58,9 @@ endfunction
 function! s:has_patch(major, minor, patch)
   let l:version = (a:major * 100 + a:minor)
   return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
-    \ (v:version > l:version) ||
-    \ (v:version == l:version && has('patch' . a:patch))
---------------------------------------------------------
+  \ (v:version > l:version) ||
+  \ (v:version == l:version && has('patch' . a:patch))
+  --------------------------------------------------------
 endfunction
 
 " Check vimproc
@@ -84,8 +84,8 @@ endfunction
 " Check enabled bundle
 function! s:is_enabled_bundle(name)
   return
-    \ exists('*neobundle#is_installed') && neobundle#is_installed(a:name) &&
-    \ exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1)
+  \ exists('*neobundle#is_installed') && neobundle#is_installed(a:name) &&
+  \ exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1)
 endfunction
 
 " Cached executable
@@ -110,7 +110,7 @@ let s:is_colored = has('gui_running') || &t_Co > 255
 
 " Check JIS X 0213
 let s:has_jisx0213 = has('iconv') &&
-  \ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+\ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
 "}}}
 "}}}
 
@@ -144,9 +144,9 @@ function! myvimrc#cmdwin_enter(type)
   endif
 
   inoremap <buffer><silent><expr> <C-H>
-    \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<C-H>'
+  \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<C-H>'
   inoremap <buffer><silent><expr> <BS>
-    \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<BS>'
+  \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<BS>'
 
   nnoremap <buffer><silent> q :<C-U>quit<CR>
 endfunction
@@ -157,7 +157,7 @@ endfunction
 function! myvimrc#cmdline_enter(type)
   if exists('#User#CmdlineEnter')
     execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
-      \ 'User CmdlineEnter'
+    \ 'User CmdlineEnter'
   endif
   return a:type
 endfunction
@@ -168,7 +168,7 @@ endfunction
 function! myvimrc#escape_key()
   if exists('#User#EscapeKey')
     execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
-      \ 'User EscapeKey'
+    \ 'User EscapeKey'
   endif
   return ":\<C-U>nohlsearch\<CR>\<Esc>"
 endfunction
@@ -184,8 +184,8 @@ endfunction
 "------------------------------------------------------------------------------
 " Auto Mark: {{{
 let s:mark_char = [
-  \ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-  \ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+\ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+\ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
 function! s:get_mark_pos()
   let pos = (get(b:, 'mark_pos', -1) + 1) % len(s:mark_char)
@@ -224,7 +224,7 @@ endfunction
 function! myvimrc#clear_file_marks()
   let s:file_mark_pos = -1
   return (":\<C-U>rviminfo | delmarks " .
-    \ toupper(join(s:mark_char, '')) . " | wviminfo!\<CR>")
+  \ toupper(join(s:mark_char, '')) . " | wviminfo!\<CR>")
 endfunction
 function! myvimrc#marks()
   let char = join(s:mark_char, '')
@@ -290,7 +290,7 @@ function! myvimrc#get_shell()
 endfunction
 function! myvimrc#set_shell(value)
   let [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote] =
-    \ a:value
+  \ a:value
 endfunction
 "}}}
 
@@ -305,7 +305,7 @@ function! myvimrc#vcvarsall(arch)
 
     let env = system(shellescape($VCVARSALL) . ' ' . a:arch . ' & set')
     for matches in filter(map(split(env, '\n'),
-      \ 'matchlist(v:val, ''\([^=]\+\)=\(.*\)'')'), 'len(v:val) > 1')
+    \ 'matchlist(v:val, ''\([^=]\+\)=\(.*\)'')'), 'len(v:val) > 1')
       " let ${matches[1]} = string(matches[2])
       execute 'let $' . matches[1] . '=' . string(matches[2])
     endfor
@@ -342,9 +342,9 @@ function! myvimrc#auto_mkdir(dir, force)
     let choices = "&Yes\n&No"
   endif
   if !isdirectory(a:dir) &&
-    \ (a:force || confirm(msg, choices, 1, 'Question') == 1)
+  \ (a:force || confirm(msg, choices, 1, 'Question') == 1)
     let dir = (has('iconv') && &termencoding != '') ?
-      \ iconv(a:dir, &encoding, &termencoding) : a:dir
+    \ iconv(a:dir, &encoding, &termencoding) : a:dir
     call mkdir(dir, 'p')
   endif
 endfunction
@@ -380,18 +380,18 @@ endif
 if s:neobundle_tap('incsearch')
   function! myvimrc#incsearch_next()
     return incsearch#go({
-      \ 'command' : '/',
-      \ 'keymap' : {
-      \   '/' : {'key' : '\/', 'noremap' : 1}}})
+    \ 'command' : '/',
+    \ 'keymap' : {
+    \   '/' : {'key' : '\/', 'noremap' : 1}}})
   endfunction
 
   function! myvimrc#incsearch_prev()
     return incsearch#go({
-      \ 'command' : '?',
-      \ 'keymap' : {
-      \   '?' : {'key' : '\?', 'noremap' : 1},
-      \   "\<Tab>" : {'key' : '<Over>(incsearch-prev)', 'noremap' : 1},
-      \   "\<S-Tab>" : {'key' : '<Over>(incsearch-next)', 'noremap' : 1}}})
+    \ 'command' : '?',
+    \ 'keymap' : {
+    \   '?' : {'key' : '\?', 'noremap' : 1},
+    \   "\<Tab>" : {'key' : '<Over>(incsearch-prev)', 'noremap' : 1},
+    \   "\<S-Tab>" : {'key' : '<Over>(incsearch-next)', 'noremap' : 1}}})
   endfunction
 endif
 "}}}
@@ -408,24 +408,24 @@ if s:neobundle_tap('neocomplcache')
     let b:neocomplcache_sources_list = []
 
     inoremap <buffer><expr> <Tab>
-      \ pumvisible() ?
-      \   '<C-N>' :
-      \   myvimrc#check_back_space() ?
-      \     '<Tab>' :
-      \     neocomplcache#start_manual_complete()
+    \ pumvisible() ?
+    \   '<C-N>' :
+    \   myvimrc#check_back_space() ?
+    \     '<Tab>' :
+    \     neocomplcache#start_manual_complete()
     inoremap <buffer><expr> <S-Tab>
-      \ pumvisible() ?
-      \   '<C-P>' :
-      \   neocomplcache#start_manual_complete()
+    \ pumvisible() ?
+    \   '<C-P>' :
+    \   neocomplcache#start_manual_complete()
 
     inoremap <buffer><silent><expr> <C-H>
-      \ col('.') == 1 && getline('.') == '' ?
-      \   '<Esc>:<C-U>quit<CR>' :
-      \   (neocomplcache#smart_close_popup() . '<C-H>')
+    \ col('.') == 1 && getline('.') == '' ?
+    \   '<Esc>:<C-U>quit<CR>' :
+    \   (neocomplcache#smart_close_popup() . '<C-H>')
     inoremap <buffer><silent><expr> <BS>
-      \ col('.') == 1 && getline('.') == '' ?
-      \   '<Esc>:<C-U>quit<CR>' :
-      \   (neocomplcache#smart_close_popup() . '<BS>')
+    \ col('.') == 1 && getline('.') == '' ?
+    \   '<Esc>:<C-U>quit<CR>' :
+    \   (neocomplcache#smart_close_popup() . '<BS>')
   endfunction
 endif
 "}}}
@@ -442,24 +442,24 @@ if s:neobundle_tap('neocomplete')
     let b:neocomplete_sources = []
 
     inoremap <buffer><expr> <Tab>
-      \ pumvisible() ?
-      \   '<C-N>' :
-      \   myvimrc#check_back_space() ?
-      \     '<Tab>' :
-      \     neocomplete#start_manual_complete()
+    \ pumvisible() ?
+    \   '<C-N>' :
+    \   myvimrc#check_back_space() ?
+    \     '<Tab>' :
+    \     neocomplete#start_manual_complete()
     inoremap <buffer><expr> <S-Tab>
-      \ pumvisible() ?
-      \   '<C-P>' :
-      \   neocomplete#start_manual_complete()
+    \ pumvisible() ?
+    \   '<C-P>' :
+    \   neocomplete#start_manual_complete()
 
     inoremap <buffer><silent><expr> <C-H>
-      \ col('.') == 1 && getline('.') == '' ?
-      \   '<Esc>:<C-U>quit<CR>' :
-      \   (neocomplete#smart_close_popup() . '<C-H>')
+    \ col('.') == 1 && getline('.') == '' ?
+    \   '<Esc>:<C-U>quit<CR>' :
+    \   (neocomplete#smart_close_popup() . '<C-H>')
     inoremap <buffer><silent><expr> <BS>
-      \ col('.') == 1 && getline('.') == '' ?
-      \   '<Esc>:<C-U>quit<CR>' :
-      \   (neocomplete#smart_close_popup() . '<BS>')
+    \ col('.') == 1 && getline('.') == '' ?
+    \   '<Esc>:<C-U>quit<CR>' :
+    \   (neocomplete#smart_close_popup() . '<BS>')
   endfunction
 endif
 "}}}
@@ -502,20 +502,20 @@ if s:neobundle_tap('operator-tabular')
 
   function! myvimrc#operator_tabularize(motion_wise, ...)
     let kind = input('Kind: ', s:operator_tabular_kind,
-      \ 'customlist,s:operator_tabular_kind_complete')
+    \ 'customlist,s:operator_tabular_kind_complete')
     if kind == 'markdown' || kind == 'textile' || kind == 'backlog'
       let s:operator_tabular_kind = kind
     endif
 
     let ext = input('Kind: ', s:operator_tabular_ext,
-      \ 'customlist,s:operator_tabular_ext_complete')
+    \ 'customlist,s:operator_tabular_ext_complete')
     if ext == 'csv'  || ext == 'tsv'
       let s:operator_tabular_ext = ext
     endif
 
     call operator#tabular#{s:operator_tabular_kind . 
-      \ (a:0 && a:1 ? '#untabularize_' : '#tabularize_') .
-      \ s:operator_tabular_ext}(a:motion_wise)
+    \ (a:0 && a:1 ? '#untabularize_' : '#tabularize_') .
+    \ s:operator_tabular_ext}(a:motion_wise)
   endfunction
 
   function! myvimrc#operator_untabularize(motion_wise)
@@ -546,8 +546,8 @@ if s:neobundle_tap('operator-user')
       let start = col("'<") - 1
       let end = col("'>") - 1
       let lines = map(
-        \ getline(line("'<"), line("'>")),
-        \ 'v:val[start : end]')
+      \ getline(line("'<"), line("'>")),
+      \ 'v:val[start : end]')
     endif
 
     if &grepprg =~ '^jvgrep'
@@ -562,9 +562,9 @@ if s:neobundle_tap('operator-user')
 
     if s:is_enabled_bundle('unite')
       execute 'Unite'
-        \ (&grepprg == 'internal' ? 'vimgrep::' : 'grep:::') .
-        \ escape(join(lines), esc . ' :')
-        \ '-buffer-name=grep -no-split -wrap'
+      \ (&grepprg == 'internal' ? 'vimgrep::' : 'grep:::') .
+      \ escape(join(lines), esc . ' :')
+      \ '-buffer-name=grep -no-split -wrap'
     else
       execute input(':', 'grep "' . escape(join(lines), esc) . '" ')
     endif
@@ -582,8 +582,8 @@ endif
 if s:neobundle_tap('submode')
   function! s:get_default_register()
     return
-      \ &clipboard =~# 'unnamedplus' ? '+' :
-      \ &clipboard =~# 'unnamed' ? '*' : '"'
+    \ &clipboard =~# 'unnamedplus' ? '+' :
+    \ &clipboard =~# 'unnamed' ? '*' : '"'
   endfunction
 
   function! myvimrc#submode_delchar_enter(forward)
@@ -611,8 +611,8 @@ endif
 " Switch: {{{
 if s:neobundle_tap('switch')
   let s:ordinal_suffixes = [
-    \ 'th', 'st', 'nd', 'rd', 'th',
-    \ 'th', 'th', 'th', 'th', 'th']
+  \ 'th', 'st', 'nd', 'rd', 'th',
+  \ 'th', 'th', 'th', 'th', 'th']
 
   function! myvimrc#ordinal(num)
     return a:num . s:ordinal_suffixes[abs(a:num % 10)]
@@ -652,11 +652,11 @@ if s:neobundle_tap('switch')
 
     if !switch#Switch(definitions)
       execute "normal!" save_count1 .
-        \ (a:is_increment ? "\<C-A>" : "\<C-X>")
+      \ (a:is_increment ? "\<C-A>" : "\<C-X>")
     endif
 
     silent! call repeat#set(
-      \ a:is_increment ? "\<C-A>" : "\<C-X>", save_count1)
+    \ a:is_increment ? "\<C-A>" : "\<C-X>", save_count1)
   endfunction
 endif
 "}}}
@@ -690,27 +690,27 @@ if s:neobundle_tap('textmanip')
 
   function! myvimrc#operator_textmanip_duplicate_down(motion_wise)
     call s:operator_textmanip(
-      \ a:motion_wise, "\<Plug>(textmanip-duplicate-down)")
+    \ a:motion_wise, "\<Plug>(textmanip-duplicate-down)")
   endfunction
   function! myvimrc#operator_textmanip_duplicate_up(motion_wise)
     call s:operator_textmanip(
-      \ a:motion_wise, "\<Plug>(textmanip-duplicate-up)")
+    \ a:motion_wise, "\<Plug>(textmanip-duplicate-up)")
   endfunction
   function! myvimrc#operator_textmanip_move_left(motion_wise)
     call s:operator_textmanip(
-      \ a:motion_wise, "\<Plug>(textmanip-move-left)")
+    \ a:motion_wise, "\<Plug>(textmanip-move-left)")
   endfunction
   function! myvimrc#operator_textmanip_move_right(motion_wise)
     call s:operator_textmanip(
-      \ a:motion_wise, "\<Plug>(textmanip-move-right)")
+    \ a:motion_wise, "\<Plug>(textmanip-move-right)")
   endfunction
   function! myvimrc#operator_textmanip_move_down(motion_wise)
     call s:operator_textmanip(
-      \ a:motion_wise, "\<Plug>(textmanip-move-down)")
+    \ a:motion_wise, "\<Plug>(textmanip-move-down)")
   endfunction
   function! myvimrc#operator_textmanip_move_up(motion_wise)
     call s:operator_textmanip(
-      \ a:motion_wise, "\<Plug>(textmanip-move-up)")
+    \ a:motion_wise, "\<Plug>(textmanip-move-up)")
   endfunction
 endif
 "}}}

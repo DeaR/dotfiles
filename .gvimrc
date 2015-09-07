@@ -2,7 +2,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Sep-2015.
+" Last Change:  07-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -56,10 +56,10 @@ endfunction
 function! s:cpucores()
   if !exists('s:_cpucores')
     let s:_cpucores = str2nr(
-      \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
-      \ s:executable('nproc')           ? system('nproc') :
-      \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
-      \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+    \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
+    \ s:executable('nproc')           ? system('nproc') :
+    \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
+    \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
   endif
   return s:_cpucores
 endfunction
@@ -68,8 +68,8 @@ endfunction
 function! s:has_patch(major, minor, patch)
   let l:version = (a:major * 100 + a:minor)
   return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
-    \ (v:version > l:version) ||
-    \ (v:version == l:version && has('patch' . a:patch))
+  \ (v:version > l:version) ||
+  \ (v:version == l:version && has('patch' . a:patch))
 endfunction
 
 " Check vimproc
@@ -93,8 +93,8 @@ endfunction
 " Check enabled bundle
 function! s:is_enabled_bundle(name)
   return
-    \ exists('*neobundle#is_installed') && neobundle#is_installed(a:name) &&
-    \ exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1)
+  \ exists('*neobundle#is_installed') && neobundle#is_installed(a:name) &&
+  \ exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1)
 endfunction
 
 " Cached executable
@@ -119,7 +119,7 @@ let s:is_colored = has('gui_running') || &t_Co > 255
 
 " Check JIS X 0213
 let s:has_jisx0213 = has('iconv') &&
-  \ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+\ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
 "}}}
 "}}}
 
@@ -184,16 +184,16 @@ endif
 
 " Full screen
 autocmd MyGVimrc GUIEnter *
-  \ winpos 0 0 |
-  \ set lines=999 columns=9999
+\ winpos 0 0 |
+\ set lines=999 columns=9999
 "}}}
 
 "------------------------------------------------------------------------------
 " Colors: {{{
 " Cursor color
 autocmd MyGVimrc ColorScheme *
-  \ highlight Cursor   guifg=#000000 guibg=#eedd82 gui=NONE |
-  \ highlight CursorIM guifg=#000000 guibg=#6495ed gui=NONE
+\ highlight Cursor   guifg=#000000 guibg=#eedd82 gui=NONE |
+\ highlight CursorIM guifg=#000000 guibg=#6495ed gui=NONE
 "}}}
 "}}}
 
@@ -202,7 +202,7 @@ autocmd MyGVimrc ColorScheme *
 " Do PostInit Event
 if exists('#User#MyGVimrcPost')
   execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
-    \ 'User MyGVimrcPost'
+  \ 'User MyGVimrcPost'
 endif
 
 " Local gvimrc
