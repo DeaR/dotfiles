@@ -194,11 +194,6 @@ function! s:executable(expr)
   return s:_executable[a:expr]
 endfunction
 
-" Check executable or enabled
-function! s:executable_or_enabled(expr, name)
-  return s:is_enabled_bundle(a:name) || s:executable(a:expr)
-endfunction
-
 " Check japanese
 let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
 
@@ -262,7 +257,7 @@ set ambiwidth=double
 " Wild menu
 set wildmenu
 execute 'set wildignore+=' .
-\ join(map(copy(s:ignore_ext), '''*.'' . escape(v:val, ''\,'')'), ',')
+\ join(map(copy(s:ignore_ext), '"*." . escape(v:val, "\\,")'), ',')
 
 " Mouse
 set mouse=a
@@ -1173,9 +1168,8 @@ endif
 
 "------------------------------------------------------------------------------
 " From Example: {{{
-autocmd MyVimrc FileType *
-\ if line('.') == 1 && line("'\"") > 1 && line("'\"") <= line('$') &&
-\     index(s:ignore_ft, &filetype) < 0 |
+autocmd MyVimrc BufRead *
+\ if line('.') == 1 && line("'\"") > 1 && line("'\"") <= line('$') |
 \   execute 'normal! g`"' |
 \ endif
 "}}}
@@ -1883,7 +1877,7 @@ if s:neobundle_tap('neomru')
     \ '[/\\]doc[/\\][^/\\]\+\.\%(txt\|\a\ax\)$\|' .
     \ join(map(
     \   copy(s:ignore_ext),
-    \   '''\.'' . escape(v:val, ''\*.^$'') . ''$'''), '\|')
+    \   '"\\." . escape(v:val, "\\*.^$") . "$"'), '\|')
   endfunction
 
   NXnoremap <Leader>e
@@ -3009,14 +3003,14 @@ if s:neobundle_tap('switch')
 
     call extend(g:switch_increment_definitions, [{
     \ '\C\(-\?\d\+\)\%(TH\|ST\|ND\|RD\)' :
-    \   '\=toupper(call(''myvimrc#ordinal'', [submatch(1) + 1]))',
+    \   '\=toupper(call("myvimrc#ordinal", [submatch(1) + 1]))',
     \ '\C\(-\?\d\+\)\%(th\|st\|nd\|rd\)' :
-    \   '\=tolower(call(''myvimrc#ordinal'', [submatch(1) + 1]))'}])
+    \   '\=tolower(call("myvimrc#ordinal", [submatch(1) + 1]))'}])
     call extend(g:switch_decrement_definitions, [{
     \ '\C\(-\?\d\+\)\%(TH\|ST\|ND\|RD\)' :
-    \   '\=toupper(call(''myvimrc#ordinal'', [submatch(1) - 1]))',
+    \   '\=toupper(call("myvimrc#ordinal", [submatch(1) - 1]))',
     \ '\C\(-\?\d\+\)\%(th\|st\|nd\|rd\)' :
-    \   '\=tolower(call(''myvimrc#ordinal'', [submatch(1) - 1]))'}])
+    \   '\=tolower(call("myvimrc#ordinal", [submatch(1) - 1]))'}])
 
     command! -bar
     \ SwitchIncrement
@@ -3587,7 +3581,7 @@ if s:neobundle_tap('textobj-multitextobj')
     \ 'doublequotes' : [
     \   {'textobj' : 'a"',  'is_cursor_in' : 1, 'noremap' : 1}],
     \ 'singlequotes' : [
-    \   {'textobj' : 'a''', 'is_cursor_in' : 1, 'noremap' : 1}],
+    \   {'textobj' : "a'", 'is_cursor_in' : 1, 'noremap' : 1}],
     \ 'backquotes' : [
     \   {'textobj' : 'a`',  'is_cursor_in' : 1, 'noremap' : 1}],
     \ 'jabraces' : [
@@ -3606,7 +3600,7 @@ if s:neobundle_tap('textobj-multitextobj')
     \ 'doublequotes' : [
     \   {'textobj' : 'i"',  'is_cursor_in' : 1, 'noremap' : 1}],
     \ 'singlequotes' : [
-    \   {'textobj' : 'i''', 'is_cursor_in' : 1, 'noremap' : 1}],
+    \   {'textobj' : "i'", 'is_cursor_in' : 1, 'noremap' : 1}],
     \ 'backquotes' : [
     \   {'textobj' : 'i`',  'is_cursor_in' : 1, 'noremap' : 1}],
     \ 'jabraces' : [
@@ -3842,19 +3836,19 @@ if s:neobundle_tap('unite')
 
     if !has('win32') && s:executable('find')
       let g:unite_source_rec_async_command = 'find -L'
-    elseif s:executable_or_enabled('files', 'files')
+    elseif s:executable('files')
       let g:unite_source_rec_async_command =
       \ s:cpucores() > 1 ? 'files -A' : 'files'
-    elseif s:executable_or_enabled('ag', 'the_silver_searcher')
+    elseif s:executable('ag')
       let g:unite_source_rec_async_command =
       \ 'ag --follow --nocolor --nogroup --hidden -g ""'
     endif
 
-    if s:executable_or_enabled('jvgrep', 'jvgrep')
+    if s:executable('jvgrep')
       let g:unite_source_grep_command       = 'jvgrep'
       let g:unite_source_grep_recursive_opt = '-R'
       let g:unite_source_grep_default_opts  = '-n'
-    elseif s:executable_or_enabled('ag', 'the_silver_searcher')
+    elseif s:executable('ag')
       let g:unite_source_grep_command       = 'ag'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_grep_default_opts  = '--vimgrep --hidden'

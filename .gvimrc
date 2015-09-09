@@ -2,7 +2,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  07-Sep-2015.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -104,11 +104,6 @@ function! s:executable(expr)
     let s:_executable[a:expr] = executable(a:expr)
   endif
   return s:_executable[a:expr]
-endfunction
-
-" Check executable or enabled
-function! s:executable_or_enabled(expr, name)
-  return s:is_enabled_bundle(a:name) || s:executable(a:expr)
 endfunction
 
 " Check japanese

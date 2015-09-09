@@ -918,6 +918,7 @@ lazy = 0
 [[plugins]]
 repository = 'DeaR/vim-tabpagebuffer-misc'
 commands = ['TpbFiles', 'TpbBuffers', 'TpbLs', 'TpbDeleteAll', 'TpbWipeoutAll', 'TpbUnloadAll', 'TpbNext', 'TpbPrevious', 'TpbModified', 'TpbModifiedNext', 'TpbModifiedPrevious', 'STpbNext', 'STpbPrevious', 'STpbModified', 'STpbModifiedNext', 'STpbModifiedPrevious', 'VTpbNext', 'VTpbPrevious', 'VTpbModified', 'VTpbModifiedNext', 'VTpbModifiedPrevious', 'TTpbNext', 'TTpbPrevious', 'TTpbModified', 'TTpbModifiedNext', 'TTpbModifiedPrevious', 'TpbRewind', 'TpbFirst', 'TpbLast', 'TpbModifiedRewind', 'TpbModifiedFirst', 'TpbModifiedLast', 'STpbRewind', 'STpbFirst', 'STpbLast', 'STpbModifiedRewind', 'STpbModifiedFirst', 'STpbModifiedLast', 'VTpbRewind', 'VTpbFirst', 'VTpbLast', 'VTpbModifiedRewind', 'VTpbModifiedFirst', 'VTpbModifiedLast', 'TTpbRewind', 'TTpbFirst', 'TTpbLast', 'TTpbModifiedRewind', 'TTpbModifiedFirst', 'TTpbModifiedLast', 'TpbUnhide', 'STpbUnhide', 'VTpbUnhide', 'TTpbUnhide', 'TpbAll', 'STpbAll', 'VTpbAll', 'TTpbAll']
+functions = ['TbpList', 'TbpExists', 'TbpName', 'TbpNr']
 
   [[plugins.commands]]
   name = ['TpbUnload', 'TpbDelete', 'TpbWipeout', 'TpbBuffer', 'STpbBuffer', 'VTpbBuffer', 'TTpbBuffer']
