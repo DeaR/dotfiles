@@ -1,7 +1,7 @@
 " No modeline
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Sep-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -31,12 +31,12 @@ set cpo&vim
 setlocal nomodeline
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ setlocal modeline<'
+\ setlocal modeline<'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

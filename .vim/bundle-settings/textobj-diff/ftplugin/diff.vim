@@ -1,7 +1,7 @@
 " Text Object Difff
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  21-Oct-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,113 +28,141 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <buffer> <LocalLeader>f <Nop>
-xnoremap <buffer> <LocalLeader>f <Nop>
-onoremap <buffer> <LocalLeader>f <Nop>
+try
+  call submode#enter_with(
+  \ 'to-diff/h', 'nx', 'br', '[c', '<Plug>(textobj-diff-hunk-p)')
+  call submode#enter_with(
+  \ 'to-diff/h', 'nx', 'br', ']c', '<Plug>(textobj-diff-hunk-n)')
+  call submode#map(
+  \ 'to-diff/h', 'nx', 'br', '[',  '<Plug>(textobj-diff-hunk-p)')
+  call submode#map(
+  \ 'to-diff/h', 'nx', 'br', ']',  '<Plug>(textobj-diff-hunk-n)')
 
-nmap <buffer> <LocalLeader>fj <Plug>(textobj-diff-file-n)
-xmap <buffer> <LocalLeader>fj <Plug>(textobj-diff-file-n)
-omap <buffer> <LocalLeader>fj <Plug>(textobj-diff-file-n)
-nmap <buffer> <LocalLeader>fk <Plug>(textobj-diff-file-p)
-xmap <buffer> <LocalLeader>fk <Plug>(textobj-diff-file-p)
-omap <buffer> <LocalLeader>fk <Plug>(textobj-diff-file-p)
-nmap <buffer> <LocalLeader>fJ <Plug>(textobj-diff-file-N)
-xmap <buffer> <LocalLeader>fJ <Plug>(textobj-diff-file-N)
-omap <buffer> <LocalLeader>fJ <Plug>(textobj-diff-file-N)
-nmap <buffer> <LocalLeader>fK <Plug>(textobj-diff-file-P)
-xmap <buffer> <LocalLeader>fK <Plug>(textobj-diff-file-P)
-omap <buffer> <LocalLeader>fK <Plug>(textobj-diff-file-P)
+  call submode#enter_with(
+  \ 'to-diff/H', 'nx', 'br', '[C', '<Plug>(textobj-diff-hunk-P)')
+  call submode#enter_with(
+  \ 'to-diff/H', 'nx', 'br', ']C', '<Plug>(textobj-diff-hunk-N)')
+  call submode#map(
+  \ 'to-diff/H', 'nx', 'br', '[',  '<Plug>(textobj-diff-hunk-P)')
+  call submode#map(
+  \ 'to-diff/H', 'nx', 'br', ']',  '<Plug>(textobj-diff-hunk-N)')
 
-nmap <buffer> <LocalLeader>j <Plug>(textobj-diff-hunk-n)
-xmap <buffer> <LocalLeader>j <Plug>(textobj-diff-hunk-n)
-omap <buffer> <LocalLeader>j <Plug>(textobj-diff-hunk-n)
-nmap <buffer> <LocalLeader>k <Plug>(textobj-diff-hunk-p)
-xmap <buffer> <LocalLeader>k <Plug>(textobj-diff-hunk-p)
-omap <buffer> <LocalLeader>k <Plug>(textobj-diff-hunk-p)
-nmap <buffer> <LocalLeader>J <Plug>(textobj-diff-hunk-N)
-xmap <buffer> <LocalLeader>J <Plug>(textobj-diff-hunk-N)
-omap <buffer> <LocalLeader>J <Plug>(textobj-diff-hunk-N)
-nmap <buffer> <LocalLeader>K <Plug>(textobj-diff-hunk-P)
-xmap <buffer> <LocalLeader>K <Plug>(textobj-diff-hunk-P)
-omap <buffer> <LocalLeader>K <Plug>(textobj-diff-hunk-P)
+  call submode#enter_with(
+  \ 'to-diff/f', 'nx', 'br', '[<M-c>', '<Plug>(textobj-diff-file-p)')
+  call submode#enter_with(
+  \ 'to-diff/f', 'nx', 'br', ']<M-c>', '<Plug>(textobj-diff-file-n)')
+  call submode#map(
+  \ 'to-diff/f', 'nx', 'br', '[',  '<Plug>(textobj-diff-file-p)')
+  call submode#map(
+  \ 'to-diff/f', 'nx', 'br', ']',  '<Plug>(textobj-diff-file-n)')
+
+  call submode#enter_with(
+  \ 'to-diff/F', 'nx', 'br', '[<M-C>', '<Plug>(textobj-diff-file-P)')
+  call submode#enter_with(
+  \ 'to-diff/F', 'nx', 'br', ']<M-C>', '<Plug>(textobj-diff-file-N)')
+  call submode#map(
+  \ 'to-diff/F', 'nx', 'br', '[',  '<Plug>(textobj-diff-file-P)')
+  call submode#map(
+  \ 'to-diff/F', 'nx', 'br', ']',  '<Plug>(textobj-diff-file-N)')
+catch /.*/
+  nmap <buffer> [c <Plug>(textobj-diff-hunk-p)
+  xmap <buffer> [c <Plug>(textobj-diff-hunk-p)
+  nmap <buffer> ]c <Plug>(textobj-diff-hunk-n)
+  xmap <buffer> ]c <Plug>(textobj-diff-hunk-n)
+  nmap <buffer> [C <Plug>(textobj-diff-hunk-P)
+  xmap <buffer> [C <Plug>(textobj-diff-hunk-P)
+  nmap <buffer> ]C <Plug>(textobj-diff-hunk-N)
+  xmap <buffer> ]C <Plug>(textobj-diff-hunk-N)
+
+  nmap <buffer> [<M-c> <Plug>(textobj-diff-file-p)
+  xmap <buffer> [<M-c> <Plug>(textobj-diff-file-p)
+  nmap <buffer> ]<M-c> <Plug>(textobj-diff-file-n)
+  xmap <buffer> ]<M-c> <Plug>(textobj-diff-file-n)
+  nmap <buffer> [<M-C> <Plug>(textobj-diff-file-P)
+  xmap <buffer> [<M-C> <Plug>(textobj-diff-file-P)
+  nmap <buffer> ]<M-C> <Plug>(textobj-diff-file-N)
+  xmap <buffer> ]<M-C> <Plug>(textobj-diff-file-N)
+endtry
+
+omap <buffer> [c <Plug>(textobj-diff-hunk-p)
+omap <buffer> ]c <Plug>(textobj-diff-hunk-n)
+omap <buffer> [C <Plug>(textobj-diff-hunk-P)
+omap <buffer> ]C <Plug>(textobj-diff-hunk-N)
+
+omap <buffer> [<M-c> <Plug>(textobj-diff-file-p)
+omap <buffer> ]<M-c> <Plug>(textobj-diff-file-n)
+omap <buffer> [<M-C> <Plug>(textobj-diff-file-P)
+omap <buffer> ]<M-C> <Plug>(textobj-diff-file-N)
 
 xnoremap <buffer> ad <Nop>
 onoremap <buffer> ad <Nop>
-xmap <buffer> adf <Plug>(textobj-diff-file)
-omap <buffer> adf <Plug>(textobj-diff-file)
 xmap <buffer> adh <Plug>(textobj-diff-hunk)
 omap <buffer> adh <Plug>(textobj-diff-hunk)
+xmap <buffer> adf <Plug>(textobj-diff-file)
+omap <buffer> adf <Plug>(textobj-diff-file)
 
 xnoremap <buffer> id <Nop>
 onoremap <buffer> id <Nop>
-xmap <buffer> idf <Plug>(textobj-diff-file)
-omap <buffer> idf <Plug>(textobj-diff-file)
 xmap <buffer> idh <Plug>(textobj-diff-hunk)
 omap <buffer> idh <Plug>(textobj-diff-hunk)
-
-nmap <buffer> <C-J> <Plug>(textobj-diff-hunk-n)
-xmap <buffer> <C-J> <Plug>(textobj-diff-hunk-n)
-omap <buffer> <C-J> <Plug>(textobj-diff-hunk-n)
-nmap <buffer> <C-K> <Plug>(textobj-diff-hunk-p)
-xmap <buffer> <C-K> <Plug>(textobj-diff-hunk-p)
-omap <buffer> <C-K> <Plug>(textobj-diff-hunk-p)
+xmap <buffer> idf <Plug>(textobj-diff-file)
+omap <buffer> idf <Plug>(textobj-diff-file)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> <LocalLeader>f'' |
-  \ silent! execute ''xunmap <buffer> <LocalLeader>f'' |
-  \ silent! execute ''ounmap <buffer> <LocalLeader>f'' |
-  \
-  \ silent! execute ''nunmap <buffer> <LocalLeader>fj'' |
-  \ silent! execute ''xunmap <buffer> <LocalLeader>fj'' |
-  \ silent! execute ''ounmap <buffer> <LocalLeader>fj'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>fk'' |
-  \ silent! execute ''xunmap <buffer> <LocalLeader>fk'' |
-  \ silent! execute ''ounmap <buffer> <LocalLeader>fk'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>fJ'' |
-  \ silent! execute ''xunmap <buffer> <LocalLeader>fJ'' |
-  \ silent! execute ''ounmap <buffer> <LocalLeader>fJ'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>fK'' |
-  \ silent! execute ''xunmap <buffer> <LocalLeader>fK'' |
-  \ silent! execute ''ounmap <buffer> <LocalLeader>fK'' |
-  \
-  \ silent! execute ''nunmap <buffer> <LocalLeader>j'' |
-  \ silent! execute ''xunmap <buffer> <LocalLeader>j'' |
-  \ silent! execute ''ounmap <buffer> <LocalLeader>j'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>k'' |
-  \ silent! execute ''xunmap <buffer> <LocalLeader>k'' |
-  \ silent! execute ''ounmap <buffer> <LocalLeader>k'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>J'' |
-  \ silent! execute ''xunmap <buffer> <LocalLeader>J'' |
-  \ silent! execute ''ounmap <buffer> <LocalLeader>J'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>K'' |
-  \ silent! execute ''xunmap <buffer> <LocalLeader>K'' |
-  \ silent! execute ''ounmap <buffer> <LocalLeader>K'' |
-  \
-  \ silent! execute ''xunmap <buffer> ad'' |
-  \ silent! execute ''ounmap <buffer> ad'' |
-  \ silent! execute ''xunmap <buffer> adf'' |
-  \ silent! execute ''ounmap <buffer> adf'' |
-  \ silent! execute ''xunmap <buffer> adh'' |
-  \ silent! execute ''ounmap <buffer> adh'' |
-  \
-  \ silent! execute ''xunmap <buffer> id'' |
-  \ silent! execute ''ounmap <buffer> id'' |
-  \ silent! execute ''xunmap <buffer> idf'' |
-  \ silent! execute ''ounmap <buffer> idf'' |
-  \ silent! execute ''xunmap <buffer> idh'' |
-  \ silent! execute ''ounmap <buffer> idh'' |
-  \
-  \ silent! execute ''nunmap <buffer> <C-J>'' |
-  \ silent! execute ''xunmap <buffer> <C-J>'' |
-  \ silent! execute ''ounmap <buffer> <C-J>'' |
-  \ silent! execute ''nunmap <buffer> <C-K>'' |
-  \ silent! execute ''xunmap <buffer> <C-K>'' |
-  \ silent! execute ''ounmap <buffer> <C-K>'''
+\ silent! call submode#unmap("to-diff/h", "nx", "br", "[c") |
+\ silent! call submode#unmap("to-diff/h", "nx", "br", "]c") |
+\ silent! call submode#unmap("to-diff/H", "nx", "br", "[C") |
+\ silent! call submode#unmap("to-diff/H", "nx", "br", "]C") |
+\
+\ silent! call submode#unmap("to-diff/f", "nx", "br", "[<M-c>") |
+\ silent! call submode#unmap("to-diff/f", "nx", "br", "]<M-c>") |
+\ silent! call submode#unmap("to-diff/F", "nx", "br", "[<M-C>") |
+\ silent! call submode#unmap("to-diff/F", "nx", "br", "]<M-C>") |
+\
+\ silent! execute "nunmap <buffer> [c" |
+\ silent! execute "xunmap <buffer> [c" |
+\ silent! execute "ounmap <buffer> [c" |
+\ silent! execute "nunmap <buffer> ]c" |
+\ silent! execute "xunmap <buffer> ]c" |
+\ silent! execute "ounmap <buffer> ]c" |
+\ silent! execute "nunmap <buffer> [C" |
+\ silent! execute "xunmap <buffer> [C" |
+\ silent! execute "ounmap <buffer> [C" |
+\ silent! execute "nunmap <buffer> ]C" |
+\ silent! execute "xunmap <buffer> ]C" |
+\ silent! execute "ounmap <buffer> ]C" |
+\
+\ silent! execute "nunmap <buffer> [<M-c>" |
+\ silent! execute "xunmap <buffer> [<M-c>" |
+\ silent! execute "ounmap <buffer> [<M-c>" |
+\ silent! execute "nunmap <buffer> ]<M-c>" |
+\ silent! execute "xunmap <buffer> ]<M-c>" |
+\ silent! execute "ounmap <buffer> ]<M-c>" |
+\ silent! execute "nunmap <buffer> [<M-C>" |
+\ silent! execute "xunmap <buffer> [<M-C>" |
+\ silent! execute "ounmap <buffer> [<M-C>" |
+\ silent! execute "nunmap <buffer> ]<M-C>" |
+\ silent! execute "xunmap <buffer> ]<M-C>" |
+\ silent! execute "ounmap <buffer> ]<M-C>" |
+\
+\ silent! execute "xunmap <buffer> ad" |
+\ silent! execute "ounmap <buffer> ad" |
+\ silent! execute "xunmap <buffer> adf" |
+\ silent! execute "ounmap <buffer> adf" |
+\ silent! execute "xunmap <buffer> adh" |
+\ silent! execute "ounmap <buffer> adh" |
+\
+\ silent! execute "xunmap <buffer> id"|
+\ silent! execute "ounmap <buffer> id"|
+\ silent! execute "xunmap <buffer> idf" |
+\ silent! execute "ounmap <buffer> idf" |
+\ silent! execute "xunmap <buffer> idh" |
+\ silent! execute "ounmap <buffer> idh"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

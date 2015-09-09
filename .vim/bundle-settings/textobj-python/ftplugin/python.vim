@@ -1,7 +1,7 @@
 " TextObj Python ftplugin for Python
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Aug-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -38,19 +38,19 @@ xmap <buffer> iC <Plug>(textobj-python-class-i)
 omap <buffer> iC <Plug>(textobj-python-class-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''xunmap <buffer> aF'' |
-  \ silent! execute ''ounmap <buffer> aF'' |
-  \ silent! execute ''xunmap <buffer> iC'' |
-  \ silent! execute ''ounmap <buffer> iC'' |
-  \ silent! execute ''xunmap <buffer> aF'' |
-  \ silent! execute ''ounmap <buffer> aF'' |
-  \ silent! execute ''xunmap <buffer> iC'' |
-  \ silent! execute ''ounmap <buffer> iC'''
+\ silent! execute "xunmap <buffer> aF" |
+\ silent! execute "ounmap <buffer> aF" |
+\ silent! execute "xunmap <buffer> iC" |
+\ silent! execute "ounmap <buffer> iC" |
+\ silent! execute "xunmap <buffer> aF" |
+\ silent! execute "ounmap <buffer> aF" |
+\ silent! execute "xunmap <buffer> iC" |
+\ silent! execute "ounmap <buffer> iC"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

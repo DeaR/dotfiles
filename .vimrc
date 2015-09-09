@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  07-Sep-2015.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -209,33 +209,10 @@ let s:is_colored = has('gui_running') || &t_Co > 255
 let s:has_jisx0213 = has('iconv') &&
 \ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
 "}}}
-
-"------------------------------------------------------------------------------
-" NeoBundle: {{{
-if isdirectory($HOME . '/.local/bundle/neobundle')
-  set runtimepath+=~/.local/bundle/neobundle
-  let g:neobundle#enable_name_conversion = 1
-  let g:neobundle#install_max_processes  = s:cpucores()
-  call neobundle#begin($HOME . '/.local/bundle')
-
-  if (has('win32') && v:progname !=# 'gvim.exe') ||
-  \ (!has('win32') && v:progname !~# '^g\=vim$')
-    call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
-  elseif neobundle#load_cache($HOME . '/.vim/neobundle.toml')
-    call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
-    NeoBundleSaveCache
-  endif
-
-  execute 'set runtimepath+=' .
-  \ join(map(filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
-  \   's:is_enabled_bundle(fnamemodify(v:val, ":t"))'),
-  \ 'escape(v:val, " ,")'), ',')
-endif
-"}}}
 "}}}
 
 "==============================================================================
-" General Settings: {{{
+" General: {{{
 
 "------------------------------------------------------------------------------
 " System: {{{
@@ -291,6 +268,11 @@ execute 'set wildignore+=' .
 set mouse=a
 set nomousefocus
 set nomousehide
+
+" Help
+if s:is_lang_ja
+  set helplang^=ja
+endif
 "}}}
 
 "------------------------------------------------------------------------------
@@ -347,9 +329,9 @@ if s:is_colored
 endif
 
 " Grep
-if s:executable_or_enabled('jvgrep', 'jvgrep')
+if s:executable('jvgrep')
   set grepprg=jvgrep\ -n
-elseif s:executable_or_enabled('ag', 'the_silver_searcher')
+elseif s:executable('ag')
   set grepprg=ag\ --vimgrep\ --hidden
 elseif s:executable('grep')
   set grepprg=grep\ -Hn
@@ -1095,7 +1077,7 @@ nnoremap <F6> :<C-U>DiffOrig<CR>
 "}}}
 
 "==============================================================================
-" Vim Script: {{{
+" Functions: {{{
 
 "------------------------------------------------------------------------------
 " Auto MkDir: {{{
@@ -1259,214 +1241,6 @@ if has('ruby')
   \ 'rubycomplete#Complete' : '\%(\.\|::\)\h\w*'})
 endif
 
-" SubMode
-" {submode} : {[[{modes}, {options}, {lhs}, {rhs}], ...]}
-let s:submode_enter = {
-\ 'undo' : [
-\   ['n', '', 'g-', 'g-'],
-\   ['n', '', 'g+', 'g+']],
-\ 'change' : [
-\   ['n', '', 'g;', 'g;'],
-\   ['n', '', 'g,', 'g,']],
-\ 'sq/ifdef' : [
-\   ['nx', '', '[#', '[#'],
-\   ['nx', '', ']#', ']#']],
-\ 'sq/mark/l' : [
-\   ['nx', '', "['", "['"],
-\   ['nx', '', "]'", "]'"]],
-\ 'sq/paren' : [
-\   ['nx', '', '[(', '[('],
-\   ['nx', '', '])', '])']],
-\ 'sq/cc' : [
-\   ['nx', '', '[*', '[*'],
-\   ['nx', '', ']*', ']*'],
-\   ['nx', '', '[/', '[/'],
-\   ['nx', '', ']/', ']/']],
-\ 'sq/mark/c' : [
-\   ['nx', '', '[`', '[`'],
-\   ['nx', '', ']`', ']`']],
-\ 'sq/sec/b' : [
-\   ['nx', '', '[[', '[['],
-\   ['nx', '', ']]', ']]']],
-\ 'sq/sec/e' : [
-\   ['nx', '', '[]', '[]'],
-\   ['nx', '', '][', '][']],
-\ 'sq/meth/b' : [
-\   ['nx', '', '[m', '[m'],
-\   ['nx', '', ']m', ']m']],
-\ 'sq/meth/e' : [
-\   ['nx', '', '[M', '[M'],
-\   ['nx', '', ']M', ']M']],
-\ 'sq/diff' : [
-\   ['nx', '', '[c', '[c'],
-\   ['nx', '', ']c', ']c']],
-\ 'sq/typo/m' : [
-\   ['nx', '', '[s', '[s'],
-\   ['nx', '', ']s', ']s']],
-\ 'sq/typo/b' : [
-\   ['nx', '', '[S', '[S'],
-\   ['nx', '', ']S', ']S']],
-\ 'sq/fold' : [
-\   ['nx', '', '[z', '[z'],
-\   ['nx', '', ']z', ']z']],
-\ 'sq/brkt' : [
-\   ['nx', '', '[{', '[{'],
-\   ['nx', '', ']}', ']}']],
-\ 'win/jump' : [
-\   ['nx', '', '<C-W><Down>',  '<C-W><Down>'],
-\   ['nx', '', '<C-W><C-J>',   '<C-W><C-J>'],
-\   ['nx', '', '<C-W>j',       '<C-W>j'],
-\   ['nx', '', '<C-W><Up>',    '<C-W><Up>'],
-\   ['nx', '', '<C-W><C-K>',   '<C-W><C-K>'],
-\   ['nx', '', '<C-W>k',       '<C-W>k'],
-\   ['nx', '', '<C-W><Left>',  '<C-W><Left>'],
-\   ['nx', '', '<C-W><C-H>',   '<C-W><C-H>'],
-\   ['nx', '', '<C-W><BS>',    '<C-W><BS>'],
-\   ['nx', '', '<C-W>h',       '<C-W>h'],
-\   ['nx', '', '<C-W><Right>', '<C-W><Right>'],
-\   ['nx', '', '<C-W><C-L>',   '<C-W><C-L>'],
-\   ['nx', '', '<C-W>l',       '<C-W>l'],
-\   ['nx', '', '<C-W>w',       '<C-W>w'],
-\   ['nx', '', '<C-W><C-W>',   '<C-W><C-W>'],
-\   ['nx', '', '<C-W>W',       '<C-W>W'],
-\   ['nx', '', '<C-W>t',       '<C-W>t'],
-\   ['nx', '', '<C-W><C-T>',   '<C-W><C-T>'],
-\   ['nx', '', '<C-W>b',       '<C-W>b'],
-\   ['nx', '', '<C-W><C-B>',   '<C-W><C-B>'],
-\   ['nx', '', '<C-W>p',       '<C-W>p'],
-\   ['nx', '', '<C-W><C-P>',   '<C-W><C-P>']],
-\ 'win/move' : [
-\   ['nx', '', '<C-W>r',     '<C-W>r'],
-\   ['nx', '', '<C-W><C-R>', '<C-W><C-R>'],
-\   ['nx', '', '<C-W>R',     '<C-W>R'],
-\   ['nx', '', '<C-W>x',     '<C-W>x'],
-\   ['nx', '', '<C-W><C-X>', '<C-W><C-X>'],
-\   ['nx', '', '<C-W>K',     '<C-W>K'],
-\   ['nx', '', '<C-W>J',     '<C-W>J'],
-\   ['nx', '', '<C-W>H',     '<C-W>H'],
-\   ['nx', '', '<C-W>L',     '<C-W>L']],
-\ 'win/size' : [
-\   ['nx', '', '<C-W>=',     '<C-W>='],
-\   ['nx', '', '<C-W>-',     '<C-W>-'],
-\   ['nx', '', '<C-W>+',     '<C-W>+'],
-\   ['nx', '', '<C-W><C-_>', '<C-W><C-_>'],
-\   ['nx', '', '<C-W>_',     '<C-W>_'],
-\   ['nx', '', '<C-W><',     '<C-W><'],
-\   ['nx', '', '<C-W>>',     '<C-W>>'],
-\   ['nx', '', '<C-W><Bar>', '<C-W><Bar>']],
-\ 'tab/jump' : [
-\   ['nx', '', 'gt', 'gt'],
-\   ['nx', '', 'gT', 'gT']],
-\ 'tab/move' : [
-\   ['nx', 'e', 'g<M-t>', '":\<C-U>tabmove +" . v:count1 . "\<CR>"'],
-\   ['nx', 'e', 'g<M-T>', '":\<C-U>tabmove -" . v:count1 . "\<CR>"']],
-\ 'delchar' : [
-\   ['n', 'e', 'x', 'myvimrc#submode_delchar_enter(1)'],
-\   ['n', 'e', 'X', 'myvimrc#submode_delchar_enter(0)']]}
-" {submode} : {[[{modes}, {options}, {lhs}], ...]}
-let s:submode_leave = {}
-" {submode} : {[[{modes}, {options}, {lhs}, {rhs}], ...]}
-let s:submode_map = {
-\ 'undo' : [
-\   ['n', '', '-', 'g-'],
-\   ['n', '', '+', 'g+']],
-\ 'change' : [
-\   ['n', '', ';', 'g;'],
-\   ['n', '', ',', 'g,']],
-\ 'sq/ifdef' : [
-\   ['nx', '', '[', '[#'],
-\   ['nx', '', ']', ']#']],
-\ 'sq/mark/l' : [
-\   ['nx', '', '[', "['"],
-\   ['nx', '', ']', "]'"]],
-\ 'sq/paren' : [
-\   ['nx', '', '[', '[('],
-\   ['nx', '', ']', '])']],
-\ 'sq/cc' : [
-\   ['nx', '', '[', '[/'],
-\   ['nx', '', ']', ']/']],
-\ 'sq/mark/c' : [
-\   ['nx', '', '[', '[`'],
-\   ['nx', '', ']', ']`']],
-\ 'sq/sec/b' : [
-\   ['nx', '', '[', '[['],
-\   ['nx', '', ']', ']]']],
-\ 'sq/sec/e' : [
-\   ['nx', '', '[', '[]'],
-\   ['nx', '', ']', '][']],
-\ 'sq/meth/b' : [
-\   ['nx', '', '[', '[m'],
-\   ['nx', '', ']', ']m']],
-\ 'sq/meth/e' : [
-\   ['nx', '', '[', '[M'],
-\   ['nx', '', ']', ']M']],
-\ 'sq/diff' : [
-\   ['nx', '', '[', '[c'],
-\   ['nx', '', ']', ']c']],
-\ 'sq/typo/m' : [
-\   ['nx', '', '[', '[s'],
-\   ['nx', '', ']', ']s']],
-\ 'sq/typo/b' : [
-\   ['nx', '', '[', '[S'],
-\   ['nx', '', ']', ']S']],
-\ 'sq/fold' : [
-\   ['nx', '', '[', '[z'],
-\   ['nx', '', ']', ']z']],
-\ 'sq/brkt' : [
-\   ['nx', '', '[', '[{'],
-\   ['nx', '', ']', ']}']],
-\ 'win/jump' : [
-\   ['nx', '', '<Down>',  '<C-W><Down>'],
-\   ['nx', '', '<C-J>',   '<C-W><C-J>'],
-\   ['nx', '', 'j',       '<C-W>j'],
-\   ['nx', '', '<Up>',    '<C-W><Up>'],
-\   ['nx', '', '<C-K>',   '<C-W><C-K>'],
-\   ['nx', '', 'k',       '<C-W>k'],
-\   ['nx', '', '<Left>',  '<C-W><Left>'],
-\   ['nx', '', '<C-H>',   '<C-W><C-H>'],
-\   ['nx', '', '<BS>',    '<C-W><BS>'],
-\   ['nx', '', 'h',       '<C-W>h'],
-\   ['nx', '', '<Right>', '<C-W><Right>'],
-\   ['nx', '', '<C-L>',   '<C-W><C-L>'],
-\   ['nx', '', 'l',       '<C-W>l'],
-\   ['nx', '', 'w',       '<C-W>w'],
-\   ['nx', '', '<C-W>',   '<C-W><C-W>'],
-\   ['nx', '', 'W',       '<C-W>W'],
-\   ['nx', '', 't',       '<C-W>t'],
-\   ['nx', '', '<C-T>',   '<C-W><C-T>'],
-\   ['nx', '', 'b',       '<C-W>b'],
-\   ['nx', '', '<C-B>',   '<C-W><C-B>'],
-\   ['nx', '', 'p',       '<C-W>p'],
-\   ['nx', '', '<C-P>',   '<C-W><C-P>']],
-\ 'win/move' : [
-\   ['nx', '', 'r',     '<C-W>r'],
-\   ['nx', '', '<C-R>', '<C-W><C-R>'],
-\   ['nx', '', 'R',     '<C-W>R'],
-\   ['nx', '', 'x',     '<C-W>x'],
-\   ['nx', '', '<C-X>', '<C-W><C-X>'],
-\   ['nx', '', 'K',     '<C-W>K'],
-\   ['nx', '', 'J',     '<C-W>J'],
-\   ['nx', '', 'H',     '<C-W>H'],
-\   ['nx', '', 'L',     '<C-W>L']],
-\ 'win/size' : [
-\   ['nx', '', '=',     '<C-W>='],
-\   ['nx', '', '-',     '<C-W>-'],
-\   ['nx', '', '+',     '<C-W>+'],
-\   ['nx', '', '<C-_>', '<C-W><C-_>'],
-\   ['nx', '', '_',     '<C-W>_'],
-\   ['nx', '', '<',     '<C-W><'],
-\   ['nx', '', '>',     '<C-W>>'],
-\   ['nx', '', '<Bar>', '<C-W><Bar>']],
-\ 'tab/jump' : [
-\   ['nx', '', 't', 'gt'],
-\   ['nx', '', 'T', 'gT']],
-\ 'tab/move' : [
-\   ['nx', '', '<M-t>', ':<C-U>tabmove +1<CR>'],
-\   ['nx', '', '<M-T>', ':<C-U>tabmove -1<CR>']],
-\ 'delchar' : [
-\   ['n', '', 'x', ':<C-U>call myvimrc#submode_delchar(1)<CR>'],
-\   ['n', '', 'X', ':<C-U>call myvimrc#submode_delchar(0)<CR>']]}
-
 "------------------------------------------------------------------------------
 " Built In: {{{
 " Assembler
@@ -1518,6 +1292,29 @@ if filereadable($VIMRUNTIME . '/macros/matchit.vim')
 
   NXOmap <Space>   %
   NXOmap <S-Space> g%
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" NeoBundle: {{{
+if isdirectory($HOME . '/.local/bundle/neobundle')
+  set runtimepath+=~/.local/bundle/neobundle
+  let g:neobundle#enable_name_conversion = 1
+  let g:neobundle#install_max_processes  = s:cpucores()
+  call neobundle#begin($HOME . '/.local/bundle')
+
+  if (has('win32') && v:progname !=# 'gvim.exe') ||
+  \ (!has('win32') && v:progname !~# '^g\=vim$')
+    call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
+  elseif neobundle#load_cache($HOME . '/.vim/neobundle.toml')
+    call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
+    NeoBundleSaveCache
+  endif
+
+  execute 'set runtimepath+=' .
+  \ join(map(filter(split(glob($HOME . '/.vim/bundle-settings/*'), '\n'),
+  \   's:is_enabled_bundle(fnamemodify(v:val, ":t"))'),
+  \ 'escape(v:val, " ,")'), ',')
 endif
 "}}}
 
@@ -1828,16 +1625,6 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
-" Jvgrep: {{{
-if s:neobundle_tap('jvgrep')
-  let $JVGREP_EXCLUDE =
-  \ join(map(
-  \   copy(s:ignore_ext),
-  \   '''\.'' . escape(v:val, ''\*+.?{}()[]^$-|/'') . ''$'''), '|')
-endif
-"}}}
-
-"------------------------------------------------------------------------------
 " Localrc: {{{
 if s:neobundle_tap('localrc')
   augroup MyVimrc
@@ -1901,7 +1688,6 @@ if s:neobundle_tap('molokai')
     \ ctermfg=244 ctermbg=232 cterm=reverse
     \ guifg=#808080 guibg=#080808 gui=reverse
   endfunction
-
   autocmd MyVimrc ColorScheme *
   \ call s:molokai_after()
 endif
@@ -2456,17 +2242,21 @@ if s:neobundle_tap('precious')
   endfunction
 
   function! neobundle#hooks.on_post_source(bundle)
-    let &statusline = substitute(&statusline, '%y', '%{StatusLine_y()}', '')
+    let &statusline = substitute(&statusline, '%y', '%{Precious_y()}', '')
   endfunction
 
-  function! StatusLine_y()
+  function! Precious_y()
     if &l:filetype == ''
       return ''
     endif
 
-    let context = precious#context_filetype()
-    return '[' . &l:filetype .
-    \ (&l:filetype != context ? (':' . context) : '') . ']'
+    let b = precious#base_filetype()
+    let c = precious#context_filetype()
+    if b == c
+      return join(['[', b, ']'], '')
+    else
+      return join(['[', b, ':', c, ']'], '')
+    endif
   endfunction
 
   XOmap ax <Plug>(textobj-precious-i)
@@ -2618,12 +2408,27 @@ endif
 if s:neobundle_tap('repeat')
   function! neobundle#hooks.on_source(bundle)
     let g:repeat_no_default_key_mappings = 1
+
+    call submode#enter_with(
+    \ 'rep/br', 'n', 'r', '<Plug>(submode:rep/br:-)',
+    \ '<Plug>(repeat-g-)')
+    call submode#enter_with(
+    \ 'rep/br', 'n', 'r', '<Plug>(submode:rep/br:+)',
+    \ '<Plug>(repeat-g+)')
+    call submode#map(
+    \ 'rep/br', 'n', 'r', '-',
+    \ '<Plug>(repeat-g-)')
+    call submode#map(
+    \ 'rep/br', 'n', 'r', '+',
+    \ '<Plug>(repeat-g+)')
   endfunction
 
   nmap .     <Plug>(repeat-.)
   nmap u     <Plug>(repeat-u)
   nmap U     <Plug>(repeat-U)
   nmap <C-R> <Plug>(repeat-<C-r>)
+  nmap g-    <Plug>(submode:rep/br:-)
+  nmap g+    <Plug>(submode:rep/br:+)
 
   nnoremap <M-o>
   \ :<C-U>call append(line('.'), repeat([''], v:count1))<Bar>
@@ -2631,15 +2436,6 @@ if s:neobundle_tap('repeat')
   nnoremap <M-O>
   \ :<C-U>call append(line('.') - 1, repeat([''], v:count1))<Bar>
   \ call repeat#set('<M-O>', v:count1)<CR>
-
-  call extend(s:submode_enter, {
-  \ 'undo' : [
-  \   ['n', 'r', 'g-', '<Plug>(repeat-g-)'],
-  \   ['n', 'r', 'g+', '<Plug>(repeat-g+)']]})
-  call extend(s:submode_map, {
-  \ 'undo' : [
-  \   ['n', 'r',  '-', '<Plug>(repeat-g-)'],
-  \   ['n', 'r',  '+', '<Plug>(repeat-g+)']]})
 endif
 "}}}
 
@@ -2714,22 +2510,436 @@ if s:neobundle_tap('submode')
   function! neobundle#hooks.on_source(bundle)
     let g:submode_keep_leaving_key = 1
 
-    for [key, value] in items(s:submode_enter)
-      for list in value
-        call call('submode#enter_with', extend([key], list))
-      endfor
-    endfor
-    for [key, value] in items(s:submode_leave)
-      for list in value
-        call call('submode#leave_with', extend([key], list))
-      endfor
-    endfor
-    for [key, value] in items(s:submode_map)
-      for list in value
-        call call('submode#map', extend([key], list))
-      endfor
-    endfor
+    call submode#enter_with(
+    \ 'undo/br', 'n', '', '<Plug>(submode:undo/br:-)', 'g-')
+    call submode#enter_with(
+    \ 'undo/br', 'n', '', '<Plug>(submode:undo/br:+)', 'g+')
+    call submode#map(
+    \ 'undo/br', 'n', '', '-', 'g-')
+    call submode#map(
+    \ 'undo/br', 'n', '', '+', 'g+')
+
+    call submode#enter_with(
+    \ 'change', 'n', '', '<Plug>(submode:change:;)', 'g;')
+    call submode#enter_with(
+    \ 'change', 'n', '', '<Plug>(submode:change:,)', 'g,')
+    call submode#map(
+    \ 'change', 'n', '', ';', 'g;')
+    call submode#map(
+    \ 'change', 'n', '', ',', 'g,')
+
+    call submode#enter_with(
+    \ 'sq/ifdef', 'nx', '', '<Plug>(submode:sq/ifdef:[)', '[#')
+    call submode#enter_with(
+    \ 'sq/ifdef', 'nx', '', '<Plug>(submode:sq/ifdef:])', ']#')
+    call submode#map(
+    \ 'sq/ifdef', 'nx', '', '[', '[#')
+    call submode#map(
+    \ 'sq/ifdef', 'nx', '', ']', ']#')
+
+    call submode#enter_with(
+    \ 'sq/mark/l', 'nx', '', "<Plug>(submode::['", "['")
+    call submode#enter_with(
+    \ 'sq/mark/l', 'nx', '', "<Plug>(submode::]'", "]'")
+    call submode#map(
+    \ 'sq/mark/l', 'nx', '', "[", "['")
+    call submode#map(
+    \ 'sq/mark/l', 'nx', '', "]", "]'")
+
+    call submode#enter_with(
+    \ 'sq/paren', 'nx', '', '<Plug>(submode:sq/paren:[)', '[(')
+    call submode#enter_with(
+    \ 'sq/paren', 'nx', '', '<Plug>(submode:sq/paren:])', '])')
+    call submode#map(
+    \ 'sq/paren', 'nx', '', '[', '[(')
+    call submode#map(
+    \ 'sq/paren', 'nx', '', ']', '])')
+
+    call submode#enter_with(
+    \ 'sq/cc1', 'nx', '', '<Plug>(submode:sq/cc1:[)', '[*')
+    call submode#enter_with(
+    \ 'sq/cc1', 'nx', '', '<Plug>(submode:sq/cc1:])', ']*')
+    call submode#map(
+    \ 'sq/cc1', 'nx', '', '[', '[*')
+    call submode#map(
+    \ 'sq/cc1', 'nx', '', ']', ']*')
+
+    call submode#enter_with(
+    \ 'sq/mark/c', 'nx', '', '<Plug>(submode:sq/mark/c:[)', '[`')
+    call submode#enter_with(
+    \ 'sq/mark/c', 'nx', '', '<Plug>(submode:sq/mark/c:])', ']`')
+    call submode#map(
+    \ 'sq/mark/c', 'nx', '', '[', '[`')
+    call submode#map(
+    \ 'sq/mark/c', 'nx', '', ']', ']`')
+
+    call submode#enter_with(
+    \ 'sq/cc2', 'nx', '', '<Plug>(submode:sq/cc2:[)', '[/')
+    call submode#enter_with(
+    \ 'sq/cc2', 'nx', '', '<Plug>(submode:sq/cc2:])', ']/')
+    call submode#map(
+    \ 'sq/cc2', 'nx', '', '[', '[/')
+    call submode#map(
+    \ 'sq/cc2', 'nx', '', ']', ']/')
+
+    call submode#enter_with(
+    \ 'sq/seq/b', 'nx', '', '<Plug>(submode:sq/seq/b:[)', '[[')
+    call submode#enter_with(
+    \ 'sq/seq/b', 'nx', '', '<Plug>(submode:sq/seq/b:])', ']]')
+    call submode#map(
+    \ 'sq/seq/b', 'nx', '', '[', '[[')
+    call submode#map(
+    \ 'sq/seq/b', 'nx', '', ']', ']]')
+
+    call submode#enter_with(
+    \ 'sq/seq/e', 'nx', '', '<Plug>(submode:sq/seq/e:[)', '[]')
+    call submode#enter_with(
+    \ 'sq/seq/e', 'nx', '', '<Plug>(submode:sq/seq/e:])', '][')
+    call submode#map(
+    \ 'sq/seq/e', 'nx', '', '[', '[]')
+    call submode#map(
+    \ 'sq/seq/e', 'nx', '', ']', '][')
+
+    call submode#enter_with(
+    \ 'sq/meth/b', 'nx', '', '<Plug>(submode:sq/meth/b:[)', '[m')
+    call submode#enter_with(
+    \ 'sq/meth/b', 'nx', '', '<Plug>(submode:sq/meth/b:])', ']m')
+    call submode#map(
+    \ 'sq/meth/b', 'nx', '', '[', '[m')
+    call submode#map(
+    \ 'sq/meth/b', 'nx', '', ']', ']m')
+
+    call submode#enter_with(
+    \ 'sq/meth/e', 'nx', '', '<Plug>(submode:sq/meth/e:[)', '[M')
+    call submode#enter_with(
+    \ 'sq/meth/e', 'nx', '', '<Plug>(submode:sq/meth/e:])', ']M')
+    call submode#map(
+    \ 'sq/meth/e', 'nx', '', '[', '[M')
+    call submode#map(
+    \ 'sq/meth/e', 'nx', '', ']', ']M')
+
+    call submode#enter_with(
+    \ 'sq/diff', 'nx', '', '<Plug>(submode:sq/diff:[)', '[c')
+    call submode#enter_with(
+    \ 'sq/diff', 'nx', '', '<Plug>(submode:sq/diff:])', ']c')
+    call submode#map(
+    \ 'sq/diff', 'nx', '', '[', '[c')
+    call submode#map(
+    \ 'sq/diff', 'nx', '', ']', ']c')
+
+    call submode#enter_with(
+    \ 'sq/typo/m', 'nx', '', '<Plug>(submode:sq/typo/m:[)', '[s')
+    call submode#enter_with(
+    \ 'sq/typo/m', 'nx', '', '<Plug>(submode:sq/typo/m:])', ']s')
+    call submode#map(
+    \ 'sq/typo/m', 'nx', '', '[', '[s')
+    call submode#map(
+    \ 'sq/typo/m', 'nx', '', ']', ']s')
+
+    call submode#enter_with(
+    \ 'sq/typo/b', 'nx', '', '<Plug>(submode:sq/typo/b:[)', '[S')
+    call submode#enter_with(
+    \ 'sq/typo/b', 'nx', '', '<Plug>(submode:sq/typo/b:])', ']S')
+    call submode#map(
+    \ 'sq/typo/b', 'nx', '', '[', '[S')
+    call submode#map(
+    \ 'sq/typo/b', 'nx', '', ']', ']S')
+
+    call submode#enter_with(
+    \ 'sq/fold', 'nx', '', '<Plug>(submode:sq/fold:[)', '[z')
+    call submode#enter_with(
+    \ 'sq/fold', 'nx', '', '<Plug>(submode:sq/fold:])', ']z')
+    call submode#map(
+    \ 'sq/fold', 'nx', '', '[', '[z')
+    call submode#map(
+    \ 'sq/fold', 'nx', '', ']', ']z')
+
+    call submode#enter_with(
+    \ 'sq/brkt', 'nx', '', '<Plug>(submode:sq/brkt:[)', '[{')
+    call submode#enter_with(
+    \ 'sq/brkt', 'nx', '', '<Plug>(submode:sq/brkt:])', ']}')
+    call submode#map(
+    \ 'sq/brkt', 'nx', '', '[', '[{')
+    call submode#map(
+    \ 'sq/brkt', 'nx', '', ']', ']}')
+
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<Down>)', '<C-W><Down>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-J>)', '<C-W><C-J>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:j)', '<C-W>j')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<Up>)', '<C-W><Up>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-K>)', '<C-W><C-K>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:k)', '<C-W>k')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<Left>)', '<C-W><Left>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-H>)', '<C-W><C-H>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<BS>)', '<C-W><BS>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:h)', '<C-W>h')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<Right>)', '<C-W><Right>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-L>)', '<C-W><C-L>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:l)', '<C-W>l')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:w)', '<C-W>w')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-W>)', '<C-W><C-W>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:W)', '<C-W>W')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:t)', '<C-W>t')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-T>)', '<C-W><C-T>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:b)', '<C-W>b')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-B>)', '<C-W><C-B>')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:p)', '<C-W>p')
+    call submode#enter_with(
+    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-P>)', '<C-W><C-P>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<Down>', '<C-W><Down>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<C-J>', '<C-W><C-J>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', 'j', '<C-W>j')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<Up>', '<C-W><Up>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<C-K>', '<C-W><C-K>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', 'k', '<C-W>k')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<Left>', '<C-W><Left>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<C-H>', '<C-W><C-H>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<BS>', '<C-W><BS>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', 'h', '<C-W>h')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<Right>', '<C-W><Right>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<C-L>', '<C-W><C-L>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', 'l', '<C-W>l')
+    call submode#map(
+    \ 'win/jump', 'nx', '', 'w', '<C-W>w')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<C-W>', '<C-W><C-W>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', 'W', '<C-W>W')
+    call submode#map(
+    \ 'win/jump', 'nx', '', 't', '<C-W>t')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<C-T>', '<C-W><C-T>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', 'b', '<C-W>b')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<C-B>', '<C-W><C-B>')
+    call submode#map(
+    \ 'win/jump', 'nx', '', 'p', '<C-W>p')
+    call submode#map(
+    \ 'win/jump', 'nx', '', '<C-P>', '<C-W><C-P>')
+
+    call submode#enter_with(
+    \ 'win/move', 'nx', '', '<Plug>(submode:win/move:r)', '<C-W>r')
+    call submode#enter_with(
+    \ 'win/move', 'nx', '', '<Plug>(submode:win/move:<C-R>)', '<C-W><C-R>')
+    call submode#enter_with(
+    \ 'win/move', 'nx', '', '<Plug>(submode:win/move:R)', '<C-W>R')
+    call submode#enter_with(
+    \ 'win/move', 'nx', '', '<Plug>(submode:win/move:x)', '<C-W>x')
+    call submode#enter_with(
+    \ 'win/move', 'nx', '', '<Plug>(submode:win/move:<C-X>)', '<C-W><C-X>')
+    call submode#enter_with(
+    \ 'win/move', 'nx', '', '<Plug>(submode:win/move:K)', '<C-W>K')
+    call submode#enter_with(
+    \ 'win/move', 'nx', '', '<Plug>(submode:win/move:J)', '<C-W>J')
+    call submode#enter_with(
+    \ 'win/move', 'nx', '', '<Plug>(submode:win/move:H)', '<C-W>H')
+    call submode#enter_with(
+    \ 'win/move', 'nx', '', '<Plug>(submode:win/move:L)', '<C-W>L')
+    call submode#map(
+    \ 'win/move', 'nx', '', 'r', '<C-W>r')
+    call submode#map(
+    \ 'win/move', 'nx', '', '<C-R>', '<C-W><C-R>')
+    call submode#map(
+    \ 'win/move', 'nx', '', 'R', '<C-W>R')
+    call submode#map(
+    \ 'win/move', 'nx', '', 'x', '<C-W>x')
+    call submode#map(
+    \ 'win/move', 'nx', '', '<C-X>', '<C-W><C-X>')
+    call submode#map(
+    \ 'win/move', 'nx', '', 'K', '<C-W>K')
+    call submode#map(
+    \ 'win/move', 'nx', '', 'J', '<C-W>J')
+    call submode#map(
+    \ 'win/move', 'nx', '', 'H', '<C-W>H')
+    call submode#map(
+    \ 'win/move', 'nx', '', 'L', '<C-W>L')
+
+    call submode#enter_with(
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:=)', '<C-W>=')
+    call submode#enter_with(
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:-)', '<C-W>-')
+    call submode#enter_with(
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:+)', '<C-W>+')
+    call submode#enter_with(
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:<C-_>)', '<C-W><C-_>')
+    call submode#enter_with(
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:_)', '<C-W>_')
+    call submode#enter_with(
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:<lt>)', '<C-W><lt>')
+    call submode#enter_with(
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:>)', '<C-W>>')
+    call submode#enter_with(
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:<Bar>)', '<C-W><Bar>')
+    call submode#map(
+    \ 'win/size', 'nx', '', '=', '<C-W>=')
+    call submode#map(
+    \ 'win/size', 'nx', '', '-', '<C-W>-')
+    call submode#map(
+    \ 'win/size', 'nx', '', '+', '<C-W>+')
+    call submode#map(
+    \ 'win/size', 'nx', '', '<C-_>', '<C-W><C-_>')
+    call submode#map(
+    \ 'win/size', 'nx', '', '_', '<C-W>_')
+    call submode#map(
+    \ 'win/size', 'nx', '', '<lt>', '<C-W><lt>')
+    call submode#map(
+    \ 'win/size', 'nx', '', '>', '<C-W>>')
+    call submode#map(
+    \ 'win/size', 'nx', '', '<Bar>', '<C-W><Bar>')
+
+    call submode#enter_with(
+    \ 'tab/jump', 'nx', '', '<Plug>(submode:tab/jump:t)', 'gt')
+    call submode#enter_with(
+    \ 'tab/jump', 'nx', '', '<Plug>(submode:tab/jump:T)', 'gT')
+    call submode#map(
+    \ 'tab/jump', 'nx', '', 't', 'gt')
+    call submode#map(
+    \ 'tab/jump', 'nx', '', 'T', 'gT')
+
+    call submode#enter_with(
+    \ 'tab/move', 'nx', 'se', '<Plug>(submode:tab/move:<M-t>)',
+    \ '":<C-U>tabmove +" . v:count1 . "<CR>"')
+    call submode#enter_with(
+    \ 'tab/move', 'nx', 'se', '<Plug>(submode:tab/move:<M-T>)',
+    \ '":<C-U>tabmove -" . v:count1 . "<CR>"')
+    call submode#map(
+    \ 'tab/move', 'nx', 's', '<M-t>',
+    \ ':<C-U>tabmove +1<CR>')
+    call submode#map(
+    \ 'tab/move', 'nx', 's', '<M-T>',
+    \ ':<C-U>tabmove -1<CR>')
+
+    call submode#enter_with(
+    \ 'delchar', 'n', 'se', '<Plug>(submode:delchar:x)',
+    \ 'myvimrc#submode_delchar_enter(1)')
+    call submode#enter_with(
+    \ 'delchar', 'n', 'se', '<Plug>(submode:delchar:X)',
+    \ 'myvimrc#submode_delchar_enter(0)')
+    call submode#map(
+    \ 'delchar', 'n', 's', 'x',
+    \ ':<C-U>call myvimrc#submode_delchar(1)<CR>')
+    call submode#map(
+    \ 'delchar', 'n', 's', 'X',
+    \ ':<C-U>call myvimrc#submode_delchar(0)<CR>')
   endfunction
+
+  if !s:is_enabled_bundle('repeat')
+    nmap g- <Plug>(submode:undo/br:-)
+    nmap g+ <Plug>(submode:undo/br:+)
+  endif
+
+  nmap  g;           <Plug>(submode:change:;)
+  nmap  g,           <Plug>(submode:change:,)
+  NXmap [#           <Plug>(submode:sq/ifdef:[)
+  NXmap ]#           <Plug>(submode:sq/ifdef:])
+  NXmap ['           <Plug>(submode:sq/mark/l:[)
+  NXmap ]'           <Plug>(submode:sq/mark/l:])
+  NXmap [(           <Plug>(submode:sq/paren:[)
+  NXmap ])           <Plug>(submode:sq/paren:])
+  NXmap [*           <Plug>(submode:sq/cc1:[)
+  NXmap ]*           <Plug>(submode:sq/cc1:])
+  NXmap [`           <Plug>(submode:sq/mark/c:[)
+  NXmap ]`           <Plug>(submode:sq/mark/c:])
+  NXmap [/           <Plug>(submode:sq/cc2:[)
+  NXmap ]/           <Plug>(submode:sq/cc2:])
+  NXmap [[           <Plug>(submode:sq/seq/b:[)
+  NXmap ]]           <Plug>(submode:sq/seq/b:])
+  NXmap []           <Plug>(submode:sq/seq/e:[)
+  NXmap ][           <Plug>(submode:sq/seq/e:])
+  NXmap [m           <Plug>(submode:sq/meth/b:[)
+  NXmap ]m           <Plug>(submode:sq/meth/b:])
+  NXmap [M           <Plug>(submode:sq/mrth/e:[)
+  NXmap ]M           <Plug>(submode:sq/mrth/e:])
+  NXmap [c           <Plug>(submode:sq/diff:[)
+  NXmap ]c           <Plug>(submode:sq/diff:])
+  NXmap [s           <Plug>(submode:sq/typo/m:[)
+  NXmap ]s           <Plug>(submode:sq/typo/m:])
+  NXmap [S           <Plug>(submode:sq/typo/b:[)
+  NXmap ]S           <Plug>(submode:sq/typo/b:])
+  NXmap [z           <Plug>(submode:sq/fold:[)
+  NXmap ]z           <Plug>(submode:sq/fold:])
+  NXmap [{           <Plug>(submode:sq/brkt:[)
+  NXmap ]}           <Plug>(submode:sq/brkt:])
+  NXmap <C-W><Down>  <Plug>(submode:win/jump:<Down>)
+  NXmap <C-W><C-J>   <Plug>(submode:win/jump:<C-J>)
+  NXmap <C-W>j       <Plug>(submode:win/jump:j)
+  NXmap <C-W><Up>    <Plug>(submode:win/jump:<Up>)
+  NXmap <C-W><C-K>   <Plug>(submode:win/jump:<C-K>)
+  NXmap <C-W>k       <Plug>(submode:win/jump:k)
+  NXmap <C-W><Left>  <Plug>(submode:win/jump:<Left>)
+  NXmap <C-W><C-H>   <Plug>(submode:win/jump:<C-H>)
+  NXmap <C-W><BS>    <Plug>(submode:win/jump:<BS>)
+  NXmap <C-W>h       <Plug>(submode:win/jump:h)
+  NXmap <C-W><Right> <Plug>(submode:win/jump:<Right>)
+  NXmap <C-W><C-L>   <Plug>(submode:win/jump:<C-L>)
+  NXmap <C-W>l       <Plug>(submode:win/jump:l)
+  NXmap <C-W>w       <Plug>(submode:win/jump:w)
+  NXmap <C-W><C-W>   <Plug>(submode:win/jump:<C-W>)
+  NXmap <C-W>W       <Plug>(submode:win/jump:W)
+  NXmap <C-W>t       <Plug>(submode:win/jump:t)
+  NXmap <C-W><C-T>   <Plug>(submode:win/jump:<C-T>)
+  NXmap <C-W>b       <Plug>(submode:win/jump:b)
+  NXmap <C-W><C-B>   <Plug>(submode:win/jump:<C-B>)
+  NXmap <C-W>p       <Plug>(submode:win/jump:p)
+  NXmap <C-W><C-P>   <Plug>(submode:win/jump:<C-P>)
+  NXmap <C-W>r       <Plug>(submode:win/move:r)
+  NXmap <C-W><C-R>   <Plug>(submode:win/move:<C-R>)
+  NXmap <C-W>R       <Plug>(submode:win/move:R)
+  NXmap <C-W>x       <Plug>(submode:win/move:x)
+  NXmap <C-W><C-X>   <Plug>(submode:win/move:<C-X>)
+  NXmap <C-W>K       <Plug>(submode:win/move:K)
+  NXmap <C-W>J       <Plug>(submode:win/move:J)
+  NXmap <C-W>H       <Plug>(submode:win/move:H)
+  NXmap <C-W>L       <Plug>(submode:win/move:L)
+  NXmap <C-W>=       <Plug>(submode:win/size:=)
+  NXmap <C-W>-       <Plug>(submode:win/size:-)
+  NXmap <C-W>+       <Plug>(submode:win/size:+)
+  NXmap <C-W><C-_>   <Plug>(submode:win/size:<C-_>)
+  NXmap <C-W>_       <Plug>(submode:win/size:_)
+  NXmap <C-W><lt>    <Plug>(submode:win/size:<lt>)
+  NXmap <C-W>>       <Plug>(submode:win/size:>)
+  NXmap <C-W><Bar>   <Plug>(submode:win/size:<Bar>)
+  NXmap gt           <Plug>(submode:tab/jump:t)
+  NXmap gT           <Plug>(submode:tab/jump:T)
+  NXmap g<M-t>       <Plug>(submode:tab/move:<M-t>)
+  NXmap g<M-T>       <Plug>(submode:tab/move:<M-T>)
+  nmap  x            <Plug>(submode:delchar:x)
+  nmap  X            <Plug>(submode:delchar:X)
 endif
 "}}}
 
@@ -3047,6 +3257,44 @@ if s:neobundle_tap('textmanip')
     call operator#user#define(
     \ 'textmanip-move-up',
     \ 'myvimrc#operator_textmanip_move_up')
+
+    call submode#enter_with(
+    \ 'tm/dup', 'x', 'r', '<Plug>(submode:tm/dup:j)',
+    \ '<Plug>(textmanip-duplicate-down)')
+    call submode#enter_with(
+    \ 'tm/dup', 'x', 'r', '<Plug>(submode:tm/dup:k)',
+    \ '<Plug>(textmanip-duplicate-up)')
+    call submode#map(
+    \ 'tm/dup', 'x', 'r', 'j',
+    \ '<Plug>(textmanip-duplicate-down)')
+    call submode#map(
+    \ 'tm/dup', 'x', 'r', 'k',
+    \ '<Plug>(textmanip-duplicate-up)')
+
+    call submode#enter_with(
+    \ 'tm/move', 'x', 'r', '<Plug>(submode:tm/move:j)',
+    \ '<Plug>(textmanip-move-down)')
+    call submode#enter_with(
+    \ 'tm/move', 'x', 'r', '<Plug>(submode:tm/move:k)',
+    \ '<Plug>(textmanip-move-up)')
+    call submode#enter_with(
+    \ 'tm/move', 'x', 'r', '<Plug>(submode:tm/move:h)',
+    \ '<Plug>(textmanip-move-left)')
+    call submode#enter_with(
+    \ 'tm/move', 'x', 'r', '<Plug>(submode:tm/move:l)',
+    \ '<Plug>(textmanip-move-right)')
+    call submode#map(
+    \ 'tm/move', 'x', 'r', 'j',
+    \ '<Plug>(textmanip-move-down)')
+    call submode#map(
+    \ 'tm/move', 'x', 'r', 'k',
+    \ '<Plug>(textmanip-move-up)')
+    call submode#map(
+    \ 'tm/move', 'x', 'r', 'h',
+    \ '<Plug>(textmanip-move-left)')
+    call submode#map(
+    \ 'tm/move', 'x', 'r', 'l',
+    \ '<Plug>(textmanip-move-right)')
   endfunction
 
   NXOmap <M-p> <Plug>(operator-textmanip-duplicate-down)
@@ -3057,23 +3305,15 @@ if s:neobundle_tap('textmanip')
   NOmap sh <Plug>(operator-textmanip-move-left)
   NOmap sl <Plug>(operator-textmanip-move-right)
 
+  xmap sj <Plug>(submode:tm/move:j)
+  xmap sk <Plug>(submode:tm/move:k)
+  xmap sh <Plug>(submode:tm/move:h)
+  xmap sl <Plug>(submode:tm/move:l)
+
   nmap sjj sjsj
   nmap skk sksk
   nmap shh shsh
   nmap sll slsl
-
-  call extend(s:submode_enter, {
-  \ 'tm/move' : [
-  \   ['x', 'r', 'sj', '<Plug>(textmanip-move-down)'],
-  \   ['x', 'r', 'sk', '<Plug>(textmanip-move-up)'],
-  \   ['x', 'r', 'sh', '<Plug>(textmanip-move-left)'],
-  \   ['x', 'r', 'sl', '<Plug>(textmanip-move-right)']]})
-  call extend(s:submode_map, {
-  \ 'tm/move' : [
-  \   ['x', 'r',  'j', '<Plug>(textmanip-move-down)'],
-  \   ['x', 'r',  'k', '<Plug>(textmanip-move-up)'],
-  \   ['x', 'r',  'h', '<Plug>(textmanip-move-left)'],
-  \   ['x', 'r',  'l', '<Plug>(textmanip-move-right)']]})
 endif
 "}}}
 
@@ -3148,13 +3388,23 @@ if s:neobundle_tap('textobj-diff')
     let g:textobj_diff_no_default_key_mappings = 1
   endfunction
 
+  " NXOmap [c <Plug>(textobj-diff-hunk-p)
+  " NXOmap ]c <Plug>(textobj-diff-hunk-n)
+  " NXOmap [C <Plug>(textobj-diff-hunk-P)
+  " NXOmap ]C <Plug>(textobj-diff-hunk-N)
+  "
+  " NXOmap [<M-c> <Plug>(textobj-diff-file-p)
+  " NXOmap ]<M-c> <Plug>(textobj-diff-file-n)
+  " NXOmap [<M-C> <Plug>(textobj-diff-file-P)
+  " NXOmap ]<M-C> <Plug>(textobj-diff-file-N)
+  "
   " XOnoremap ad <Nop>
-  " XOmap adf <Plug>(textobj-diff-file)
   " XOmap adh <Plug>(textobj-diff-hunk)
+  " XOmap adf <Plug>(textobj-diff-file)
   "
   " XOnoremap id <Nop>
-  " XOmap idf <Plug>(textobj-diff-file)
   " XOmap idh <Plug>(textobj-diff-hunk)
+  " XOmap idf <Plug>(textobj-diff-file)
 endif
 "}}}
 
@@ -3569,6 +3819,10 @@ endif
 " Unified Diff: {{{
 if s:neobundle_tap('unified-diff')
   set diffexpr=unified_diff#diffexpr()
+
+  if &diff && has('vim_starting')
+    call neobundle#config({'lazy' : 0})
+  endif
 endif
 "}}}
 
@@ -3840,13 +4094,6 @@ if s:neobundle_tap('vimconsole')
   \ 'VimConsoleLog'   : 'expression',
   \ 'VimConsoleWarn'  : 'expression',
   \ 'VimConsoleError' : 'expression'})
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" VimDoc Ja: {{{
-if s:neobundle_tap('vimdoc-ja')
-  set helplang^=ja
 endif
 "}}}
 

@@ -1,7 +1,7 @@
 " Filetype detects for VimShell Script
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -26,4 +26,4 @@
 " }}}
 
 autocmd BufNewFile,BufRead *.vimsh,.vimshrc
-  \ setfiletype vimshrc
+\ setfiletype vimshrc

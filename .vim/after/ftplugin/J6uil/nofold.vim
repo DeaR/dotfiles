@@ -1,7 +1,7 @@
 " No folding
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Sep-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -32,12 +32,12 @@ setlocal nofoldenable
 setlocal foldcolumn=0
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ setlocal foldenable< foldcolumn<'
+\ setlocal foldenable< foldcolumn<'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

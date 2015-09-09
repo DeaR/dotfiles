@@ -1,7 +1,7 @@
 " GoDoc
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Sep-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -31,12 +31,12 @@ set cpo&vim
 nmap <buffer> K <Plug>(godoc-keyword)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> K'''
+\ silent! execute "nunmap <buffer> K"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

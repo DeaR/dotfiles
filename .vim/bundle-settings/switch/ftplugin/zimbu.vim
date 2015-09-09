@@ -1,7 +1,7 @@
 " Switch ftplugin for Zimbu
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Feb-2015.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,12 +34,12 @@ function! s:initialize()
   let s:dec = {}
 
   for l in [
-    \ ['int8', 'int16', 'int32', 'int64'],
-    \ ['nat8', 'nat16', 'nat32', 'nat64'],
-    \ ['float32', 'float64', 'float90', 'float128'],
-    \ ['fixed1',  'fixed2',  'fixed3',  'fixed4',  'fixed5',
-    \  'fixed6',  'fixed7',  'fixed8',  'fixed9',  'fixed10',
-    \  'fixed11', 'fixed12', 'fixed13', 'fixed14', 'fixed15']]
+  \ ['int8', 'int16', 'int32', 'int64'],
+  \ ['nat8', 'nat16', 'nat32', 'nat64'],
+  \ ['float32', 'float64', 'float90', 'float128'],
+  \ ['fixed1',  'fixed2',  'fixed3',  'fixed4',  'fixed5',
+  \  'fixed6',  'fixed7',  'fixed8',  'fixed9',  'fixed10',
+  \  'fixed11', 'fixed12', 'fixed13', 'fixed14', 'fixed15']]
     for i in range(len(l))
       let s1 = l[i]
       let s2 = get(l, i + 1, l[0])
@@ -49,10 +49,10 @@ function! s:initialize()
   endfor
 
   for l in [
-    \ ['==', '!='],
-    \ ['&&', '||'],
-    \ ['IS',  'ISNOT'],
-    \ ['ISA', 'ISNOTA']]
+  \ ['==', '!='],
+  \ ['&&', '||'],
+  \ ['IS',  'ISNOT'],
+  \ ['ISA', 'ISNOTA']]
     for i in range(len(l))
       call extend(s:cst, {'\C' . l[i] : get(l, i + 1, l[0])})
     endfor
@@ -63,42 +63,45 @@ if !exists('s:cst') || !exists('s:inc') || !exists('s:dec')
 endif
 
 let b:switch_custom_definitions =
-  \ get(b:, 'switch_custom_definitions', [])
+\ get(b:, 'switch_custom_definitions', [])
 let b:switch_increment_definitions =
-  \ get(b:, 'switch_increment_definitions', [])
+\ get(b:, 'switch_increment_definitions', [])
 let b:switch_decrement_definitions =
-  \ get(b:, 'switch_decrement_definitions', [])
+\ get(b:, 'switch_decrement_definitions', [])
 
 call add(b:switch_custom_definitions,    s:cst)
 call add(b:switch_increment_definitions, s:inc)
 call add(b:switch_decrement_definitions, s:dec)
 
-function! s:SID_PREFIX()
-  return matchstr(expand('<sfile>'), '\zs<SNR>\d\+_\zeSID_PREFIX$')
+function! s:SID()
+  if !exists('s:_SID')
+    let s:_SID = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
+  endif
+  return s:_SID
 endfunction
 
 function! s:finalize()
   if exists('s:cst')
     call filter(b:switch_custom_definitions,
-      \ 'v:val isnot s:cst')
+    \ 'v:val isnot s:cst')
   endif
   if exists('s:inc')
     call filter(b:switch_increment_definitions,
-      \ 'v:val isnot s:inc')
+    \ 'v:val isnot s:inc')
   endif
   if exists('s:dec')
     call filter(b:switch_decrement_definitions,
-      \ 'v:val isnot s:dec')
+    \ 'v:val isnot s:dec')
   endif
 endfunction
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-\ call call("' . s:SID_PREFIX() . 'finalize", [])'
+\ call call("\<SNR>' . s:SID() . '_finalize", [])'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

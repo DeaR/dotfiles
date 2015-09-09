@@ -1,7 +1,7 @@
 " Mapping for Help
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -31,12 +31,12 @@ set cpo&vim
 nnoremap <buffer> <CR> <C-]>
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> <CR>'''
+\ silent! execute "nunmap <buffer> <CR>"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

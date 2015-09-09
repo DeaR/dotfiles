@@ -1,7 +1,7 @@
 " Indantation of tab(8)
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,12 +34,12 @@ setlocal softtabstop=8
 setlocal noexpandtab
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ setlocal shiftwidth< tabstop< softtabstop< expandtab<'
+\ setlocal shiftwidth< tabstop< softtabstop< expandtab<'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

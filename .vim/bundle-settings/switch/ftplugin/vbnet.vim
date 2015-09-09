@@ -1,7 +1,7 @@
 " Switch ftplugin for VB.NET
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,18 +34,18 @@ function! s:initialize()
   let s:dec = {}
 
   for l in [
-    \ ['Public', 'Private', 'Protected', 'Friend'],
-    \ ['And', 'Or', 'Xor'],
-    \ ['AndAlso', 'OrElse']]
+  \ ['Public', 'Private', 'Protected', 'Friend'],
+  \ ['And', 'Or', 'Xor'],
+  \ ['AndAlso', 'OrElse']]
     for i in range(len(l))
       call extend(s:cst, {'\C\<' . l[i] . '\>' : get(l, i + 1, l[0])})
     endfor
   endfor
 
   for l in [
-    \ ['SByte', 'Short',  'Integer',  'Long'],
-    \ ['Byte',  'Ushort', 'UInteger', 'ULong'],
-    \ ['Single', 'Double']]
+  \ ['SByte', 'Short',  'Integer',  'Long'],
+  \ ['Byte',  'Ushort', 'UInteger', 'ULong'],
+  \ ['Single', 'Double']]
     for i in range(len(l))
       let s1 = l[i]
       let s2 = get(l, i + 1, l[0])
@@ -55,50 +55,53 @@ function! s:initialize()
   endfor
 
   call extend(s:cst, {
-    \ '\C[+-\*/\\^&<>]\@<!=' : '<>',
-    \ '\C<>'                 : '='})
+  \ '\C[+-\*/\\^&<>]\@<!=' : '<>',
+  \ '\C<>'                 : '='})
 endfunction
 if !exists('s:cst') || !exists('s:inc') || !exists('s:dec')
   call s:initialize()
 endif
 
 let b:switch_custom_definitions =
-  \ get(b:, 'switch_custom_definitions', [])
+\ get(b:, 'switch_custom_definitions', [])
 let b:switch_increment_definitions =
-  \ get(b:, 'switch_increment_definitions', [])
+\ get(b:, 'switch_increment_definitions', [])
 let b:switch_decrement_definitions =
-  \ get(b:, 'switch_decrement_definitions', [])
+\ get(b:, 'switch_decrement_definitions', [])
 
 call add(b:switch_custom_definitions,    s:cst)
 call add(b:switch_increment_definitions, s:inc)
 call add(b:switch_decrement_definitions, s:dec)
 
-function! s:SID_PREFIX()
-  return matchstr(expand('<sfile>'), '\zs<SNR>\d\+_\zeSID_PREFIX$')
+function! s:SID()
+  if !exists('s:_SID')
+    let s:_SID = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
+  endif
+  return s:_SID
 endfunction
 
 function! s:finalize()
   if exists('s:cst')
     call filter(b:switch_custom_definitions,
-      \ 'v:val isnot s:cst')
+    \ 'v:val isnot s:cst')
   endif
   if exists('s:inc')
     call filter(b:switch_increment_definitions,
-      \ 'v:val isnot s:inc')
+    \ 'v:val isnot s:inc')
   endif
   if exists('s:dec')
     call filter(b:switch_decrement_definitions,
-      \ 'v:val isnot s:dec')
+    \ 'v:val isnot s:dec')
   endif
 endfunction
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ call call("' . s:SID_PREFIX() . 'finalize", [])'
+\ call call("\<SNR>' . s:SID() . '_finalize", [])'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

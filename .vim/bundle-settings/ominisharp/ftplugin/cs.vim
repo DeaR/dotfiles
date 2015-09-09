@@ -1,7 +1,7 @@
 " OmniSharp ftplugin for C#
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  29-Jan-2014.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -47,28 +47,29 @@ nnoremap <buffer> <LocalLeader>R       :<C-U>OmniSharpRenameTo<CR>
 nnoremap <buffer> <LocalLeader><Space> :<C-U>OmniSharpGetCodeActions<CR>
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ setlocal omnifunc< |
-  \ silent! execute ''nunmap <buffer> <F5>'' |
-  \ silent! execute ''nunmap <buffer> <Space>'' |
-  \ silent! execute ''nunmap <buffer> gd'' |
-  \ silent! execute ''nunmap <buffer> gD'' |
-  \ silent! execute ''nunmap <buffer> g<M-d>'' |
-  \ silent! execute ''nunmap <buffer> g<M-D>'' |
-  \
-  \ silent! execute ''nunmap <buffer> <LocalLeader>a'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>A'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>f'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>h'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>l'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>t'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>r'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader>R'' |
-  \ silent! execute ''nunmap <buffer> <LocalLeader><Space>'''
+\ setlocal omnifunc< |
+\
+\ silent! execute "nunmap <buffer> <F5>" |
+\ silent! execute "nunmap <buffer> <Space>" |
+\ silent! execute "nunmap <buffer> gd" |
+\ silent! execute "nunmap <buffer> gD" |
+\ silent! execute "nunmap <buffer> g<M-d>" |
+\ silent! execute "nunmap <buffer> g<M-D>" |
+\
+\ silent! execute "nunmap <buffer> <LocalLeader>a" |
+\ silent! execute "nunmap <buffer> <LocalLeader>A" |
+\ silent! execute "nunmap <buffer> <LocalLeader>f" |
+\ silent! execute "nunmap <buffer> <LocalLeader>h" |
+\ silent! execute "nunmap <buffer> <LocalLeader>l" |
+\ silent! execute "nunmap <buffer> <LocalLeader>t" |
+\ silent! execute "nunmap <buffer> <LocalLeader>r" |
+\ silent! execute "nunmap <buffer> <LocalLeader>R" |
+\ silent! execute "nunmap <buffer> <LocalLeader><Space>"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

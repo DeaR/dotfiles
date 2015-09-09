@@ -1,7 +1,7 @@
 " Qfreplace ftplugin for Qfreplace
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-Jan-2014.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,15 +28,15 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <buffer> <Leader>w :<C-U>w<CR>
+nnoremap <buffer> <Leader>w :<C-U>write<CR>
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> <Leader>w'''
+\ silent! execute "nunmap <buffer> <Leader>w"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

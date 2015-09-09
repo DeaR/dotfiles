@@ -1,7 +1,7 @@
 " No Number
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  21-Jul-2015.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -32,12 +32,12 @@ setlocal nonumber
 setlocal norelativenumber
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ setlocal number< relativenumber<'
+\ setlocal number< relativenumber<'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

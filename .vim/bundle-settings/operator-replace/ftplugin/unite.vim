@@ -1,7 +1,7 @@
 " Mapping for Unite
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  21-Aug-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -29,15 +29,15 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 nnoremap <buffer><silent><expr> pp
-  \ unite#do_action('preview')
+\ unite#do_action('preview')
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> pp'''
+\ silent! execute "nunmap <buffer> pp"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

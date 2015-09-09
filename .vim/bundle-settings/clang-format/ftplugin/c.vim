@@ -1,7 +1,7 @@
 " Operator Clang Format ftplugin for C
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Aug-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -35,15 +35,15 @@ omap <buffer> sf <Plug>(operator-clang-format)
 nmap <buffer> sff sfsf
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> sf'' |
-  \ silent! execute ''xunmap <buffer> sf'' |
-  \ silent! execute ''ounmap <buffer> sf'' |
-  \ silent! execute ''nunmap <buffer> sff'''
+\ silent! execute "nunmap <buffer> sf" |
+\ silent! execute "xunmap <buffer> sf" |
+\ silent! execute "ounmap <buffer> sf" |
+\ silent! execute "nunmap <buffer> sff"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

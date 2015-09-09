@@ -1,7 +1,7 @@
 " TextObj Ifdef ftplugin for C#
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-Sep-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,15 +34,15 @@ xmap <buffer> i# <Plug>(textobj-ifdef-i)
 omap <buffer> i# <Plug>(textobj-ifdef-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''xunmap <buffer> a#'' |
-  \ silent! execute ''ounmap <buffer> a#'' |
-  \ silent! execute ''xunmap <buffer> i#'' |
-  \ silent! execute ''ounmap <buffer> i#'''
+\ silent! execute "xunmap <buffer> a#" |
+\ silent! execute "ounmap <buffer> a#" |
+\ silent! execute "xunmap <buffer> i#" |
+\ silent! execute "ounmap <buffer> i#"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

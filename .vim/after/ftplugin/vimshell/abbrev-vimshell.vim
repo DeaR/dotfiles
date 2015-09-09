@@ -1,7 +1,7 @@
 " Abbreviations for VimShell
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  17-Sep-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -45,16 +45,16 @@ if executable('sort')
 endif
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''iunabbrev L'' |
-  \ silent! execute ''iunabbrev H'' ||
-  \ silent! execute ''iunabbrev T'' ||
-  \ silent! execute ''iunabbrev G'' ||
-  \ silent! execute ''iunabbrev S'''
+\ silent! execute "iunabbrev <buffer> L" |
+\ silent! execute "iunabbrev <buffer> H" |
+\ silent! execute "iunabbrev <buffer> T" |
+\ silent! execute "iunabbrev <buffer> G" |
+\ silent! execute "iunabbrev <buffer> S"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

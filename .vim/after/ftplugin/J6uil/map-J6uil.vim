@@ -1,7 +1,7 @@
 " Mapping for J6uil
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  06-Sep-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -77,24 +77,24 @@ xnoremap <buffer><silent><expr> k <SID>k()
 onoremap <buffer><silent><expr> k <SID>k()
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> <Space>'' |
-  \ silent! execute ''nunmap <buffer> R'' |
-  \ silent! execute ''nunmap <buffer> D'' |
-  \ silent! execute ''nunmap <buffer> r'' |
-  \ silent! execute ''nunmap <buffer> u'' |
-  \ silent! execute ''nunmap <buffer> <CR>'' |
-  \ silent! execute ''nunmap <buffer> o'' |
-  \ silent! execute ''nunmap <buffer> j'' |
-  \ silent! execute ''xunmap <buffer> j'' |
-  \ silent! execute ''ounmap <buffer> j'' |
-  \ silent! execute ''nunmap <buffer> k'' |
-  \ silent! execute ''xunmap <buffer> k'' |
-  \ silent! execute ''ounmap <buffer> k'''
+\ silent! execute "nunmap <buffer> <Space>" |
+\ silent! execute "nunmap <buffer> R" |
+\ silent! execute "nunmap <buffer> D" |
+\ silent! execute "nunmap <buffer> r" |
+\ silent! execute "nunmap <buffer> u" |
+\ silent! execute "nunmap <buffer> <CR>" |
+\ silent! execute "nunmap <buffer> o" |
+\ silent! execute "nunmap <buffer> j" |
+\ silent! execute "xunmap <buffer> j" |
+\ silent! execute "ounmap <buffer> j" |
+\ silent! execute "nunmap <buffer> k" |
+\ silent! execute "xunmap <buffer> k" |
+\ silent! execute "ounmap <buffer> k"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

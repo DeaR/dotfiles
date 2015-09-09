@@ -1,7 +1,7 @@
 " Filetype detects for Nginx
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-Aug-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -26,5 +26,5 @@
 " }}}
 
 autocmd BufNewFile,BufRead */nginx/*.conf,*.nginx.conf
-  \ setfiletype nginx
+\ setfiletype nginx
 

@@ -1,7 +1,7 @@
-" Unite ftplugin for NeoComplete
+" Unite ftplugin for NeoComplCache
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  19-Aug-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -30,18 +30,25 @@ set cpo&vim
 
 imap <buffer> <SID>(unite_redraw) <Plug>(unite_redraw)
 inoremap <buffer><script><expr> <C-L>
-  \ pumvisible() ?
-  \   neocomplete#complete_common_string() :
-  \   '<SID>(unite_redraw)'
+\ pumvisible() ?
+\   neocomplcache#complete_common_string() :
+\   '<SID>(unite_redraw)'
+
+function! s:SID()
+  if !exists('s:_SID')
+    let s:_SID = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
+  endif
+  return s:_SID
+endfunction
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''iunmap <buffer> <SID>(unite_redraw)'' |
-  \ silent! execute ''iunmap <buffer> <C-L>'''
+\ silent! execute "iunmap <buffer> <SNR>' . s:SID() . '_(unite_redraw)" |
+\ silent! execute "iunmap <buffer> <C-L>"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

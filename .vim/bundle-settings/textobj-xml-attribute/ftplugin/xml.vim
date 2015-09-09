@@ -1,7 +1,7 @@
 " TextObj XML Attribute ftplugin for XML
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Aug-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,15 +34,15 @@ xmap <buffer> ia <Plug>(textobj-xmlattribute-xmlattributenospace)
 omap <buffer> ia <Plug>(textobj-xmlattribute-xmlattributenospace)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''xunmap <buffer> aa'' |
-  \ silent! execute ''ounmap <buffer> aa'' |
-  \ silent! execute ''xunmap <buffer> ia'' |
-  \ silent! execute ''ounmap <buffer> ia'''
+\ silent! execute "xunmap <buffer> aa" |
+\ silent! execute "ounmap <buffer> aa" |
+\ silent! execute "xunmap <buffer> ia" |
+\ silent! execute "ounmap <buffer> ia"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

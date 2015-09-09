@@ -12,7 +12,6 @@ setlocal cindent
 setlocal cinkeys-=0#
 
 function! GetCSIndent()
-
   let this_line = getline(v:lnum)
   let previous_line = getline(v:lnum - 1)
 
@@ -33,11 +32,15 @@ function! GetCSIndent()
       setlocal indentexpr=GetCSIndent()
     endtry
   endif
-
 endfunction
 
-let b:undo_indent = '
-  \ setlocal indentexpr< cindent< cinkeys<'
+if exists('b:undo_indent')
+  let b:undo_indent .= ' |'
+else
+  let b:undo_indent = ''
+endif
+let b:undo_indent .= '
+\ setlocal indentexpr< cindent< cinkeys<'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

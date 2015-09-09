@@ -1,7 +1,7 @@
 " Marching ftplugin for C
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  17-Dec-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -31,16 +31,16 @@ set cpo&vim
 augroup marching-ftplugin
   autocmd! * <buffer>
   autocmd InsertLeave <buffer>
-    \ MarchingBufferClearCache
+  \ MarchingBufferClearCache
 augroup END
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! augroup! marching-ftplugin'
+\ silent! augroup! marching-ftplugin'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

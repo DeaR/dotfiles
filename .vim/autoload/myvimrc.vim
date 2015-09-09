@@ -683,8 +683,8 @@ endif
 if s:neobundle_tap('textmanip')
   function! s:operator_textmanip(motion_wise, map)
     let vis = operator#user#visual_command_from_wise_name(a:motion_wise)
-    execute 'nnoremap <SID>(reselect)' '`[' . vis . '`]'
-    let sel = "\<SNR>" . s:SID() . '_(reselect)'
+    execute 'nnoremap <SID>(reselect)' join(['`[', vis, '`]'], '')
+    let sel = join(["\<SNR>", s:SID(), '_(reselect)'], '')
     execute 'normal' sel . a:map
   endfunction
 

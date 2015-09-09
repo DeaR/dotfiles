@@ -1,7 +1,7 @@
 " TextObj Ruby ftplugin for Ruby
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  21-Oct-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -38,19 +38,19 @@ xmap <buffer> ir <Plug>(textobj-ruby-any-i)
 omap <buffer> ir <Plug>(textobj-ruby-any-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''xunmap <buffer> aC'' |
-  \ silent! execute ''ounmap <buffer> aC'' |
-  \ silent! execute ''xunmap <buffer> iC'' |
-  \ silent! execute ''ounmap <buffer> iC'' |
-  \ silent! execute ''xunmap <buffer> ar'' |
-  \ silent! execute ''ounmap <buffer> ar'' |
-  \ silent! execute ''xunmap <buffer> ir'' |
-  \ silent! execute ''ounmap <buffer> ir'''
+\ silent! execute "xunmap <buffer> aC" |
+\ silent! execute "ounmap <buffer> aC" |
+\ silent! execute "xunmap <buffer> iC" |
+\ silent! execute "ounmap <buffer> iC" |
+\ silent! execute "xunmap <buffer> ar" |
+\ silent! execute "ounmap <buffer> ar" |
+\ silent! execute "xunmap <buffer> ir" |
+\ silent! execute "ounmap <buffer> ir"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

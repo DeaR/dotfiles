@@ -1,7 +1,7 @@
 " Mapping for Unite
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  30-Aug-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -49,17 +49,17 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> QQ'' |
-  \ silent! execute ''nunmap <buffer> <C-J>'' |
-  \ silent! execute ''iunmap <buffer> <C-J>'' |
-  \ silent! execute ''iunmap <buffer> <M-H>'' |
-  \ silent! execute ''iunmap <buffer> <M-j>'' |
-  \ silent! execute ''iunmap <buffer> <M-k>'' |
-  \
-  \ silent! execute ''nunmap <buffer> <C-S>'' |
-  \ silent! execute ''iunmap <buffer> <C-S>'' |
-  \ silent! execute ''nunmap <buffer> <C-V>'' |
-  \ silent! execute ''iunmap <buffer> <C-V>'''
+\ silent! execute "nunmap <buffer> QQ" |
+\ silent! execute "nunmap <buffer> <C-J>" |
+\ silent! execute "iunmap <buffer> <C-J>" |
+\ silent! execute "iunmap <buffer> <M-H>" |
+\ silent! execute "iunmap <buffer> <M-j>" |
+\ silent! execute "iunmap <buffer> <M-k>" |
+\
+\ silent! execute "nunmap <buffer> <C-S>" |
+\ silent! execute "iunmap <buffer> <C-S>" |
+\ silent! execute "nunmap <buffer> <C-V>" |
+\ silent! execute "iunmap <buffer> <C-V>"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

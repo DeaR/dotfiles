@@ -1,7 +1,7 @@
 " Mapping for J6uil
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  01-Oct-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,19 +34,19 @@ silent! nunmap <buffer> <C-J>
 nnoremap <buffer> q :<C-U>bdelete!<CR>
 
 inoremap <buffer><expr> <C-H>
-  \ col('.') == 1 && !search('.', 'nw') ? '<Esc>:bdelete!<CR>' : '<C-H>'
+\ col('.') == 1 && !search('.', 'nw') ? '<Esc>:bdelete!<CR>' : '<C-H>'
 inoremap <buffer><expr> <BS>
-  \ col('.') == 1 && !search('.', 'nw') ? '<Esc>:bdelete!<CR>' : '<BS>'
+\ col('.') == 1 && !search('.', 'nw') ? '<Esc>:bdelete!<CR>' : '<BS>'
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''nunmap <buffer> q'' |
-  \ silent! execute ''nunmap <buffer> <C-H>'' |
-  \ silent! execute ''nunmap <buffer> <BS>'''
+\ silent! execute "nunmap <buffer> q" |
+\ silent! execute "nunmap <buffer> <C-H>" |
+\ silent! execute "nunmap <buffer> <BS>"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

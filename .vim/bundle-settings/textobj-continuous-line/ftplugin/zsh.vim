@@ -1,7 +1,7 @@
 " TextObj Continuous Line ftplugin for Zsh
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  17-Sep-2013.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,15 +34,15 @@ xmap <buffer> i<Bslash> <Plug>(textobj-continuous-cpp-i)
 omap <buffer> i<Bslash> <Plug>(textobj-continuous-cpp-i)
 
 if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' | '
+  let b:undo_ftplugin .= ' |'
 else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-  \ silent! execute ''xunmap <buffer> a<Bslash>'' |
-  \ silent! execute ''ounmap <buffer> a<Bslash>'' |
-  \ silent! execute ''xunmap <buffer> i<Bslash>'' |
-  \ silent! execute ''ounmap <buffer> i<Bslash>'''
+\ silent! execute "xunmap <buffer> a<Bslash>" |
+\ silent! execute "ounmap <buffer> a<Bslash>" |
+\ silent! execute "xunmap <buffer> i<Bslash>" |
+\ silent! execute "ounmap <buffer> i<Bslash>"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
