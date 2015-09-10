@@ -2,7 +2,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-Sep-2015.
+" Last Change:  10-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -92,9 +92,8 @@ endfunction
 
 " Check enabled bundle
 function! s:is_enabled_bundle(name)
-  return
-  \ exists('*neobundle#is_installed') && neobundle#is_installed(a:name) &&
-  \ exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1)
+  return exists('*neobundle#get') &&
+  \ !get(neobundle#get(a:name), 'disabled', 1)
 endfunction
 
 " Cached executable
