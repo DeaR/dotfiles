@@ -91,7 +91,7 @@ let s:ignore_ext = [
 \ 'o', 'obj', 'a', 'lib', 'so', 'dll', 'dylib', 'exe', 'bin',
 \ 'swp', 'swo', 'lc', 'elc', 'fas', 'pyc', 'luac', 'zwc']
 let s:ignore_ft = [
-\ 'gitcommit', 'gitrebase', 'hgcommit']
+\ 'gitcommit', 'gitrebase', 'hgcommit', 'unite']
 
 " VCvarsall.bat
 if has('win32') && !exists('$VCVARSALL')
@@ -1167,8 +1167,9 @@ endif
 
 "------------------------------------------------------------------------------
 " From Example: {{{
-autocmd MyVimrc BufRead *
-\ if line('.') == 1 && line("'\"") > 1 && line("'\"") <= line('$') |
+autocmd MyVimrc FileType *
+\ if line('.') == 1 && line("'\"") > 1 && line("'\"") <= line('$') &&
+\   index(s:ignore_ft, expand('<amatch>')) < 0 |
 \   execute 'normal! g`"' |
 \ endif
 "}}}
@@ -1861,11 +1862,10 @@ endif
 " NeoMru: {{{
 if s:neobundle_tap('neomru')
   function! neobundle#hooks.on_source(bundle)
-    let g:neomru#file_mru_path       = $HOME . '/.local/.cache/neomru/file'
-    let g:neomru#directory_mru_path  = $HOME . '/.local/.cache/neomru/directory'
-    let g:neomru#file_mru_limit      = 100
-    let g:neomru#directory_mru_limit = 100
-    let g:neomru#do_validate         = 0
+    let g:neomru#file_mru_path      = $HOME . '/.local/.cache/neomru/file'
+    let g:neomru#directory_mru_path = $HOME . '/.local/.cache/neomru/directory'
+    let g:neomru#filename_format    = ':.'
+    let g:neomru#do_validate        = 0
 
     let g:neomru#file_mru_ignore_pattern =
     \ '[/\\]doc[/\\][^/\\]\+\.\%(txt\|\a\ax\)$\|' .
@@ -1875,24 +1875,24 @@ if s:neobundle_tap('neomru')
   endfunction
 
   NXnoremap <Leader>e
-  \ :<C-U>Unite neomru/file file file/new
-  \ -buffer-name=files -no-split<CR>
+  \ :<C-U>Unite file/new neomru/file file
+  \ -buffer-name=files<CR>
   NXnoremap <Leader>d
   \ :<C-U>Unite
-  \ menu:directory_current neomru/directory directory directory/new
-  \ -buffer-name=files -no-split -default-action=lcd<CR>
+  \ menu:directory_current directory/new neomru/directory directory
+  \ -buffer-name=files -default-action=lcd<CR>
   NXnoremap <Leader>D
   \ :<C-U>Unite
-  \ menu:directory_current neomru/directory directory directory/new
-  \ -buffer-name=files -no-split -default-action=cd<CR>
+  \ menu:directory_current directory/new neomru/directory directory
+  \ -buffer-name=files -default-action=cd<CR>
   NXnoremap <Leader><M-d>
   \ :<C-U>UniteWithBufferDir
-  \ menu:directory_file neomru/directory directory directory/new
-  \ -buffer-name=files -no-split -default-action=lcd<CR>
+  \ menu:directory_file directory/new neomru/directory directory
+  \ -buffer-name=files -default-action=lcd<CR>
   NXnoremap <Leader><M-D>
   \ :<C-U>UniteWithBufferDir
-  \ menu:directory_file neomru/directory directory directory/new
-  \ -buffer-name=files -no-split -default-action=cd<CR>
+  \ menu:directory_file directory/new neomru/directory directory
+  \ -buffer-name=files -default-action=cd<CR>
 endif
 "}}}
 
@@ -2355,9 +2355,9 @@ if s:neobundle_tap('reanimate')
 
   NXnoremap <Leader>us  <Nop>
   NXnoremap <Leader>usl :<C-U>Unite reanimate
-  \ -buffer-name=files -no-split -default-action=reanimate_load<CR>
+  \ -buffer-name=files -default-action=reanimate_load<CR>
   NXnoremap <Leader>uss :<C-U>Unite reanimate
-  \ -buffer-name=files -no-split -default-action=reanimate_save<CR>
+  \ -buffer-name=files -default-action=reanimate_save<CR>
 endif
 "}}}
 
@@ -3819,11 +3819,6 @@ endif
 if s:neobundle_tap('unite')
   function! neobundle#hooks.on_source(bundle)
     let g:unite_data_directory             = $HOME . '/.local/.cache/unite'
-    let g:unite_enable_start_insert        = 1
-    let g:unite_winheight                  = 25
-    let g:unite_candidate_icon             = '-'
-    let g:unite_marked_icon                = '+'
-    let g:unite_cursor_line_highlight      = 'CursorLine'
     let g:unite_source_history_yank_enable = 0
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
@@ -3920,6 +3915,14 @@ if s:neobundle_tap('unite')
         \ ['iso-2022-jp', 'EditIso2022jp']])
       endif
     endif
+
+    call unite#custom#profile('default', 'context', {
+    \ 'split'          : 0,
+    \ 'candidate_icon' : '-',
+    \ 'marked_icon'    : '+',
+    \ 'hide_icon'      : 0,
+    \ 'start_insert'   : 1,
+    \ 'winheight'      : 25})
   endfunction
 
   NXnoremap <Leader>u <Nop>
@@ -3927,7 +3930,7 @@ if s:neobundle_tap('unite')
 
   NXnoremap <Leader>uU
   \ :<C-U>Unite source
-  \ -buffer-name=help -no-split<CR>
+  \ -buffer-name=help<CR>
 
   NXnoremap <Leader>um :<C-U>Unite menu<CR>
   NXnoremap <Leader>u<CR> :<C-U>Unite menu:set_ff<CR>
@@ -3938,23 +3941,22 @@ if s:neobundle_tap('unite')
 
   NXnoremap <Leader>b
   \ :<C-U>Unite buffer_tab
-  \ -buffer-name=files -no-split<CR>
+  \ -buffer-name=files<CR>
   NXnoremap <Leader>t
   \ :<C-U>Unite tab
-  \ -buffer-name=files -no-split<CR>
+  \ -buffer-name=files<CR>
 
   if &grepprg == 'internal'
     nnoremap sgsg
     \ :<C-U>Unite vimgrep
-    \ -buffer-name=grep -no-split -wrap<CR>
+    \ -buffer-name=grep<CR>
   else
     nnoremap sgsg
     \ :<C-U>Unite grep
-    \ -buffer-name=grep -no-split -wrap<CR>
+    \ -buffer-name=grep<CR>
   endif
   NXnoremap sG
-  \ :<C-U>UniteResume grep
-  \ -no-split -wrap -no-start-insert<CR>
+  \ :<C-U>UniteResume grep<CR>
 
   NXnoremap <Leader>j
   \ :<C-U>Unite jump
@@ -3964,20 +3966,20 @@ if s:neobundle_tap('unite')
   \ -buffer-name=register -no-empty<CR>
 
   NXnoremap <Leader>un
-  \ :<C-U>UniteResume search -start-insert<CR>
+  \ :<C-U>UniteResume search<CR>
 
   NXnoremap <Leader>u/
   \ :<C-U>Unite line
-  \ -buffer-name=search -no-split -start-insert<CR>
+  \ -buffer-name=search<CR>
   NXnoremap <Leader>u?
   \ :<C-U>Unite line:backward
-  \ -buffer-name=search -no-split -start-insert<CR>
+  \ -buffer-name=search<CR>
   NXnoremap <Leader>u*
   \ :<C-U>UniteWithCursorWord line
-  \ -buffer-name=search -no-split -no-start-insert<CR>
+  \ -buffer-name=search -no-start-insert<CR>
   NXnoremap <Leader>u#
   \ :<C-U>UniteWithCursorWord line:backward
-  \ -buffer-name=search -no-split -no-start-insert<CR>
+  \ -buffer-name=search -no-start-insert<CR>
 
   NXmap <Leader>ug/ <Leader>u*
   NXmap <Leader>ug? <Leader>u#
@@ -4006,7 +4008,7 @@ endif
 if s:neobundle_tap('unite-help')
   nnoremap <Leader>u<F1>
   \ :<C-U>Unite help
-  \ -buffer-name=help -start-insert<CR>
+  \ -buffer-name=help<CR>
   nnoremap <Leader>u<F2>
   \ :<C-U>UniteWithCursorWord help
   \ -buffer-name=help -no-start-insert<CR>
@@ -4023,7 +4025,7 @@ if s:neobundle_tap('unite-mark')
 
   nnoremap ml
   \ :<C-U>Unite mark bookmark
-  \ -buffer-name=register -no-start-insert -no-empty<CR>
+  \ -buffer-name=register -no-empty<CR>
   nnoremap mu :<C-U>UniteBookmarkAdd<CR>
 endif
 "}}}
@@ -4033,7 +4035,7 @@ endif
 if s:neobundle_tap('unite-outline')
   NXnoremap <Leader>uo
   \ :<C-U>Unite outline
-  \ -buffer-name=outline -no-split<CR>
+  \ -buffer-name=outline<CR>
 endif
 "}}}
 
@@ -4063,7 +4065,7 @@ endif
 if s:neobundle_tap('unite-tag')
   NXnoremap <Leader>ut
   \ :<C-U>UniteWithCursorWord tag tag/include
-  \ -buffer-name=outline -no-split -no-start-insert<CR>
+  \ -buffer-name=outline -no-start-insert<CR>
 endif
 "}}}
 
@@ -4315,10 +4317,10 @@ if s:neobundle_tap('yankround')
 
   nnoremap <Leader>p
   \ :<C-U>Unite yankround
-  \ -buffer-name=register -no-empty -wrap<CR>
+  \ -buffer-name=register -no-empty<CR>
   xnoremap <Leader>p
   \ d:<C-U>Unite yankround
-  \ -buffer-name=register -no-empty -wrap<CR>
+  \ -buffer-name=register -no-empty<CR>
 endif
 "}}}
 
