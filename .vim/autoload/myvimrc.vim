@@ -147,6 +147,7 @@ function! myvimrc#cmdwin_enter(type)
   setlocal nofoldenable
   setlocal nonumber
   setlocal norelativenumber
+  setlocal syntax=OFF
   startinsert!
 
   if a:type =~# '[\/]'
