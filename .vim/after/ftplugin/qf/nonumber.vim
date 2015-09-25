@@ -1,4 +1,4 @@
-" QuickRun ftplugins for vimrc
+" No Number
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
 " Last Change:  09-Sep-2015.
@@ -25,14 +25,11 @@
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-if expand('%:t') !~? '^\.\?g\?vimrc'
-  finish
-endif
-
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <buffer> <F5> :<C-U>source %<Bar>edit %<CR>
+setlocal nonumber
+setlocal norelativenumber
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
@@ -40,7 +37,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-\ silent! execute "nunmap <buffer> <F5>"'
+\ setlocal number< relativenumber<'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

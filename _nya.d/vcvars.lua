@@ -1,7 +1,7 @@
 -- Visual Studio prompt for NYAOS 3.x
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  20-Aug-2015.
+-- Last Change:  14-Sep-2015.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -26,6 +26,27 @@
 -- }}}
 
 if nyaos.command.cmdsource then
+  function nyaos.command.sdk_include_dir()
+    local programfiles = os.getenv(os.getenv('PROGRAMFILES(X86)') and 'PROGRAMFILES(X86)' or 'PROGRAMFILES')
+    local dir71a  = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1A\\Include'
+    local dir71   = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1\\Include'
+    local dir70a  = programfiles .. '\\Microsoft SDKs\\Windows\\v7.0A\\Include'
+    local dir70   = programfiles .. '\\Microsoft SDKs\\Windows\\v7.0\\Include'
+    local stat71a = nyaos.stat(dir71a)
+    local stat71  = nyaos.stat(dir71)
+    local stat70a = nyaos.stat(dir70a)
+    local stat70  = nyaos.stat(dir70)
+    if stat71a and stat71a.directory then
+      nyaos.putenv('SDK_INCLUDE_DIR', dir71a)
+    elseif stat71 and stat71.directory then
+      nyaos.putenv('SDK_INCLUDE_DIR', dir71)
+    elseif stat70a and stat70a.directory then
+      nyaos.putenv('SDK_INCLUDE_DIR', dir70a)
+    elseif stat70 and stat70.directory then
+      nyaos.putenv('SDK_INCLUDE_DIR', dir70)
+    end
+  end
+
   local vscomntools = os.getenv('VS120COMNTOOLS') or os.getenv('VS110COMNTOOLS') or os.getenv('VS100COMNTOOLS') or os.getenv('VS90COMNTOOLS') or os.getenv('VS80COMNTOOLS')
   if vscomntools and nyaos.access(vscomntools .. '../../VC/vcvarsall.bat', 0) then
     function nyaos.command.vcvars32()
@@ -37,16 +58,7 @@ if nyaos.command.cmdsource then
       nyaos.putenv('LIBRARY_PATH', nil)
       nyaos.command.cmdsource(vscomntools .. '../../VC/vcvarsall.bat', 'x86')
 
-      local programfiles = os.getenv(os.getenv('PROGRAMFILES(X86)') and 'PROGRAMFILES(X86)' or 'PROGRAMFILES')
-      local dir71a       = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1A\\Include'
-      local dir71        = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1\\Include'
-      local stat71a      = nyaos.stat(dir71a)
-      local stat71       = nyaos.stat(dir71)
-      if stat71a and stat71a.directory then
-        nyaos.putenv('SDK_INCLUDE_DIR', dir71a)
-      elseif stat71 and stat71.directory then
-        nyaos.putenv('SDK_INCLUDE_DIR', dir71)
-      end
+      nyaos.command.sdk_include_dir()
     end
     local arch = os.getenv('PROCESSOR_ARCHITEW6432') or os.getenv('PROCESSOR_ARCHITECTURE')
     if arch and os.getenv('PROGRAMFILES(X86)') then
@@ -59,16 +71,7 @@ if nyaos.command.cmdsource then
         nyaos.putenv('LIBRARY_PATH', nil)
         nyaos.command.cmdsource(vscomntools .. '../../VC/vcvarsall.bat', arch)
 
-        local programfiles = os.getenv(os.getenv('PROGRAMFILES(X86)') and 'PROGRAMFILES(X86)' or 'PROGRAMFILES')
-        local dir71a       = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1A\\Include'
-        local dir71        = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1\\Include'
-        local stat71a      = nyaos.stat(dir71a)
-        local stat71       = nyaos.stat(dir71)
-        if stat71a and stat71a.directory then
-          nyaos.putenv('SDK_INCLUDE_DIR', dir71a)
-        elseif stat71 and stat71.directory then
-          nyaos.putenv('SDK_INCLUDE_DIR', dir71)
-        end
+        nyaos.command.sdk_include_dir()
       end
     end
   end

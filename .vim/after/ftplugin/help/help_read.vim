@@ -1,7 +1,7 @@
-" Clang Format ftplugin for C
+" Ftplugin for Help
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Sep-2015.
+" Last Change:  24-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -25,20 +25,14 @@
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-if !exists('g:loaded_clang_format') &&
-\ (!exists('*neobundle#get') ||
-\  get(neobundle#get('clang-format'), 'disabled', 1))
+if &l:buftype != 'help'
   finish
 endif
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-nmap <buffer> sf <Plug>(operator-clang-format)
-xmap <buffer> sf <Plug>(operator-clang-format)
-omap <buffer> sf <Plug>(operator-clang-format)
-
-nmap <buffer> sff sfsf
+nnoremap <buffer> <CR> <C-]>
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
@@ -46,10 +40,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-\ silent! execute "nunmap <buffer> sf" |
-\ silent! execute "xunmap <buffer> sf" |
-\ silent! execute "ounmap <buffer> sf" |
-\ silent! execute "nunmap <buffer> sff"'
+\ silent! execute "nunmap <buffer> <CR>"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

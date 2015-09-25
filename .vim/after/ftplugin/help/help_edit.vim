@@ -1,7 +1,7 @@
 " Ftplugin for Help
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Sep-2015.
+" Last Change:  24-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -25,10 +25,14 @@
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
+if &l:buftype == 'help'
+  finish
+endif
+
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <buffer> <CR> <C-]>
+setlocal conceallevel=0
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
@@ -36,7 +40,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-\ silent! execute "nunmap <buffer> <CR>"'
+\ setlocal conceallevel<'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

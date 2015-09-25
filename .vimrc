@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Sep-2015.
+" Last Change:  25-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -74,56 +74,18 @@ endif
 
 "------------------------------------------------------------------------------
 " Variable: {{{
-" <Leader> <LocalLeader>
-let g:mapleader      = ';'
-let g:maplocalleader = ','
-
-" Gips
-let s:gips_enable = 0
-
 " Command line window
 let s:cmdwin_ex_enable     = 0
 let s:cmdwin_search_enable = 0
 
 " Ignore pattern
+let s:ignore_dir = [
+\ '.git', '.hg', '.bzr', '.svn', '.drive.r', 'temp', 'tmp']
 let s:ignore_ext = [
-\ 'git', 'hg', 'bzr', 'svn', 'drive.r',
 \ 'o', 'obj', 'a', 'lib', 'so', 'dll', 'dylib', 'exe', 'bin',
 \ 'swp', 'swo', 'lc', 'elc', 'fas', 'pyc', 'luac', 'zwc']
 let s:ignore_ft = [
 \ 'gitcommit', 'gitrebase', 'hgcommit', 'unite']
-
-" VCvarsall.bat
-if has('win32') && !exists('$VCVARSALL')
-  let s:save_ssl = &shellslash
-  set noshellslash
-  if exists('$VS120COMNTOOLS')
-    let $VCVARSALL = $VS120COMNTOOLS . '..\..\VC\vcvarsall.bat'
-  elseif exists('$VS110COMNTOOLS')
-    let $VCVARSALL = $VS110COMNTOOLS . '..\..\VC\vcvarsall.bat'
-  elseif exists('$VS100COMNTOOLS')
-    let $VCVARSALL = $VS100COMNTOOLS . '..\..\VC\vcvarsall.bat'
-  elseif exists('$VS90COMNTOOLS')
-    let $VCVARSALL = $VS90COMNTOOLS  . '..\..\VC\vcvarsall.bat'
-  elseif exists('$VS80COMNTOOLS')
-    let $VCVARSALL = $VS80COMNTOOLS  . '..\..\VC\vcvarsall.bat'
-  endif
-  let &shellslash = s:save_ssl
-  unlet s:save_ssl
-
-  let s:save_isi = &isident
-  set isident+=(,)
-  let s:programfiles = expand(exists('$PROGRAMFILES(X86)') ?
-  \ '$PROGRAMFILES(X86)' : '$PROGRAMFILES')
-  if isdirectory(s:programfiles . '\Microsoft SDKs\Windows\v7.1A\Include')
-    let $SDK_INCLUDE_DIR = s:programfiles . '\Microsoft SDKs\Windows\v7.1A\Include'
-  elseif isdirectory(s:programfiles . '\Microsoft SDKs\Windows\v7.1\Include')
-    let $SDK_INCLUDE_DIR = s:programfiles . '\Microsoft SDKs\Windows\v7.1\Include'
-  endif
-  let &isident = s:save_isi
-  unlet s:save_isi
-endif
-"}}}
 
 "------------------------------------------------------------------------------
 " Common: {{{
@@ -173,6 +135,12 @@ function! s:has_vimproc()
   return s:_has_vimproc
 endfunction
 
+" Wrapped doautocmd
+function! s:doautocmd(...)
+  let nomodeline = s:has_patch(7, 3, 438) ? '<nomodeline>' : ''
+  execute 'doautocmd' nomodeline join(a:000)
+endfunction
+
 " Wrapped neobundle#tap
 function! s:neobundle_tap(name)
   return exists('*neobundle#tap') && neobundle#tap(a:name)
@@ -192,6 +160,19 @@ function! s:executable(expr)
   endif
   return s:_executable[a:expr]
 endfunction
+
+" Get "Program Files" of 32bit
+if has('win32')
+  let s:save_isi = &isident
+  try
+    set isident+=(,)
+    let s:programfiles_x86 = exists('$PROGRAMFILES(X86)') ?
+    \ $PROGRAMFILES(X86) : $PROGRAMFILES
+  finally
+    let &isident = s:save_isi
+    unlet! s:save_isi
+  endtry
+endif
 
 " Check japanese
 let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
@@ -225,7 +206,7 @@ set t_vb=
 
 " VimInfo
 set viminfo+=n~/.local/.viminfo
-set history=100
+set history=10000
 
 " Backup
 set nobackup
@@ -256,7 +237,8 @@ set ambiwidth=double
 " Wild menu
 set wildmenu
 execute 'set wildignore+=' .
-\ join(map(copy(s:ignore_ext), '"*." . escape(v:val, "\\,")'), ',')
+\ join(s:ignore_dir +
+\   map(copy(s:ignore_ext), '"*." . escape(v:val, " ,\\")'), ',')
 
 " Mouse
 set mouse=a
@@ -290,9 +272,6 @@ set matchtime=1
 set cmdheight=2
 set laststatus=2
 set showcmd
-
-" Tab line
-set showtabline=2
 
 " Display NonText
 set list
@@ -329,6 +308,8 @@ elseif s:executable('ag')
   set grepprg=ag\ --vimgrep\ --hidden
 elseif s:executable('grep')
   set grepprg=grep\ -Hn
+elseif has('win32') && s:executable('findstr')
+  set grepprg=findstr\ /n
 else
   set grepprg=internal
 endif
@@ -383,7 +364,7 @@ set statusline=%f%<\ %m%r[
 if has('multi_byte')
   set statusline+=%{&fenc!=''?&fenc:&enc}:
 endif
-set statusline+=%{&ff}]%y%=\ %{getcwd()}
+set statusline+=%{&ff}]%y%=
 
 if has('multi_byte')
   set statusline+=\ [U+%04B]
@@ -395,6 +376,45 @@ if s:is_lang_ja
 else
   set statusline+=\ %3P
 endif
+"}}}
+
+"------------------------------------------------------------------------------
+" Tab Line: {{{
+let s:label_noname   = s:is_lang_ja ? '[無名]' : '[No Name]'
+let s:label_quickfix = s:is_lang_ja ? '[Quickfixリスト]' : '[Quickfix List]'
+let s:label_location = s:is_lang_ja ? '[場所リスト]' : '[Location List]'
+function! s:label_qflisttype(n)
+  return getbufvar(a:n, 'qflisttype') == 'location' ?
+  \ s:label_location : s:label_quickfix
+endfunction
+function! s:tab_bufname(n)
+  let name = bufname(a:n)
+  let type = getbufvar(a:n, '&buftype')
+  return
+  \ type == 'quickfix' ? s:label_qflisttype(a:n) :
+  \ type == 'help'     ? fnamemodify(name, ':t') :
+  \ empty(name)        ? s:label_noname :
+  \ empty(type)        ? pathshorten(name) : name
+endfunction
+function! s:tab_label(n)
+  let bufs = tabpagebuflist(a:n)
+  let acv = a:n == tabpagenr()
+  let win = len(bufs)
+  let mod = !empty(filter(copy(bufs), 'getbufvar(v:val, "&modified")'))
+  let name = s:tab_bufname(bufs[tabpagewinnr(a:n) - 1])
+  return '%' . a:n . 'T' .
+  \ (acv ? '%#TabLineSel#' : '%#TabLine#') .
+  \ (win > 1 || mod ? ' ' : '') .
+  \ (win == 1 ? '' : acv ? ('%#Title#' . win . '%#TabLineSel#') : win) .
+  \ (mod ? '+' : '') . ' ' . name . ' '
+endfunction
+function! TabLine()
+  return join(map(range(1, tabpagenr('$')), 's:tab_label(v:val)'), '') .
+  \ '%#TabLineFill#%T%= %#TabLineSel# ' . getcwd() . ' '
+endfunction
+
+set tabline=%!TabLine()
+set showtabline=2
 "}}}
 
 "------------------------------------------------------------------------------
@@ -439,6 +459,49 @@ if s:is_colored
     autocmd BufWinLeave,WinLeave *
     \ setlocal nocursorline nocursorcolumn
   augroup END
+endif
+"}}}
+"}}}
+
+"==============================================================================
+" Macros: {{{
+
+"------------------------------------------------------------------------------
+" Justify: {{{
+if filereadable($VIMRUNTIME . '/macros/justify.vim')
+  source $VIMRUNTIME/macros/justify.vim
+  silent! nunmap _j
+  silent! vunmap _j
+  silent! nunmap ,gq
+  silent! vunmap ,gq
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" MatchIt: {{{
+if filereadable($VIMRUNTIME . '/macros/matchit.vim')
+  source $VIMRUNTIME/macros/matchit.vim
+  silent! sunmap %
+  silent! sunmap g%
+  silent! sunmap [%
+  silent! sunmap ]%
+  silent! sunmap a%
+
+  nmap <SID>[% [%
+  xmap <SID>[% [%
+  nmap <SID>]% ]%
+  xmap <SID>]% ]%
+
+  xnoremap <script> [% <Esc><SID>[%m'gv``
+  xnoremap <script> ]% <Esc><SID>]%m'gv``
+  xnoremap <script> a% <Esc><SID>[%v<SID>]%
+
+  nmap <Space>   %
+  xmap <Space>   %
+  omap <Space>   %
+  nmap <S-Space> g%
+  xmap <S-Space> g%
+  omap <S-Space> g%
 endif
 "}}}
 "}}}
@@ -536,18 +599,34 @@ command! -nargs=* -complete=mapping
 "------------------------------------------------------------------------------
 " Common: {{{
 " <Leader> <LocalLeader>
+let g:mapleader      = ';'
+let g:maplocalleader = ','
 NXOnoremap <Leader>      <Nop>
 NXOnoremap <LocalLeader> <Nop>
 
-" Prefix
-NXOnoremap ;     <Nop>
-NXOnoremap ,     <Nop>
-NXOnoremap s     <Nop>
-NXOnoremap S     <Nop>
-NXOnoremap m     <Nop>
-NXOnoremap M     <Nop>
-NOnoremap  <C-G> <Nop>
-cnoremap   <C-G> <Nop>
+" For plugin
+NXOnoremap <Bslash> <Nop>
+
+" For mark
+NXOnoremap m <Nop>
+NXOnoremap M <Nop>
+
+" For user operator
+NXOnoremap s <Nop>
+NXOnoremap S <Nop>
+
+" " For user textobj
+" XOnoremap <M-a> <Nop>
+" XOnoremap <M-A> <Nop>
+" XOnoremap <M-i> <Nop>
+" XOnoremap <M-I> <Nop>
+
+" " For user square
+" NXOnoremap <M-[> <Nop>
+" NXOnoremap <M-]> <Nop>
+
+" For the evacuation of "g"
+NOnoremap <C-G> <Nop>
 
 " Split Nicely
 noremap <expr> <SID>(split-nicely)
@@ -639,20 +718,6 @@ nnoremap <expr> <Esc><Esc> myvimrc#escape_key()
 "}}}
 
 "------------------------------------------------------------------------------
-" Gips: {{{
-if s:gips_enable
-  noremap <Up>       <Nop>
-  noremap <Down>     <Nop>
-  noremap <Right>    <Nop>
-  noremap <Left>     <Nop>
-  noremap <Home>     <Nop>
-  noremap <End>      <Nop>
-  noremap <PageUp>   <Nop>
-  noremap <PageDown> <Nop>
-endif
-"}}}
-
-"------------------------------------------------------------------------------
 " Moving: {{{
 " Insert-mode & Command-line-mode
 noremap! <M-j> <Down>
@@ -690,15 +755,17 @@ cnoremap <M-b> <S-Left>
 nnoremap <S-Tab> <C-O>
 
 " Mark
-NXOnoremap mj ]`
-NXOnoremap mk [`
+NXOnoremap m<Down> ]`
+NXOnoremap m<Up>   [`
+NXOnoremap mj      ]`
+NXOnoremap mk      [`
 
 " Command-line
 cnoremap <expr> <C-H>
-\ getcmdtype() == '@' && getcmdpos() == 1 && getcmdline() == '' ?
+\ getcmdtype() == '@' && getcmdpos() == 1 && empty(getcmdline()) ?
 \   '<Esc>' : '<C-H>'
 cnoremap <expr> <BS>
-\ getcmdtype() == '@' && getcmdpos() == 1 && getcmdline() == '' ?
+\ getcmdtype() == '@' && getcmdpos() == 1 && empty(getcmdline()) ?
 \   '<Esc>' : '<BS>'
 cnoremap <expr> <Esc>
 \ &cpoptions =~# 'x' ?
@@ -742,15 +809,21 @@ NXnoremap <Leader>!     :<C-U>shell<CR>
 NXnoremap <Leader>B     :<C-U>buffers<CR>
 NXnoremap <Leader>E     :<C-U>Explorer<CR>
 NXnoremap <Leader>T     :<C-U>tabs<CR>
+NXnoremap <Leader>U     :<C-U>undolist<CR>
 NXnoremap <Leader>j     :<C-U>jumps<CR>
 NXnoremap <Leader>J     :<C-U>changes<CR>
 NXnoremap <Leader>p     :<C-U>registers<CR>
+NXnoremap <Leader>m     :<C-U>marks<CR>
 NXnoremap <Leader><C-D> :<C-U>pwd<CR>
 NXnoremap <script> <Leader>e <SID>:<C-U>edit<Space>
 NXnoremap <script> <Leader>b <SID>:<C-U>buffer<Space>
 NXnoremap <script> <Leader>t <SID>:<C-U>tabnext<Space>
+NXnoremap <script> <Leader>u <SID>:<C-U>undo<Space>
+NXnoremap <script> <Leader>] <SID>:<C-U>tag<Space>
 NXnoremap <script> <Leader>d <SID>:<C-U>lcd<Space>
 NXnoremap <script> <Leader>D <SID>:<C-U>cd<Space>
+NXnoremap <script> <Leader>g <SID>:<C-U>lgrep<Space>
+NXnoremap <script> <Leader>G <SID>:<C-U>grep<Space>
 NXnoremap <expr> <Leader>Q
 \ ':<C-U>1,' . bufnr('$') . 'bdelete<CR>'
 NXnoremap <script><expr> <Leader><M-d>
@@ -781,7 +854,6 @@ nnoremap <expr> mm myvimrc#auto_mark()
 nnoremap <expr> mc myvimrc#clear_marks()
 nnoremap <expr> mM myvimrc#auto_file_mark()
 nnoremap <expr> mC myvimrc#clear_file_marks()
-nnoremap <expr> ml myvimrc#marks()
 "}}}
 
 "------------------------------------------------------------------------------
@@ -793,17 +865,10 @@ inoremap <expr> <M-L> '<C-O>' . myvimrc#eol_toggle()
 "}}}
 
 "------------------------------------------------------------------------------
-" Quick Close: {{{
-autocmd MyVimrc FileType *
-\ if (&readonly || !&modifiable) && maparg('q', 'n') == '' |
-\   nnoremap <buffer><silent><expr> q
-\     winnr('$') != 1 ? ':<C-U>close<CR>' : ''|
-\ endif
-"}}}
-
-"------------------------------------------------------------------------------
 " Line Number: {{{
-nnoremap <F12> :<C-U>call myvimrc#toggle_line_number_style()<CR>
+nnoremap <F12>
+\ :<C-U>call myvimrc#toggle_line_number_style() <Bar>
+\ setlocal number? relativenumber?<CR>
 "}}}
 
 "------------------------------------------------------------------------------
@@ -822,6 +887,7 @@ xnoremap <expr> I myvimrc#force_blockwise_insert('I')
 
 "------------------------------------------------------------------------------
 " Increment: {{{
+silent! vunmap <C-A>
 silent! vunmap <C-X>
 if s:has_patch(7, 4, 754)
   xnoremap <C-A>  <C-A>gv
@@ -835,10 +901,11 @@ endif
 " Others: {{{
 " Paste
 set pastetoggle=<F11>
-nnoremap  <F11> :<C-U>set paste! paste?<CR>
+nnoremap <F11> :<C-U>set paste! paste?<CR>
 
 " BackSpace
-nnoremap <BS> X
+nnoremap <BS>  X
+nnoremap <C-H> X
 
 " Yank to end of line
 nnoremap Y y$
@@ -848,9 +915,6 @@ NXnoremap <expr> g<M-t>
 \ ':<C-U>tabmove +' . v:count1 . '<CR>'
 NXnoremap <expr> g<M-T>
 \ ':<C-U>tabmove -' . v:count1 . '<CR>'
-
-" Undo branch
-nnoremap <M-u> :<C-U>undolist<CR>
 
 " New line
 nnoremap <M-o>
@@ -903,9 +967,6 @@ nnoremap ZQ    <Nop>
 nnoremap ZZ    <Nop>
 nnoremap gQ    gq
 inoremap <C-C> <Esc>
-
-" Insert Tab
-inoremap <C-T> <C-V><Tab>
 
 " Rot13
 NXOnoremap s?  g?
@@ -1003,13 +1064,52 @@ if has('win32')
   \ call myvimrc#set_shell(s:shell_cmd)
   command! -bar -nargs=?
   \ ShellSh
-  \ call myvimrc#set_shell([<q-args> != '' ? <q-args> : 'sh', 1, '-c', '', '"'])
+  \ call myvimrc#set_shell([!empty(<q-args>) ? <q-args> : 'sh', 1, '-c', '', '"'])
 endif
 "}}}
 
 "------------------------------------------------------------------------------
 " VC Vars: {{{
-if exists('$VCVARSALL')
+if has('win32')
+  if !exists('$VCVARSALL')
+    let s:save_ssl = &shellslash
+    try
+      set noshellslash
+      if exists('$VS120COMNTOOLS')
+        let $VCVARSALL = $VS120COMNTOOLS . '..\..\VC\vcvarsall.bat'
+      elseif exists('$VS110COMNTOOLS')
+        let $VCVARSALL = $VS110COMNTOOLS . '..\..\VC\vcvarsall.bat'
+      elseif exists('$VS100COMNTOOLS')
+        let $VCVARSALL = $VS100COMNTOOLS . '..\..\VC\vcvarsall.bat'
+      elseif exists('$VS90COMNTOOLS')
+        let $VCVARSALL = $VS90COMNTOOLS  . '..\..\VC\vcvarsall.bat'
+      elseif exists('$VS80COMNTOOLS')
+        let $VCVARSALL = $VS80COMNTOOLS  . '..\..\VC\vcvarsall.bat'
+      endif
+    finally
+      let &shellslash = s:save_ssl
+      unlet! s:save_ssl
+    endtry
+
+    if isdirectory(s:programfiles_x86 .
+    \ '\Microsoft SDKs\Windows\v7.1A\Include')
+      let $SDK_INCLUDE_DIR = s:programfiles_x86 .
+      \ '\Microsoft SDKs\Windows\v7.1A\Include'
+    elseif isdirectory(s:programfiles_x86 .
+    \ '\Microsoft SDKs\Windows\v7.1\Include')
+      let $SDK_INCLUDE_DIR = s:programfiles_x86 .
+      \ '\Microsoft SDKs\Windows\v7.1\Include'
+    elseif isdirectory(s:programfiles_x86 .
+    \ '\Microsoft SDKs\Windows\v7.0A\Include')
+      let $SDK_INCLUDE_DIR = s:programfiles_x86 .
+      \ '\Microsoft SDKs\Windows\v7.0A\Include'
+    elseif isdirectory(s:programfiles_x86 .
+    \ '\Microsoft SDKs\Windows\v7.0\Include')
+      let $SDK_INCLUDE_DIR = s:programfiles_x86 .
+      \ '\Microsoft SDKs\Windows\v7.0\Include'
+    endif
+  endif
+
   command! -bar
   \ VCVars32
   \ call myvimrc#vcvarsall('x86')
@@ -1034,13 +1134,6 @@ command! -bar -nargs=?
 
 NXnoremap <C-W>, :<C-U>CToggle<CR>
 NXnoremap <C-W>. :<C-U>LToggle<CR>
-
-augroup MyVimrc
-  autocmd QuickFixCmdPost [^l]*
-  \ cwindow
-  autocmd QuickFixCmdPost l*
-  \ lwindow
-augroup END
 "}}}
 
 "------------------------------------------------------------------------------
@@ -1052,8 +1145,7 @@ command! -bar
 \ Undiff
 \ diffoff |
 \ setlocal scrollbind< cursorbind< wrap< foldmethod< foldcolumn< |
-\ execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
-\ 'FileType'
+\ call s:doautocmd('FileType')
 
 nnoremap <F8> :<C-U>Undiff<CR>
 "}}}
@@ -1063,7 +1155,7 @@ nnoremap <F8> :<C-U>Undiff<CR>
 command! -bar
 \ DiffOrig
 \ let s:save_ft = &l:filetype | vertical new | setlocal buftype=nofile |
-\ read # | 0d_ | let &l:filetype = s:save_ft | unlet s:save_ft |
+\ read ++edit # | 0d_ | let &l:filetype = s:save_ft | unlet s:save_ft |
 \ diffthis | wincmd p | diffthis
 
 nnoremap <F6> :<C-U>DiffOrig<CR>
@@ -1071,12 +1163,35 @@ nnoremap <F6> :<C-U>DiffOrig<CR>
 "}}}
 
 "==============================================================================
-" Functions: {{{
+" Auto Command: {{{
 
 "------------------------------------------------------------------------------
 " Auto MkDir: {{{
 autocmd MyVimrc BufWritePre *
 \ call myvimrc#auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
+"}}}
+
+"------------------------------------------------------------------------------
+" Quick Close: {{{
+autocmd MyVimrc FileType *
+\ if (&readonly || !&modifiable) && empty(maparg('q', 'n')) |
+\   nnoremap <buffer><silent><expr> q
+\     winnr('$') != 1 ? ':<C-U>close<CR>' : ''|
+\ endif
+"}}}
+
+"------------------------------------------------------------------------------
+" QuickFix: {{{
+augroup MyVimrc
+  autocmd BufWinEnter,WinEnter *
+  \ if &l:buftype == 'quickfix' && !exists('b:qflisttype') |
+  \   call myvimrc#set_qflisttype() |
+  \ endif
+  autocmd QuickFixCmdPost [^l]*
+  \ cwindow
+  autocmd QuickFixCmdPost l*
+  \ lwindow
+augroup END
 "}}}
 
 "------------------------------------------------------------------------------
@@ -1093,8 +1208,8 @@ function! s:_reverse_highlight(hl, name)
   let s = matchstr(a:hl, a:name . '=\zs\S\+')
   if s =~ '\%(re\|in\)verse'
     return substitute(
-    \ s, '\%(\%(re\|in\)verse,\?\|,\%(re\|in\)verse\)', '', 'g')
-  elseif s != '' && s != 'NONE'
+    \ s, '\%(re\|in\)verse,\=\|,\%(re\|in\)verse', '', 'g')
+  elseif !empty(s) && s != 'NONE'
     return s . ',reverse'
   else
     return 'reverse'
@@ -1102,10 +1217,10 @@ function! s:_reverse_highlight(hl, name)
 endfunction
 
 function! s:reverse_highlight(hl)
-  return join([a:hl,
-  \ 'term='  . s:_reverse_highlight(a:hl, 'term'),
-  \ 'cterm=' . s:_reverse_highlight(a:hl, 'cterm'),
-  \ 'gui='   . s:_reverse_highlight(a:hl, 'gui')])
+  return a:hl .
+  \ ' term='  . s:_reverse_highlight(a:hl, 'term') .
+  \ ' cterm=' . s:_reverse_highlight(a:hl, 'cterm') .
+  \ ' gui='   . s:_reverse_highlight(a:hl, 'gui')
 endfunction
 "}}}
 
@@ -1177,6 +1292,22 @@ autocmd MyVimrc FileType *
 
 "==============================================================================
 " Plugins: {{{
+" Default selector
+let s:selector_ui = {
+\ 'file'      : 'unite',
+\ 'directory' : 'unite',
+\ 'buffer'    : 'unite',
+\ 'tabpage'   : 'unite',
+\ 'change'    : 'unite',
+\ 'jump'      : 'unite',
+\ 'register'  : 'yankround',
+\ 'mark'      : 'unite',
+\ 'tag'       : 'unite',
+\ 'grep'      : '',
+\
+\ 'omnisharp' : 'unite',
+\ 'yankround' : 'unite'}
+
 " AlterCommand
 " {original} : {alternative}
 let s:altercmd_define = {
@@ -1205,6 +1336,54 @@ let s:altercmd_define = {
 " {filetype} : {dictionary}
 let s:neocompl_dictionary_filetype_lists = {
 \ 'default' : ''}
+" {filetype} : {expr}
+let s:neocompl_tags_filter_patterns = {
+\ 'ant'        : 'v:val.word !~ "^[~_]"',
+\ 'asm'        : 'v:val.word !~ "^[~_]"',
+\ 'aspperl'    : 'v:val.word !~ "^[~_]"',
+\ 'aspvbs'     : 'v:val.word !~ "^[~_]"',
+\ 'basic'      : 'v:val.word !~ "^[~_]"',
+\ 'beta'       : 'v:val.word !~ "^[~_]"',
+\ 'c'          : 'v:val.word !~ "^[~_]"',
+\ 'cpp'        : 'v:val.word !~ "^[~_]"',
+\ 'cs'         : 'v:val.word !~ "^[~_]"',
+\ 'java'       : 'v:val.word !~ "^[~_]"',
+\ 'vera'       : 'v:val.word !~ "^[~_]"',
+\ 'cobol'      : 'v:val.word !~ "^[~_]"',
+\ 'dosbatch'   : 'v:val.word !~ "^[~_]"',
+\ 'eiffel'     : 'v:val.word !~ "^[~_]"',
+\ 'erlang'     : 'v:val.word !~ "^[~_]"',
+\ 'fortran'    : 'v:val.word !~ "^[~_]"',
+\ 'html'       : 'v:val.word !~ "^[~_]"',
+\ 'xhtml'      : 'v:val.word !~ "^[~_]"',
+\ 'javascript' : 'v:val.word !~ "^[~_]"',
+\ 'lisp'       : 'v:val.word !~ "^[~_]"',
+\ 'lua'        : 'v:val.word !~ "^[~_]"',
+\ 'make'       : 'v:val.word !~ "^[~_]"',
+\ 'matlab'     : 'v:val.word !~ "^[~_]"',
+\ 'ocaml'      : 'v:val.word !~ "^[~_]"',
+\ 'pascal'     : 'v:val.word !~ "^[~_]"',
+\ 'perl'       : 'v:val.word !~ "^[~_]"',
+\ 'php'        : 'v:val.word !~ "^[~_]"',
+\ 'python'     : 'v:val.word !~ "^[~_]"',
+\ 'rexx'       : 'v:val.word !~ "^[~_]"',
+\ 'ruby'       : 'v:val.word !~ "^[~_]"',
+\ 'scheme'     : 'v:val.word !~ "^[~_]"',
+\ 'sh'         : 'v:val.word !~ "^[~_]"',
+\ 'bash'       : 'v:val.word !~ "^[~_]"',
+\ 'ksh'        : 'v:val.word !~ "^[~_]"',
+\ 'zsh'        : 'v:val.word !~ "^[~_]"',
+\ 'slang'      : 'v:val.word !~ "^[~_]"',
+\ 'sql'        : 'v:val.word !~ "^[~_]"',
+\ 'tcl'        : 'v:val.word !~ "^[~_]"',
+\ 'tex'        : 'v:val.word !~ "^[~_]"',
+\ 'verilog'    : 'v:val.word !~ "^[~_]"',
+\ 'vhdl'       : 'v:val.word !~ "^[~_]"',
+\ 'vim'        : 'v:val.word !~ "^[~_]"',
+\ 'yacc'       : 'v:val.word !~ "^[~_]"',
+\
+\ 'vb'         : 'v:val.word !~ "^[~_]"',
+\ 'vbnet'      : 'v:val.word !~ "^[~_]"'}
 " {command} : {function}
 let s:neocompl_vim_completefuncs = {
 \ 'SQLSetType' : 'SQL_GetList'}
@@ -1259,37 +1438,6 @@ let g:xml_syntax_folding = 1
 "}}}
 
 "------------------------------------------------------------------------------
-" Justify: {{{
-if filereadable($VIMRUNTIME . '/macros/justify.vim')
-  source $VIMRUNTIME/macros/justify.vim
-  silent! NVunmap _j
-  silent! NVunmap ,gq
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" MatchIt: {{{
-if filereadable($VIMRUNTIME . '/macros/matchit.vim')
-  source $VIMRUNTIME/macros/matchit.vim
-  silent! sunmap %
-  silent! sunmap g%
-  silent! sunmap [%
-  silent! sunmap ]%
-  silent! sunmap a%
-
-  NXmap <SID>[% [%
-  NXmap <SID>]% ]%
-
-  xnoremap <script> [% <Esc><SID>[%m'gv``
-  xnoremap <script> ]% <Esc><SID>]%m'gv``
-  xnoremap <script> a% <Esc><SID>[%v<SID>]%
-
-  NXOmap <Space>   %
-  NXOmap <S-Space> g%
-endif
-"}}}
-
-"------------------------------------------------------------------------------
 " NeoBundle: {{{
 if isdirectory($HOME . '/.local/bundle/neobundle')
   set runtimepath+=~/.local/bundle/neobundle
@@ -1304,6 +1452,14 @@ if isdirectory($HOME . '/.local/bundle/neobundle')
     call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
     NeoBundleSaveCache
   endif
+
+  call extend(s:neocompl_vim_completefuncs, {
+  \ 'NeoBundleSource'    : 'neobundle#complete_lazy_bundles',
+  \ 'NeoBundleDisable'   : 'neobundle#complete_bundles',
+  \ 'NeoBundleInstall'   : 'neobundle#complete_bundles',
+  \ 'NeoBundleUpdate'    : 'neobundle#complete_bundles',
+  \ 'NeoBundleClean'     : 'neobundle#complete_deleted_bundles',
+  \ 'NeoBundleReinstall' : 'neobundle#complete_bundles'})
 endif
 "}}}
 
@@ -1388,6 +1544,15 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
+" Clang Format: {{{
+if s:neobundle_tap('clang-format')
+  " NXOmap <buffer> sf <Plug>(operator-clang-format)
+  "
+  " nmap <buffer> sff sfsf
+endif
+"}}}
+
+"------------------------------------------------------------------------------
 " Clever F: {{{
 if s:neobundle_tap('clever-f')
   function! neobundle#hooks.on_source(bundle)
@@ -1426,15 +1591,92 @@ endif
 " ColumnJump: {{{
 if s:neobundle_tap('columnjump')
   function! neobundle#hooks.on_source(bundle)
-    nmap <SID>(columnjump-backward) <Plug>(columnjump-backward)
-    nmap <SID>(columnjump-forward)  <Plug>(columnjump-forward)
-
-    inoremap <script> <M-J> <C-O><SID>(columnjump-forward)
-    inoremap <script> <M-K> <C-O><SID>(columnjump-backward)
+    call submode#enter_with(
+    \ 'coljmp', 'nx', 'r', '<Plug>(submode:coljmp:[)',
+    \ '<Plug>(columnjump-backward)')
+    call submode#enter_with(
+    \ 'coljmp', 'nx', 'r', '<Plug>(submode:coljmp:])',
+    \ '<Plug>(columnjump-forward)')
+    call submode#map(
+    \ 'coljmp', 'nx', 'r', '[',
+    \ '<Plug>(columnjump-backward)')
+    call submode#map(
+    \ 'coljmp', 'nx', 'r', ']',
+    \ '<Plug>(columnjump-forward)')
   endfunction
 
-  NXOmap <C-J> <Plug>(columnjump-forward)
-  NXOmap <C-K> <Plug>(columnjump-backward)
+  NXmap [<M-[> <Plug>(submode:coljmp:[)
+  NXmap ]<M-]> <Plug>(submode:coljmp:])
+
+  omap [<M-[> <Plug>(columnjump-backward)
+  omap ]<M-]> <Plug>(columnjump-forward)
+endif
+"}}}
+
+"------------------------------------------------------------------------------
+" Universal Ctags: {{{
+if s:neobundle_tap('ctags')
+  call extend(s:neocompl_tags_filter_patterns, {
+  \ 'ada'        : 'v:val.word !~ "^[~_]"',
+  \ 'ant'        : 'v:val.word !~ "^[~_]"',
+  \ 'asm'        : 'v:val.word !~ "^[~_]"',
+  \ 'aspperl'    : 'v:val.word !~ "^[~_]"',
+  \ 'aspvbs'     : 'v:val.word !~ "^[~_]"',
+  \ 'basic'      : 'v:val.word !~ "^[~_]"',
+  \ 'beta'       : 'v:val.word !~ "^[~_]"',
+  \ 'c'          : 'v:val.word !~ "^[~_]"',
+  \ 'd'          : 'v:val.word !~ "^[~_]"',
+  \ 'cpp'        : 'v:val.word !~ "^[~_]"',
+  \ 'cs'         : 'v:val.word !~ "^[~_]"',
+  \ 'java'       : 'v:val.word !~ "^[~_]"',
+  \ 'vera'       : 'v:val.word !~ "^[~_]"',
+  \ 'clojure'    : 'v:val.word !~ "^[~_]"',
+  \ 'cobol'      : 'v:val.word !~ "^[~_]"',
+  \ 'css'        : 'v:val.word !~ "^[~_]"',
+  \ 'diff'       : 'v:val.word !~ "^[~_]"',
+  \ 'dosbatch'   : 'v:val.word !~ "^[~_]"',
+  \ 'eiffel'     : 'v:val.word !~ "^[~_]"',
+  \ 'erlang'     : 'v:val.word !~ "^[~_]"',
+  \ 'falcon'     : 'v:val.word !~ "^[~_]"',
+  \ 'fortran'    : 'v:val.word !~ "^[~_]"',
+  \ 'go'         : 'v:val.word !~ "^[~_]"',
+  \ 'html'       : 'v:val.word !~ "^[~_]"',
+  \ 'xhtml'      : 'v:val.word !~ "^[~_]"',
+  \ 'javascript' : 'v:val.word !~ "^[~_]"',
+  \ 'json'       : 'v:val.word !~ "^[~_]"',
+  \ 'lisp'       : 'v:val.word !~ "^[~_]"',
+  \ 'lua'        : 'v:val.word !~ "^[~_]"',
+  \ 'make'       : 'v:val.word !~ "^[~_]"',
+  \ 'matlab'     : 'v:val.word !~ "^[~_]"',
+  \ 'objc'       : 'v:val.word !~ "^[~_]"',
+  \ 'objcpp'     : 'v:val.word !~ "^[~_]"',
+  \ 'ocaml'      : 'v:val.word !~ "^[~_]"',
+  \ 'pascal'     : 'v:val.word !~ "^[~_]"',
+  \ 'perl'       : 'v:val.word !~ "^[~_]"',
+  \ 'perl6'      : 'v:val.word !~ "^[~_]"',
+  \ 'php'        : 'v:val.word !~ "^[~_]"',
+  \ 'zephir'     : 'v:val.word !~ "^[~_]"',
+  \ 'python'     : 'v:val.word !~ "^[~_]"',
+  \ 'r'          : 'v:val.word !~ "^[~_]"',
+  \ 'rexx'       : 'v:val.word !~ "^[~_]"',
+  \ 'rst'        : 'v:val.word !~ "^[~_]"',
+  \ 'ruby'       : 'v:val.word !~ "^[~_]"',
+  \ 'rust'       : 'v:val.word !~ "^[~_]"',
+  \ 'scheme'     : 'v:val.word !~ "^[~_]"',
+  \ 'sh'         : 'v:val.word !~ "^[~_]"',
+  \ 'bash'       : 'v:val.word !~ "^[~_]"',
+  \ 'ksh'        : 'v:val.word !~ "^[~_]"',
+  \ 'zsh'        : 'v:val.word !~ "^[~_]"',
+  \ 'slang'      : 'v:val.word !~ "^[~_]"',
+  \ 'sml'        : 'v:val.word !~ "^[~_]"',
+  \ 'sql'        : 'v:val.word !~ "^[~_]"',
+  \ 'tcl'        : 'v:val.word !~ "^[~_]"',
+  \ 'tex'        : 'v:val.word !~ "^[~_]"',
+  \ 'verilog'    : 'v:val.word !~ "^[~_]"',
+  \ 'vhdl'       : 'v:val.word !~ "^[~_]"',
+  \ 'vim'        : 'v:val.word !~ "^[~_]"',
+  \ 'rc'         : 'v:val.word !~ "^[~_]"',
+  \ 'yacc'       : 'v:val.word !~ "^[~_]"'})
 endif
 "}}}
 
@@ -1702,15 +1944,12 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
-" NeBundle: {{{
-if s:neobundle_tap('neobundle')
-  call extend(s:neocompl_vim_completefuncs, {
-  \ 'NeoBundleSource'    : 'neobundle#complete_lazy_bundles',
-  \ 'NeoBundleDisable'   : 'neobundle#complete_bundles',
-  \ 'NeoBundleInstall'   : 'neobundle#complete_bundles',
-  \ 'NeoBundleUpdate'    : 'neobundle#complete_bundles',
-  \ 'NeoBundleClean'     : 'neobundle#complete_deleted_bundles',
-  \ 'NeoBundleReinstall' : 'neobundle#complete_bundles'})
+" Neco Vim: {{{
+if s:neobundle_tap('neco-vim')
+  function! neobundle#hooks.on_source(bundle)
+    let g:necovim#complete_functions =
+    \ s:neocompl_vim_completefuncs
+  endfunction
 endif
 "}}}
 
@@ -1721,7 +1960,6 @@ if s:neobundle_tap('neocomplcache')
     let g:neocomplcache_enable_at_startup            = 1
     let g:neocomplcache_enable_auto_select           = 0
     let g:neocomplcache_enable_auto_delimiter        = 1
-    " let g:neocomplcache_enable_insert_char_pre       = 1
     let g:neocomplcache_enable_camel_case_completion = 0
     let g:neocomplcache_enable_underbar_completion   = 0
     let g:neocomplcache_enable_fuzzy_completion      = 0
@@ -1733,10 +1971,13 @@ if s:neobundle_tap('neocomplcache')
     \ s:neocompl_dictionary_filetype_lists
     let g:neocomplcache_vim_completefuncs         =
     \ s:neocompl_vim_completefuncs
+    " let g:neocomplcache_tags_filter_patterns      =
+    " \ s:neocompl_tags_filter_patterns
     " let g:neocomplcache_omni_patterns             =
-    "   \ s:neocompl_omni_patterns
+    " \ s:neocompl_omni_patterns
     " let g:neocomplcache_force_omni_patterns       =
-    "   \ s:neocompl_force_omni_patterns
+    " \ s:neocompl_force_omni_patterns
+    let g:neocomplcache_tags_filter_patterns      = {}
     let g:neocomplcache_omni_patterns             = {}
     let g:neocomplcache_force_omni_patterns       = {}
 
@@ -1745,26 +1986,15 @@ if s:neobundle_tap('neocomplcache')
 
     inoremap <expr> <C-Y>
     \ neocomplcache#close_popup()
+    inoremap <expr> <C-E>
+    \ neocomplcache#cancel_popup()
+    inoremap <expr> <C-L>
+    \ neocomplcache#complete_common_string()
     inoremap <expr> <C-G>
     \ neocomplcache#undo_completion()
-    inoremap <expr> <C-C>
-    \ pumvisible() ?
-    \   neocomplcache#cancel_popup() :
-    \   '<C-C>'
-    inoremap <expr> <C-L>
-    \ pumvisible() ?
-    \   neocomplcache#complete_common_string() :
-    \   '<C-L>'
-    inoremap <expr> <Tab>
-    \ pumvisible() ?
-    \   '<C-N>' :
-    \   myvimrc#check_back_space() ?
-    \     '<Tab>' :
-    \     neocomplcache#start_manual_complete()
-    inoremap <expr> <S-Tab>
-    \ pumvisible() ?
-    \   '<C-P>' :
-    \   neocomplcache#start_manual_complete()
+    inoremap <expr> <C-X><C-X>
+    \ neocomplcache#close_popup() .
+    \ neocomplcache#start_manual_complete()
 
     inoremap <expr> <CR>
     \ neocomplcache#close_popup() . '<CR>'
@@ -1772,6 +2002,11 @@ if s:neobundle_tap('neocomplcache')
     \ neocomplcache#smart_close_popup() . '<C-H>'
     inoremap <expr> <BS>
     \ neocomplcache#smart_close_popup() . '<BS>'
+
+    inoremap <expr> <Tab>
+    \ pumvisible() ? '<C-N>' : '<Tab>'
+    inoremap <expr> <S-Tab>
+    \ pumvisible() ? '<C-P>' : '<S-Tab>'
   endfunction
 
   augroup MyVimrc
@@ -1794,19 +2029,19 @@ if s:neobundle_tap('neocomplete')
     let g:neocomplete#enable_at_startup            = 1
     let g:neocomplete#enable_auto_select           = 0
     let g:neocomplete#enable_auto_delimiter        = 1
-    " let g:neocomplete#enable_insert_char_pre       = 1
     let g:neocomplete#force_overwrite_completefunc = 1
     let g:neocomplete#data_directory               =
     \ $HOME . '/.local/.cache/neocomplete'
 
     let g:neocomplete#sources#dictionary#dictionaryies =
     \ s:neocompl_dictionary_filetype_lists
-    let g:necovim#complete_functions                   =
-    \ s:neocompl_vim_completefuncs
+    " let g:neocomplete#tags_filter_patterns             =
+    " \ s:neocompl_tags_filter_patterns
     " let g:neocomplete#sources#omni#input_patterns      =
-    "   \ s:neocompl_omni_patterns
+    " \ s:neocompl_omni_patterns
     " let g:neocomplete#force_omni_input_patterns        =
-    "   \ s:neocompl_force_omni_patterns
+    " \ s:neocompl_force_omni_patterns
+    let g:neocomplete#tags_filter_patterns             = {}
     let g:neocomplete#sources#omni#input_patterns      = {}
     let g:neocomplete#force_omni_input_patterns        = {}
 
@@ -1816,26 +2051,15 @@ if s:neobundle_tap('neocomplete')
 
     inoremap <expr> <C-Y>
     \ neocomplete#close_popup()
+    inoremap <expr> <C-E>
+    \ neocomplete#cancel_popup()
+    inoremap <expr> <C-L>
+    \ neocomplete#complete_common_string()
     inoremap <expr> <C-G>
     \ neocomplete#undo_completion()
-    inoremap <expr> <C-C>
-    \ pumvisible() ?
-    \   neocomplete#cancel_popup() :
-    \   '<C-C>'
-    inoremap <expr> <C-L>
-    \ pumvisible() ?
-    \   neocomplete#complete_common_string() :
-    \   '<C-L>'
-    inoremap <expr> <Tab>
-    \ pumvisible() ?
-    \   '<C-N>' :
-    \   myvimrc#check_back_space() ?
-    \     '<Tab>' :
-    \     neocomplete#start_manual_complete()
-    inoremap <expr> <S-Tab>
-    \ pumvisible() ?
-    \   '<C-P>' :
-    \   neocomplete#start_manual_complete()
+    inoremap <expr> <C-X><C-X>
+    \ neocomplete#close_popup() .
+    \ neocomplete#start_manual_complete()
 
     inoremap <expr> <CR>
     \ neocomplete#close_popup() . '<CR>'
@@ -1843,6 +2067,11 @@ if s:neobundle_tap('neocomplete')
     \ neocomplete#smart_close_popup() . '<C-H>'
     inoremap <expr> <BS>
     \ neocomplete#smart_close_popup() . '<BS>'
+
+    inoremap <expr> <Tab>
+    \ pumvisible() ? '<C-N>' : '<Tab>'
+    inoremap <expr> <S-Tab>
+    \ pumvisible() ? '<C-P>' : '<S-Tab>'
   endfunction
 
   augroup MyVimrc
@@ -1869,30 +2098,41 @@ if s:neobundle_tap('neomru')
 
     let g:neomru#file_mru_ignore_pattern =
     \ '[/\\]doc[/\\][^/\\]\+\.\%(txt\|\a\ax\)$\|' .
-    \ join(map(
-    \   copy(s:ignore_ext),
+    \ join(map(copy(s:ignore_ext),
     \   '"\\." . escape(v:val, "\\*.^$") . "$"'), '\|')
+    let g:neomru#directory_mru_ignore_pattern =
+    \ join(s:ignore_dir, '\|')
   endfunction
 
-  NXnoremap <Leader>e
-  \ :<C-U>Unite file/new neomru/file file
+  NXnoremap <Bslash>ue
+  \ :<C-U>Unite neomru/file file file/new
   \ -buffer-name=files<CR>
-  NXnoremap <Leader>d
+  NXnoremap <Bslash>ud
   \ :<C-U>Unite
-  \ menu:directory_current directory/new neomru/directory directory
+  \ menu:directory_current neomru/directory directory directory/new
   \ -buffer-name=files -default-action=lcd<CR>
-  NXnoremap <Leader>D
+  NXnoremap <Bslash>uD
   \ :<C-U>Unite
-  \ menu:directory_current directory/new neomru/directory directory
+  \ menu:directory_current neomru/directory directory directory/new
   \ -buffer-name=files -default-action=cd<CR>
-  NXnoremap <Leader><M-d>
+  NXnoremap <Bslash>u<M-d>
   \ :<C-U>UniteWithBufferDir
-  \ menu:directory_file directory/new neomru/directory directory
+  \ menu:directory_file neomru/directory directory directory/new
   \ -buffer-name=files -default-action=lcd<CR>
-  NXnoremap <Leader><M-D>
+  NXnoremap <Bslash>u<M-D>
   \ :<C-U>UniteWithBufferDir
-  \ menu:directory_file directory/new neomru/directory directory
+  \ menu:directory_file neomru/directory directory directory/new
   \ -buffer-name=files -default-action=cd<CR>
+
+  if get(s:selector_ui, 'file') == 'unite'
+    NXmap <Leader>e     <Bslash>ue
+  endif
+  if get(s:selector_ui, 'directory') == 'unite'
+    NXmap <Leader>d     <Bslash>ud
+    NXmap <Leader>D     <Bslash>uD
+    NXmap <Leader><M-d> <Bslash>u<M-d>
+    NXmap <Leader><M-D> <Bslash>u<M-D>
+  endif
 endif
 "}}}
 
@@ -1908,11 +2148,11 @@ if s:neobundle_tap('neosnippet')
     \ get(g:, 'neosnippet#disable_runtime_snippets', {})
     let g:neosnippet#disable_runtime_snippets._ = 1
 
-    imap <C-E> <Plug>(neosnippet_expand_or_jump)
+    imap <C-K> <Plug>(neosnippet_expand_or_jump)
   endfunction
 
-  smap <C-E> <Plug>(neosnippet_expand_or_jump)
-  xmap <C-E> <Plug>(neosnippet_expand_target)
+  smap <C-K> <Plug>(neosnippet_expand_or_jump)
+  xmap <C-K> <Plug>(neosnippet_expand_target)
 
   autocmd MyVimrc InsertLeave *
   \ NeoSnippetClearMarkers
@@ -1929,6 +2169,7 @@ if s:neobundle_tap('omnisharp')
   function! neobundle#hooks.on_source(bundle)
     let g:OmniSharp_server_path =
     \ a:bundle.path . '/server/OmniSharp/bin/Release/OmniSharp.exe'
+    let g:OmniSharp_selector_ui = get(s:selector_ui, 'omnisharp')
   endfunction
 
   call extend(s:neocompl_force_omni_patterns, {
@@ -2158,6 +2399,11 @@ endif
 " Operator User: {{{
 if s:neobundle_tap('operator-user')
   function! neobundle#hooks.on_source(bundle)
+    let g:myvimrc#operator_grep_ui = get(s:selector_ui, 'grep')
+
+    call operator#user#define(
+    \ 'lgrep',
+    \ 'myvimrc#operator_lgrep')
     call operator#user#define(
     \ 'grep',
     \ 'myvimrc#operator_grep')
@@ -2166,15 +2412,16 @@ if s:neobundle_tap('operator-user')
     \ 'myvimrc#operator_justify')
   endfunction
 
-  NXOmap sg <Plug>(operator-grep)
+  NXOmap sg <Plug>(operator-lgrep)
+  NXOmap sG <Plug>(operator-grep)
   NXOmap sJ <Plug>(operator-justify)
 
   nmap sgg sgsg
+  nmap sGG sGsG
   nmap sJJ sJsJ
 
-  if !s:is_enabled_bundle('unite')
-    nnoremap sgsg :<C-U>execute input(':', 'grep ')<CR>
-  endif
+  nmap sgsg <Leader>g
+  nmap sGsG <Leader>G
 endif
 "}}}
 
@@ -2234,19 +2481,20 @@ if s:neobundle_tap('precious')
   endfunction
 
   function! Precious_y()
-    if &l:filetype == ''
+    if empty(&l:filetype)
       return ''
     endif
 
     let b = precious#base_filetype()
     let c = precious#context_filetype()
     if b == c
-      return join(['[', b, ']'], '')
+      return '[' . b . ']'
     else
-      return join(['[', b, ':', c, ']'], '')
+      return '[' . b . ':' . c . ']'
     endif
   endfunction
 
+  nmap  sR <Plug>(precious-quickrun-op)
   XOmap ax <Plug>(textobj-precious-i)
   XOmap ix <Plug>(textobj-precious-i)
 endif
@@ -2274,7 +2522,8 @@ if s:neobundle_tap('quickrun')
     call extend(g:quickrun_config, {
     \ '_' : {
     \   'runner' : s:has_vimproc() ? 'vimproc' : 'system',
-    \   'runner/vimproc/updatetime' : 100},
+    \   'runner/vimproc/updatetime' : 100,
+    \   'outputter' : 'location_list'},
     \
     \ 'c' : {
     \   'type' :
@@ -2327,19 +2576,45 @@ if s:neobundle_tap('quickrun')
     \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)}})
 
     nnoremap <expr> <C-C>
-    \ quickrun#is_running() ? quickrun#sweep_sessions() : '<C-C>'
+    \ quickrun#is_running() ?
+    \ ':<C-U>call quickrun#sweep_sessions()<CR>' : '<C-C>'
   endfunction
 
-  nmap <expr> sR
-  \ s:is_enabled_bundle('precious') ?
-  \   '<Plug>(precious-quickrun-op)' : '<Plug>(quickrun-op)'
+  function! neobundle#hooks.on_post_source(bundle)
+    let location_list_outputter        =
+    \ quickrun#outputter#buffered#new()
+    let location_list_outputter.config = {
+    \ 'errorformat' : '&l:errorformat',
+    \ 'open_cmd'    : 'lwindow'}
+    function! location_list_outputter.finish(session)
+      try
+        let errorformat = &l:errorformat
+        let &l:errorformat = self.config.errorformat
+        lgetexpr self._result
+        execute self.config.open_cmd
+        for winnr in range(1, winnr('$'))
+          if getwinvar(winnr, '&buftype') ==# 'quickfix'
+            call setwinvar(winnr, 'quickfix_title', 'quickrun: ' .
+            \ join(a:session.commands, ' && '))
+            break
+          endif
+        endfor
+      finally
+        let &l:errorformat = errorformat
+      endtry
+    endfunction
+    call quickrun#register_outputter(
+    \ 'location_list', location_list_outputter)
+  endfunction
+
+  if !s:is_enabled_bundle('precious')
+    nmap sR <Plug>(quickrun-op)
+  endif
   xmap sR  <Plug>(quickrun)
   omap sR  g@
   nmap sRR sRsR
-  nmap sRR sRsR
 
-  NXmap <Leader>r <Plug>(quickrun)
-  NXmap <F5>      <Plug>(quickrun)
+  NXmap <F5> :<C-U>QuickRun<CR>
 
   call extend(s:neocompl_vim_completefuncs, {
   \ 'QuickRun' : 'quickrun#complete'})
@@ -2353,10 +2628,10 @@ if s:neobundle_tap('reanimate')
     let g:reanimate_save_dir = $HOME . '/.local/reanimate'
   endfunction
 
-  NXnoremap <Leader>us  <Nop>
-  NXnoremap <Leader>usl :<C-U>Unite reanimate
+  NXnoremap <Bslash>us  <Nop>
+  NXnoremap <Bslash>usl :<C-U>Unite reanimate
   \ -buffer-name=files -default-action=reanimate_load<CR>
-  NXnoremap <Leader>uss :<C-U>Unite reanimate
+  NXnoremap <Bslash>uss :<C-U>Unite reanimate
   \ -buffer-name=files -default-action=reanimate_save<CR>
 endif
 "}}}
@@ -2419,10 +2694,10 @@ if s:neobundle_tap('repeat')
   nmap g+    <Plug>(submode:rep/br:+)
 
   nnoremap <M-o>
-  \ :<C-U>call append(line('.'), repeat([''], v:count1))<Bar>
+  \ :<C-U>call append(line('.'), repeat([''], v:count1)) <Bar>
   \ call repeat#set('<M-o>', v:count1)<CR>
   nnoremap <M-O>
-  \ :<C-U>call append(line('.') - 1, repeat([''], v:count1))<Bar>
+  \ :<C-U>call append(line('.') - 1, repeat([''], v:count1)) <Bar>
   \ call repeat#set('<M-O>', v:count1)<CR>
 endif
 "}}}
@@ -2473,18 +2748,18 @@ endif
 if s:neobundle_tap('snowdrop')
   function! neobundle#hooks.on_source(bundle)
     if has('win64')
-      let g:snowdrop#libclang_directory = $HOME . '/bin64'
+      let g:snowdrop#libclang_directory = $PROGRAMFILES . '/LLVM/bin'
       let g:snowdrop#libclang_file      = 'libclang.dll'
     elseif has('win32')
-      let g:snowdrop#libclang_directory = $HOME . '/bin'
+      let g:snowdrop#libclang_directory = s:programfiles_x86 . '/LLVM/bin'
       let g:snowdrop#libclang_file      = 'libclang.dll'
     elseif filereadable($HOME . '/lib/libclang.so')
       let g:snowdrop#libclang_directory = $HOME . '/lib'
       let g:snowdrop#libclang_file      = 'libclang.so'
-    elseif filereadable(expand('/usr/local/lib/libclang.so'))
+    elseif filereadable('/usr/local/lib/libclang.so')
       let g:snowdrop#libclang_directory = '/usr/local/lib'
       let g:snowdrop#libclang_file      = 'libclang.so'
-    elseif filereadable(expand('/usr/lib/libclang.so'))
+    elseif filereadable('/usr/lib/libclang.so')
       let g:snowdrop#libclang_directory = '/usr/lib'
       let g:snowdrop#libclang_file      = 'libclang.so'
     endif
@@ -2517,6 +2792,19 @@ if s:neobundle_tap('submode')
     \ 'change', 'n', '', ',', 'g,')
 
     call submode#enter_with(
+    \ 'move/disp', 'nx', '', '<Plug>(submode:move/disp:j)', 'gj')
+    call submode#enter_with(
+    \ 'move/disp', 'nx', '', '<Plug>(submode:move/disp:k)', 'gk')
+    call submode#map(
+    \ 'move/disp', 'nx', '', '<Down>', 'gj')
+    call submode#map(
+    \ 'move/disp', 'nx', '', '<Up>',   'gk')
+    call submode#map(
+    \ 'move/disp', 'nx', '', 'j',      'gj')
+    call submode#map(
+    \ 'move/disp', 'nx', '', 'k',      'gk')
+
+    call submode#enter_with(
     \ 'sq/ifdef', 'nx', '', '<Plug>(submode:sq/ifdef:[)', '[#')
     call submode#enter_with(
     \ 'sq/ifdef', 'nx', '', '<Plug>(submode:sq/ifdef:])', ']#')
@@ -2526,9 +2814,9 @@ if s:neobundle_tap('submode')
     \ 'sq/ifdef', 'nx', '', ']', ']#')
 
     call submode#enter_with(
-    \ 'sq/mark/l', 'nx', '', "<Plug>(submode::['", "['")
+    \ 'sq/mark/l', 'nx', '', "<Plug>(submode:sq/mark/l:['", "['")
     call submode#enter_with(
-    \ 'sq/mark/l', 'nx', '', "<Plug>(submode::]'", "]'")
+    \ 'sq/mark/l', 'nx', '', "<Plug>(submode:sq/mark/l:]'", "]'")
     call submode#map(
     \ 'sq/mark/l', 'nx', '', "[", "['")
     call submode#map(
@@ -2652,104 +2940,74 @@ if s:neobundle_tap('submode')
     \ 'sq/brkt', 'nx', '', ']', ']}')
 
     call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<Down>)', '<C-W><Down>')
-    call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-J>)', '<C-W><C-J>')
-    call submode#enter_with(
     \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:j)', '<C-W>j')
-    call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<Up>)', '<C-W><Up>')
-    call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-K>)', '<C-W><C-K>')
     call submode#enter_with(
     \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:k)', '<C-W>k')
     call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<Left>)', '<C-W><Left>')
-    call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-H>)', '<C-W><C-H>')
-    call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<BS>)', '<C-W><BS>')
-    call submode#enter_with(
     \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:h)', '<C-W>h')
-    call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<Right>)', '<C-W><Right>')
-    call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-L>)', '<C-W><C-L>')
     call submode#enter_with(
     \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:l)', '<C-W>l')
     call submode#enter_with(
     \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:w)', '<C-W>w')
     call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-W>)', '<C-W><C-W>')
-    call submode#enter_with(
     \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:W)', '<C-W>W')
     call submode#enter_with(
     \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:t)', '<C-W>t')
     call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-T>)', '<C-W><C-T>')
-    call submode#enter_with(
     \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:b)', '<C-W>b')
     call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-B>)', '<C-W><C-B>')
-    call submode#enter_with(
     \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:p)', '<C-W>p')
-    call submode#enter_with(
-    \ 'win/jump', 'nx', '', '<Plug>(submode:win/jump:<C-P>)', '<C-W><C-P>')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<Down>', '<C-W><Down>')
+    \ 'win/jump', 'nx', '', '<Down>',  '<C-W>j')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<C-J>', '<C-W><C-J>')
+    \ 'win/jump', 'nx', '', '<C-J>',   '<C-W>j')
     call submode#map(
-    \ 'win/jump', 'nx', '', 'j', '<C-W>j')
+    \ 'win/jump', 'nx', '', 'j',       '<C-W>j')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<Up>', '<C-W><Up>')
+    \ 'win/jump', 'nx', '', '<Up>',    '<C-W>k')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<C-K>', '<C-W><C-K>')
+    \ 'win/jump', 'nx', '', '<C-K>',   '<C-W>k')
     call submode#map(
-    \ 'win/jump', 'nx', '', 'k', '<C-W>k')
+    \ 'win/jump', 'nx', '', 'k',       '<C-W>k')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<Left>', '<C-W><Left>')
+    \ 'win/jump', 'nx', '', '<Left>',  '<C-W>h')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<C-H>', '<C-W><C-H>')
+    \ 'win/jump', 'nx', '', '<C-H>',   '<C-W>h')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<BS>', '<C-W><BS>')
+    \ 'win/jump', 'nx', '', '<BS>',    '<C-W>h')
     call submode#map(
-    \ 'win/jump', 'nx', '', 'h', '<C-W>h')
+    \ 'win/jump', 'nx', '', 'h',       '<C-W>h')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<Right>', '<C-W><Right>')
+    \ 'win/jump', 'nx', '', '<Right>', '<C-W>l')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<C-L>', '<C-W><C-L>')
+    \ 'win/jump', 'nx', '', '<C-L>',   '<C-W>l')
     call submode#map(
-    \ 'win/jump', 'nx', '', 'l', '<C-W>l')
+    \ 'win/jump', 'nx', '', 'l',       '<C-W>l')
     call submode#map(
-    \ 'win/jump', 'nx', '', 'w', '<C-W>w')
+    \ 'win/jump', 'nx', '', 'w',       '<C-W>w')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<C-W>', '<C-W><C-W>')
+    \ 'win/jump', 'nx', '', '<C-W>',   '<C-W>w')
     call submode#map(
-    \ 'win/jump', 'nx', '', 'W', '<C-W>W')
+    \ 'win/jump', 'nx', '', 'W',       '<C-W>W')
     call submode#map(
-    \ 'win/jump', 'nx', '', 't', '<C-W>t')
+    \ 'win/jump', 'nx', '', 't',       '<C-W>t')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<C-T>', '<C-W><C-T>')
+    \ 'win/jump', 'nx', '', '<C-T>',   '<C-W>t')
     call submode#map(
-    \ 'win/jump', 'nx', '', 'b', '<C-W>b')
+    \ 'win/jump', 'nx', '', 'b',       '<C-W>b')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<C-B>', '<C-W><C-B>')
+    \ 'win/jump', 'nx', '', '<C-B>',   '<C-W>b')
     call submode#map(
-    \ 'win/jump', 'nx', '', 'p', '<C-W>p')
+    \ 'win/jump', 'nx', '', 'p',       '<C-W>p')
     call submode#map(
-    \ 'win/jump', 'nx', '', '<C-P>', '<C-W><C-P>')
+    \ 'win/jump', 'nx', '', '<C-P>',   '<C-W>p')
 
     call submode#enter_with(
     \ 'win/move', 'nx', '', '<Plug>(submode:win/move:r)', '<C-W>r')
     call submode#enter_with(
-    \ 'win/move', 'nx', '', '<Plug>(submode:win/move:<C-R>)', '<C-W><C-R>')
-    call submode#enter_with(
     \ 'win/move', 'nx', '', '<Plug>(submode:win/move:R)', '<C-W>R')
     call submode#enter_with(
     \ 'win/move', 'nx', '', '<Plug>(submode:win/move:x)', '<C-W>x')
-    call submode#enter_with(
-    \ 'win/move', 'nx', '', '<Plug>(submode:win/move:<C-X>)', '<C-W><C-X>')
     call submode#enter_with(
     \ 'win/move', 'nx', '', '<Plug>(submode:win/move:K)', '<C-W>K')
     call submode#enter_with(
@@ -2759,54 +3017,52 @@ if s:neobundle_tap('submode')
     call submode#enter_with(
     \ 'win/move', 'nx', '', '<Plug>(submode:win/move:L)', '<C-W>L')
     call submode#map(
-    \ 'win/move', 'nx', '', 'r', '<C-W>r')
+    \ 'win/move', 'nx', '', 'r',     '<C-W>r')
     call submode#map(
-    \ 'win/move', 'nx', '', '<C-R>', '<C-W><C-R>')
+    \ 'win/move', 'nx', '', '<C-R>', '<C-W>r')
     call submode#map(
-    \ 'win/move', 'nx', '', 'R', '<C-W>R')
+    \ 'win/move', 'nx', '', 'R',     '<C-W>R')
     call submode#map(
-    \ 'win/move', 'nx', '', 'x', '<C-W>x')
+    \ 'win/move', 'nx', '', 'x',     '<C-W>x')
     call submode#map(
-    \ 'win/move', 'nx', '', '<C-X>', '<C-W><C-X>')
+    \ 'win/move', 'nx', '', '<C-X>', '<C-W>x')
     call submode#map(
-    \ 'win/move', 'nx', '', 'K', '<C-W>K')
+    \ 'win/move', 'nx', '', 'K',     '<C-W>K')
     call submode#map(
-    \ 'win/move', 'nx', '', 'J', '<C-W>J')
+    \ 'win/move', 'nx', '', 'J',     '<C-W>J')
     call submode#map(
-    \ 'win/move', 'nx', '', 'H', '<C-W>H')
+    \ 'win/move', 'nx', '', 'H',     '<C-W>H')
     call submode#map(
-    \ 'win/move', 'nx', '', 'L', '<C-W>L')
+    \ 'win/move', 'nx', '', 'L',     '<C-W>L')
 
     call submode#enter_with(
-    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:=)', '<C-W>=')
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:=)',     '<C-W>=')
     call submode#enter_with(
-    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:-)', '<C-W>-')
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:-)',     '<C-W>-')
     call submode#enter_with(
-    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:+)', '<C-W>+')
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:+)',     '<C-W>+')
     call submode#enter_with(
-    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:<C-_>)', '<C-W><C-_>')
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:_)',     '<C-W>_')
     call submode#enter_with(
-    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:_)', '<C-W>_')
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:<lt>)',  '<C-W><lt>')
     call submode#enter_with(
-    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:<lt>)', '<C-W><lt>')
-    call submode#enter_with(
-    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:>)', '<C-W>>')
+    \ 'win/size', 'nx', '', '<Plug>(submode:win/size:>)',     '<C-W>>')
     call submode#enter_with(
     \ 'win/size', 'nx', '', '<Plug>(submode:win/size:<Bar>)', '<C-W><Bar>')
     call submode#map(
-    \ 'win/size', 'nx', '', '=', '<C-W>=')
+    \ 'win/size', 'nx', '', '=',     '<C-W>=')
     call submode#map(
-    \ 'win/size', 'nx', '', '-', '<C-W>-')
+    \ 'win/size', 'nx', '', '-',     '<C-W>-')
     call submode#map(
-    \ 'win/size', 'nx', '', '+', '<C-W>+')
+    \ 'win/size', 'nx', '', '+',     '<C-W>+')
     call submode#map(
-    \ 'win/size', 'nx', '', '<C-_>', '<C-W><C-_>')
+    \ 'win/size', 'nx', '', '<C-_>', '<C-W>_')
     call submode#map(
-    \ 'win/size', 'nx', '', '_', '<C-W>_')
+    \ 'win/size', 'nx', '', '_',     '<C-W>_')
     call submode#map(
-    \ 'win/size', 'nx', '', '<lt>', '<C-W><lt>')
+    \ 'win/size', 'nx', '', '<lt>',  '<C-W><lt>')
     call submode#map(
-    \ 'win/size', 'nx', '', '>', '<C-W>>')
+    \ 'win/size', 'nx', '', '>',     '<C-W>>')
     call submode#map(
     \ 'win/size', 'nx', '', '<Bar>', '<C-W><Bar>')
 
@@ -2833,16 +3089,47 @@ if s:neobundle_tap('submode')
     \ ':<C-U>tabmove -1<CR>')
 
     call submode#enter_with(
+    \ 'move/mark', 'nx', '', '<Plug>(submode:move/mark:j)', ']`')
+    call submode#enter_with(
+    \ 'move/mark', 'nx', '', '<Plug>(submode:move/mark:k)', '[`')
+    call submode#map(
+    \ 'move/mark', 'nx', '', '<Down>', ']`')
+    call submode#map(
+    \ 'move/mark', 'nx', '', '<Up>', '[`')
+    call submode#map(
+    \ 'move/mark', 'nx', '', 'j', ']`')
+    call submode#map(
+    \ 'move/mark', 'nx', '', 'k', '[`')
+
+    call submode#enter_with(
     \ 'delchar', 'n', 'se', '<Plug>(submode:delchar:x)',
     \ 'myvimrc#submode_delchar_enter(1)')
     call submode#enter_with(
     \ 'delchar', 'n', 'se', '<Plug>(submode:delchar:X)',
+    \ 'myvimrc#submode_delchar_enter(0)')
+    call submode#enter_with(
+    \ 'delchar', 'n', 'se', '<Plug>(submode:delchar:<Del>)',
+    \ 'myvimrc#submode_delchar_enter(1)')
+    call submode#enter_with(
+    \ 'delchar', 'n', 'se', '<Plug>(submode:delchar:<BS>)',
+    \ 'myvimrc#submode_delchar_enter(0)')
+    call submode#enter_with(
+    \ 'delchar', 'n', 'se', '<Plug>(submode:delchar:<C-H>)',
     \ 'myvimrc#submode_delchar_enter(0)')
     call submode#map(
     \ 'delchar', 'n', 's', 'x',
     \ ':<C-U>call myvimrc#submode_delchar(1)<CR>')
     call submode#map(
     \ 'delchar', 'n', 's', 'X',
+    \ ':<C-U>call myvimrc#submode_delchar(0)<CR>')
+    call submode#map(
+    \ 'delchar', 'n', 's', '<Del>',
+    \ ':<C-U>call myvimrc#submode_delchar(1)<CR>')
+    call submode#map(
+    \ 'delchar', 'n', 's', '<BS>',
+    \ ':<C-U>call myvimrc#submode_delchar(0)<CR>')
+    call submode#map(
+    \ 'delchar', 'n', 's', '<C-H>',
     \ ':<C-U>call myvimrc#submode_delchar(0)<CR>')
   endfunction
 
@@ -2853,6 +3140,10 @@ if s:neobundle_tap('submode')
 
   nmap  g;           <Plug>(submode:change:;)
   nmap  g,           <Plug>(submode:change:,)
+  NXmap g<Down>      <Plug>(submode:move/disp:j)
+  NXmap g<Up>        <Plug>(submode:move/disp:k)
+  NXmap gj           <Plug>(submode:move/disp:j)
+  NXmap gk           <Plug>(submode:move/disp:k)
   NXmap [#           <Plug>(submode:sq/ifdef:[)
   NXmap ]#           <Plug>(submode:sq/ifdef:])
   NXmap ['           <Plug>(submode:sq/mark/l:[)
@@ -2883,33 +3174,33 @@ if s:neobundle_tap('submode')
   NXmap ]z           <Plug>(submode:sq/fold:])
   NXmap [{           <Plug>(submode:sq/brkt:[)
   NXmap ]}           <Plug>(submode:sq/brkt:])
-  NXmap <C-W><Down>  <Plug>(submode:win/jump:<Down>)
-  NXmap <C-W><C-J>   <Plug>(submode:win/jump:<C-J>)
+  NXmap <C-W><Down>  <Plug>(submode:win/jump:j)
+  NXmap <C-W><C-J>   <Plug>(submode:win/jump:j)
   NXmap <C-W>j       <Plug>(submode:win/jump:j)
-  NXmap <C-W><Up>    <Plug>(submode:win/jump:<Up>)
-  NXmap <C-W><C-K>   <Plug>(submode:win/jump:<C-K>)
+  NXmap <C-W><Up>    <Plug>(submode:win/jump:k)
+  NXmap <C-W><C-K>   <Plug>(submode:win/jump:k)
   NXmap <C-W>k       <Plug>(submode:win/jump:k)
-  NXmap <C-W><Left>  <Plug>(submode:win/jump:<Left>)
-  NXmap <C-W><C-H>   <Plug>(submode:win/jump:<C-H>)
-  NXmap <C-W><BS>    <Plug>(submode:win/jump:<BS>)
+  NXmap <C-W><Left>  <Plug>(submode:win/jump:h)
+  NXmap <C-W><C-H>   <Plug>(submode:win/jump:h)
+  NXmap <C-W><BS>    <Plug>(submode:win/jump:h)
   NXmap <C-W>h       <Plug>(submode:win/jump:h)
-  NXmap <C-W><Right> <Plug>(submode:win/jump:<Right>)
-  NXmap <C-W><C-L>   <Plug>(submode:win/jump:<C-L>)
+  NXmap <C-W><Right> <Plug>(submode:win/jump:l)
+  NXmap <C-W><C-L>   <Plug>(submode:win/jump:l)
   NXmap <C-W>l       <Plug>(submode:win/jump:l)
   NXmap <C-W>w       <Plug>(submode:win/jump:w)
-  NXmap <C-W><C-W>   <Plug>(submode:win/jump:<C-W>)
+  NXmap <C-W><C-W>   <Plug>(submode:win/jump:w)
   NXmap <C-W>W       <Plug>(submode:win/jump:W)
   NXmap <C-W>t       <Plug>(submode:win/jump:t)
-  NXmap <C-W><C-T>   <Plug>(submode:win/jump:<C-T>)
+  NXmap <C-W><C-T>   <Plug>(submode:win/jump:t)
   NXmap <C-W>b       <Plug>(submode:win/jump:b)
-  NXmap <C-W><C-B>   <Plug>(submode:win/jump:<C-B>)
+  NXmap <C-W><C-B>   <Plug>(submode:win/jump:b)
   NXmap <C-W>p       <Plug>(submode:win/jump:p)
-  NXmap <C-W><C-P>   <Plug>(submode:win/jump:<C-P>)
+  NXmap <C-W><C-P>   <Plug>(submode:win/jump:p)
   NXmap <C-W>r       <Plug>(submode:win/move:r)
-  NXmap <C-W><C-R>   <Plug>(submode:win/move:<C-R>)
+  NXmap <C-W><C-R>   <Plug>(submode:win/move:r)
   NXmap <C-W>R       <Plug>(submode:win/move:R)
   NXmap <C-W>x       <Plug>(submode:win/move:x)
-  NXmap <C-W><C-X>   <Plug>(submode:win/move:<C-X>)
+  NXmap <C-W><C-X>   <Plug>(submode:win/move:x)
   NXmap <C-W>K       <Plug>(submode:win/move:K)
   NXmap <C-W>J       <Plug>(submode:win/move:J)
   NXmap <C-W>H       <Plug>(submode:win/move:H)
@@ -2917,7 +3208,7 @@ if s:neobundle_tap('submode')
   NXmap <C-W>=       <Plug>(submode:win/size:=)
   NXmap <C-W>-       <Plug>(submode:win/size:-)
   NXmap <C-W>+       <Plug>(submode:win/size:+)
-  NXmap <C-W><C-_>   <Plug>(submode:win/size:<C-_>)
+  NXmap <C-W><C-_>   <Plug>(submode:win/size:_)
   NXmap <C-W>_       <Plug>(submode:win/size:_)
   NXmap <C-W><lt>    <Plug>(submode:win/size:<lt>)
   NXmap <C-W>>       <Plug>(submode:win/size:>)
@@ -2926,8 +3217,15 @@ if s:neobundle_tap('submode')
   NXmap gT           <Plug>(submode:tab/jump:T)
   NXmap g<M-t>       <Plug>(submode:tab/move:<M-t>)
   NXmap g<M-T>       <Plug>(submode:tab/move:<M-T>)
+  NXmap m<Down>      <Plug>(submode:move/mark:j)
+  NXmap m<Up>        <Plug>(submode:move/mark:k)
+  NXmap mj           <Plug>(submode:move/mark:j)
+  NXmap mk           <Plug>(submode:move/mark:k)
   nmap  x            <Plug>(submode:delchar:x)
   nmap  X            <Plug>(submode:delchar:X)
+  nmap  <Del>        <Plug>(submode:delchar:<Del>)
+  nmap  <BS>         <Plug>(submode:delchar:<BS>)
+  nmap  <C-H>        <Plug>(submode:delchar:<C-H>)
 endif
 "}}}
 
@@ -2996,14 +3294,14 @@ if s:neobundle_tap('switch')
     endfor
 
     call extend(g:switch_increment_definitions, [{
-    \ '\C\(-\?\d\+\)\%(TH\|ST\|ND\|RD\)' :
+    \ '\C\(-\=\d\+\)\%(TH\|ST\|ND\|RD\)' :
     \   '\=toupper(call("myvimrc#ordinal", [submatch(1) + 1]))',
-    \ '\C\(-\?\d\+\)\%(th\|st\|nd\|rd\)' :
+    \ '\C\(-\=\d\+\)\%(th\|st\|nd\|rd\)' :
     \   '\=tolower(call("myvimrc#ordinal", [submatch(1) + 1]))'}])
     call extend(g:switch_decrement_definitions, [{
-    \ '\C\(-\?\d\+\)\%(TH\|ST\|ND\|RD\)' :
+    \ '\C\(-\=\d\+\)\%(TH\|ST\|ND\|RD\)' :
     \   '\=toupper(call("myvimrc#ordinal", [submatch(1) - 1]))',
-    \ '\C\(-\?\d\+\)\%(th\|st\|nd\|rd\)' :
+    \ '\C\(-\=\d\+\)\%(th\|st\|nd\|rd\)' :
     \   '\=tolower(call("myvimrc#ordinal", [submatch(1) - 1]))'}])
 
     command! -bar
@@ -3253,6 +3551,12 @@ if s:neobundle_tap('textmanip')
     \ 'tm/dup', 'x', 'r', '<Plug>(submode:tm/dup:k)',
     \ '<Plug>(textmanip-duplicate-up)')
     call submode#map(
+    \ 'tm/dup', 'x', 'r', '<Down>',
+    \ '<Plug>(textmanip-duplicate-down)')
+    call submode#map(
+    \ 'tm/dup', 'x', 'r', '<Up>',
+    \ '<Plug>(textmanip-duplicate-up)')
+    call submode#map(
     \ 'tm/dup', 'x', 'r', 'j',
     \ '<Plug>(textmanip-duplicate-down)')
     call submode#map(
@@ -3272,6 +3576,18 @@ if s:neobundle_tap('textmanip')
     \ 'tm/move', 'x', 'r', '<Plug>(submode:tm/move:l)',
     \ '<Plug>(textmanip-move-right)')
     call submode#map(
+    \ 'tm/move', 'x', 'r', '<Down>',
+    \ '<Plug>(textmanip-move-down)')
+    call submode#map(
+    \ 'tm/move', 'x', 'r', '<Up>',
+    \ '<Plug>(textmanip-move-up)')
+    call submode#map(
+    \ 'tm/move', 'x', 'r', '<Left>',
+    \ '<Plug>(textmanip-move-left)')
+    call submode#map(
+    \ 'tm/move', 'x', 'r', '<Right>',
+    \ '<Plug>(textmanip-move-right)')
+    call submode#map(
     \ 'tm/move', 'x', 'r', 'j',
     \ '<Plug>(textmanip-move-down)')
     call submode#map(
@@ -3285,23 +3601,35 @@ if s:neobundle_tap('textmanip')
     \ '<Plug>(textmanip-move-right)')
   endfunction
 
-  NXOmap <M-p> <Plug>(operator-textmanip-duplicate-down)
-  NXOmap <M-P> <Plug>(operator-textmanip-duplicate-up)
+  NXOmap <M-p> <Plug>(textmanip-duplicate-down)
+  NXOmap <M-P> <Plug>(textmanip-duplicate-up)
 
-  NOmap sj <Plug>(operator-textmanip-move-down)
-  NOmap sk <Plug>(operator-textmanip-move-up)
-  NOmap sh <Plug>(operator-textmanip-move-left)
-  NOmap sl <Plug>(operator-textmanip-move-right)
+  NOmap s<Down>  <Plug>(operator-textmanip-move-down)
+  NOmap s<Up>    <Plug>(operator-textmanip-move-up)
+  NOmap s<Left>  <Plug>(operator-textmanip-move-left)
+  NOmap s<Right> <Plug>(operator-textmanip-move-right)
+  NOmap sj       <Plug>(operator-textmanip-move-down)
+  NOmap sk       <Plug>(operator-textmanip-move-up)
+  NOmap sh       <Plug>(operator-textmanip-move-left)
+  NOmap sl       <Plug>(operator-textmanip-move-right)
 
-  xmap sj <Plug>(submode:tm/move:j)
-  xmap sk <Plug>(submode:tm/move:k)
-  xmap sh <Plug>(submode:tm/move:h)
-  xmap sl <Plug>(submode:tm/move:l)
+  xmap s<Down>  <Plug>(submode:tm/move:j)
+  xmap s<Up>    <Plug>(submode:tm/move:k)
+  xmap s<Left>  <Plug>(submode:tm/move:h)
+  xmap s<Right> <Plug>(submode:tm/move:l)
+  xmap sj       <Plug>(submode:tm/move:j)
+  xmap sk       <Plug>(submode:tm/move:k)
+  xmap sh       <Plug>(submode:tm/move:h)
+  xmap sl       <Plug>(submode:tm/move:l)
 
-  nmap sjj sjsj
-  nmap skk sksk
-  nmap shh shsh
-  nmap sll slsl
+  " nmap s<Down><Down>   s<Down>s<Down>
+  " nmap s<Up><Up>       s<Up>s<Up>
+  " nmap s<Left><Left>   s<Left>s<Left>
+  " nmap s<Right><Right> s<Right>s<Right>
+  " nmap sjj             sjsj
+  " nmap skk             sksk
+  " nmap shh             shsh
+  " nmap sll             slsl
 endif
 "}}}
 
@@ -3799,7 +4127,7 @@ if s:neobundle_tap('undotree')
     let g:undotree_SetFocusWhenToggle = 1
   endfunction
 
-  nnoremap <M-u> :<C-U>UndotreeToggle<CR>
+  NXnoremap <Leader>u :<C-U>UndotreeToggle<CR>
 endif
 "}}}
 
@@ -3819,18 +4147,22 @@ endif
 if s:neobundle_tap('unite')
   function! neobundle#hooks.on_source(bundle)
     let g:unite_data_directory             = $HOME . '/.local/.cache/unite'
-    let g:unite_source_history_yank_enable = 0
+    let g:unite_source_history_yank_enable = !s:is_enabled_bundle('yankround')
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
+    let g:unite_source_rec_min_cache_files = -1
+    let g:unite_source_rec_max_cache_files = 10000
+    let g:unite_source_rec_unit            = 1000
 
     if !has('win32') && s:executable('find')
-      let g:unite_source_rec_async_command = 'find -L'
+      let g:unite_source_rec_async_command =
+      \ ['find', '-L']
     elseif s:executable('files')
       let g:unite_source_rec_async_command =
-      \ s:cpucores() > 1 ? 'files -A' : 'files'
+      \ ['files', s:cpucores() > 1 ? '-A' : '']
     elseif s:executable('ag')
       let g:unite_source_rec_async_command =
-      \ 'ag --follow --nocolor --nogroup --hidden -g ""'
+      \ ['ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-g', '']
     endif
 
     if s:executable('jvgrep')
@@ -3866,7 +4198,7 @@ if s:neobundle_tap('unite')
     let g:unite_source_menu_menus.directory_file.candidates = {
     \ (has('win32') ? ':gs?\\?/?' : '') . ':s?/$??' : ''}
     function! g:unite_source_menu_menus.directory_file.map(key, value)
-      let d = expand('%') != '' ? expand('%:p:h') : getcwd()
+      let d = !empty(expand('%')) ? expand('%:p:h') : getcwd()
       return {
       \ 'word' : fnamemodify(d, a:key) . '/',
       \ 'kind' : 'directory',
@@ -3923,66 +4255,100 @@ if s:neobundle_tap('unite')
     \ 'hide_icon'      : 0,
     \ 'start_insert'   : 1,
     \ 'winheight'      : 25})
+    call unite#custom#source(
+    \ 'file,file_rec,file_rec/async', 'ignore_globs',
+    \ map(copy(s:ignore_ext), '"*." . v:val'))
+    call unite#custom#source(
+    \ 'directory,directory_rec,directory_rec/async', 'ignore_globs',
+    \ s:ignore_dir)
   endfunction
 
-  NXnoremap <Leader>u <Nop>
-  NXnoremap <script> <Leader>uu <SID>:<C-U>Unite<Space>
+  NXnoremap <Bslash>u <Nop>
+  NXnoremap <script> <Bslash>uu <SID>:<C-U>Unite<Space>
 
-  NXnoremap <Leader>uU
-  \ :<C-U>Unite source
-  \ -buffer-name=help<CR>
-
-  NXnoremap <Leader>um :<C-U>Unite menu<CR>
-  NXnoremap <Leader>u<CR> :<C-U>Unite menu:set_ff<CR>
+  NXnoremap <Bslash>u<CR>
+  \ :<C-U>Unite menu:set_ff
+  \ -buffer-name=files<CR>
   if has('multi_byte')
-    NXnoremap <Leader>ue :<C-U>Unite menu:edit_enc<CR>
-    NXnoremap <Leader>uf :<C-U>Unite menu:set_fenc<CR>
+    NXnoremap <Bslash>uF
+    \ :<C-U>Unite menu:edit_enc
+    \ -buffer-name=files<CR>
+    NXnoremap <Bslash>uf
+    \ :<C-U>Unite menu:set_fenc
+    \ -buffer-name=files<CR>
   endif
 
-  NXnoremap <Leader>b
+  NXnoremap <Bslash>ub
   \ :<C-U>Unite buffer_tab
   \ -buffer-name=files<CR>
-  NXnoremap <Leader>t
+  NXnoremap <Bslash>ut
   \ :<C-U>Unite tab
   \ -buffer-name=files<CR>
 
-  if &grepprg == 'internal'
-    nnoremap sgsg
-    \ :<C-U>Unite vimgrep
-    \ -buffer-name=grep<CR>
-  else
-    nnoremap sgsg
-    \ :<C-U>Unite grep
-    \ -buffer-name=grep<CR>
-  endif
-  NXnoremap sG
-  \ :<C-U>UniteResume grep<CR>
-
-  NXnoremap <Leader>j
+  NXnoremap <Bslash>uj
   \ :<C-U>Unite jump
   \ -buffer-name=register -no-empty<CR>
-  NXnoremap <Leader>J
+  NXnoremap <Bslash>uJ
   \ :<C-U>Unite change
   \ -buffer-name=register -no-empty<CR>
 
-  NXnoremap <Leader>un
+  if &grepprg == 'internal'
+    nnoremap <Bslash>ug
+    \ :<C-U>Unite vimgrep
+    \ -buffer-name=grep<CR>
+  else
+    nnoremap <Bslash>ug
+    \ :<C-U>Unite grep
+    \ -buffer-name=grep<CR>
+  endif
+  NXnoremap <Bslash>uG
+  \ :<C-U>UniteResume grep<CR>
+
+  NXnoremap <Bslash>un
   \ :<C-U>UniteResume search<CR>
 
-  NXnoremap <Leader>u/
+  NXnoremap <Bslash>u/
   \ :<C-U>Unite line
   \ -buffer-name=search<CR>
-  NXnoremap <Leader>u?
+  NXnoremap <Bslash>u?
   \ :<C-U>Unite line:backward
   \ -buffer-name=search<CR>
-  NXnoremap <Leader>u*
+  NXnoremap <Bslash>u*
   \ :<C-U>UniteWithCursorWord line
   \ -buffer-name=search -no-start-insert<CR>
-  NXnoremap <Leader>u#
+  NXnoremap <Bslash>u#
   \ :<C-U>UniteWithCursorWord line:backward
   \ -buffer-name=search -no-start-insert<CR>
 
-  NXmap <Leader>ug/ <Leader>u*
-  NXmap <Leader>ug? <Leader>u#
+  if get(s:selector_ui, 'buffer') == 'unite'
+    NXmap <Leader>b <Bslash>ub
+  endif
+  if get(s:selector_ui, 'tabpage') == 'unite'
+    NXmap <Leader>t <Bslash>ut
+  endif
+  if get(s:selector_ui, 'jump') == 'unite'
+    NXmap <Leader>j <Bslash>uj
+  endif
+  if get(s:selector_ui, 'change') == 'unite'
+    NXmap <Leader>J <Bslash>uJ
+  endif
+  if get(s:selector_ui, 'grep') == 'unite'
+    NXmap <Leader>g <Bslash>ug
+    NXmap <Leader>G <Bslash>uG
+  endif
+
+  if !s:is_enabled_bundle('yankround')
+    nnoremap <Bslash>up
+    \ :<C-U>Unite history/yank register
+    \ -buffer-name=register -no-empty<CR>
+    xnoremap <Bslash>up
+    \ d:<C-U>Unite history/yank register
+    \ -buffer-name=register -no-empty<CR>
+
+    if get(s:selector_ui, 'register') == 'unite'
+      NXmap <Leader>p <Bslash>up
+    endif
+  endif
 
   call extend(s:altercmd_define, {
   \ 'u[nite]' : 'Unite'})
@@ -4006,10 +4372,10 @@ endif
 "------------------------------------------------------------------------------
 " Unite Help: {{{
 if s:neobundle_tap('unite-help')
-  nnoremap <Leader>u<F1>
+  NXnoremap <Bslash>u<F1>
   \ :<C-U>Unite help
   \ -buffer-name=help<CR>
-  nnoremap <Leader>u<F2>
+  NXnoremap <Bslash>u<F2>
   \ :<C-U>UniteWithCursorWord help
   \ -buffer-name=help -no-start-insert<CR>
 endif
@@ -4023,17 +4389,22 @@ if s:neobundle_tap('unite-mark')
     \ myvimrc#unite_source_mark_marks()
   endfunction
 
-  nnoremap ml
-  \ :<C-U>Unite mark bookmark
+  NXnoremap <Bslash>um
+  \ :<C-U>Unite bookmark mark
   \ -buffer-name=register -no-empty<CR>
-  nnoremap mu :<C-U>UniteBookmarkAdd<CR>
+  NXnoremap <Bslash>uM :<C-U>UniteBookmarkAdd<CR>
+
+  if get(s:selector_ui, 'mark') == 'unite'
+    NXmap <Leader>m <Bslash>um
+    NXmap MM        <Bslash>uM
+  endif
 endif
 "}}}
 
 "------------------------------------------------------------------------------
 " Unite Outline: {{{
 if s:neobundle_tap('unite-outline')
-  NXnoremap <Leader>uo
+  NXnoremap <Bslash>uo
   \ :<C-U>Unite outline
   \ -buffer-name=outline<CR>
 endif
@@ -4042,10 +4413,10 @@ endif
 "------------------------------------------------------------------------------
 " Unite QuickFix: {{{
 if s:neobundle_tap('unite-quickfix')
-  NXnoremap <Leader>u,
+  NXnoremap <Bslash>u,
   \ :<C-U>Unite quickfix
   \ -buffer-name=register -no-empty<CR>
-  NXnoremap <Leader>u.
+  NXnoremap <Bslash>u.
   \ :<C-U>Unite location_list
   \ -buffer-name=register -no-empty<CR>
 endif
@@ -4054,7 +4425,7 @@ endif
 "------------------------------------------------------------------------------
 " Unite QuickRun Config: {{{
 if s:neobundle_tap('unite-quickrun_config')
-  NXnoremap <Leader>ur
+  NXnoremap <Bslash>ur
   \ :<C-U>Unite quickrun_config
   \ -buffer-name=register -no-empty<CR>
 endif
@@ -4063,9 +4434,13 @@ endif
 "------------------------------------------------------------------------------
 " Unite Tag: {{{
 if s:neobundle_tap('unite-tag')
-  NXnoremap <Leader>ut
+  NXnoremap <Bslash>u]
   \ :<C-U>UniteWithCursorWord tag tag/include
   \ -buffer-name=outline -no-start-insert<CR>
+
+  if get(s:selector_ui, 'tag') == 'unite'
+    NXmap <Leader>] <Bslash>u]
+  endif
 endif
 "}}}
 
@@ -4097,8 +4472,7 @@ if s:neobundle_tap('vimfiler')
 
   let g:loaded_netrwPlugin = 1
 
-  NXnoremap <Leader>E     :<C-U>VimFiler<CR>
-  NXnoremap <Leader><C-E> :<C-U>VimFilerExplorer<CR>
+  NXnoremap <Leader>E :<C-U>VimFiler<CR>
 
   call extend(s:neocompl_vim_completefuncs, {
   \ 'VimFiler'           : 'vimfiler#complete',
@@ -4128,8 +4502,8 @@ if s:neobundle_tap('vimshell')
     let g:vimshell_scrollback_limit         = 500
     let g:vimshell_prompt                   = '$ '
     let g:vimshell_secondary_prompt         = '> '
-    let g:vimshell_right_prompt             =
-    \ 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
+    " let g:vimshell_right_prompt             =
+    " \ 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
 
     if has('win32')
       if filereadable('C:/Apps/ckw/ckw.exe')
@@ -4259,6 +4633,10 @@ if s:neobundle_tap('watchdogs')
     \ get(g:, 'quickrun_config', {})
 
     call extend(g:quickrun_config, {
+    \ 'watchdogs_checker/_' : {
+    \   'runner' : s:has_vimproc() ? 'vimproc' : 'system',
+    \   'outputter' : 'location_list'},
+    \
     \ 'c/watchdogs_checker' : {
     \   'type' :
     \     s:executable('clang') ? 'watchdogs_checker/clang' :
@@ -4293,9 +4671,9 @@ endif
 " YankRound: {{{
 if s:neobundle_tap('yankround')
   function! neobundle#hooks.on_source(bundle)
-    let g:yankround_dir                 = $HOME . '/.local/.cache/yankround'
-    let g:yankround_use_region_hl       = 1
-    let g:yankround_region_hl_groupname = 'SpellLocal'
+    let g:yankround_dir           = $HOME . '/.local/.cache/yankround'
+    let g:yankround_max_history   = 100
+    let g:yankround_use_region_hl = 1
   endfunction
 
   cnoremap <SID><C-N> <C-N>
@@ -4315,12 +4693,22 @@ if s:neobundle_tap('yankround')
   \ yankround#is_cmdline_popable() ?
   \   '<Plug>(yankround-backpop)' : '<SID><C-P>'
 
-  nnoremap <Leader>p
-  \ :<C-U>Unite yankround
+  nnoremap <Bslash>up
+  \ :<C-U>Unite yankround register
   \ -buffer-name=register -no-empty<CR>
-  xnoremap <Leader>p
-  \ d:<C-U>Unite yankround
+  xnoremap <Bslash>up
+  \ d:<C-U>Unite yankround register
   \ -buffer-name=register -no-empty<CR>
+
+  if get(s:selector_ui, 'register') == 'yankround' &&
+  \ get(s:selector_ui, 'yankround') == 'unite'
+    NXmap <Leader>p <Bslash>up
+  endif
+
+  autocmd MyVimrc User EscapeKey
+  \ if exists('#yankround_rounder#InsertEnter') |
+  \   call s:doautocmd('yankround_rounder', 'InsertEnter') |
+  \ endif
 endif
 "}}}
 
@@ -4331,13 +4719,14 @@ silent! call neobundle#untap()
 " Post Init: {{{
 " Do PostInit Event
 if exists('#User#MyVimrcPost')
-  execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
-  \ 'User MyVimrcPost'
+  call s:doautocmd('User', 'MyVimrcPost')
 endif
 
 " Local vimrc
 if filereadable($HOME . '/.local/.vimrc_local.vim')
   source ~/.local/.vimrc_local.vim
+elseif filereadable($HOME . '/.local/.vim/vimrc_local.vim')
+  source ~/.local/.vim/vimrc_local.vim
 endif
 
 " Enable NeoBundle

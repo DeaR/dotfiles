@@ -2,7 +2,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Sep-2015.
+" Last Change:  25-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -85,6 +85,12 @@ function! s:has_vimproc()
   return s:_has_vimproc
 endfunction
 
+" Wrapped doautocmd
+function! s:doautocmd(...)
+  let nomodeline = s:has_patch(7, 3, 438) ? '<nomodeline>' : ''
+  execute 'doautocmd' nomodeline join(a:000)
+endfunction
+
 " Wrapped neobundle#tap
 function! s:neobundle_tap(name)
   return exists('*neobundle#tap') && neobundle#tap(a:name)
@@ -104,6 +110,19 @@ function! s:executable(expr)
   endif
   return s:_executable[a:expr]
 endfunction
+
+" Get "Program Files" of 32bit
+if has('win32')
+  let s:save_isi = &isident
+  try
+    set isident+=(,)
+    let s:programfiles_x86 = exists('$PROGRAMFILES(X86)') ?
+    \ $PROGRAMFILES(X86) : $PROGRAMFILES
+  finally
+    let &isident = s:save_isi
+    unlet! s:save_isi
+  endtry
+endif
 
 " Check japanese
 let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
@@ -144,6 +163,8 @@ if has('multi_byte_ime') || has('xim')
   " IME state
   set iminsert=0
   set imsearch=-1
+  autocmd MyGVimrc InsertLeave *
+  \ set iminsert=0
 endif
 
 " Multi byte charactor width
@@ -195,13 +216,14 @@ autocmd MyGVimrc ColorScheme *
 " Post Init: {{{
 " Do PostInit Event
 if exists('#User#MyGVimrcPost')
-  execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
-  \ 'User MyGVimrcPost'
+  call s:doautocmd('User', 'MyGVimrcPost')
 endif
 
 " Local gvimrc
 if filereadable($HOME . '/.local/.gvimrc_local.vim')
   source ~/.local/.gvimrc_local.vim
+elseif filereadable($HOME . '/.local/.vim/gvimrc_local.vim')
+  source ~/.local/.vim/gvimrc_local.vim
 endif
 
 " ColorScheme

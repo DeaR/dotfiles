@@ -1,7 +1,7 @@
 " Ftplugin for QuickFix
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Sep-2015.
+" Last Change:  25-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -30,38 +30,60 @@ set cpo&vim
 
 nnoremap <buffer> <S-CR> <CR>zz<C-W>p
 
-function! s:del_count()
-  if v:count == 0
-    return ''
+let s:default_qflisttype = 'location'
+function! s:get_qflisttype()
+  if exists('b:qflisttype')
+    return b:qflisttype
   endif
-
-  let ret = ''
-  for i in range(len(v:count))
-    let ret .= "\<Del>"
-  endfor
-  return ret
-endfunction
-
-function! s:jk(motion)
+  let qf  = len(getqflist())
+  let loc = len(getloclist(0))
   let max = line('$')
-  let list = getloclist(0)
-  if empty(list) || len(list) != max
-    let list = getqflist()
-  endif
-  let cur = line('.') - 1
-  let pos = (cur + a:motion + max) % max
-  let m = 0 < a:motion ? 1 : -1
-  while cur != pos && list[pos].bufnr == 0
-    let pos = (pos + m + max) % max
-  endwhile
-  return s:del_count() . (pos + 1) . 'G'
+  return
+  \ qf == max && loc != max ? 'quickfix' :
+  \ qf != max && loc == max ? 'location' :
+  \ s:default_qflisttype
 endfunction
-nnoremap <buffer><silent><expr> j <SID>jk(v:count1)
-xnoremap <buffer><silent><expr> j <SID>jk(v:count1)
-onoremap <buffer><silent><expr> j <SID>jk(v:count1)
-nnoremap <buffer><silent><expr> k <SID>jk(-v:count1)
-xnoremap <buffer><silent><expr> k <SID>jk(-v:count1)
-onoremap <buffer><silent><expr> k <SID>jk(-v:count1)
+nnoremap <buffer><expr> <C-N>
+\ <SID>get_qflisttype() == 'location' ?
+\ ':<C-U>lnewer<CR>' : ':<C-U>cnewer<CR>'
+nnoremap <buffer><expr> <C-P>
+\ <SID>get_qflisttype() == 'location' ?
+\ ':<C-U>lolder<CR>' : ':<C-U>colder<CR>'
+
+function! s:del_count()
+  return v:count > 0 ? repeat("\<Del>", len(v:count)) : ''
+endfunction
+function! s:jk(count)
+  let list = s:get_qflisttype() == 'location' ?
+  \ getloclist(0) : getqflist()
+  let pos = line('.') - 1
+  let max = line('$')
+  let add = a:count > 0 ? 1 : -1
+  for i in range(abs(a:count))
+    let pos = (pos + add + max) % max
+    while list[pos].bufnr == 0
+      let pos = (pos + add + max) % max
+    endwhile
+  endfor
+
+  let cur = line('.') - 1
+  return
+  \ pos > cur ? (s:del_count() . (pos - cur) . 'j') :
+  \ cur > pos ? (s:del_count() . (cur - pos) . 'k') :
+  \ a:count > 0 ? 'j' : 'k'
+endfunction
+nnoremap <buffer><expr> <Down> <SID>jk(v:count1)
+xnoremap <buffer><expr> <Down> <SID>jk(v:count1)
+onoremap <buffer><expr> <Down> <SID>jk(v:count1)
+nnoremap <buffer><expr> <Up>   <SID>jk(-v:count1)
+xnoremap <buffer><expr> <Up>   <SID>jk(-v:count1)
+onoremap <buffer><expr> <Up>   <SID>jk(-v:count1)
+nnoremap <buffer><expr> j      <SID>jk(v:count1)
+xnoremap <buffer><expr> j      <SID>jk(v:count1)
+onoremap <buffer><expr> j      <SID>jk(v:count1)
+nnoremap <buffer><expr> k      <SID>jk(-v:count1)
+xnoremap <buffer><expr> k      <SID>jk(-v:count1)
+onoremap <buffer><expr> k      <SID>jk(-v:count1)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
@@ -70,6 +92,14 @@ else
 endif
 let b:undo_ftplugin .= '
 \ silent! execute "nunmap <buffer> <S-CR>" |
+\ silent! execute "ounmap <buffer> <C-N>" |
+\ silent! execute "ounmap <buffer> <C-P>" |
+\ silent! execute "nunmap <buffer> <Down>" |
+\ silent! execute "xunmap <buffer> <Down>" |
+\ silent! execute "ounmap <buffer> <Down>" |
+\ silent! execute "nunmap <buffer> <Up>" |
+\ silent! execute "xunmap <buffer> <Up>" |
+\ silent! execute "ounmap <buffer> <Up>" |
 \ silent! execute "nunmap <buffer> j" |
 \ silent! execute "xunmap <buffer> j" |
 \ silent! execute "ounmap <buffer> j" |

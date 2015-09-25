@@ -1,7 +1,7 @@
 " TextObj Continuous Line ftplugin for Zsh
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Sep-2015.
+" Last Change:  25-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -25,8 +25,9 @@
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-if !exists('g:loaded_textobj_continuous_line') && (!exists('*neobundle#get') ||
-\ get(neobundle#get('textobj-continuous-line'), 'disabled', 1))
+if !exists('g:loaded_textobj_continuous_line') &&
+\ (!exists('*neobundle#get') ||
+\  get(neobundle#get('textobj-continuous-line'), 'disabled', 1))
   finish
 endif
 

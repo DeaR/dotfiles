@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Sep-2015.
+" Last Change:  25-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -60,7 +60,6 @@ function! s:has_patch(major, minor, patch)
   return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
   \ (v:version > l:version) ||
   \ (v:version == l:version && has('patch' . a:patch))
-  --------------------------------------------------------
 endfunction
 
 " Check vimproc
@@ -74,6 +73,12 @@ function! s:has_vimproc()
     endtry
   endif
   return s:_has_vimproc
+endfunction
+
+" Wrapped doautocmd
+function! s:doautocmd(...)
+  let nomodeline = s:has_patch(7, 3, 438) ? '<nomodeline>' : ''
+  execute 'doautocmd' nomodeline join(a:000)
 endfunction
 
 " Wrapped neobundle#tap
@@ -95,6 +100,19 @@ function! s:executable(expr)
   endif
   return s:_executable[a:expr]
 endfunction
+
+" Get "Program Files" of 32bit
+if has('win32')
+  let s:save_isi = &isident
+  try
+    set isident+=(,)
+    let s:programfiles_x86 = expand(exists('$PROGRAMFILES(X86)') ?
+    \ '$PROGRAMFILES(X86)' : '$PROGRAMFILES')
+  finally
+    let &isident = s:save_isi
+    unlet! s:save_isi
+  endtry
+endif
 
 " Check japanese
 let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
@@ -150,8 +168,7 @@ endfunction
 
 function! myvimrc#cmdline_enter(type)
   if exists('#User#CmdlineEnter')
-    execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
-    \ 'User CmdlineEnter'
+    call s:doautocmd('User', 'CmdlineEnter')
   endif
   return a:type
 endfunction
@@ -161,10 +178,9 @@ endfunction
 " Escape Key: {{{
 function! myvimrc#escape_key()
   if exists('#User#EscapeKey')
-    execute 'doautocmd' (s:has_patch(7, 3, 438) ? '<nomodeline>' : '')
-    \ 'User EscapeKey'
+    call s:doautocmd('User', 'EscapeKey')
   endif
-  return ":\<C-U>nohlsearch\<CR>\<Esc>"
+  return "\<Esc>:\<C-U>nohlsearch\<CR>"
 endfunction
 "}}}
 
@@ -177,16 +193,15 @@ endfunction
 
 "------------------------------------------------------------------------------
 " Auto Mark: {{{
-let s:mark_char = [
-\ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-\ 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+let s:mark_char      = 'abcdefghijklmnopqrstuvwxyz'
+let s:file_mark_char = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 function! s:get_mark_pos()
   let pos = (get(b:, 'mark_pos', -1) + 1) % len(s:mark_char)
   for i in range(pos, len(s:mark_char)) + range(0, pos)
     try
       silent execute 'marks' s:mark_char[i]
-    catch /^Vim\%((\a\+)\)\?:E283/
+    catch /^Vim\%((\a\+)\)\=:E283/
       return i
     endtry
   endfor
@@ -194,18 +209,18 @@ function! s:get_mark_pos()
 endfunction
 function! myvimrc#auto_mark()
   let b:mark_pos = s:get_mark_pos()
-  return (":\<C-U>mark " . s:mark_char[b:mark_pos] . "\<CR>")
+  return ":\<C-U>mark " . s:mark_char[b:mark_pos] . "\<CR>"
 endfunction
 function! myvimrc#clear_marks()
   let b:mark_pos = -1
-  return (":\<C-U>delmarks " . join(s:mark_char, '') . "\<CR>")
+  return ":\<C-U>delmarks " . s:mark_char . "\<CR>"
 endfunction
 function! s:get_file_mark_pos()
-  let pos = (get(s:, 'file_mark_pos', -1) + 1) % len(s:mark_char)
-  for i in range(pos, len(s:mark_char)) + range(0, pos)
+  let pos = (get(s:, 'file_mark_pos', -1) + 1) % len(s:file_mark_char)
+  for i in range(pos, len(s:file_mark_char)) + range(0, pos)
     try
-      silent execute 'marks' toupper(s:mark_char[i])
-    catch /^Vim\%((\a\+)\)\?:E283/
+      silent execute 'marks' s:file_mark_char[i]
+    catch /^Vim\%((\a\+)\)\=:E283/
       return i
     endtry
   endfor
@@ -213,16 +228,14 @@ function! s:get_file_mark_pos()
 endfunction
 function! myvimrc#auto_file_mark()
   let s:file_mark_pos = s:get_file_mark_pos()
-  return (":\<C-U>mark " . toupper(s:mark_char[s:file_mark_pos]) . "\<CR>")
+  return ":\<C-U>mark " . s:file_mark_char[s:file_mark_pos] . "\<CR>"
 endfunction
 function! myvimrc#clear_file_marks()
   let s:file_mark_pos = -1
-  return (":\<C-U>rviminfo | delmarks " .
-  \ toupper(join(s:mark_char, '')) . " | wviminfo!\<CR>")
+  return ":\<C-U>rviminfo | delmarks " . s:file_mark_char . " | wviminfo!\<CR>"
 endfunction
 function! myvimrc#marks()
-  let char = join(s:mark_char, '')
-  return (":\<C-U>marks " . char . toupper(char) . "\<CR>")
+  return ":\<C-U>marks " . s:mark_char . s:file_mark_char . "\<CR>"
 endfunction
 "}}}
 
@@ -239,9 +252,12 @@ endfunction
 "------------------------------------------------------------------------------
 " Line Number: {{{
 function! myvimrc#toggle_line_number_style()
-  set relativenumber!
-  if !&number && !&relativenumber
-    set number
+  if !&l:number && !&l:relativenumber
+    setlocal number
+  elseif &l:relativenumber
+    setlocal nonumber norelativenumber
+  else
+    setlocal relativenumber
   endif
 endfunction
 "}}}
@@ -323,7 +339,7 @@ endfunction
 "}}}
 
 "==============================================================================
-" Vim Script: {{{
+" Auto Command: {{{
 
 "------------------------------------------------------------------------------
 " Auto MkDir: {{{
@@ -341,6 +357,40 @@ function! myvimrc#auto_mkdir(dir, force)
     \ iconv(a:dir, &encoding, &termencoding) : a:dir
     call mkdir(dir, 'p')
   endif
+endfunction
+"}}}
+
+"------------------------------------------------------------------------------
+" QuickFix: {{{
+function! s:get_qflisttype()
+  if exists('b:qflisttype')
+    return b:qflisttype
+  endif
+
+  let save_ei = &eventignore
+  try
+    set eventignore+=BufWinLeave,WinLeave,BufWinEnter,WinEnter
+    let ret = 'location'
+    let cur = winnr()
+    let rest = winrestcmd()
+    let view = winsaveview()
+    lopen
+    if winnr() != cur
+      lclose
+      execute cur 'wincmd w'
+      execute rest
+      let ret = 'quickfix'
+    endif
+    call winrestview(view)
+    return ret
+  catch /^Vim\%((\a\+)\)\=:E776/
+    return 'quickfix'
+  finally
+    let &eventignore = save_ei
+  endtry
+endfunction
+function! myvimrc#set_qflisttype()
+  let b:qflisttype = s:get_qflisttype()
 endfunction
 "}}}
 "}}}
@@ -529,7 +579,24 @@ endif
 "------------------------------------------------------------------------------
 " Operator User: {{{
 if s:neobundle_tap('operator-user')
-  function! myvimrc#operator_grep(motion_wise)
+  let g:myvimrc#operator_grep_ui =
+  \ get(g:, 'myvimrc#operator_grep_ui')
+
+  function! s:get_grepprg_escape(grepprg)
+    if a:grepprg =~? 'jvgrep'
+      return '\[](){}|.?+*^$'
+    elseif a:grepprg =~? 'ag'
+      return '\[](){}|.?+*^$'
+    elseif a:grepprg =~? 'grep'
+      return '\[].*^$'
+    elseif a:grepprg =~? 'findstr'
+      return ''
+    else
+      return '\[].*^$'
+    endif
+  endfunction
+
+  function! s:operator_grep(motion_wise, is_lgrep)
     if a:motion_wise == 'char'
       let lines = getline(line("'["), line("']"))
       let lines[-1] = lines[-1][: col("']") - 1]
@@ -544,24 +611,33 @@ if s:neobundle_tap('operator-user')
       \ 'v:val[start : end]')
     endif
 
-    if &grepprg =~ '^jvgrep'
-      let esc = '\[](){}|.?+*^$'
-    elseif &grepprg =~ '^ag'
-      let esc = '\[](){}|.?+*^$'
-    elseif &grepprg =~ '^grep'
-      let esc = '\[].*^$'
+    if g:myvimrc#operator_grep_ui == 'unite' && &grepprg != 'internal'
+      NeoBundleSource unite
+      let esc = s:get_grepprg_escape(g:unite_source_grep_command)
+      execute 'Unite' 'grep:::' . escape(join(lines), esc . ' :')
+      \ '-buffer-name=grep'
     else
-      let esc = '\[].*^$'
+      let esc = s:get_grepprg_escape(&grepprg)
+      if g:myvimrc#operator_grep_ui == 'unite'
+        execute 'Unite' 'vimgrep::' . escape(join(lines), esc . ' :')
+        \ '-buffer-name=grep'
+      elseif &grepprg == 'internal'
+        execute input(':', (a:is_lgrep ? 'l' : '') .
+        \ 'vimgrep /' . escape(join(lines), esc . '/') . '/ .')
+      elseif &grepprg =~? 'findstr'
+        execute input(':', (a:is_lgrep ? 'l' : '') .
+        \ 'grep /c:' . shellescape(escape(join(lines), esc)) . ' *')
+      else
+        execute input(':', (a:is_lgrep ? 'l' : '') .
+        \ 'grep ' . shellescape(escape(join(lines), esc)) . ' .')
+      endif
     endif
-
-    if s:is_enabled_bundle('unite')
-      execute 'Unite'
-      \ (&grepprg == 'internal' ? 'vimgrep::' : 'grep:::') .
-      \ escape(join(lines), esc . ' :')
-      \ '-buffer-name=grep -no-split -wrap'
-    else
-      execute input(':', 'grep "' . escape(join(lines), esc) . '" ')
-    endif
+  endfunction
+  function! myvimrc#operator_grep(motion_wise)
+    call s:operator_grep(a:motion_wise, 0)
+  endfunction
+  function! myvimrc#operator_lgrep(motion_wise)
+    call s:operator_grep(a:motion_wise, 1)
   endfunction
 
   function! myvimrc#operator_justify(motion_wise)
@@ -677,8 +753,8 @@ endif
 if s:neobundle_tap('textmanip')
   function! s:operator_textmanip(motion_wise, map)
     let vis = operator#user#visual_command_from_wise_name(a:motion_wise)
-    execute 'nnoremap <SID>(reselect)' join(['`[', vis, '`]'], '')
-    let sel = join(["\<SNR>", s:SID(), '_(reselect)'], '')
+    execute 'nnoremap <SID>(reselect)' '`[' . vis . '`]'
+    let sel = "\<SNR>" . s:SID() . '_(reselect)'
     execute 'normal' sel . a:map
   endfunction
 
@@ -713,7 +789,7 @@ endif
 " Unite Mark: {{{
 if s:neobundle_tap('unite-mark')
   function! myvimrc#unite_source_mark_marks()
-    return join(s:mark_char, '') . toupper(join(s:mark_char, ''))
+    return s:mark_char . s:file_mark_char
   endfunction
 endif
 "}}}

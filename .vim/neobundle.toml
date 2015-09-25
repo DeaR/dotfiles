@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  10-Sep-2015.
+# Last Change:  20-Sep-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -61,6 +61,7 @@ repository = 'osyo-manga/vim-anzu'
 vim_version = '7.3.867'
 commands = ['AnzuClearSearchStatus', 'AnzuClearSearchCache', 'AnzuUpdateSearchStatus', 'AnzuUpdateSearchStatusOutput', 'AnzuSignMatchLine', 'AnzuClearSignMatchLine']
 mappings = [['n', '<Plug>'], ['n', '<Plug>(anzu-jump-n)<Plug>(anzu', '<Plug>(anzu-jump-N)<Plug>(anzu']]
+unite_sources = 'anzu'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -111,8 +112,8 @@ insert = 1
 [[plugins]]
 repository = 'deris/columnjump'
 commands = ['ColumnJumpBackward', 'ColumnJumpForward']
-mappings = [['nvo', '<Plug>']]
-insert = 1
+mappings = [['nvo', '<Plug>'], ['nvo', '<Plug>(submode:coljmp']]
+depends = 'kana/vim-submode'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -315,7 +316,7 @@ mappings = [['nvo', '<Plug>']]
 repository = 'basyura/J6uil.vim'
 commands = ['J6uilReconnect', 'J6uilDisconnect', 'J6uilNextRoom', 'J6uilPrevRoom']
 mappings = [['n', '<Plug>']]
-unite_sources = ['J6uil/rooms', 'J6uil/members']
+unite_sources = 'J6uil/'
 depends = ['tyru/open-browser.vim', 'Shougo/vimproc.vim']
 
   [[plugins.commands]]
@@ -475,10 +476,6 @@ depends = ['Shougo/context_filetype.vim', 'Shougo/echodoc', 'hrsh7th/vim-neco-ca
   name = ['NeoCompleteDictionaryMakeCache', 'NeoCompleteSyntaxMakeCache']
   complete = 'customlist,neocomplete#filetype_complete'
 
-  [[plugins.commands]]
-  name = 'NeoCompleteIncludeMakeCache'
-  complete = 'buffer'
-
   [[plugins.depends]]
   repository = 'Shougo/neco-vim'
   name = 'neco-vim'
@@ -510,11 +507,21 @@ depends = ['Shougo/echodoc', 'hrsh7th/vim-neco-calc', 'ujihisa/neco-look']
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repository = 'Shougo/neoinclude.vim'
+disabled = '!neobundle#is_installed("neocomplete")'
+insert = 1
+
+  [[plugins.commands]]
+  name = 'NeoIncludeMakeCache'
+  complete = 'buffer'
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repository = 'Shougo/neomru.vim'
 filetypes = 'all'
 commands = ['NeoMRUReload', 'NeoMRUSave']
 augroup = 'neomru'
-unite_sources = ['file_mru', 'directory_mru', 'neomru/file', 'neomru/directory']
+unite_sources = ['neomru/', 'file_mru', 'directory_mru']
 lazy = 0
 
   [[plugins.commands]]
@@ -528,7 +535,7 @@ filetypes = 'snippet'
 commands = ['NeoSnippetClearMarkers']
 mappings = [['vi', '<Plug>']]
 insert = 1
-unite_sources = ['snippet', 'snippet/target', 'neosnippet/user', 'neosnippet/runtime']
+unite_sources = ['snippet', 'snippet/', 'neosnippet/']
 depends = 'Shougo/context_filetype.vim'
 
   [[plugins.commands]]
@@ -580,7 +587,7 @@ filetypes = 'nyaos'
 repository = 'OmniSharp/omnisharp-vim'
 disabled = '!has("python")'
 filetypes = 'cs'
-unite_sources = ['OmniSharp/findcodeactions', 'OmniSharp/findsymbols', 'OmniSharp/findtype']
+unite_sources = 'OmniSharp/'
 depends = 'tpope/vim-dispatch'
 
   [plugins.external_commands]
@@ -694,7 +701,7 @@ depends = 'kana/vim-operator-user'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-operator-user'
-mappings = [['nvo', '<Plug>(operator-grep', '<Plug>(operator-justify']]
+mappings = [['nvo', '<Plug>(operator']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -804,7 +811,7 @@ unite_sources = 'reanimate'
 [[plugins]]
 repository = 'thinca/vim-ref'
 mappings = [['nv', '<Plug>']]
-unite_sources = 'ref'
+unite_sources = 'ref/'
 depends = ['h1mesuke/ref-dicts-en', 'hujo/ref-doshelp', 'Jagua/vim-ref-gene', 'eiiches/vim-ref-info']
 
   [[plugins.commands]]
@@ -879,7 +886,7 @@ repository = 'osyo-manga/vim-snowdrop'
 disabled =  '!has("python")'
 filetypes = ['c', 'cpp']
 commands = ['SnowdropVerify', 'SnowdropEchoClangVersion', 'SnowdropLogs', 'SnowdropClearLogs']
-unite_sources = ['snowdrop/includes', 'snowdrop/outline']
+unite_sources = 'snowdrop/'
 
   [plugins.external_commands]
   others = 'clang'
@@ -930,19 +937,6 @@ functions = ['TbpList', 'TbpExists', 'TbpName', 'TbpNr']
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repository = 'marijnh/tern_for_vim'
-name = 'tern'
-disabled = '!has("python")'
-filetypes = 'javascript'
-
-  [plugins.external_commands]
-  others = 'node'
-
-  [plugins.build]
-  others = 'npm install'
-
-#------------------------------------------------------------------------------
-[[plugins]]
 repository = 'tomtom/tcomment_vim'
 commands = ['TCommentMap']
 mappings = [['nvo', '<Plug>(operator-tcomment']]
@@ -955,6 +949,19 @@ depends = 'kana/vim-operator-user'
   [[plugins.commands]]
   name = 'TCommentAs'
   complete = 'customlist,tcomment#Complete'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'marijnh/tern_for_vim'
+name = 'tern'
+disabled = '!has("python")'
+filetypes = 'javascript'
+
+  [plugins.external_commands]
+  others = 'node'
+
+  [plugins.build]
+  others = 'npm install'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -1155,6 +1162,7 @@ depends = 'kana/vim-textobj-user'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'kana/vim-textobj-user'
+mappings = [['vo', '<Plug>(textobj']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -1189,6 +1197,11 @@ fetch = 1
   [plugins.build]
   windows = '..\\..\\..\\.vim\\tools\\the_silver_searcher\\build.bat'
   others = './build.sh && sudo make install'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'thinca/vim-themis'
+filetypes = 'vimspec'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -1249,15 +1262,15 @@ unite_sources = 'help'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'thinca/vim-unite-history'
-unite_sources = ['history/command', 'history/search']
+unite_sources = 'history/'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'KamunagiChiduru/unite-javaimport'
 # commsnds = ['JavaImportClearCache', 'JavaImportSortStatements', 'JavaImportRemoveUnnecessaries', 'CtrlPJavaImportClass', 'CtrlPJavaImportField', 'CtrlPJavaImportMethod']
 commsnds = ['JavaImportClearCache', 'JavaImportSortStatements', 'JavaImportRemoveUnnecessaries']
-mappings = [['n', '<Plug>(javaimport-quickimport)']]
-unite_sources = 'javaimport'
+mappings = [['n', '<Plug>(javaimport']]
+unite_sources = 'javaimport/'
 depends = ['universal-ctags/ctags', 'kamichidu/vim-javaclasspath', 'Shougo/vimproc.vim']
 
   [plugins.external_commands]
@@ -1282,7 +1295,7 @@ unite_sources = 'outline'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'y-uuki/unite-perl-module.vim'
-unite_sources = ['perl/global', 'perl/local']
+unite_sources = 'perl/'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -1304,7 +1317,7 @@ unite_sources = 'remotefile'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'rhysd/unite-ruby-require.vim'
-unite_sources = 'ruby/require'
+unite_sources = 'ruby/'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -1320,7 +1333,7 @@ depends = ['Shougo/unite.vim', 'Shougo/vimfiler.vim']
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'tsukkee/unite-tag'
-unite_sources = 'tag'
+unite_sources = ['tag', 'tag/']
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -1358,8 +1371,9 @@ filetypes = 'help'
 [[plugins]]
 repository = 'Shougo/vimfiler.vim'
 commands = ['VimFilerClose']
-unite_sources = ['vimfiler/drive', 'vimfiler/execute', 'vimfiler/history', 'vimfiler/mask', 'vimfiler/popd', 'vimfiler/sort']
+unite_sources = 'vimfiler/'
 explorer = 1
+depends = 'Shougo/unite.vim'
 
   [[plugins.commands]]
   name = ['VimFiler', 'VimFilerDouble', 'VimFilerCurrentDir', 'VimFilerBufferDir', 'VimFilerCreate', 'VimFilerSimple', 'VimFilerSplit', 'VimFilerTab', 'VimFilerExplorer', 'VimFilerEdit', 'VimFilerRead', 'VimFilerSource', 'VimFilerWrite']
@@ -1383,8 +1397,11 @@ commands = ['VimProcInstall']
   name = ['VimProcBang', 'VimProcRead']
   complete = 'shellcmd'
 
+  [plugins.build_commands]
+  windows = 0
+
   [plugins.build]
-  windows = '..\\..\\..\\.vim\\tools\\vimproc\\build.bat nodebug=1'
+  # windows = '..\\..\\..\\.vim\\tools\\vimproc\\build.bat nodebug=1'
   unix = 'gmake'
   others = 'make'
 
@@ -1393,7 +1410,7 @@ commands = ['VimProcInstall']
 repository = 'Shougo/vimshell.vim'
 filetypes = 'vimshrc'
 commands = ['VimShellSendString', 'VimShellSendBuffer']
-unite_sources = ['vimshell/external_history', 'vimshell/history']
+unite_sources = 'vimshell/'
 depends = ['yomi322/vim-gitcomplete', 'Shougo/vimproc.vim', 'ujihisa/vimshell-ssh']
 
   [[plugins.commands]]
@@ -1407,7 +1424,7 @@ depends = ['yomi322/vim-gitcomplete', 'Shougo/vimproc.vim', 'ujihisa/vimshell-ss
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'Shougo/vinarise.vim'
-unite_sources = 'vinarise/analysis'
+unite_sources = 'vinarise/'
 
   [[plugins.commands]]
   name = ['Vinarise', 'VinariseDump']
@@ -1423,6 +1440,7 @@ mappings = [['nvo', '<Plug>']]
 repository = 'taku25/vim-visualstudio'
 disabled = '!has("win32")'
 commands = ['VSCompile', 'VSBuild', 'VSReBuild', 'VSBuildProject', 'VSReBuildProject', 'VSCompileNoWait', 'VSBuildNoWait', 'VSReBuildNoWait', 'VSBuildProjectNoWait', 'VSReBuildProjectNoWait', 'VSSetBuildConfig', 'VSSetPlatform', 'VSCancelBuild', 'VSClean', 'VSOutput', 'VSErorrList', 'VSRun', 'VSDebugRun', 'VSSetStartupProject', 'VSStopDebugRun', 'VSFindSolution1', 'VSFindSolution2', 'VSFindSolutionNoWait1', 'VSFindSolutionNoWait2', 'VSFindProject1', 'VSFindProject2', 'VSFindProjectNoWait1', 'VSFindProjectNoWait2', 'VSFindSymbol', 'VSFindSymbolNoWait', 'VSFindResult1', 'VSFindResult2', 'VSFindSymbolResult', 'VSOpenFile', 'VSGetFile', 'VSAddBreakPoint', 'VSChangeDirectory', 'VSGoToDefinition']
+unite_sources = 'vsfile'
 
   [[plugins.depends]]
   repository = 'taku25/VisualStudioController'

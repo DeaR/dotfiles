@@ -1,7 +1,7 @@
 " Ftplugin for J6uil
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Sep-2015.
+" Last Change:  25-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -37,44 +37,43 @@ nmap <buffer> <CR>    <Plug>(J6uil_action_enter)
 nmap <buffer> o       <Plug>(J6uil_action_open_links)
 
 function! s:del_count()
-  if v:count == 0
-    return ''
+  return v:count > 0 ? repeat("\<Del>", len(v:count)) : ''
+endfunction
+function! s:jk(count)
+  let pos = line('.')
+  let max = line('$')
+  let add = a:count > 0 ? 1 : -1
+  for i in range(abs(a:count))
+    let pos += add
+    while getline(pos) =~# '^-\+$'
+      let pos += add
+    endwhile
+  endfor
+
+  if pos < 1
+    let pos = 1
+  elseif pos > max
+    let pos = max
   endif
 
-  let ret = ''
-  for i in range(len(v:count))
-    let ret .= "\<Del>"
-  endfor
-  return ret
-endfunction
-
-function! s:j()
-  let max = line('$')
   let cur = line('.')
-  let pos = cur + v:count1
-  let pos = pos > max ? max : pos
-  while pos < max && getline(pos) =~# '^-\+$'
-    let pos = pos + 1
-  endwhile
-  return s:del_count() . pos . 'G'
+  return
+  \ pos > cur ? (s:del_count() . (pos - cur) . 'j') :
+  \ cur > pos ? (s:del_count() . (cur - pos) . 'k') :
+  \ a:count > 0 ? 'j' : 'k'
 endfunction
-nnoremap <buffer><silent><expr> j <SID>j()
-xnoremap <buffer><silent><expr> j <SID>j()
-onoremap <buffer><silent><expr> j <SID>j()
-
-function! s:k()
-  let min = 1
-  let cur = line('.')
-  let pos = cur - v:count1
-  let pos = pos < min ? min : pos
-  while pos > min && getline(pos) =~# '^-\+$'
-    let pos = pos - 1
-  endwhile
-  return s:del_count() . pos . 'G'
-endfunction
-nnoremap <buffer><silent><expr> k <SID>k()
-xnoremap <buffer><silent><expr> k <SID>k()
-onoremap <buffer><silent><expr> k <SID>k()
+nnoremap <buffer><expr> <Down> <SID>jk(v:count1)
+xnoremap <buffer><expr> <Down> <SID>jk(v:count1)
+onoremap <buffer><expr> <Down> <SID>jk(v:count1)
+nnoremap <buffer><expr> <Up>   <SID>jk(-v:count1)
+xnoremap <buffer><expr> <Up>   <SID>jk(-v:count1)
+onoremap <buffer><expr> <Up>   <SID>jk(-v:count1)
+nnoremap <buffer><expr> j      <SID>jk(v:count1)
+xnoremap <buffer><expr> j      <SID>jk(v:count1)
+onoremap <buffer><expr> j      <SID>jk(v:count1)
+nnoremap <buffer><expr> k      <SID>jk(-v:count1)
+xnoremap <buffer><expr> k      <SID>jk(-v:count1)
+onoremap <buffer><expr> k      <SID>jk(-v:count1)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
@@ -89,6 +88,12 @@ let b:undo_ftplugin .= '
 \ silent! execute "nunmap <buffer> u" |
 \ silent! execute "nunmap <buffer> <CR>" |
 \ silent! execute "nunmap <buffer> o" |
+\ silent! execute "nunmap <buffer> <Down>" |
+\ silent! execute "xunmap <buffer> <Down>" |
+\ silent! execute "ounmap <buffer> <Down>" |
+\ silent! execute "nunmap <buffer> <Up>" |
+\ silent! execute "xunmap <buffer> <Up>" |
+\ silent! execute "ounmap <buffer> <Up>" |
 \ silent! execute "nunmap <buffer> j" |
 \ silent! execute "xunmap <buffer> j" |
 \ silent! execute "ounmap <buffer> j" |

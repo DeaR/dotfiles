@@ -1,7 +1,7 @@
 " TextObj EnclosedSyntax ftplugin for eRuby
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Sep-2015.
+" Last Change:  25-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -25,8 +25,9 @@
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-if !exists('g:loaded_textobj_enclosedsyntax') && (!exists('*neobundle#get') ||
-\ get(neobundle#get('textobj-enclosedsyntax'), 'disabled', 1))
+if !exists('g:loaded_textobj_enclosedsyntax') &&
+\ (!exists('*neobundle#get') ||
+\  get(neobundle#get('textobj-enclosedsyntax'), 'disabled', 1))
   finish
 endif
 

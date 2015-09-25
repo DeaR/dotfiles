@@ -1,7 +1,7 @@
 # NYAOS settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  26-Nov-2013.
+# Last Change:  17-Sep-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -349,9 +349,7 @@ endif
 # Shebang: {{{
 source %NYAOS_DIR%\shebang\shebang.lua
 if %GIT_HOME.defined% -ne 0 then
-  shebang /bin/           "%GIT_HOME%\bin\"
-  shebang /usr/bin/       "%GIT_HOME%\bin\"
-  shebang /usr/local/bin/ "%GIT_HOME%\bin\"
+  shebang / "%GIT_HOME%\"
 endif
 if exist "%PYTHON_HOME%\python.exe" then
   shebang /usr/bin/python       "%PYTHON_HOME%\python.exe"
