@@ -2477,7 +2477,8 @@ if s:neobundle_tap('precious')
   endfunction
 
   function! neobundle#hooks.on_post_source(bundle)
-    let &statusline = substitute(&statusline, '%y', '%{Precious_y()}', '')
+    let &g:statusline = substitute(&g:statusline, '%y', '%{Precious_y()}', '')
+    let &g:statusline = substitute(&g:statusline, '%Y', '%{Precious_Y()}', '')
   endfunction
 
   function! Precious_y()
@@ -2491,6 +2492,19 @@ if s:neobundle_tap('precious')
       return '[' . b . ']'
     else
       return '[' . b . ':' . c . ']'
+    endif
+  endfunction
+  function! Precious_Y()
+    if empty(&l:filetype)
+      return ''
+    endif
+
+    let b = toupper(precious#base_filetype())
+    let c = toupper(precious#context_filetype())
+    if b == c
+      return b . ','
+    else
+      return b . ':' . c . ','
     endif
   endfunction
 
