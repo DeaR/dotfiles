@@ -2,7 +2,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Sep-2015.
+" Last Change:  28-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -59,7 +59,8 @@ function! s:cpucores()
     \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
     \ s:executable('nproc')           ? system('nproc') :
     \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
-    \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+    \ filereadable('/proc/cpuinfo')   ?
+    \   system('cat /proc/cpuinfo | grep -c "processor"') : '1')
   endif
   return s:_cpucores
 endfunction

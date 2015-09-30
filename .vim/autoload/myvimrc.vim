@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Sep-2015.
+" Last Change:  29-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -49,7 +49,8 @@ function! s:cpucores()
     \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
     \ s:executable('nproc')           ? system('nproc') :
     \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
-    \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+    \ filereadable('/proc/cpuinfo')   ?
+    \   system('cat /proc/cpuinfo | grep -c "processor"') : '1')
   endif
   return s:_cpucores
 endfunction
@@ -251,19 +252,6 @@ endfunction
 "}}}
 
 "------------------------------------------------------------------------------
-" Line Number: {{{
-function! myvimrc#toggle_line_number_style()
-  if !&l:number && !&l:relativenumber
-    setlocal number
-  elseif &l:relativenumber
-    setlocal nonumber norelativenumber
-  else
-    setlocal relativenumber
-  endif
-endfunction
-"}}}
-
-"------------------------------------------------------------------------------
 " Insert One Character: {{{
 function! myvimrc#insert_one_char(key)
   echohl ModeMsg
@@ -295,41 +283,71 @@ endfunction
 " Commands: {{{
 
 "------------------------------------------------------------------------------
-" Shell Setting: {{{
-function! myvimrc#get_shell()
-  return [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
-endfunction
-function! myvimrc#set_shell(value)
-  let [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote] =
-  \ a:value
-endfunction
+" Windows Shell: {{{
+if has('win32')
+  function! myvimrc#get_shell()
+    return [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
+  endfunction
+  function! myvimrc#set_shell(...)
+    let value = get(a:000, 0, [])
+    if empty(value)
+      set shell& shellslash& shellcmdflag& shellquote& shellxquote&
+    else
+      let [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote] = value
+    endif
+  endfunction
+
+  function! myvimrc#cmdescape(string, ...)
+    let special = get(a:000, 0)
+    let save_shell = myvimrc#get_shell()
+    try
+      call myvimrc#set_shell()
+      return shellescape(a:string, special)
+    finally
+      call myvimrc#set_shell(save_shell)
+    endtry
+  endfunction
+  function! myvimrc#cmdsource(...)
+    let save_shell = myvimrc#get_shell()
+    let save_isi   = &isident
+    try
+      call myvimrc#set_shell()
+      let env = system(join(a:000) . ' & set')
+
+      set isident+=(,)
+      for [name; rest] in map(split(env, '\n'), 'split(v:val, "=")')
+        let new = join(rest, '=')
+        execute 'let old=$' . name
+        if new != old
+          let cmd = 'let $' . name . '=' . string(new)
+          echo cmd
+          execute cmd
+        endif
+      endfor
+    finally
+      call myvimrc#set_shell(save_shell)
+      let &isident = save_isi
+    endtry
+  endfunction
+endif
 "}}}
 
 "------------------------------------------------------------------------------
-" VC Vars: {{{
-function! myvimrc#vcvarsall(arch)
-  let save_isi   = &isident
-  let save_shell = myvimrc#get_shell()
-  try
-    set isident+=( isident+=)
-    ShellCmd
-
-    let env = system(shellescape($VCVARSALL) . ' ' . a:arch . ' & set')
-    for matches in filter(map(split(env, '\n'),
-    \ 'matchlist(v:val, ''\([^=]\+\)=\(.*\)'')'), 'len(v:val) > 1')
-      " let ${matches[1]} = string(matches[2])
-      execute 'let $' . matches[1] . '=' . string(matches[2])
-    endfor
-  finally
-    let &isident = save_isi
-    call myvimrc#set_shell(save_shell)
-  endtry
+" Line Number Toggle: {{{
+function! myvimrc#line_number_toggle()
+  if !&l:number && !&l:relativenumber
+    setlocal number
+  elseif &l:relativenumber
+    setlocal nonumber norelativenumber
+  else
+    setlocal relativenumber
+  endif
 endfunction
 "}}}
 
 "------------------------------------------------------------------------------
 " QuickFix Toggle: {{{
-function! myvimrc#toggle_quickfix(type, height)
+function! myvimrc#quickfix_toggle(type, height)
   let w = winnr('$')
   execute a:type . 'close'
   if w == winnr('$')
@@ -584,13 +602,13 @@ if s:neobundle_tap('operator-user')
   \ get(g:, 'myvimrc#operator_grep_ui')
 
   function! s:get_grepprg_escape(grepprg)
-    if a:grepprg =~? 'jvgrep'
+    if a:grepprg =~? '\<jvgrep\>'
       return '\[](){}|.?+*^$'
-    elseif a:grepprg =~? 'ag'
+    elseif a:grepprg =~? '\<ag\>'
       return '\[](){}|.?+*^$'
-    elseif a:grepprg =~? 'grep'
+    elseif a:grepprg =~? '\<grep\>'
       return '\[].*^$'
-    elseif a:grepprg =~? 'findstr'
+    elseif a:grepprg =~? '\<findstr\>'
       return ''
     else
       return '\[].*^$'

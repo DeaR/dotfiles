@@ -1,7 +1,7 @@
 " Text Object Diff for Diff
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Sep-2015.
+" Last Change:  29-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -70,7 +70,7 @@ try
   \ 'to-diff/F', 'nx', 'br', '[',  '<Plug>(textobj-diff-file-P)')
   call submode#map(
   \ 'to-diff/F', 'nx', 'br', ']',  '<Plug>(textobj-diff-file-N)')
-catch /.*/
+catch
   nmap <buffer> [c <Plug>(textobj-diff-hunk-p)
   xmap <buffer> [c <Plug>(textobj-diff-hunk-p)
   nmap <buffer> ]c <Plug>(textobj-diff-hunk-n)

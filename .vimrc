@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Sep-2015.
+" Last Change:  30-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -51,8 +51,6 @@ if has('win32')
   language time C
 
   " Shell
-  let s:shell_cmd = get(s:, 'shell_cmd',
-  \ [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote])
   " set shell=sh
   " set shellslash
 
@@ -109,7 +107,8 @@ function! s:cpucores()
     \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
     \ s:executable('nproc')           ? system('nproc') :
     \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
-    \ filereadable('/proc/cpuinfo')   ? system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+    \ filereadable('/proc/cpuinfo')   ?
+    \   system('cat /proc/cpuinfo | grep -c "processor"') : '1')
   endif
   return s:_cpucores
 endfunction
@@ -303,13 +302,13 @@ endif
 
 " Grep
 if s:executable('jvgrep')
-  set grepprg=jvgrep\ -n
+  set grepprg=jvgrep\ -nI
 elseif s:executable('ag')
   set grepprg=ag\ --vimgrep\ --hidden
 elseif s:executable('grep')
-  set grepprg=grep\ -Hn
+  set grepprg=grep\ -nHI
 elseif has('win32') && s:executable('findstr')
-  set grepprg=findstr\ /n
+  set grepprg=findstr\ /np
 else
   set grepprg=internal
 endif
@@ -865,13 +864,6 @@ inoremap <expr> <M-L> '<C-O>' . myvimrc#eol_toggle()
 "}}}
 
 "------------------------------------------------------------------------------
-" Line Number: {{{
-nnoremap <F12>
-\ :<C-U>call myvimrc#toggle_line_number_style() <Bar>
-\ setlocal number? relativenumber?<CR>
-"}}}
-
-"------------------------------------------------------------------------------
 " Insert One Character: {{{
 nnoremap  <expr> <M-a> myvimrc#insert_one_char('a')
 NXnoremap <expr> <M-A> myvimrc#insert_one_char('A')
@@ -1057,14 +1049,21 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
-" Shell Setting: {{{
+" Windows Shell: {{{
 if has('win32')
   command! -bar
   \ ShellCmd
-  \ call myvimrc#set_shell(s:shell_cmd)
+  \ call myvimrc#set_shell() |
+  \ set shell? shellslash? shellcmdflag? shellquote? shellxquote?
   command! -bar -nargs=?
   \ ShellSh
-  \ call myvimrc#set_shell([!empty(<q-args>) ? <q-args> : 'sh', 1, '-c', '', '"'])
+  \ call myvimrc#set_shell(
+  \   [!empty(<q-args>) ? <q-args> : 'sh', 1, '-c', '', '"']) |
+  \ set shell? shellslash? shellcmdflag? shellquote? shellxquote?
+
+  command! -bar -nargs=+ -complete=file
+  \ CmdSource
+  \ call myvimrc#cmdsource(<args>)
 endif
 "}}}
 
@@ -1072,65 +1071,73 @@ endif
 " VC Vars: {{{
 if has('win32')
   if !exists('$VCVARSALL')
-    let s:save_ssl = &shellslash
-    try
-      set noshellslash
-      if exists('$VS120COMNTOOLS')
-        let $VCVARSALL = $VS120COMNTOOLS . '..\..\VC\vcvarsall.bat'
-      elseif exists('$VS110COMNTOOLS')
-        let $VCVARSALL = $VS110COMNTOOLS . '..\..\VC\vcvarsall.bat'
-      elseif exists('$VS100COMNTOOLS')
-        let $VCVARSALL = $VS100COMNTOOLS . '..\..\VC\vcvarsall.bat'
-      elseif exists('$VS90COMNTOOLS')
-        let $VCVARSALL = $VS90COMNTOOLS  . '..\..\VC\vcvarsall.bat'
-      elseif exists('$VS80COMNTOOLS')
-        let $VCVARSALL = $VS80COMNTOOLS  . '..\..\VC\vcvarsall.bat'
-      endif
-    finally
-      let &shellslash = s:save_ssl
-      unlet! s:save_ssl
-    endtry
-
-    if isdirectory(s:programfiles_x86 .
-    \ '\Microsoft SDKs\Windows\v7.1A\Include')
-      let $SDK_INCLUDE_DIR = s:programfiles_x86 .
-      \ '\Microsoft SDKs\Windows\v7.1A\Include'
-    elseif isdirectory(s:programfiles_x86 .
-    \ '\Microsoft SDKs\Windows\v7.1\Include')
-      let $SDK_INCLUDE_DIR = s:programfiles_x86 .
-      \ '\Microsoft SDKs\Windows\v7.1\Include'
-    elseif isdirectory(s:programfiles_x86 .
-    \ '\Microsoft SDKs\Windows\v7.0A\Include')
-      let $SDK_INCLUDE_DIR = s:programfiles_x86 .
-      \ '\Microsoft SDKs\Windows\v7.0A\Include'
-    elseif isdirectory(s:programfiles_x86 .
-    \ '\Microsoft SDKs\Windows\v7.0\Include')
-      let $SDK_INCLUDE_DIR = s:programfiles_x86 .
-      \ '\Microsoft SDKs\Windows\v7.0\Include'
+    if exists('$VS120COMNTOOLS')
+      let $VCVARSALL = $VS120COMNTOOLS . '..\..\VC\vcvarsall.bat'
+    elseif exists('$VS110COMNTOOLS')
+      let $VCVARSALL = $VS110COMNTOOLS . '..\..\VC\vcvarsall.bat'
+    elseif exists('$VS100COMNTOOLS')
+      let $VCVARSALL = $VS100COMNTOOLS . '..\..\VC\vcvarsall.bat'
+    elseif exists('$VS90COMNTOOLS')
+      let $VCVARSALL = $VS90COMNTOOLS  . '..\..\VC\vcvarsall.bat'
+    elseif exists('$VS80COMNTOOLS')
+      let $VCVARSALL = $VS80COMNTOOLS  . '..\..\VC\vcvarsall.bat'
+    endif
+  endif
+  if !exists('$SDK_INCLUDE_DIR')
+    if isdirectory(
+    \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.1A\Include')
+      let $SDK_INCLUDE_DIR =
+      \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.1A\Include'
+    elseif isdirectory(
+    \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.1\Include')
+      let $SDK_INCLUDE_DIR =
+      \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.1\Include'
+    elseif isdirectory(
+    \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.0A\Include')
+      let $SDK_INCLUDE_DIR =
+      \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.0A\Include'
+    elseif isdirectory(
+    \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.0\Include')
+      let $SDK_INCLUDE_DIR =
+      \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.0\Include'
     endif
   endif
 
   command! -bar
   \ VCVars32
-  \ call myvimrc#vcvarsall('x86')
+  \ call myvimrc#cmdsource(
+  \   myvimrc#cmdescape($VCVARSALL), 'x86')
 
   if exists('$PROGRAMFILES(X86)')
     command! -bar
     \ VCVars64
-    \ call myvimrc#vcvarsall(exists('PROCESSOR_ARCHITEW6432') ?
+    \ call myvimrc#cmdsource(
+    \   myvimrc#cmdescape($VCVARSALL),
+    \   exists('PROCESSOR_ARCHITEW6432') ?
     \   $PROCESSOR_ARCHITEW6432 : $PROCESSOR_ARCHITECTURE)
   endif
 endif
 "}}}
 
 "------------------------------------------------------------------------------
+" Line Number Toggle: {{{
+command! -bar
+\ LineNumberToggle
+\ call myvimrc#line_number_toggle() |
+\ set number? relativenumber?
+
+nnoremap <F12>
+\ :<C-U>LineNumberToggle<CR>
+"}}}
+
+"------------------------------------------------------------------------------
 " QuickFix Toggle: {{{
 command! -bar -nargs=?
 \ CToggle
-\ call myvimrc#toggle_quickfix('c', <q-args>)
+\ call myvimrc#quickfix_toggle('c', <q-args>)
 command! -bar -nargs=?
 \ LToggle
-\ call myvimrc#toggle_quickfix('l', <q-args>)
+\ call myvimrc#quickfix_toggle('l', <q-args>)
 
 NXnoremap <C-W>, :<C-U>CToggle<CR>
 NXnoremap <C-W>. :<C-U>LToggle<CR>
@@ -2548,7 +2555,7 @@ if s:neobundle_tap('quickrun')
     \ 'c/vc' : {
     \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
     \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-    \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)},
+    \   'hook/vcvarsall/bat' : myvimrc#cmdescape($VCVARSALL)},
     \
     \ 'cpp' : {
     \   'type' :
@@ -2559,7 +2566,7 @@ if s:neobundle_tap('quickrun')
     \ 'cpp/vc' : {
     \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
     \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-    \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)},
+    \   'hook/vcvarsall/bat' : myvimrc#cmdescape($VCVARSALL)},
     \
     \ 'cs' : {
     \   'type' :
@@ -2572,7 +2579,7 @@ if s:neobundle_tap('quickrun')
     \ 'cs/csc' : {
     \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
     \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-    \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)},
+    \   'hook/vcvarsall/bat' : myvimrc#cmdescape($VCVARSALL)},
     \
     \ 'vbnet' : {
     \   'type' :
@@ -2587,7 +2594,7 @@ if s:neobundle_tap('quickrun')
     \   'hook/sweep/files' : ['%s:p:r.exe'],
     \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
     \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-    \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)}})
+    \   'hook/vcvarsall/bat' : myvimrc#cmdescape($VCVARSALL)}})
 
     nnoremap <expr> <C-C>
     \ quickrun#is_running() ?
@@ -2846,13 +2853,13 @@ if s:neobundle_tap('submode')
     \ 'sq/paren', 'nx', '', ']', '])')
 
     call submode#enter_with(
-    \ 'sq/cc1', 'nx', '', '<Plug>(submode:sq/cc1:[)', '[*')
+    \ 'sq/comm/c', 'nx', '', '<Plug>(submode:sq/comm/c:[)', '[*')
     call submode#enter_with(
-    \ 'sq/cc1', 'nx', '', '<Plug>(submode:sq/cc1:])', ']*')
+    \ 'sq/comm/c', 'nx', '', '<Plug>(submode:sq/comm/c:])', ']*')
     call submode#map(
-    \ 'sq/cc1', 'nx', '', '[', '[*')
+    \ 'sq/comm/c', 'nx', '', '[', '[*')
     call submode#map(
-    \ 'sq/cc1', 'nx', '', ']', ']*')
+    \ 'sq/comm/c', 'nx', '', ']', ']*')
 
     call submode#enter_with(
     \ 'sq/mark/c', 'nx', '', '<Plug>(submode:sq/mark/c:[)', '[`')
@@ -2862,15 +2869,6 @@ if s:neobundle_tap('submode')
     \ 'sq/mark/c', 'nx', '', '[', '[`')
     call submode#map(
     \ 'sq/mark/c', 'nx', '', ']', ']`')
-
-    call submode#enter_with(
-    \ 'sq/cc2', 'nx', '', '<Plug>(submode:sq/cc2:[)', '[/')
-    call submode#enter_with(
-    \ 'sq/cc2', 'nx', '', '<Plug>(submode:sq/cc2:])', ']/')
-    call submode#map(
-    \ 'sq/cc2', 'nx', '', '[', '[/')
-    call submode#map(
-    \ 'sq/cc2', 'nx', '', ']', ']/')
 
     call submode#enter_with(
     \ 'sq/seq/b', 'nx', '', '<Plug>(submode:sq/seq/b:[)', '[[')
@@ -3164,12 +3162,12 @@ if s:neobundle_tap('submode')
   NXmap ]'           <Plug>(submode:sq/mark/l:])
   NXmap [(           <Plug>(submode:sq/paren:[)
   NXmap ])           <Plug>(submode:sq/paren:])
-  NXmap [*           <Plug>(submode:sq/cc1:[)
-  NXmap ]*           <Plug>(submode:sq/cc1:])
+  NXmap [*           <Plug>(submode:sq/comm/c:[)
+  NXmap ]*           <Plug>(submode:sq/comm/c:])
   NXmap [`           <Plug>(submode:sq/mark/c:[)
   NXmap ]`           <Plug>(submode:sq/mark/c:])
-  NXmap [/           <Plug>(submode:sq/cc2:[)
-  NXmap ]/           <Plug>(submode:sq/cc2:])
+  NXmap [/           <Plug>(submode:sq/comm/c:[)
+  NXmap ]/           <Plug>(submode:sq/comm/c:])
   NXmap [[           <Plug>(submode:sq/seq/b:[)
   NXmap ]]           <Plug>(submode:sq/seq/b:])
   NXmap []           <Plug>(submode:sq/seq/e:[)
@@ -4510,7 +4508,7 @@ endif
 if s:neobundle_tap('vimshell')
   function! neobundle#hooks.on_source(bundle)
     let g:vimshell_data_directory           = $HOME . '/.local/.cache/vimshell'
-    let g:vimshell_vimshrc_path             = $HOME . '/.vim/.vimshrc'
+    let g:vimshell_vimshrc_path             = $HOME . '/.vim/vimshrc'
     let g:vimshell_max_command_history      = 100000
     let g:vimshell_no_save_history_commands = {}
     let g:vimshell_scrollback_limit         = 500
@@ -4667,7 +4665,7 @@ if s:neobundle_tap('watchdogs')
     \ 'watchdogs_checker/msvc' : {
     \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
     \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-    \   'hook/vcvarsall/bat' : shellescape($VCVARSALL)},
+    \   'hook/vcvarsall/bat' : myvimrc#cmdescape($VCVARSALL)},
     \
     \ 'vim/watchdogs_checker' : {
     \   'type' : ''}})
