@@ -1,7 +1,7 @@
 " Ftplugin for J
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  30-Sep-2015.
+" Last Change:  02-Oct-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -94,15 +94,15 @@ try
   nmap <buffer> ][ <Plug>(submode:j/seq/e:])
   xmap <buffer> ][ <Plug>(submode:j/seq/e:])
 catch
-  execute 'nmap <buffer> [[' s:n['[[']
-  execute 'xmap <buffer> [[' s:x['[[']
-  execute 'nmap <buffer> ]]' s:n[']]']
-  execute 'xmap <buffer> ]]' s:x[']]']
+  execute 'nnoremap <buffer><silent> [[' s:n['[[']
+  execute 'xnoremap <buffer><silent> [[' s:x['[[']
+  execute 'nnoremap <buffer><silent> ]]' s:n[']]']
+  execute 'xnoremap <buffer><silent> ]]' s:x[']]']
 
-  execute 'nmap <buffer> []' s:n['[]']
-  execute 'xmap <buffer> []' s:x['[]']
-  execute 'nmap <buffer> ][' s:n['][']
-  execute 'xmap <buffer> ][' s:x['][']
+  execute 'nnoremap <buffer><silent> []' s:n['[]']
+  execute 'xnoremap <buffer><silent> []' s:x['[]']
+  execute 'nnoremap <buffer><silent> ][' s:n['][']
+  execute 'xnoremap <buffer><silent> ][' s:x['][']
 endtry
 
 if exists('b:undo_ftplugin')

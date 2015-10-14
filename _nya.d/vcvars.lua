@@ -1,7 +1,7 @@
 -- Visual Studio prompt for NYAOS 3.x
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  14-Sep-2015.
+-- Last Change:  13-Oct-2015.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -26,7 +26,7 @@
 -- }}}
 
 if nyaos.command.cmdsource then
-  function nyaos.command.sdk_include_dir()
+  function sdk_include_dir()
     local programfiles = os.getenv(os.getenv('PROGRAMFILES(X86)') and 'PROGRAMFILES(X86)' or 'PROGRAMFILES')
     local dir71a  = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1A\\Include'
     local dir71   = programfiles .. '\\Microsoft SDKs\\Windows\\v7.1\\Include'
@@ -47,7 +47,7 @@ if nyaos.command.cmdsource then
     end
   end
 
-  local vscomntools = os.getenv('VS120COMNTOOLS') or os.getenv('VS110COMNTOOLS') or os.getenv('VS100COMNTOOLS') or os.getenv('VS90COMNTOOLS') or os.getenv('VS80COMNTOOLS')
+  local vscomntools = os.getenv('VS140COMNTOOLS') or os.getenv('VS120COMNTOOLS') or os.getenv('VS110COMNTOOLS') or os.getenv('VS100COMNTOOLS') or os.getenv('VS90COMNTOOLS') or os.getenv('VS80COMNTOOLS')
   if vscomntools and nyaos.access(vscomntools .. '../../VC/vcvarsall.bat', 0) then
     function nyaos.command.vcvars32()
       nyaos.putenv('CC', nil)
@@ -58,7 +58,7 @@ if nyaos.command.cmdsource then
       nyaos.putenv('LIBRARY_PATH', nil)
       nyaos.command.cmdsource(vscomntools .. '../../VC/vcvarsall.bat', 'x86')
 
-      nyaos.command.sdk_include_dir()
+      sdk_include_dir()
     end
     local arch = os.getenv('PROCESSOR_ARCHITEW6432') or os.getenv('PROCESSOR_ARCHITECTURE')
     if arch and os.getenv('PROGRAMFILES(X86)') then
@@ -71,7 +71,7 @@ if nyaos.command.cmdsource then
         nyaos.putenv('LIBRARY_PATH', nil)
         nyaos.command.cmdsource(vscomntools .. '../../VC/vcvarsall.bat', arch)
 
-        nyaos.command.sdk_include_dir()
+        sdk_include_dir()
       end
     end
   end

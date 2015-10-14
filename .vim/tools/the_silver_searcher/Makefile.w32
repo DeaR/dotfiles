@@ -1,4 +1,0 @@
-include Makefile.w32
-
-CFLAGS = -O2 -Isrc/win32 -DPACKAGE_VERSION=\"$(VERSION)\" -I$(HOME)/.vim/tools/the_silver_searcher
-LIBS = -lz -lpthread $(HOME)/bin/libpcre.dll -llzma -lshlwapi

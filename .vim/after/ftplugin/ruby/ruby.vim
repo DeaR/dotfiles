@@ -1,7 +1,7 @@
 " Ftplugin for Ruby
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  30-Sep-2015.
+" Last Change:  02-Oct-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -146,25 +146,25 @@ try
   nmap <buffer> ][ <Plug>(submode:rb/seq/e:])
   xmap <buffer> ][ <Plug>(submode:rb/seq/e:])
 catch
-  execute 'nmap <buffer> [m' s:n['[m']
-  execute 'xmap <buffer> [m' s:x['[m']
-  execute 'nmap <buffer> ]m' s:n[']m']
-  execute 'xmap <buffer> ]m' s:x[']m']
+  execute 'nnoremap <buffer><silent> [m' s:n['[m']
+  execute 'xnoremap <buffer><silent> [m' s:x['[m']
+  execute 'nnoremap <buffer><silent> ]m' s:n[']m']
+  execute 'xnoremap <buffer><silent> ]m' s:x[']m']
 
-  execute 'nmap <buffer> [M' s:n['[M']
-  execute 'xmap <buffer> [M' s:x['[M']
-  execute 'nmap <buffer> ]M' s:n[']M']
-  execute 'xmap <buffer> ]M' s:x[']M']
+  execute 'nnoremap <buffer><silent> [M' s:n['[M']
+  execute 'xnoremap <buffer><silent> [M' s:x['[M']
+  execute 'nnoremap <buffer><silent> ]M' s:n[']M']
+  execute 'xnoremap <buffer><silent> ]M' s:x[']M']
 
-  execute 'nmap <buffer> [[' s:n['[[']
-  execute 'xmap <buffer> [[' s:x['[[']
-  execute 'nmap <buffer> ]]' s:n[']]']
-  execute 'xmap <buffer> ]]' s:x[']]']
+  execute 'nnoremap <buffer><silent> [[' s:n['[[']
+  execute 'xnoremap <buffer><silent> [[' s:x['[[']
+  execute 'nnoremap <buffer><silent> ]]' s:n[']]']
+  execute 'xnoremap <buffer><silent> ]]' s:x[']]']
 
-  execute 'nmap <buffer> []' s:n['[]']
-  execute 'xmap <buffer> []' s:x['[]']
-  execute 'nmap <buffer> ][' s:n['][']
-  execute 'xmap <buffer> ][' s:x['][']
+  execute 'nnoremap <buffer><silent> []' s:n['[]']
+  execute 'xnoremap <buffer><silent> []' s:x['[]']
+  execute 'nnoremap <buffer><silent> ][' s:n['][']
+  execute 'xnoremap <buffer><silent> ][' s:x['][']
 endtry
 
 if exists('b:undo_ftplugin')

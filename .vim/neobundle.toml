@@ -1,7 +1,7 @@
 # NeoBundle settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  20-Sep-2015.
+# Last Change:  14-Oct-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -113,7 +113,11 @@ insert = 1
 repository = 'deris/columnjump'
 commands = ['ColumnJumpBackward', 'ColumnJumpForward']
 mappings = [['nvo', '<Plug>'], ['nvo', '<Plug>(submode:coljmp']]
-depends = 'kana/vim-submode'
+# depends = 'kana/vim-submode'
+
+  [[plugins.depends]]
+  repository = 'DeaR/vim-submode'
+  rev = 'reduce-lhs'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -145,6 +149,104 @@ fetch = 1
   [plugins.build]
   windows = '..\\..\\..\\.vim\\tools\\ctags\\build.bat'
   others = 'autoreconf -vfi && ./configure && make && sudo make install'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'kien/ctrlp.vim'
+commands = ['CtrlPBuffer', 'CtrlPLastMode', 'CtrlPClearCache', 'CtrlPClearAllCaches', 'ClearCtrlPCache', 'ClearAllCtrlPCaches', 'CtrlPCurWD', 'CtrlPCurFile', 'CtrlPRoot', 'CtrlPTag', 'CtrlPQuickfix', 'CtrlPBufTagAll', 'CtrlPRTS', 'CtrlPUndo', 'CtrlPChangeAll', 'CtrlPMixed', 'CtrlPBookmarkDir']
+lazy = 0
+
+  [[plugins.commands]]
+  name = ['CtrlP', 'CtrlPMRUFiles', 'CtrlPDir', 'CtrlPBookmarkDirAdd']
+  complete = 'dir'
+
+  [[plugins.commands]]
+  name = ['CtrlPBufTag', 'CtrlPLine', 'CtrlPChange']
+  complete = 'buffer'
+
+  [[plugins.depends]]
+  repository = 'FelikZ/ctrlp-py-matcher'
+  disabled = '!has("python") && !has("python3")'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'kshenoy/vim-ctrlp-args'
+commands = 'CtrlPArgs'
+depends = 'kien/ctrlp.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'DeaR/ctrlp-chdir'
+depends = 'kien/ctrlp.vim'
+
+  [[plugins.commands]]
+  name = ['CtrlPChdir', 'CtrlPLchdir']
+  complete = 'dir'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'hara/ctrlp-colorscheme'
+depends = 'kien/ctrlp.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'naquad/ctrlp-filetype'
+commands = 'CtrlPFileType'
+depends = 'kien/ctrlp.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'zeero/vim-ctrlp-help'
+commands = 'CtrlPHelp'
+depends = 'kien/ctrlp.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'DeaR/ctrlp-jumps'
+commands = 'CtrlPJump'
+depends = 'kien/ctrlp.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'ompugao/ctrlp-locate'
+commands = 'CtrlPLocate'
+depends = 'kien/ctrlp.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'DeaR/ctrlp-location-list'
+commands = ['CtrlPLocList', 'CtrlPLocListAll']
+depends = 'kien/ctrlp.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'mattn/ctrlp-mark'
+commands = 'CtrlPMark'
+depends = 'kien/ctrlp.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'mattn/ctrlp-register'
+commands = 'CtrlPRegister'
+depends = 'kien/ctrlp.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'DeaR/ctrlp-tabpage'
+commands = 'CtrlPTabpage'
+depends = 'kien/ctrlp.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'mattn/ctrlp-vimpatches'
+commands = 'CtrlPVimPatches'
+depends = ['kien/ctrlp.vim', 'mattn/webapi-vim']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repository = 'DeaR/ctrlp-window'
+commands = ['CtrlPWindow', 'CtrlPWindowAll']
+depends = 'kien/ctrlp.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -522,7 +624,7 @@ filetypes = 'all'
 commands = ['NeoMRUReload', 'NeoMRUSave']
 augroup = 'neomru'
 unite_sources = ['neomru/', 'file_mru', 'directory_mru']
-lazy = 0
+# lazy = 0
 
   [[plugins.commands]]
   name = ['NeoMRUImportFile', 'NeoMRUImportDirectory']
@@ -830,7 +932,11 @@ depends = 'kana/vim-operator-user'
 repository = 'kana/vim-repeat'
 commands = ['RepeatDefaultKeyMappings']
 mappings = [['n', '<Plug>'], ['n', '<Plug>(submode:rep/']]
-depends = 'kana/vim-submode'
+# depends = 'kana/vim-submode'
+
+  [[plugins.depends]]
+  repository = 'DeaR/vim-submode'
+  rev = 'reduce-lhs'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -924,7 +1030,7 @@ lazy = 0
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'DeaR/vim-tabpagebuffer-misc'
-commands = ['TpbFiles', 'TpbBuffers', 'TpbLs', 'TpbDeleteAll', 'TpbWipeoutAll', 'TpbUnloadAll', 'TpbNext', 'TpbPrevious', 'TpbModified', 'TpbModifiedNext', 'TpbModifiedPrevious', 'STpbNext', 'STpbPrevious', 'STpbModified', 'STpbModifiedNext', 'STpbModifiedPrevious', 'VTpbNext', 'VTpbPrevious', 'VTpbModified', 'VTpbModifiedNext', 'VTpbModifiedPrevious', 'TTpbNext', 'TTpbPrevious', 'TTpbModified', 'TTpbModifiedNext', 'TTpbModifiedPrevious', 'TpbRewind', 'TpbFirst', 'TpbLast', 'TpbModifiedRewind', 'TpbModifiedFirst', 'TpbModifiedLast', 'STpbRewind', 'STpbFirst', 'STpbLast', 'STpbModifiedRewind', 'STpbModifiedFirst', 'STpbModifiedLast', 'VTpbRewind', 'VTpbFirst', 'VTpbLast', 'VTpbModifiedRewind', 'VTpbModifiedFirst', 'VTpbModifiedLast', 'TTpbRewind', 'TTpbFirst', 'TTpbLast', 'TTpbModifiedRewind', 'TTpbModifiedFirst', 'TTpbModifiedLast', 'TpbUnhide', 'STpbUnhide', 'VTpbUnhide', 'TTpbUnhide', 'TpbAll', 'STpbAll', 'VTpbAll', 'TTpbAll']
+commands = ['TpbFiles', 'TpbBuffers', 'TpbLs', 'TpbDeleteAll', 'TpbWipeoutAll', 'TpbUnloadAll', 'TpbNext', 'TpbPrevious', 'TpbModified', 'TpbModifiedNext', 'TpbModifiedPrevious', 'STpbNext', 'STpbPrevious', 'STpbModified', 'STpbModifiedNext', 'STpbModifiedPrevious', 'VTpbNext', 'VTpbPrevious', 'VTpbModified', 'VTpbModifiedNext', 'VTpbModifiedPrevious', 'TTpbNext', 'TTpbPrevious', 'TTpbModified', 'TTpbModifiedNext', 'TTpbModifiedPrevious', 'TpbRewind', 'TpbFirst', 'TpbLast', 'TpbModifiedRewind', 'TpbModifiedFirst', 'TpbModifiedLast', 'STpbRewind', 'STpbFirst', 'STpbLast', 'STpbModifiedRewind', 'STpbModifiedFirst', 'STpbModifiedLast', 'VTpbRewind', 'VTpbFirst', 'VTpbLast', 'VTpbModifiedRewind', 'VTpbModifiedFirst', 'VTpbModifiedLast', 'TTpbRewind', 'TTpbFirst', 'TTpbLast', 'TTpbModifiedRewind', 'TTpbModifiedFirst', 'TTpbModifiedLast', 'TpbUnhide', 'STpbUnhide', 'VTpbUnhide', 'TTpbUnhide', 'TpbAll', 'STpbAll', 'VTpbAll', 'TTpbAll', 'CtrlPTabpageBuffer']
 functions = ['TbpList', 'TbpExists', 'TbpName', 'TbpNr']
 
   [[plugins.commands]]
@@ -968,7 +1074,12 @@ filetypes = 'javascript'
 repository = 't9md/vim-textmanip'
 commands = ['TextmanipToggleMode', 'TextmanipToggleIgnoreShiftWidth']
 mappings = [['nv', '<Plug>'], ['nvo', '<Plug>(operator-textmanip', '<Plug>(submode:tm/']]
-depends = ['kana/vim-operator-user', 'kana/vim-submode']
+# depends = ['kana/vim-operator-user', 'kana/vim-submode']
+depends = ['kana/vim-operator-user']
+
+  [[plugins.depends]]
+  repository = 'DeaR/vim-submode'
+  rev = 'reduce-lhs'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -1188,18 +1299,6 @@ depends = 'kana/vim-textobj-user'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repository = 'ggreer/the_silver_searcher'
-fetch = 1
-
-  [plugins.external_commands]
-  windows = 'mingw32-make'
-
-  [plugins.build]
-  windows = '..\\..\\..\\.vim\\tools\\the_silver_searcher\\build.bat'
-  others = './build.sh && sudo make install'
-
-#------------------------------------------------------------------------------
-[[plugins]]
 repository = 'thinca/vim-themis'
 filetypes = 'vimspec'
 
@@ -1246,6 +1345,11 @@ unite_sources = 'build'
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repository = 'ujihisa/unite-colorscheme'
+unite_sources = 'colorscheme'
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repository = 'osyo-manga/unite-filetype'
 unite_sources = 'filetype'
 
@@ -1267,8 +1371,7 @@ unite_sources = 'history/'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'KamunagiChiduru/unite-javaimport'
-# commsnds = ['JavaImportClearCache', 'JavaImportSortStatements', 'JavaImportRemoveUnnecessaries', 'CtrlPJavaImportClass', 'CtrlPJavaImportField', 'CtrlPJavaImportMethod']
-commsnds = ['JavaImportClearCache', 'JavaImportSortStatements', 'JavaImportRemoveUnnecessaries']
+commands = ['JavaImportClearCache', 'JavaImportSortStatements', 'JavaImportRemoveUnnecessaries', 'CtrlPJavaImportClass', 'CtrlPJavaImportField', 'CtrlPJavaImportMethod']
 mappings = [['n', '<Plug>(javaimport']]
 unite_sources = 'javaimport/'
 depends = ['universal-ctags/ctags', 'kamichidu/vim-javaclasspath', 'Shougo/vimproc.vim']
@@ -1342,6 +1445,11 @@ unite_sources = 'webcolorname'
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repository = 'osyo-manga/unite-vimpatches'
+unite_sources = 'vimpatches'
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repository = 'vbnet.vim'
 filetypes = 'vbnet'
 
@@ -1397,11 +1505,11 @@ commands = ['VimProcInstall']
   name = ['VimProcBang', 'VimProcRead']
   complete = 'shellcmd'
 
-  [plugins.build_commands]
-  windows = 0
+  [plugins.external_commands]
+  windows = 'mingw32-make'
 
   [plugins.build]
-  # windows = '..\\..\\..\\.vim\\tools\\vimproc\\build.bat nodebug=1'
+  windows = 'tools\\update-dll-mingw'
   unix = 'gmake'
   others = 'make'
 
@@ -1474,7 +1582,7 @@ repository = 'mattn/webapi-vim'
 #------------------------------------------------------------------------------
 [[plugins]]
 repository = 'LeafCage/yankround.vim'
-# commands = 'CtrlPYankRound'
+commands = 'CtrlPYankRound'
 mappings = [['nxc', '<Plug>']]
 unite_sources = 'yankround'
 lazy = 0

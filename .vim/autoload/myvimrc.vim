@@ -2,7 +2,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  29-Sep-2015.
+" Last Change:  05-Oct-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -89,8 +89,9 @@ endfunction
 
 " Check enabled bundle
 function! s:is_enabled_bundle(name)
-  return exists('*neobundle#get') &&
-  \ !get(neobundle#get(a:name), 'disabled', 1)
+  return
+  \ exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1) &&
+  \ exists('*neobundle#is_installed') && !neobundle#is_installed(a:name)
 endfunction
 
 " Cached executable
@@ -190,6 +191,17 @@ endfunction
 " Search: {{{
 function! myvimrc#search_forward_expr()
   return exists('v:searchforward') ? v:searchforward : 1
+endfunction
+"}}}
+
+"------------------------------------------------------------------------------
+" Leader Prefix: {{{
+function! myvimrc#expand(expr, ...)
+  let nosuf = get(a:000, 0)
+  let list  = get(a:000, 1)
+  return expand(a:expr .
+  \ (exists('+shellslash') && !&shellslash ? ':gs?\\?/?' : ''),
+  \ nosuf, list)
 endfunction
 "}}}
 
@@ -439,6 +451,18 @@ endif
 "}}}
 
 "------------------------------------------------------------------------------
+" CtrlP: {{{
+if s:neobundle_tap('ctrlp')
+  function! myvimrc#ctrlp_no_empty(command, ...)
+    execute a:command join(a:000)
+    if empty(ctrlp#getvar('s:lines'))
+      call ctrlp#exit()
+    endif
+  endfunction
+endif
+"}}}
+
+"------------------------------------------------------------------------------
 " IncSearch: {{{
 if s:neobundle_tap('incsearch')
   function! myvimrc#incsearch_next()
@@ -603,8 +627,6 @@ if s:neobundle_tap('operator-user')
 
   function! s:get_grepprg_escape(grepprg)
     if a:grepprg =~? '\<jvgrep\>'
-      return '\[](){}|.?+*^$'
-    elseif a:grepprg =~? '\<ag\>'
       return '\[](){}|.?+*^$'
     elseif a:grepprg =~? '\<grep\>'
       return '\[].*^$'
@@ -800,15 +822,6 @@ if s:neobundle_tap('textmanip')
   function! myvimrc#operator_textmanip_move_up(motion_wise)
     call s:operator_textmanip(
     \ a:motion_wise, "\<Plug>(textmanip-move-up)")
-  endfunction
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" Unite Mark: {{{
-if s:neobundle_tap('unite-mark')
-  function! myvimrc#unite_source_mark_marks()
-    return s:mark_char . s:file_mark_char
   endfunction
 endif
 "}}}

@@ -1,7 +1,7 @@
 # GNU screen settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  05-Oct-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -27,6 +27,7 @@
 
 #------------------------------------------------------------------------------
 # Option: {{{
+maptimeout 1
 altscreen on
 attrcolor b ".I"
 autodetach on
