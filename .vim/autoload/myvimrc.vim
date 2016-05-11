@@ -1,8 +1,9 @@
 scriptencoding utf-8
+
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  05-Oct-2015.
+" Last Change:  11-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -24,7 +25,7 @@ scriptencoding utf-8
 "     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
 "     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-"}}}
+" }}}
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -35,7 +36,7 @@ set cpo&vim
 "------------------------------------------------------------------------------
 " Common: {{{
 " Script ID
-function! s:SID()
+function! s:SID() abort
   if !exists('s:_SID')
     let s:_SID = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
   endif
@@ -43,28 +44,73 @@ function! s:SID()
 endfunction
 
 " CPU Cores
-function! s:cpucores()
+function! s:cpucores() abort
   if !exists('s:_cpucores')
     let s:_cpucores = str2nr(
     \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
     \ s:executable('nproc')           ? system('nproc') :
     \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
+    \ s:executable('sysctl')          ? system('sysctl hw.ncpu') :
     \ filereadable('/proc/cpuinfo')   ?
-    \   system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+    \   len(filter(readfile('/proc/cpuinfo'), 'v:val =~ "processor"')) : '1')
   endif
   return s:_cpucores
 endfunction
 
-" Check Vim version
-function! s:has_patch(major, minor, patch)
-  let l:version = (a:major * 100 + a:minor)
-  return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
-  \ (v:version > l:version) ||
-  \ (v:version == l:version && has('patch' . a:patch))
+" Cached executable
+let s:_executable = {}
+function! s:executable(expr) abort
+  if !has_key(s:_executable, a:expr)
+    let s:_executable[a:expr] = executable(a:expr)
+  endif
+  return s:_executable[a:expr]
 endfunction
 
+" Check japanese
+let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
+
+" Check colored UI
+let s:is_colored_ui = has('gui_running') || has('termguicolors') || &t_Co > 255
+
+" Check JIS X 0213
+let s:has_jisx0213 = has('iconv') &&
+\ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+
+" $PROGRAMFILES
+if has('win32')
+  let s:save_isi = &isident
+  try
+    set isident+=(,)
+    let s:arch = exists('$PROGRAMFILES(X86)')
+    let s:pf64 = exists('$PROGRAMW6432') ?
+    \ $PROGRAMW6432 : $PROGRAMFILES
+    let s:pf32 = exists('$PROGRAMFILES(X86)') ?
+    \ $PROGRAMFILES(X86) : $PROGRAMFILES
+  finally
+    let &isident = s:save_isi
+    unlet! s:save_isi
+  endtry
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" Wrapper: {{{
+" Vim.Compat.has_version
+" 7.4.237  (after 7.4.236) has() not checking for specific patch
+if has('patch-7.4.237')
+  function! s:has_patch(args) abort
+    return has('patch-' . a:args)
+  endfunction
+else
+  function! s:has_patch(args) abort
+    let a = split(a:args, '\.')
+    let v = a[0] * 100 + a[1]
+    return v:version > v || v:version == v && has('patch' . a[2])
+  endfunction
+endif
+
 " Check vimproc
-function! s:has_vimproc()
+function! s:has_vimproc() abort
   if !exists('s:_has_vimproc')
     try
       call vimproc#version()
@@ -76,57 +122,17 @@ function! s:has_vimproc()
   return s:_has_vimproc
 endfunction
 
-" Wrapped doautocmd
-function! s:doautocmd(...)
-  let nomodeline = s:has_patch(7, 3, 438) ? '<nomodeline>' : ''
-  execute 'doautocmd' nomodeline join(a:000)
+" dein#tap
+function! s:dein_tap(name) abort
+  return exists('*dein#tap') && dein#tap(a:name)
 endfunction
 
-" Wrapped neobundle#tap
-function! s:neobundle_tap(name)
-  return exists('*neobundle#tap') && neobundle#tap(a:name)
+" dein#get().if
+function! s:dein_if(name) abort
+  return exists('*dein#get') && !empty(dein#get(a:name))
 endfunction
-
-" Check enabled bundle
-function! s:is_enabled_bundle(name)
-  return
-  \ exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1) &&
-  \ exists('*neobundle#is_installed') && !neobundle#is_installed(a:name)
-endfunction
-
-" Cached executable
-let s:_executable = {}
-function! s:executable(expr)
-  if !has_key(s:_executable, a:expr)
-    let s:_executable[a:expr] = executable(a:expr)
-  endif
-  return s:_executable[a:expr]
-endfunction
-
-" Get "Program Files" of 32bit
-if has('win32')
-  let s:save_isi = &isident
-  try
-    set isident+=(,)
-    let s:programfiles_x86 = expand(exists('$PROGRAMFILES(X86)') ?
-    \ '$PROGRAMFILES(X86)' : '$PROGRAMFILES')
-  finally
-    let &isident = s:save_isi
-    unlet! s:save_isi
-  endtry
-endif
-
-" Check japanese
-let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
-
-" Check colored UI
-let s:is_colored = has('gui_running') || &t_Co > 255
-
-" Check JIS X 0213
-let s:has_jisx0213 = has('iconv') &&
-\ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
-"}}}
-"}}}
+" }}}
+" }}}
 
 "==============================================================================
 " Mappings: {{{
@@ -134,14 +140,14 @@ let s:has_jisx0213 = has('iconv') &&
 "------------------------------------------------------------------------------
 " Common: {{{
 " Split Nicely
-function! myvimrc#split_nicely_expr()
+function! myvimrc#split_nicely_expr() abort
   return &columns < 160
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Command Line: {{{
-function! myvimrc#cmdwin_enter(type)
+function! myvimrc#cmdwin_enter(type) abort
   let s:save_bs = &backspace
   set backspace=
   setlocal nocursorcolumn
@@ -165,52 +171,52 @@ function! myvimrc#cmdwin_enter(type)
 
   nnoremap <buffer><silent> q :<C-U>quit<CR>
 endfunction
-function! myvimrc#cmdwin_leave(type)
+function! myvimrc#cmdwin_leave(type) abort
   let &backspace = s:save_bs
 endfunction
 
-function! myvimrc#cmdline_enter(type)
+function! myvimrc#cmdline_enter(type) abort
   if exists('#User#CmdlineEnter')
-    call s:doautocmd('User', 'CmdlineEnter')
+    call compat#doautocmd('<nomodeline>', 'User', 'CmdlineEnter')
   endif
   return a:type
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Escape Key: {{{
-function! myvimrc#escape_key()
+function! myvimrc#escape_key() abort
   if exists('#User#EscapeKey')
-    call s:doautocmd('User', 'EscapeKey')
+    call compat#doautocmd('<nomodeline>', 'User', 'EscapeKey')
   endif
   return "\<Esc>:\<C-U>nohlsearch\<CR>"
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Search: {{{
-function! myvimrc#search_forward_expr()
+function! myvimrc#search_forward_expr() abort
   return exists('v:searchforward') ? v:searchforward : 1
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Leader Prefix: {{{
-function! myvimrc#expand(expr, ...)
+function! myvimrc#expand(expr, ...) abort
   let nosuf = get(a:000, 0)
   let list  = get(a:000, 1)
   return expand(a:expr .
   \ (exists('+shellslash') && !&shellslash ? ':gs?\\?/?' : ''),
   \ nosuf, list)
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Auto Mark: {{{
 let s:mark_char      = 'abcdefghijklmnopqrstuvwxyz'
 let s:file_mark_char = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
-function! s:get_mark_pos()
+function! s:get_mark_pos() abort
   let pos = (get(b:, 'mark_pos', -1) + 1) % len(s:mark_char)
   for i in range(pos, len(s:mark_char)) + range(0, pos)
     try
@@ -221,15 +227,15 @@ function! s:get_mark_pos()
   endfor
   return pos
 endfunction
-function! myvimrc#auto_mark()
+function! myvimrc#auto_mark() abort
   let b:mark_pos = s:get_mark_pos()
   return ":\<C-U>mark " . s:mark_char[b:mark_pos] . "\<CR>"
 endfunction
-function! myvimrc#clear_marks()
+function! myvimrc#clear_marks() abort
   let b:mark_pos = -1
   return ":\<C-U>delmarks " . s:mark_char . "\<CR>"
 endfunction
-function! s:get_file_mark_pos()
+function! s:get_file_mark_pos() abort
   let pos = (get(s:, 'file_mark_pos', -1) + 1) % len(s:file_mark_char)
   for i in range(pos, len(s:file_mark_char)) + range(0, pos)
     try
@@ -240,32 +246,32 @@ function! s:get_file_mark_pos()
   endfor
   return pos
 endfunction
-function! myvimrc#auto_file_mark()
+function! myvimrc#auto_file_mark() abort
   let s:file_mark_pos = s:get_file_mark_pos()
   return ":\<C-U>mark " . s:file_mark_char[s:file_mark_pos] . "\<CR>"
 endfunction
-function! myvimrc#clear_file_marks()
+function! myvimrc#clear_file_marks() abort
   let s:file_mark_pos = -1
   return ":\<C-U>rviminfo | delmarks " . s:file_mark_char . " | wviminfo!\<CR>"
 endfunction
-function! myvimrc#marks()
+function! myvimrc#marks() abort
   return ":\<C-U>marks " . s:mark_char . s:file_mark_char . "\<CR>"
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " BOL Toggle: {{{
-function! myvimrc#bol_toggle()
+function! myvimrc#bol_toggle() abort
   return col('.') <= 1 || col('.') > match(getline('.'), '^\s*\zs') + 1 ? '^' : '0'
 endfunction
-function! myvimrc#eol_toggle()
+function! myvimrc#eol_toggle() abort
   return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Insert One Character: {{{
-function! myvimrc#insert_one_char(key)
+function! myvimrc#insert_one_char(key) abort
   echohl ModeMsg
   if s:is_lang_ja
     echo '-- 挿入 (1文字) --'
@@ -275,11 +281,11 @@ function! myvimrc#insert_one_char(key)
   echohl None
   return a:key . nr2char(getchar()) . "\<Esc>"
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
-" Force Blockwise Insert: {{{
-function! myvimrc#force_blockwise_insert(key)
+" Blockwise Insert: {{{
+function! myvimrc#blockwise_insert(key) abort
   if mode() ==# 'v'
     return "\<C-V>" . a:key
   elseif mode() ==# 'V'
@@ -288,8 +294,8 @@ function! myvimrc#force_blockwise_insert(key)
     return a:key
   endif
 endfunction
-"}}}
-"}}}
+" }}}
+" }}}
 
 "==============================================================================
 " Commands: {{{
@@ -297,10 +303,10 @@ endfunction
 "------------------------------------------------------------------------------
 " Windows Shell: {{{
 if has('win32')
-  function! myvimrc#get_shell()
+  function! myvimrc#get_shell() abort
     return [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
   endfunction
-  function! myvimrc#set_shell(...)
+  function! myvimrc#set_shell(...) abort
     let value = get(a:000, 0, [])
     if empty(value)
       set shell& shellslash& shellcmdflag& shellquote& shellxquote&
@@ -309,7 +315,7 @@ if has('win32')
     endif
   endfunction
 
-  function! myvimrc#cmdescape(string, ...)
+  function! myvimrc#cmdescape(string, ...) abort
     let special = get(a:000, 0)
     let save_shell = myvimrc#get_shell()
     try
@@ -319,7 +325,7 @@ if has('win32')
       call myvimrc#set_shell(save_shell)
     endtry
   endfunction
-  function! myvimrc#cmdsource(...)
+  function! myvimrc#cmdsource(...) abort
     let save_shell = myvimrc#get_shell()
     let save_isi   = &isident
     try
@@ -342,39 +348,39 @@ if has('win32')
     endtry
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Line Number Toggle: {{{
-function! myvimrc#line_number_toggle()
-  if !&l:number && !&l:relativenumber
+function! myvimrc#line_number_toggle() abort
+  if !&number && !&relativenumber
     setlocal number
-  elseif &l:relativenumber
+  elseif &relativenumber
     setlocal nonumber norelativenumber
   else
     setlocal relativenumber
   endif
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " QuickFix Toggle: {{{
-function! myvimrc#quickfix_toggle(type, height)
+function! myvimrc#quickfix_toggle(type, height) abort
   let w = winnr('$')
   execute a:type . 'close'
   if w == winnr('$')
-    execute a:type . 'window' a:height
+    execute a:type . 'open' a:height
   endif
 endfunction
-"}}}
-"}}}
+" }}}
+" }}}
 
 "==============================================================================
 " Auto Command: {{{
 
 "------------------------------------------------------------------------------
 " Auto MkDir: {{{
-function! myvimrc#auto_mkdir(dir, force)
+function! myvimrc#auto_mkdir(dir, force) abort
   if s:is_lang_ja
     let msg = '"' . a:dir . '" は存在しません。作成しますか?'
     let choices = "はい(&Y)\nいいえ(&N)"
@@ -389,11 +395,11 @@ function! myvimrc#auto_mkdir(dir, force)
     call mkdir(dir, 'p')
   endif
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " QuickFix: {{{
-function! s:get_qflisttype()
+function! s:get_qflisttype() abort
   if exists('b:qflisttype')
     return b:qflisttype
   endif
@@ -420,59 +426,59 @@ function! s:get_qflisttype()
     let &eventignore = save_ei
   endtry
 endfunction
-function! myvimrc#set_qflisttype()
+function! myvimrc#set_qflisttype() abort
   let b:qflisttype = s:get_qflisttype()
 endfunction
-"}}}
-"}}}
+" }}}
+" }}}
 
 "==============================================================================
 " Plugins: {{{
 
 "------------------------------------------------------------------------------
 " Alignta: {{{
-if s:neobundle_tap('alignta')
-  function! myvimrc#operator_alignta(motion_wise)
+if s:dein_tap('alignta')
+  function! myvimrc#operator_alignta(motion_wise) abort
     let range = line("'[") . ',' . line("']")
     execute range . input(':' . range, 'Alignta ')
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " AlterCommand: {{{
-if s:neobundle_tap('altercmd')
-  function! myvimrc#cmdwin_enter_altercmd(define)
+if s:dein_tap('altercmd')
+  function! myvimrc#cmdwin_enter_altercmd(define) abort
     for [key, value] in items(a:define)
       execute 'IAlterCommand <buffer>' key value
     endfor
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP: {{{
-if s:neobundle_tap('ctrlp')
-  function! myvimrc#ctrlp_no_empty(command, ...)
+if s:dein_tap('ctrlp')
+  function! myvimrc#ctrlp_no_empty(command, ...) abort
     execute a:command join(a:000)
     if empty(ctrlp#getvar('s:lines'))
       call ctrlp#exit()
     endif
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " IncSearch: {{{
-if s:neobundle_tap('incsearch')
-  function! myvimrc#incsearch_next()
+if s:dein_tap('incsearch')
+  function! myvimrc#incsearch_next() abort
     return incsearch#go({
     \ 'command' : '/',
     \ 'keymap' : {
     \   '/' : {'key' : '\/', 'noremap' : 1}}})
   endfunction
 
-  function! myvimrc#incsearch_prev()
+  function! myvimrc#incsearch_prev() abort
     return incsearch#go({
     \ 'command' : '?',
     \ 'keymap' : {
@@ -481,17 +487,17 @@ if s:neobundle_tap('incsearch')
     \   "\<S-Tab>" : {'key' : '<Over>(incsearch-next)', 'noremap' : 1}}})
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " NeoComplCache: {{{
-if s:neobundle_tap('neocomplcache')
-  function! myvimrc#check_back_space()
+if s:dein_tap('neocomplcache')
+  function! myvimrc#check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~ '\s'
   endfunction
 
-  function! myvimrc#cmdwin_enter_neocomplcache()
+  function! myvimrc#cmdwin_enter_neocomplcache() abort
     let b:neocomplcache_sources_list = []
 
     inoremap <buffer><expr> <Tab>
@@ -515,17 +521,17 @@ if s:neobundle_tap('neocomplcache')
     \   (neocomplcache#smart_close_popup() . '<BS>')
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " NeoComplete: {{{
-if s:neobundle_tap('neocomplete')
-  function! myvimrc#check_back_space()
+if s:dein_tap('neocomplete')
+  function! myvimrc#check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~ '\s'
   endfunction
 
-  function! myvimrc#cmdwin_enter_neocomplete()
+  function! myvimrc#cmdwin_enter_neocomplete() abort
     let b:neocomplete_sources = []
 
     inoremap <buffer><expr> <Tab>
@@ -549,45 +555,45 @@ if s:neobundle_tap('neocomplete')
     \   (neocomplete#smart_close_popup() . '<BS>')
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Star: {{{
-if s:neobundle_tap('operator-star')
-  function! s:operator_star_post()
+if s:dein_tap('operator-star')
+  function! s:operator_star_post() abort
     normal! zv
     call feedkeys(":\<C-U>let &hls=&hls\<CR>", 'n')
-    if s:is_enabled_bundle('anzu')
+    if s:dein_if('anzu')
       call feedkeys(":\<C-U>AnzuUpdateSearchStatusOutput\<CR>", 'n')
     endif
   endfunction
 
-  function! myvimrc#operator_star_star(wiseness)
+  function! myvimrc#operator_star_star(wiseness) abort
     call operator#star#star(a:wiseness)
     call s:operator_star_post()
   endfunction
-  function! myvimrc#operator_star_sharp(wiseness)
+  function! myvimrc#operator_star_sharp(wiseness) abort
     call operator#star#sharp(a:wiseness)
     call s:operator_star_post()
   endfunction
-  function! myvimrc#operator_star_gstar(wiseness)
+  function! myvimrc#operator_star_gstar(wiseness) abort
     call operator#star#gstar(a:wiseness)
     call s:operator_star_post()
   endfunction
-  function! myvimrc#operator_star_gsharp(wiseness)
+  function! myvimrc#operator_star_gsharp(wiseness) abort
     call operator#star#gsharp(a:wiseness)
     call s:operator_star_post()
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Tabular: {{{
-if s:neobundle_tap('operator-tabular')
+if s:dein_tap('operator-tabular')
   let s:operator_tabular_kind = 'markdown'
   let s:operator_tabular_ext  = 'csv'
 
-  function! myvimrc#operator_tabularize(motion_wise, ...)
+  function! myvimrc#operator_tabularize(motion_wise, ...) abort
     let kind = input('Kind: ', s:operator_tabular_kind,
     \ 'customlist,s:operator_tabular_kind_complete')
     if kind == 'markdown' || kind == 'textile' || kind == 'backlog'
@@ -605,27 +611,27 @@ if s:neobundle_tap('operator-tabular')
     \ s:operator_tabular_ext}(a:motion_wise)
   endfunction
 
-  function! myvimrc#operator_untabularize(motion_wise)
+  function! myvimrc#operator_untabularize(motion_wise) abort
     call myvimrc#operator_tabularize(a:motion_wise, 1)
   endfunction
 
-  function! s:operator_tabular_kind_complete(...)
+  function! s:operator_tabular_kind_complete(...) abort
     return ['markdown', 'textile', 'backlog']
   endfunction
 
-  function! s:operator_tabular_ext_complete(...)
+  function! s:operator_tabular_ext_complete(...) abort
     return ['csv', 'tsv']
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator User: {{{
-if s:neobundle_tap('operator-user')
+if s:dein_tap('operator-user')
   let g:myvimrc#operator_grep_ui =
   \ get(g:, 'myvimrc#operator_grep_ui')
 
-  function! s:get_grepprg_escape(grepprg)
+  function! s:get_grepprg_escape(grepprg) abort
     if a:grepprg =~? '\<jvgrep\>'
       return '\[](){}|.?+*^$'
     elseif a:grepprg =~? '\<grep\>'
@@ -637,7 +643,7 @@ if s:neobundle_tap('operator-user')
     endif
   endfunction
 
-  function! s:operator_grep(motion_wise, is_lgrep)
+  function! s:operator_grep(motion_wise, is_lgrep) abort
     if a:motion_wise == 'char'
       let lines = getline(line("'["), line("']"))
       let lines[-1] = lines[-1][: col("']") - 1]
@@ -653,7 +659,6 @@ if s:neobundle_tap('operator-user')
     endif
 
     if g:myvimrc#operator_grep_ui == 'unite' && &grepprg != 'internal'
-      NeoBundleSource unite
       let esc = s:get_grepprg_escape(g:unite_source_grep_command)
       execute 'Unite' 'grep:::' . escape(join(lines), esc . ' :')
       \ '-buffer-name=grep'
@@ -674,35 +679,30 @@ if s:neobundle_tap('operator-user')
       endif
     endif
   endfunction
-  function! myvimrc#operator_grep(motion_wise)
+  function! myvimrc#operator_grep(motion_wise) abort
     call s:operator_grep(a:motion_wise, 0)
   endfunction
-  function! myvimrc#operator_lgrep(motion_wise)
+  function! myvimrc#operator_lgrep(motion_wise) abort
     call s:operator_grep(a:motion_wise, 1)
   endfunction
-
-  function! myvimrc#operator_justify(motion_wise)
-    let range = line("'[") . ',' . line("']")
-    execute range . input(':' . range, 'Justify ')
-  endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " SubMode: {{{
-if s:neobundle_tap('submode')
-  function! s:get_default_register()
+if s:dein_tap('submode')
+  function! s:get_default_register() abort
     return
     \ &clipboard =~# 'unnamedplus' ? '+' :
     \ &clipboard =~# 'unnamed' ? '*' : '"'
   endfunction
 
-  function! myvimrc#submode_delchar_enter(forward)
+  function! myvimrc#submode_delchar_enter(forward) abort
     let s:submode_register = v:register
     return a:forward ? 'x' : 'X'
   endfunction
 
-  function! myvimrc#submode_delchar(forward)
+  function! myvimrc#submode_delchar(forward) abort
     let r1 = getreg(s:submode_register)
     undojoin
     execute 'normal!' '"' . s:submode_register . (a:forward ? 'x' : 'X')
@@ -716,34 +716,34 @@ if s:neobundle_tap('submode')
     endif
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Switch: {{{
-if s:neobundle_tap('switch')
+if s:dein_tap('switch')
   let s:ordinal_suffixes = [
   \ 'th', 'st', 'nd', 'rd', 'th',
   \ 'th', 'th', 'th', 'th', 'th']
 
-  function! myvimrc#ordinal(num)
+  function! myvimrc#ordinal(num) abort
     return a:num . s:ordinal_suffixes[abs(a:num % 10)]
   endfunction
 
-  function! myvimrc#switch(is_increment)
+  function! myvimrc#switch(is_increment) abort
     let save_count1 = v:count1
 
     let definitions = []
-    if !exists('g:switch_no_builtins')
-      let definitions = extend(definitions, g:switch_definitions)
-    endif
     if exists('g:switch_custom_definitions')
       call extend(definitions, g:switch_custom_definitions)
     endif
-    if exists('b:switch_definitions') && !exists('b:switch_no_builtins')
-      call extend(definitions, b:switch_definitions)
+    if !exists('g:switch_no_builtins')
+      call extend(definitions, g:switch_definitions)
     endif
     if exists('b:switch_custom_definitions')
       call extend(definitions, b:switch_custom_definitions)
+    endif
+    if exists('b:switch_definitions') && !exists('b:switch_no_builtins')
+      call extend(definitions, b:switch_definitions)
     endif
     if a:is_increment
       if exists('g:switch_increment_definitions')
@@ -761,7 +761,7 @@ if s:neobundle_tap('switch')
       endif
     endif
 
-    if !switch#Switch(definitions)
+    if !switch#Switch(definitions, {})
       execute "normal!" save_count1 .
       \ (a:is_increment ? "\<C-A>" : "\<C-X>")
     endif
@@ -770,12 +770,12 @@ if s:neobundle_tap('switch')
     \ a:is_increment ? "\<C-A>" : "\<C-X>", save_count1)
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TComment: {{{
-if s:neobundle_tap('tcomment')
-  function! myvimrc#operator_tcomment_setup(options)
+if s:dein_tap('tcomment')
+  function! myvimrc#operator_tcomment_setup(options) abort
     let w:tcommentPos = getpos('.')
     call tcomment#SetOption('count', v:count)
     for [key, value] in items(a:options)
@@ -783,51 +783,49 @@ if s:neobundle_tap('tcomment')
     endfor
   endfunction
 
-  function! myvimrc#operator_tcomment_block(type)
+  function! myvimrc#operator_tcomment_block(type) abort
     call tcomment#Operator(a:type, 'B')
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextManipilate: {{{
-if s:neobundle_tap('textmanip')
-  function! s:operator_textmanip(motion_wise, map)
+if s:dein_tap('textmanip')
+  function! s:operator_textmanip(motion_wise, map) abort
     let vis = operator#user#visual_command_from_wise_name(a:motion_wise)
     execute 'nnoremap <SID>(reselect)' '`[' . vis . '`]'
     let sel = "\<SNR>" . s:SID() . '_(reselect)'
     execute 'normal' sel . a:map
   endfunction
 
-  function! myvimrc#operator_textmanip_duplicate_down(motion_wise)
+  function! myvimrc#operator_textmanip_duplicate_down(motion_wise) abort
     call s:operator_textmanip(
     \ a:motion_wise, "\<Plug>(textmanip-duplicate-down)")
   endfunction
-  function! myvimrc#operator_textmanip_duplicate_up(motion_wise)
+  function! myvimrc#operator_textmanip_duplicate_up(motion_wise) abort
     call s:operator_textmanip(
     \ a:motion_wise, "\<Plug>(textmanip-duplicate-up)")
   endfunction
-  function! myvimrc#operator_textmanip_move_left(motion_wise)
+  function! myvimrc#operator_textmanip_move_left(motion_wise) abort
     call s:operator_textmanip(
     \ a:motion_wise, "\<Plug>(textmanip-move-left)")
   endfunction
-  function! myvimrc#operator_textmanip_move_right(motion_wise)
+  function! myvimrc#operator_textmanip_move_right(motion_wise) abort
     call s:operator_textmanip(
     \ a:motion_wise, "\<Plug>(textmanip-move-right)")
   endfunction
-  function! myvimrc#operator_textmanip_move_down(motion_wise)
+  function! myvimrc#operator_textmanip_move_down(motion_wise) abort
     call s:operator_textmanip(
     \ a:motion_wise, "\<Plug>(textmanip-move-down)")
   endfunction
-  function! myvimrc#operator_textmanip_move_up(motion_wise)
+  function! myvimrc#operator_textmanip_move_up(motion_wise) abort
     call s:operator_textmanip(
     \ a:motion_wise, "\<Plug>(textmanip-move-up)")
   endfunction
 endif
-"}}}
-
-silent! call neobundle#untap()
-"}}}
+" }}}
+" }}}
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

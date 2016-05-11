@@ -1,0 +1,142 @@
+# System plugins
+#
+# Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
+# Last Change:  11-May-2016.
+# License:      MIT License {{{
+#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#
+#     Permission is hereby granted, free of charge, to any person obtaining a
+#     copy of this software and associated documentation files (the
+#     "Software"), to deal in the Software without restriction, including
+#     without limitation the rights to use, copy, modify, merge, publish,
+#     distribute, sublicense, and/or sell copies of the Software, and to permit
+#     persons to whom the Software is furnished to do so, subject to the
+#     following conditions:
+#
+#     The above copyright notice and this permission notice shall be included
+#     in all copies or substantial portions of the Software.
+#
+#     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+#     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+#     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+#     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+#     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# }}}
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tyru/vim-altercmd'
+on_cmd = ['AlterCommand', 'CAlterCommand', 'IAlterCommand', 'NAlterCommand', 'VAlterCommand', 'XAlterCommand', 'SAlterCommand', 'OAlterCommand', 'LAlterCommand']
+# on_map = [['nox', ':']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'h1mesuke/vim-benchmark'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'itchyny/vim-cursorword'
+on_event = ['CursorMoved', 'CursorMovedI']
+on_if = 'empty(&buftype) && (line("$") - col("$"))'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'itchyny/vim-highlighturl'
+lazy = 0
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-localrc'
+on_path = '.*'
+augroup = 'plugin-localrc'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'DeaR/vim-map-alt-keys'
+if = '!has("win32") && !has("gui_running")'
+lazy = 0
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'DeaR/vim-maplist'
+on_cmd = ['MapList', 'NMapList', 'OMapList', 'VMapList', 'XMapList', 'SMapList', 'IMapList', 'CMapList', 'LMapList']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tomasr/molokai'
+lazy = 0
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'itchyny/vim-parenmatch'
+on_event = ['CursorMoved', 'CursorMovedI']
+on_if = 'empty(&buftype) && (line("$") - col("$"))'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-prettyprint'
+on_func = ['PrettyPrint', 'PP']
+on_cmd = ['PrettyPrint', 'PP']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/vim-reunions'
+depends = 'vimproc'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-scouter'
+on_cmd = 'Scouter'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+# repository = 'kana/vim-scratch'
+repo = 'DeaR/vim-scratch'
+rev = 'original-mduem'
+on_cmd = ['ScratchOpen', 'ScratchClose', 'ScratchEvaluate']
+on_map = [['nov', '<Plug>']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-singleton'
+if = 'has("clientserver")'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'Shougo/tabpagebuffer.vim'
+lazy = 0
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'DeaR/vim-tabpagebuffer-misc'
+on_cmd = ['TpbFiles', 'TpbBuffers', 'TpbLs', 'TpbUnload', 'TpbDelete', 'TpbWipeout', 'TpbDeleteAll', 'TpbWipeoutAll', 'TpbUnloadAll', 'TpbBuffer', 'TpbNext', 'TpbPrevious', 'TpbModified', 'TpbModifiedNext', 'TpbModifiedPrevious', 'STpbBuffer', 'STpbNext', 'STpbPrevious', 'STpbModified', 'STpbModifiedNext', 'STpbModifiedPrevious', 'VTpbBuffer', 'VTpbNext', 'VTpbPrevious', 'VTpbModified', 'VTpbModifiedNext', 'VTpbModifiedPrevious', 'TTpbBuffer', 'TTpbNext', 'TTpbPrevious', 'TTpbModified', 'TTpbModifiedNext', 'TTpbModifiedPrevious', 'TpbRewind', 'TpbFirst', 'TpbLast', 'TpbModifiedRewind', 'TpbModifiedFirst', 'TpbModifiedLast', 'STpbRewind', 'STpbFirst', 'STpbLast', 'STpbModifiedRewind', 'STpbModifiedFirst', 'STpbModifiedLast', 'VTpbRewind', 'VTpbFirst', 'VTpbLast', 'VTpbModifiedRewind', 'VTpbModifiedFirst', 'VTpbModifiedLast', 'TTpbRewind', 'TTpbFirst', 'TTpbLast', 'TTpbModifiedRewind', 'TTpbModifiedFirst', 'TTpbModifiedLast', 'TpbUnhide', 'STpbUnhide', 'VTpbUnhide', 'TTpbUnhide', 'TpbAll', 'STpbAll', 'VTpbAll', 'TTpbAll', 'CtrlPTabpageBuffer']
+on_func = ['TbpList', 'TbpExists', 'TbpName', 'TbpNr']
+depends = ['ctrlp', 'tabpagebuffer']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'lambdalisue/vim-unified-diff'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'rbtnn/vimconsole.vim'
+on_cmd = ['VimConsoleOpen', 'VimConsoleRedraw', 'VimConsoleClose', 'VimConsoleClear', 'VimConsoleToggle', 'VimConsoleLog', 'VimConsoleSaveSession', 'VimConsoleLoadSession']
+depends = 'prettyprint'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'vim-jp/vimdoc-ja'
+if = 'has("multi_byte")'
+on_ft = 'help'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+on_cmd = ['VimProcInstall', 'VimProcBang', 'VimProcRead']
+build = '~/.vim/dein/script/vimproc/build'

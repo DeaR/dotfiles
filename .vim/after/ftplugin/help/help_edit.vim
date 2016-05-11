@@ -1,7 +1,7 @@
 " Ftplugin for Help
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  24-Sep-2015.
+" Last Change:  28-Apr-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -25,7 +25,7 @@
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-if &l:buftype == 'help'
+if &buftype == 'help'
   finish
 endif
 

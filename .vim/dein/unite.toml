@@ -1,0 +1,162 @@
+# Unite plugins
+#
+# Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
+# Last Change:  27-Apr-2016.
+# License:      MIT License {{{
+#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#
+#     Permission is hereby granted, free of charge, to any person obtaining a
+#     copy of this software and associated documentation files (the
+#     "Software"), to deal in the Software without restriction, including
+#     without limitation the rights to use, copy, modify, merge, publish,
+#     distribute, sublicense, and/or sell copies of the Software, and to permit
+#     persons to whom the Software is furnished to do so, subject to the
+#     following conditions:
+#
+#     The above copyright notice and this permission notice shall be included
+#     in all copies or substantial portions of the Software.
+#
+#     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+#     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+#     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+#     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+#     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# }}}
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+on_path = '.*'
+on_cmd = ['NeoMRUImportFile', 'NeoMRUImportDirectory', 'NeoMRUReload', 'NeoMRUSave']
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'Shougo/neossh.vim'
+if = 'executable("ssh")'
+on_path = '^ssh:'
+depends = ['unite', 'vimfiler']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/vim-reanimate'
+on_cmd = ['ReanimateSave', 'ReanimateSaveCursorHold', 'ReanimateSaveInput', 'ReanimateLoad', 'ReanimateLoadInput', 'ReanimateLoadLatest', 'ReanimateSwitch', 'ReanimateEditVimrcLocal', 'ReanimateUnload']
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'Shougo/unite.vim'
+on_cmd = ['Unite', 'UniteWithCurrentDir', 'UniteWithBufferDir', 'UniteWithProjectDir', 'UniteWithInputDirector', 'UniteWithCursorWord', 'UniteWithInput', 'UniteResume', 'UniteClose', 'UniteNext', 'UnitePrevious', 'UniteFirst', 'UniteLast']
+depends = 'tabpagebuffer'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'Shougo/unite-build'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'ujihisa/unite-colorscheme'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/unite-filetype'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/unite-fold'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tsukkee/unite-help'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-unite-history'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'KamunagiChiduru/unite-javaimport'
+if = '(has("win32") && executable("javaw")) || (!has("win32") && executable("java"))'
+on_cmd = ['JavaImportClearCache', 'JavaImportSortStatements', 'JavaImportRemoveUnnecessaries', 'CtrlPJavaImportClass', 'CtrlPJavaImportField', 'CtrlPJavaImportMethod']
+on_map = [['n', '<Plug>(javaimport']]
+on_source = 'unite'
+depends = ['ctags', 'ctrlp', 'javaclasspath', 'vimproc']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'ujihisa/unite-locate'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tacroe/unite-mark'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'Shougo/unite-outline'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'y-uuki/unite-perl-module.vim'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/unite-quickfix'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/unite-quickrun_config'
+on_source = 'unite'
+depends = 'quickrun'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'mattn/unite-remotefile'
+if = 'has("clientserver")'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'rhysd/unite-ruby-require.vim'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'Shougo/unite-sudo'
+if = '!has("win32") && executable("sudo")'
+on_path = '^sudo:'
+depends = ['unite', 'vimfiler']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tsukkee/unite-tag'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'pasela/unite-webcolorname'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/unite-vimpatches'
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'Shougo/vimfiler.vim'
+on_path = '.*'
+on_cmd = ['VimFiler', 'VimFilerDouble', 'VimFilerCurrentDir', 'VimFilerBufferDir', 'VimFilerCreate', 'VimFilerSimple', 'VimFilerSplit', 'VimFilerTab', 'VimFilerExplorer', 'VimFilerClose', 'VimFilerEdit', 'VimFilerRead', 'VimFilerSource', 'VimFilerWrite']
+depends = 'unite'

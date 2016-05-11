@@ -1,0 +1,250 @@
+# TextObj plugins
+#
+# Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
+# Last Change:  27-Apr-2016.
+# License:      MIT License {{{
+#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#
+#     Permission is hereby granted, free of charge, to any person obtaining a
+#     copy of this software and associated documentation files (the
+#     "Software"), to deal in the Software without restriction, including
+#     without limitation the rights to use, copy, modify, merge, publish,
+#     distribute, sublicense, and/or sell copies of the Software, and to permit
+#     persons to whom the Software is furnished to do so, subject to the
+#     following conditions:
+#
+#     The above copyright notice and this permission notice shall be included
+#     in all copies or substantial portions of the Software.
+#
+#     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+#     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+#     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+#     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+#     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# }}}
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-textobj-between'
+on_cmd = 'TextobjBetweenDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-textobj-comment'
+on_cmd = 'TextobjCommentDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'rhysd/vim-textobj-continuous-line'
+on_cmd = 'TextobjContinuousDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-textobj-datetime'
+on_cmd = 'TextobjDatetimeDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-textobj-diff'
+on_cmd = 'TextobjDiffDefaultKeyMappings'
+on_map = [['nov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'deris/vim-textobj-enclosedsyntax'
+on_cmd = 'TextobjEnclosedsyntaxDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-textobj-entire'
+on_cmd = 'TextobjEntireDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-textobj-fold'
+on_cmd = 'TextobjFoldDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-textobj-function'
+on_cmd = 'TextobjFunctionDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-textobj-function-javascript'
+on_source = ['textobj-function', 'textobj-user']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-textobj-function-perl'
+on_source = ['textobj-function', 'textobj-user']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 't9md/vim-textobj-function-ruby'
+on_source = ['textobj-function', 'textobj-user']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'anyakichi/vim-textobj-ifdef'
+on_cmd = 'TextobjIfdefDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'glts/vim-textobj-indblock'
+on_cmd = 'TextobjIndblockDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-textobj-indent'
+on_cmd = 'TextobjIndentDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-textobj-jabraces'
+on_cmd = 'TextobjJabracesDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-textobj-line'
+on_cmd = 'TextobjLineDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'hchbaw/textobj-motionmotion.vim'
+on_cmd = 'TextobjMotionmotionDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/vim-textobj-multiblock'
+on_cmd = 'TextobjMultiblockDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/vim-textobj-multitextobj'
+on_cmd = 'TextobjMultitextobjDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = ['textobj-jabraces', 'textobj-user']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'sgur/vim-textobj-parameter'
+on_cmd = 'TextobjParameterDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'akiyan/vim-textobj-php'
+on_cmd = 'TextobjPhpDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'bps/vim-textobj-python'
+on_cmd = 'TextobjPythonDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'syngan/vim-textobj-postexpr'
+on_cmd = 'TextobjPostexprDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'rhysd/vim-textobj-ruby'
+on_cmd = 'TextobjRubyDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'vimtaku/vim-textobj-sigil'
+on_cmd = 'TextobjSigilDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'saihoooooooo/vim-textobj-space'
+on_cmd = 'TextobjSpaceDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-textobj-syntax'
+on_cmd = 'TextobjSyntaxDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'mattn/vim-textobj-url'
+on_cmd = 'TextobjUrlDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+on_map = [['ov', '<Plug>(textobj']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'DeaR/vim-textobj-wiw'
+rev = 'move-in-visual'
+on_cmd = 'TextobjWiwDefaultKeyMappings'
+on_map = [['nov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'rhysd/textobj-word-column.vim'
+on_cmd = 'TextobjWordcolumnDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'akiyan/vim-textobj-xml-attribute'
+on_cmd = 'TextobjXmlattributeDefaultKeyMappings'
+on_map = [['ov', '<Plug>']]
+depends = 'textobj-user'

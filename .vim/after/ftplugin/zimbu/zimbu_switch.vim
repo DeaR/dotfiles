@@ -1,7 +1,7 @@
-" Switch ftplugin for Zimbu
+" Switch for Zimbu
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Sep-2015.
+" Last Change:  09-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -26,8 +26,7 @@
 " }}}
 
 if !exists('g:loaded_switch') &&
-\ (!exists('*neobundle#get') ||
-\  get(neobundle#get('switch'), 'disabled', 1))
+\ empty(exists('*dein#get') ? dein#get('switch') : 0)
   finish
 endif
 
@@ -86,7 +85,7 @@ function! s:SID()
   return s:_SID
 endfunction
 
-function! s:finalize()
+function! s:undo_ftplugin()
   if exists('s:cst')
     call filter(b:switch_custom_definitions,
     \ 'v:val isnot s:cst')
@@ -107,7 +106,7 @@ else
   let b:undo_ftplugin = ''
 endif
 let b:undo_ftplugin .= '
-\ call call("\<SNR>' . s:SID() . '_finalize", [])'
+\ call call("\<SNR>' . s:SID() . '_undo_ftplugin", [])'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

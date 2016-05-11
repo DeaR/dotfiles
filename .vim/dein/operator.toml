@@ -1,0 +1,167 @@
+# Operator plugins
+#
+# Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
+# Last Change:  11-May-2016.
+# License:      MIT License {{{
+#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#
+#     Permission is hereby granted, free of charge, to any person obtaining a
+#     copy of this software and associated documentation files (the
+#     "Software"), to deal in the Software without restriction, including
+#     without limitation the rights to use, copy, modify, merge, publish,
+#     distribute, sublicense, and/or sell copies of the Software, and to permit
+#     persons to whom the Software is furnished to do so, subject to the
+#     following conditions:
+#
+#     The above copyright notice and this permission notice shall be included
+#     in all copies or substantial portions of the Software.
+#
+#     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+#     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+#     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+#     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+#     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# }}}
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'h1mesuke/vim-alignta'
+on_cmd = ['Align', 'Alignta']
+on_map = [['nov', '<Plug>(operator-alignta']]
+on_source = 'unite'
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tyru/caw.vim'
+on_map = [['nox', '<Plug>'], ['nox', '<Plug>(operator-caw']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'pekepeke/vim-csvutil'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-grex'
+on_cmd = ['Gred', 'Grey']
+on_map = [['nov', '<Plug>(operator-grex']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-narrow'
+on_cmd = ['Narrow', 'Widen']
+on_map = [['nov', '<Plug>(operator-narrow']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tyru/operator-camelize.vim'
+on_map = [['nov', '<Plug>'], ['nov', '<Plug>(operator-decamelize']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tyru/operator-html-escape.vim'
+on_map = [['nov', '<Plug>'], ['nov', '<Plug>(operator-html-unescape']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'rhysd/vim-operator-filled-with-blank'
+on_map = [['nov', '<Plug>']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'syngan/vim-operator-furround'
+on_map = [['nov', '<Plug>']]
+depends = ['operator-user', 'textobj-multiblock']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'sgur/vim-operator-openbrowser'
+on_map = [['nov', '<Plug>']]
+depends = ['open-browser', 'operator-user']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-operator-replace'
+on_map = [['nov', '<Plug>']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tyru/operator-reverse.vim'
+on_cmd = 'OperatorReverseLines'
+on_map = [['nov', '<Plug>']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/vim-operator-search'
+on_map = [['nov', '<Plug>']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-operator-sequence'
+depends = 'operator-camelize'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'pekepeke/vim-operator-shuffle'
+on_map = [['nov', '<Plug>']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'emonkak/vim-operator-sort'
+on_map = [['nov', '<Plug>']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tyru/operator-star.vim'
+on_map = [['nov', '<Plug>(operator-*', '<Plug>(operator-#', '<Plug>(operator-g*', '<Plug>(operator-g#']]
+depends = ['operator-user', 'visualstar']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'yomi322/vim-operator-suddendeath'
+on_map = [['nov', '<Plug>']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'pekepeke/vim-operator-tabular'
+on_map = [['nov', '<Plug>'], ['nov', '<Plug>(operator-untabularize']]
+depends = ['csvutil', 'operator-user']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'rhysd/vim-operator-trailingspace-killer'
+on_map = [['nov', '<Plug>']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-operator-user'
+on_map = [['nov', '<Plug>(operator']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 't9md/vim-quickhl'
+on_cmd = ['QuickhlManualEnable', 'QuickhlManualDisable', 'QuickhlManualList', 'QuickhlManualDump', 'QuickhlManualReset', 'QuickhlManualColors', 'QuickhlManualAdd', 'QuickhlManualDelete', 'QuickhlManualLock', 'QuickhlManualUnlock', 'QuickhlManualLockToggle', 'QuickhlManualLockWindow', 'QuickhlManualUnlockWindow', 'QuickhlManualLockWindowToggle', 'QuickhlCwordEnable', 'QuickhlCwordDisable', 'QuickhlCwordToggle', 'QuickhlTagEnable', 'QuickhlTagDisable', 'QuickhlTagToggle']
+on_map = [['nv', '<Plug>'], ['nov', '<Plug>(operator-quickhl']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'deris/vim-rengbang'
+on_cmd = ['RengBang', 'RengBangUsePrev', 'RengBangConfirm']
+on_map = [['nov', '<Plug>(operator-rengbang']]
+depends = 'operator-user'

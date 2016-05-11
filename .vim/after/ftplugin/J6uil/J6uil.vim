@@ -1,7 +1,7 @@
 " Ftplugin for J6uil
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Sep-2015.
+" Last Change:  22-Apr-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -63,17 +63,17 @@ function! s:jk(count)
   \ a:count > 0 ? 'j' : 'k'
 endfunction
 nnoremap <buffer><expr> <Down> <SID>jk(v:count1)
-xnoremap <buffer><expr> <Down> <SID>jk(v:count1)
 onoremap <buffer><expr> <Down> <SID>jk(v:count1)
+xnoremap <buffer><expr> <Down> <SID>jk(v:count1)
 nnoremap <buffer><expr> <Up>   <SID>jk(-v:count1)
-xnoremap <buffer><expr> <Up>   <SID>jk(-v:count1)
 onoremap <buffer><expr> <Up>   <SID>jk(-v:count1)
+xnoremap <buffer><expr> <Up>   <SID>jk(-v:count1)
 nnoremap <buffer><expr> j      <SID>jk(v:count1)
-xnoremap <buffer><expr> j      <SID>jk(v:count1)
 onoremap <buffer><expr> j      <SID>jk(v:count1)
+xnoremap <buffer><expr> j      <SID>jk(v:count1)
 nnoremap <buffer><expr> k      <SID>jk(-v:count1)
-xnoremap <buffer><expr> k      <SID>jk(-v:count1)
 onoremap <buffer><expr> k      <SID>jk(-v:count1)
+xnoremap <buffer><expr> k      <SID>jk(-v:count1)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
@@ -89,17 +89,17 @@ let b:undo_ftplugin .= '
 \ silent! execute "nunmap <buffer> <CR>" |
 \ silent! execute "nunmap <buffer> o" |
 \ silent! execute "nunmap <buffer> <Down>" |
-\ silent! execute "xunmap <buffer> <Down>" |
 \ silent! execute "ounmap <buffer> <Down>" |
+\ silent! execute "xunmap <buffer> <Down>" |
 \ silent! execute "nunmap <buffer> <Up>" |
-\ silent! execute "xunmap <buffer> <Up>" |
 \ silent! execute "ounmap <buffer> <Up>" |
+\ silent! execute "xunmap <buffer> <Up>" |
 \ silent! execute "nunmap <buffer> j" |
-\ silent! execute "xunmap <buffer> j" |
 \ silent! execute "ounmap <buffer> j" |
+\ silent! execute "xunmap <buffer> j" |
 \ silent! execute "nunmap <buffer> k" |
-\ silent! execute "xunmap <buffer> k" |
-\ silent! execute "ounmap <buffer> k"'
+\ silent! execute "ounmap <buffer> k" |
+\ silent! execute "xunmap <buffer> k"'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

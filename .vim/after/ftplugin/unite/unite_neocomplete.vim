@@ -1,7 +1,7 @@
-" NeoComplete ftplugin for Unite
+" NeoComplete for Unite
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  25-Sep-2015.
+" Last Change:  28-Apr-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -26,8 +26,7 @@
 " }}}
 
 if !exists('g:loaded_neocomplete') &&
-\ (!exists('*neobundle#get') ||
-\  get(neobundle#get('neocomplete'), 'disabled', 1))
+\ empty(exists('*dein#get') ? dein#get('neocomplete') : 0)
   finish
 endif
 

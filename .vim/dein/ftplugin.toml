@@ -1,0 +1,158 @@
+# FileType plugins
+#
+# Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
+# Last Change:  28-Apr-2016.
+# License:      MIT License {{{
+#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#
+#     Permission is hereby granted, free of charge, to any person obtaining a
+#     copy of this software and associated documentation files (the
+#     "Software"), to deal in the Software without restriction, including
+#     without limitation the rights to use, copy, modify, merge, publish,
+#     distribute, sublicense, and/or sell copies of the Software, and to permit
+#     persons to whom the Software is furnished to do so, subject to the
+#     following conditions:
+#
+#     The above copyright notice and this permission notice shall be included
+#     in all copies or substantial portions of the Software.
+#
+#     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+#     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+#     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+#     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+#     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# }}}
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'rhysd/vim-clang-format'
+if = 'executable("clang-format")'
+on_cmd = ['ClangFormat', 'ClangFormatEchoFormattedCode']
+on_map = [['nov', '<Plug>(operator-clang-format']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'rhysd/committia.vim'
+on_path = ['COMMIT_EDITMSG', 'MERGE_MSG']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'vim-jp/vim-go-extra'
+on_ft = 'go'
+on_cmd = 'GoDoc'
+on_map = [['n', '<Plug>(godoc']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kamichidu/vim-javaclasspath'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'davidhalter/jedi-vim'
+if = 'has("python") || has("python3")'
+# on_ft = ['pyrex', 'python']
+on_cmd = ['JediDebugInfo', 'Pyimport']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'xolox/vim-lua-ftplugin'
+if = 'has("lua")'
+# on_ft = 'lua'
+on_cmd = ['LuaCheckSyntax', 'LuaCheckGlobals']
+depends = 'xolox'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/vim-marching'
+if = 'executable("clang")'
+# on_ft = ['c', 'cpp']
+on_cmd = ['MarchingBufferClearCache', 'MarchingDebugLog', 'MarchingDebugClearLog', 'MarchingEnableDebug', 'MarchingDisableDebug', 'MarchingDebugCheck']
+on_map = [['i', '<Plug>']]
+depends = 'vimproc'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'OmniSharp/omnisharp-vim'
+# if = 'has("python") && (exists("$VCVARSALL") || executable("mono"))'
+if = 'has("python") && (exists("$VCVARSALL") || executable("xbuild"))'
+on_ft = 'cs'
+on_source = 'unite'
+depends = ['ctrlp', 'vimproc']
+# build = 'omnisharp-roslyn/build'
+build = '~/.vim/dein/script/omnisharp/build'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'y-uuki/perl-local-lib-path.vim'
+on_cmd = 'PerlLocalLibPath'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'c9s/perlomni.vim'
+if = 'executable("perl")'
+# on_ft = 'perl'
+on_func = 'PerlComplete'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'shawncplus/phpcomplete.vim'
+# on_ft = 'php'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kannokanno/previm'
+on_ft = ['mkd', 'markdown', 'rst', 'textile']
+depends = 'open-browser'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/vim-snowdrop'
+if =  'has("python") && executable("clang")'
+# on_ft = ['c', 'cpp']
+on_cmd = ['SnowdropVerify', 'SnowdropEchoClangVersion', 'SnowdropLogs', 'SnowdropClearLogs']
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'marijnh/tern_for_vim'
+name = 'tern'
+if = '(has("python") || has("python3")) && executable("node")'
+# on_ft = 'javascript'
+build = 'npm install'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'syngan/vim-vimlint'
+on_cmd = 'VimLint'
+depends = 'vimlparser'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'ynkdir/vim-vimlparser'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'machakann/vim-vimhelplint'
+on_ft = 'help'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'taku25/vim-visualstudio'
+if = 'has("win32")'
+on_cmd = ['VSCompile', 'VSBuild', 'VSReBuild', 'VSBuildProject', 'VSReBuildProject', 'VSCompileNoWait', 'VSBuildNoWait', 'VSReBuildNoWait', 'VSBuildProjectNoWait', 'VSReBuildProjectNoWait', 'VSSetBuildConfig', 'VSSetPlatform', 'VSCancelBuild', 'VSClean', 'VSOutput', 'VSErorrList', 'VSRun', 'VSDebugRun', 'VSSetStartupProject', 'VSStopDebugRun', 'VSFindSolution1', 'VSFindSolution2', 'VSFindSolutionNoWait1', 'VSFindSolutionNoWait2', 'VSFindProject1', 'VSFindProject2', 'VSFindProjectNoWait1', 'VSFindProjectNoWait2', 'VSFindSymbol', 'VSFindSymbolNoWait', 'VSFindResult1', 'VSFindResult2', 'VSFindSymbolResult', 'VSOpenFile', 'VSGetFile', 'VSAddBreakPoint', 'VSChangeDirectory', 'VSGoToDefinition']
+on_source = 'unite'
+depends = 'VisualStudioController'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'taku25/VisualStudioController'
+if = 'has("win32")'
+rtp = ''
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'xolox/vim-misc'
+name = 'xolox'

@@ -1,8 +1,9 @@
 scriptencoding utf-8
+
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  03-Oct-2015.
+" Last Change:  09-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -24,28 +25,22 @@ scriptencoding utf-8
 "     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
 "     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-"}}}
+" }}}
 
 "==============================================================================
 " Pre Init: {{{
 " Skip vim-tiny, vim-small, below vim-7.2
 if v:version < 703 | finish | endif
 
-"------------------------------------------------------------------------------
-" Variable: {{{
-" Direct Write
-let s:directx_enable = 0
-"}}}
-
-"------------------------------------------------------------------------------
-" Common: {{{
 " GVimrc autocmd group
 augroup MyGVimrc
   autocmd!
 augroup END
 
+"------------------------------------------------------------------------------
+" Common: {{{
 " Script ID
-function! s:SID()
+function! s:SID() abort
   if !exists('s:_SID')
     let s:_SID = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
   endif
@@ -53,28 +48,73 @@ function! s:SID()
 endfunction
 
 " CPU Cores
-function! s:cpucores()
+function! s:cpucores() abort
   if !exists('s:_cpucores')
     let s:_cpucores = str2nr(
     \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
     \ s:executable('nproc')           ? system('nproc') :
     \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
+    \ s:executable('sysctl')          ? system('sysctl hw.ncpu') :
     \ filereadable('/proc/cpuinfo')   ?
-    \   system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+    \   len(filter(readfile('/proc/cpuinfo'), 'v:val =~ "processor"')) : '1')
   endif
   return s:_cpucores
 endfunction
 
-" Check Vim version
-function! s:has_patch(major, minor, patch)
-  let l:version = (a:major * 100 + a:minor)
-  return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
-  \ (v:version > l:version) ||
-  \ (v:version == l:version && has('patch' . a:patch))
+" Cached executable
+let s:_executable = {}
+function! s:executable(expr) abort
+  if !has_key(s:_executable, a:expr)
+    let s:_executable[a:expr] = executable(a:expr)
+  endif
+  return s:_executable[a:expr]
 endfunction
 
+" Check japanese
+let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
+
+" Check colored UI
+let s:is_colored_ui = has('gui_running') || has('termguicolors') || &t_Co > 255
+
+" Check JIS X 0213
+let s:has_jisx0213 = has('iconv') &&
+\ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+
+" $PROGRAMFILES
+if has('win32')
+  let s:save_isi = &isident
+  try
+    set isident+=(,)
+    let s:arch = exists('$PROGRAMFILES(X86)')
+    let s:pf64 = exists('$PROGRAMW6432') ?
+    \ $PROGRAMW6432 : $PROGRAMFILES
+    let s:pf32 = exists('$PROGRAMFILES(X86)') ?
+    \ $PROGRAMFILES(X86) : $PROGRAMFILES
+  finally
+    let &isident = s:save_isi
+    unlet! s:save_isi
+  endtry
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" Wrapper: {{{
+" Vim.Compat.has_version
+" 7.4.237  (after 7.4.236) has() not checking for specific patch
+if has('patch-7.4.237')
+  function! s:has_patch(args) abort
+    return has('patch-' . a:args)
+  endfunction
+else
+  function! s:has_patch(args) abort
+    let a = split(a:args, '\.')
+    let v = a[0] * 100 + a[1]
+    return v:version > v || v:version == v && has('patch' . a[2])
+  endfunction
+endif
+
 " Check vimproc
-function! s:has_vimproc()
+function! s:has_vimproc() abort
   if !exists('s:_has_vimproc')
     try
       call vimproc#version()
@@ -86,57 +126,17 @@ function! s:has_vimproc()
   return s:_has_vimproc
 endfunction
 
-" Wrapped doautocmd
-function! s:doautocmd(...)
-  let nomodeline = s:has_patch(7, 3, 438) ? '<nomodeline>' : ''
-  execute 'doautocmd' nomodeline join(a:000)
+" dein#tap
+function! s:dein_tap(name) abort
+  return exists('*dein#tap') && dein#tap(a:name)
 endfunction
 
-" Wrapped neobundle#tap
-function! s:neobundle_tap(name)
-  return exists('*neobundle#tap') && neobundle#tap(a:name)
+" dein#get().if
+function! s:dein_if(name) abort
+  return exists('*dein#get') && !empty(dein#get(a:name))
 endfunction
-
-" Check enabled bundle
-function! s:is_enabled_bundle(name)
-  return
-  \ exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1) &&
-  \ exists('*neobundle#is_installed') && !neobundle#is_installed(a:name)
-endfunction
-
-" Cached executable
-let s:_executable = {}
-function! s:executable(expr)
-  if !has_key(s:_executable, a:expr)
-    let s:_executable[a:expr] = executable(a:expr)
-  endif
-  return s:_executable[a:expr]
-endfunction
-
-" Get "Program Files" of 32bit
-if has('win32')
-  let s:save_isi = &isident
-  try
-    set isident+=(,)
-    let s:programfiles_x86 = exists('$PROGRAMFILES(X86)') ?
-    \ $PROGRAMFILES(X86) : $PROGRAMFILES
-  finally
-    let &isident = s:save_isi
-    unlet! s:save_isi
-  endtry
-endif
-
-" Check japanese
-let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
-
-" Check colored UI
-let s:is_colored = has('gui_running') || &t_Co > 255
-
-" Check JIS X 0213
-let s:has_jisx0213 = has('iconv') &&
-\ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
-"}}}
-"}}}
+" }}}
+" }}}
 
 "==============================================================================
 " General Settings: {{{
@@ -173,7 +173,7 @@ endif
 if has('kaoriya')
   set ambiwidth=auto
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Display: {{{
@@ -194,16 +194,11 @@ elseif has('mac')
   set guifont=Osaka-Mono:h14
 endif
 
-" Direct Write
-if s:directx_enable && has('directx')
-  set renderoptions=type:directx
-endif
-
 " Full screen
 autocmd MyGVimrc GUIEnter *
 \ winpos 0 0 |
 \ set lines=999 columns=9999
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Colors: {{{
@@ -211,25 +206,24 @@ autocmd MyGVimrc GUIEnter *
 autocmd MyGVimrc ColorScheme *
 \ highlight Cursor   guifg=#000000 guibg=#eedd82 gui=NONE |
 \ highlight CursorIM guifg=#000000 guibg=#6495ed gui=NONE
-"}}}
-"}}}
+" }}}
+" }}}
 
 "==============================================================================
 " Post Init: {{{
-" Do PostInit Event
-if exists('#User#MyGVimrcPost')
-  call s:doautocmd('User', 'MyGVimrcPost')
-endif
-
 " Local gvimrc
-if filereadable($HOME . '/.local/.gvimrc_local.vim')
-  source ~/.local/.gvimrc_local.vim
-elseif filereadable($HOME . '/.local/.vim/gvimrc_local.vim')
-  source ~/.local/.vim/gvimrc_local.vim
+if filereadable($HOME . '/.gvimrc_local.vim')
+  source ~/.gvimrc_local.vim
+elseif filereadable($HOME . '/.vim/gvimrc_local.vim')
+  source ~/.vim/gvimrc_local.vim
 endif
 
 " ColorScheme
 if !exists('g:colors_name')
-  silent! colorscheme molokai
+  try
+    colorscheme molokai
+  catch /.*/
+    colorscheme desert
+  endtry
 endif
-"}}}
+" }}}

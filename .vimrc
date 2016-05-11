@@ -1,8 +1,9 @@
 scriptencoding utf-8
+
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  14-Oct-2015.
+" Last Change:  11-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -17,14 +18,14 @@ scriptencoding utf-8
 "     The above copyright notice and this permission notice shall be included
 "     in all copies or substantial portions of the Software.
 "
-"     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+"     THE OSFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 "     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 "     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 "     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 "     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
-"     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
-"     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-"}}}
+"     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE OSFTWARE OR
+"     THE USE OR OTHER DEALINGS IN THE OSFTWARE.
+" }}}
 
 "==============================================================================
 " Pre Init: {{{
@@ -39,10 +40,11 @@ endif
 " Encoding
 if has('multi_byte')
   set encoding=utf-8
-  if &term == 'win32' && !has('gui_running')
+  scriptencoding utf-8
+
+  if &term == 'win32'
     set termencoding=cp932
   endif
-  scriptencoding utf-8
 endif
 
 if has('win32')
@@ -55,20 +57,31 @@ if has('win32')
   " set shellslash
 
   " Unix like runtime
-  set runtimepath^=~/.vim
-  set runtimepath+=~/.vim/after
+  let &runtimepath = substitute(&runtimepath,
+  \ '\V' . escape($HOME, '\') . '/\zsvimfiles', '.vim', 'g')
+  if exists('&packpath')
+    let &packpath = substitute(&packpath,
+    \ '\V' . escape($HOME, '\') . '/\zsvimfiles', '.vim', 'g')
+  endif
 endif
 
-" Local runtime
-set runtimepath^=~/.local/.vim
-set runtimepath+=~/.local/.vim/after
+" Cache directory
+let $CACHE = exists('$CACHE') ? $CACHE :
+\ exists('$XDG_CACHE_HOME') ? $XDG_CACHE_HOME : ($HOME . '/.cache')
 
 " Singleton
-if isdirectory($HOME . '/.local/bundle/singleton')
-  set runtimepath+=~/.local/bundle/singleton
+let s:singleton_dir = $CACHE . '/dein/repos/github.com/thinca/vim-singleton'
+if has("clientserver") && isdirectory(s:singleton_dir)
+  execute 'set runtimepath^=' . escape(s:singleton_dir, ' ,\')
   let g:singleton#opener = 'drop'
   call singleton#enable()
 endif
+unlet! s:singleton_dir
+
+" Vimrc autocmd group
+augroup MyVimrc
+  autocmd!
+augroup END
 
 "------------------------------------------------------------------------------
 " Variable: {{{
@@ -78,22 +91,17 @@ let s:cmdwin_search_enable = 0
 
 " Ignore pattern
 let s:ignore_dir = [
-\ '.git', '.hg', '.bzr', '.svn', '.drive.r', 'temp', 'tmp']
+\ '.git', '.hg', '.bzr', '.svn']
 let s:ignore_ext = [
 \ 'o', 'obj', 'a', 'lib', 'so', 'dll', 'dylib', 'exe', 'bin',
-\ 'swp', 'swo', 'lc', 'elc', 'fas', 'pyc', 'pyo', 'luac', 'zwc']
+\ 'swp', 'swo', 'swn', 'lc', 'elc', 'fas', 'pyc', 'pyo', 'luac', 'zwc']
 let s:ignore_ft = [
 \ 'gitcommit', 'gitrebase', 'hgcommit', 'unite']
 
 "------------------------------------------------------------------------------
 " Common: {{{
-" Vimrc autocmd group
-augroup MyVimrc
-  autocmd!
-augroup END
-
 " Script ID
-function! s:SID()
+function! s:SID() abort
   if !exists('s:_SID')
     let s:_SID = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
   endif
@@ -101,28 +109,73 @@ function! s:SID()
 endfunction
 
 " CPU Cores
-function! s:cpucores()
+function! s:cpucores() abort
   if !exists('s:_cpucores')
     let s:_cpucores = str2nr(
     \ exists('$NUMBER_OF_PROCESSORS') ? $NUMBER_OF_PROCESSORS :
     \ s:executable('nproc')           ? system('nproc') :
     \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
+    \ s:executable('sysctl')          ? system('sysctl hw.ncpu') :
     \ filereadable('/proc/cpuinfo')   ?
-    \   system('cat /proc/cpuinfo | grep -c "processor"') : '1')
+    \   len(filter(readfile('/proc/cpuinfo'), 'v:val =~ "processor"')) : '1')
   endif
   return s:_cpucores
 endfunction
 
-" Check Vim version
-function! s:has_patch(major, minor, patch)
-  let l:version = (a:major * 100 + a:minor)
-  return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
-  \ (v:version > l:version) ||
-  \ (v:version == l:version && has('patch' . a:patch))
+" Cached executable
+let s:_executable = {}
+function! s:executable(expr) abort
+  if !has_key(s:_executable, a:expr)
+    let s:_executable[a:expr] = executable(a:expr)
+  endif
+  return s:_executable[a:expr]
 endfunction
 
+" Check japanese
+let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
+
+" Check colored UI
+let s:is_colored_ui = has('gui_running') || has('termguicolors') || &t_Co > 255
+
+" Check JIS X 0213
+let s:has_jisx0213 = has('iconv') &&
+\ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+
+" $PROGRAMFILES
+if has('win32')
+  let s:save_isi = &isident
+  try
+    set isident+=(,)
+    let s:arch = exists('$PROGRAMFILES(X86)')
+    let s:pf64 = exists('$PROGRAMW6432') ?
+    \ $PROGRAMW6432 : $PROGRAMFILES
+    let s:pf32 = exists('$PROGRAMFILES(X86)') ?
+    \ $PROGRAMFILES(X86) : $PROGRAMFILES
+  finally
+    let &isident = s:save_isi
+    unlet! s:save_isi
+  endtry
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" Wrapper: {{{
+" Vim.Compat.has_version
+" 7.4.237  (after 7.4.236) has() not checking for specific patch
+if has('patch-7.4.237')
+  function! s:has_patch(args) abort
+    return has('patch-' . a:args)
+  endfunction
+else
+  function! s:has_patch(args) abort
+    let a = split(a:args, '\.')
+    let v = a[0] * 100 + a[1]
+    return v:version > v || v:version == v && has('patch' . a[2])
+  endfunction
+endif
+
 " Check vimproc
-function! s:has_vimproc()
+function! s:has_vimproc() abort
   if !exists('s:_has_vimproc')
     try
       call vimproc#version()
@@ -134,57 +187,17 @@ function! s:has_vimproc()
   return s:_has_vimproc
 endfunction
 
-" Wrapped doautocmd
-function! s:doautocmd(...)
-  let nomodeline = s:has_patch(7, 3, 438) ? '<nomodeline>' : ''
-  execute 'doautocmd' nomodeline join(a:000)
+" dein#tap
+function! s:dein_tap(name) abort
+  return exists('*dein#tap') && dein#tap(a:name)
 endfunction
 
-" Wrapped neobundle#tap
-function! s:neobundle_tap(name)
-  return exists('*neobundle#tap') && neobundle#tap(a:name)
+" dein#get().if
+function! s:dein_if(name) abort
+  return exists('*dein#get') && !empty(dein#get(a:name))
 endfunction
-
-" Check enabled bundle
-function! s:is_enabled_bundle(name)
-  return
-  \ exists('*neobundle#get') && !get(neobundle#get(a:name), 'disabled', 1) &&
-  \ exists('*neobundle#is_installed') && neobundle#is_installed(a:name)
-endfunction
-
-" Cached executable
-let s:_executable = {}
-function! s:executable(expr)
-  if !has_key(s:_executable, a:expr)
-    let s:_executable[a:expr] = executable(a:expr)
-  endif
-  return s:_executable[a:expr]
-endfunction
-
-" Get "Program Files" of 32bit
-if has('win32')
-  let s:save_isi = &isident
-  try
-    set isident+=(,)
-    let s:programfiles_x86 = exists('$PROGRAMFILES(X86)') ?
-    \ $PROGRAMFILES(X86) : $PROGRAMFILES
-  finally
-    let &isident = s:save_isi
-    unlet! s:save_isi
-  endtry
-endif
-
-" Check japanese
-let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
-
-" Check colored UI
-let s:is_colored = has('gui_running') || &t_Co > 255
-
-" Check JIS X 0213
-let s:has_jisx0213 = has('iconv') &&
-\ iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
-"}}}
-"}}}
+" }}}
+" }}}
 
 "==============================================================================
 " General: {{{
@@ -205,16 +218,24 @@ set novisualbell
 set t_vb=
 
 " VimInfo
-set viminfo+=n~/.local/.viminfo
 set history=10000
+set viminfo+=n$CACHE/viminfo
+if !isdirectory($CACHE)
+  call mkdir($CACHE, 'p')
+endif
 
 " Backup
 set nobackup
 set swapfile
+
+" Undo file
 set undofile
-set undodir^=~/.local/.vimundo
+set undodir^=$CACHE/vimundo
 autocmd MyVimrc FileType *
-\ let &l:undofile = index(s:ignore_ft, expand('<amatch>')) < 0
+\ let &undofile = index(s:ignore_ft, expand('<amatch>')) < 0
+if !isdirectory($CACHE . '/vimundo')
+  call mkdir($CACHE . '/vimundo')
+endif
 
 " ClipBoard
 set clipboard=unnamed
@@ -236,9 +257,8 @@ set ambiwidth=double
 
 " Wild menu
 set wildmenu
-execute 'set wildignore+=' .
-\ join(s:ignore_dir +
-\   map(copy(s:ignore_ext), '"*." . escape(v:val, " ,\\")'), ',')
+execute 'set wildignore+=' . join(s:ignore_dir +
+\ map(copy(s:ignore_ext), '"*." . escape(v:val, " ,\\")'), ',')
 
 " Mouse
 set mouse=a
@@ -247,9 +267,10 @@ set nomousehide
 
 " Help
 if s:is_lang_ja
+  set helplang-=ja
   set helplang^=ja
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Display: {{{
@@ -262,11 +283,7 @@ set relativenumber
 set ruler
 set wrap
 set display=lastline
-set scrolloff=5
-
-" Match
-set showmatch
-set matchtime=1
+" set scrolloff=5
 
 " Command line
 set cmdheight=2
@@ -286,7 +303,7 @@ if has('conceal')
   set conceallevel=2
   set concealcursor=nc
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Search: {{{
@@ -297,7 +314,7 @@ set incsearch
 set wrapscan
 
 " Highlight
-if s:is_colored
+if s:is_colored_ui
   set hlsearch
 endif
 
@@ -306,18 +323,18 @@ if s:executable('jvgrep')
   set grepprg=jvgrep\ -nI
 elseif s:executable('grep')
   set grepprg=grep\ -nHI
-" elseif has('win32') && s:executable('findstr')
+" elseif has('win32')
 "   set grepprg=findstr\ /n\ /p
 else
   set grepprg=internal
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
-" Editing: {{{
+" Edit: {{{
 " Complete
 set completeopt=menu,menuone
-if s:has_patch(7, 4, 775)
+if s:has_patch('7.4.775')
   set completeopt+=noselect
 endif
 
@@ -336,7 +353,7 @@ set showfulltag
 " File format
 set fileformat=unix
 set fileformats=unix,dos,mac
-if s:has_patch(7, 4, 785)
+if s:has_patch('7.4.785')
   set nofixendofline
 endif
 
@@ -354,7 +371,7 @@ set foldenable
 set foldmethod=marker
 set foldcolumn=2
 set foldlevelstart=99
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Status Line: {{{
@@ -374,18 +391,18 @@ if s:is_lang_ja
 else
   set statusline+=\ %3P
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Tab Line: {{{
 let s:label_noname   = s:is_lang_ja ? '[無名]' : '[No Name]'
 let s:label_quickfix = s:is_lang_ja ? '[Quickfixリスト]' : '[Quickfix List]'
 let s:label_location = s:is_lang_ja ? '[場所リスト]' : '[Location List]'
-function! s:label_qflisttype(n)
+function! s:label_qflisttype(n) abort
   return getbufvar(a:n, 'qflisttype') == 'location' ?
   \ s:label_location : s:label_quickfix
 endfunction
-function! s:tab_bufname(n)
+function! s:tab_bufname(n) abort
   let name = bufname(a:n)
   let type = getbufvar(a:n, '&buftype')
   return
@@ -394,7 +411,7 @@ function! s:tab_bufname(n)
   \ empty(name)        ? s:label_noname :
   \ empty(type)        ? pathshorten(name) : name
 endfunction
-function! s:tab_label(n)
+function! s:tab_label(n) abort
   let bufs = tabpagebuflist(a:n)
   let acv = a:n == tabpagenr()
   let win = len(bufs)
@@ -406,14 +423,14 @@ function! s:tab_label(n)
   \ (win == 1 ? '' : acv ? ('%#Title#' . win . '%#TabLineSel#') : win) .
   \ (mod ? '+' : '') . ' ' . name . ' '
 endfunction
-function! TabLine()
+function! TabLine() abort
   return join(map(range(1, tabpagenr('$')), 's:tab_label(v:val)'), '') .
   \ '%#TabLineFill#%T%= %#TabLineSel# ' . getcwd() . ' '
 endfunction
 
 set tabline=%!TabLine()
 set showtabline=2
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " File Encodings: {{{
@@ -423,10 +440,11 @@ if has('multi_byte')
   else
     set fileencodings=iso-2022-jp,cp932,euc-jp,ucs-bom
   endif
-  if has('guess_encode')
-    set fileencodings^=guess
-  endif
-
+endif
+if has('guess_encode')
+  set fileencodings^=guess
+endif
+if has('iconv')
   let s:last_enc = &encoding
   augroup MyVimrc
     autocmd EncodingChanged *
@@ -440,75 +458,31 @@ if has('multi_byte')
     \ endif
   augroup END
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Colors: {{{
 " Cursor line & column
-if s:is_colored
+if s:is_colored_ui
   set cursorline
   set cursorcolumn
 
   " No cursor line & column at other window
   augroup MyVimrc
     autocmd BufWinEnter,WinEnter *
-    \ let [&l:cursorline, &l:cursorcolumn] =
+    \ let [&cursorline, &cursorcolumn] =
     \   [!get(b:, 'nocursorline'), !get(b:, 'nocursorcolumn')]
     autocmd BufWinLeave,WinLeave *
     \ setlocal nocursorline nocursorcolumn
   augroup END
 endif
-"}}}
-"}}}
-
-"==============================================================================
-" Macros: {{{
-
-"------------------------------------------------------------------------------
-" Justify: {{{
-if filereadable($VIMRUNTIME . '/macros/justify.vim')
-  source $VIMRUNTIME/macros/justify.vim
-  silent! nunmap _j
-  silent! vunmap _j
-  silent! nunmap ,gq
-  silent! vunmap ,gq
-endif
-"}}}
-
-"------------------------------------------------------------------------------
-" MatchIt: {{{
-if filereadable($VIMRUNTIME . '/macros/matchit.vim')
-  source $VIMRUNTIME/macros/matchit.vim
-  silent! sunmap %
-  silent! sunmap g%
-  silent! sunmap [%
-  silent! sunmap ]%
-  silent! sunmap a%
-
-  nmap <SID>[% [%
-  xmap <SID>[% [%
-  nmap <SID>]% ]%
-  xmap <SID>]% ]%
-
-  xnoremap <script> [% <Esc><SID>[%m'gv``
-  xnoremap <script> ]% <Esc><SID>]%m'gv``
-  xnoremap <script> a% <Esc><SID>[%v<SID>]%
-
-  nmap <Space>   %
-  xmap <Space>   %
-  omap <Space>   %
-  nmap <S-Space> g%
-  xmap <S-Space> g%
-  omap <S-Space> g%
-endif
-"}}}
-"}}}
-
-"==============================================================================
-" Mappings: {{{
+" }}}
 
 "------------------------------------------------------------------------------
 " Multi Mode Mapping: {{{
+command! -nargs=* -complete=mapping
+\ NOmap
+\ nmap <args>| omap <args>
 command! -nargs=* -complete=mapping
 \ NVmap
 \ nmap <args>| vmap <args>
@@ -519,24 +493,24 @@ command! -nargs=* -complete=mapping
 \ NSmap
 \ nmap <args>| smap <args>
 command! -nargs=* -complete=mapping
-\ NOmap
-\ nmap <args>| omap <args>
+\ OVmap
+\ omap <args>| vmap <args>
 command! -nargs=* -complete=mapping
-\ VOmap
-\ vmap <args>| omap <args>
+\ OXmap
+\ omap <args>| xmap <args>
 command! -nargs=* -complete=mapping
-\ XOmap
-\ xmap <args>| omap <args>
+\ OSmap
+\ omap <args>| smap <args>
 command! -nargs=* -complete=mapping
-\ SOmap
-\ smap <args>| omap <args>
+\ NOXmap
+\ nmap <args>| omap <args>| xmap <args>
 command! -nargs=* -complete=mapping
-\ NXOmap
-\ nmap <args>| xmap <args>| omap <args>
-command! -nargs=* -complete=mapping
-\ NSOmap
-\ nmap <args>| smap <args>| omap <args>
+\ NOSmap
+\ nmap <args>| omap <args>| smap <args>
 
+command! -nargs=* -complete=mapping
+\ NOnoremap
+\ nnoremap <args>| onoremap <args>
 command! -nargs=* -complete=mapping
 \ NVnoremap
 \ nnoremap <args>| vnoremap <args>
@@ -547,23 +521,20 @@ command! -nargs=* -complete=mapping
 \ NSnoremap
 \ nnoremap <args>| snoremap <args>
 command! -nargs=* -complete=mapping
-\ NOnoremap
-\ nnoremap <args>| onoremap <args>
+\ OVnoremap
+\ onoremap <args>| vnoremap <args>
 command! -nargs=* -complete=mapping
-\ VOnoremap
-\ vnoremap <args>| onoremap <args>
+\ OXnoremap
+\ onoremap <args>| xnoremap <args>
 command! -nargs=* -complete=mapping
-\ XOnoremap
-\ xnoremap <args>| onoremap <args>
+\ OSnoremap
+\ onoremap <args>| snoremap <args>
 command! -nargs=* -complete=mapping
-\ SOnoremap
-\ snoremap <args>| onoremap <args>
+\ NOXnoremap
+\ nnoremap <args>| onoremap <args>| xnoremap <args>
 command! -nargs=* -complete=mapping
-\ NXOnoremap
-\ nnoremap <args>| xnoremap <args>| onoremap <args>
-command! -nargs=* -complete=mapping
-\ NSOnoremap
-\ nnoremap <args>| snoremap <args>| onoremap <args>
+\ NOSnoremap
+\ nnoremap <args>| onoremap <args>| snoremap <args>
 
 command! -nargs=* -complete=mapping
 \ NVunmap
@@ -578,50 +549,90 @@ command! -nargs=* -complete=mapping
 \ NOunmap
 \ nunmap <args>| ounmap <args>
 command! -nargs=* -complete=mapping
-\ VOunmap
-\ vunmap <args>| ounmap <args>
+\ OVunmap
+\ ounmap <args>| vunmap <args>
 command! -nargs=* -complete=mapping
-\ XOunmap
-\ xunmap <args>| ounmap <args>
+\ OXunmap
+\ ounmap <args>| xunmap <args>
 command! -nargs=* -complete=mapping
-\ SOunmap
-\ sunmap <args>| ounmap <args>
+\ OSunmap
+\ ounmap <args>| sunmap <args>
 command! -nargs=* -complete=mapping
-\ NXOunmap
-\ nunmap <args>| xunmap <args>| ounmap <args>
+\ NOXunmap
+\ nunmap <args>| ounmap <args>| xunmap <args>
 command! -nargs=* -complete=mapping
-\ NSOunmap
-\ nunmap <args>| sunmap <args>| ounmap <args>
-"}}}
+\ NOSunmap
+\ nunmap <args>| ounmap <args>| sunmap <args>
+" }}}
+" }}}
+
+"==============================================================================
+" Macros: {{{
+" Source macros
+if has('packages')
+  function! s:source_macros(name) abort
+    execute 'packadd' a:name
+  endfunction
+else
+  function! s:source_macros(name) abort
+    execute 'source' $VIMRUNTIME . '/macros/' . a:name . '.vim'
+  endfunction
+endif
+
+"------------------------------------------------------------------------------
+" MatchIt: {{{
+call s:source_macros('matchit')
+if exists('g:loaded_matchit')
+  silent! sunmap %
+  silent! sunmap g%
+  silent! sunmap [%
+  silent! sunmap ]%
+  silent! sunmap a%
+
+  NXmap <SID>[% [%
+  NXmap <SID>]% ]%
+
+  xnoremap <script> [% <Esc><SID>[%m'gv``
+  xnoremap <script> ]% <Esc><SID>]%m'gv``
+  xnoremap <script> a% <Esc><SID>[%v<SID>]%
+
+  NOXmap <Space>   %
+  NOXmap <S-Space> g%
+endif
+" }}}
+" }}}
+
+"==============================================================================
+" Mappings: {{{
 
 "------------------------------------------------------------------------------
 " Common: {{{
 " <Leader> <LocalLeader>
 let g:mapleader      = ';'
 let g:maplocalleader = ','
-NXOnoremap <Leader>      <Nop>
-NXOnoremap <LocalLeader> <Nop>
+NOXnoremap <Leader>      <Nop>
+NOXnoremap <LocalLeader> <Nop>
 
 " For plugin
-NXOnoremap <Bslash> <Nop>
+NOXnoremap <Bslash> <Nop>
 
 " For mark
-NXOnoremap m <Nop>
-NXOnoremap M <Nop>
+NOXnoremap m <Nop>
+NOXnoremap M <Nop>
 
 " For user operator
-NXOnoremap s <Nop>
-NXOnoremap S <Nop>
+NOXnoremap s <Nop>
+NOXnoremap S <Nop>
 
 " " For user textobj
-" XOnoremap <M-a> <Nop>
-" XOnoremap <M-A> <Nop>
-" XOnoremap <M-i> <Nop>
-" XOnoremap <M-I> <Nop>
+" OXnoremap <M-a> <Nop>
+" OXnoremap <M-A> <Nop>
+" OXnoremap <M-i> <Nop>
+" OXnoremap <M-I> <Nop>
 
 " " For user square
-" NXOnoremap <M-[> <Nop>
-" NXOnoremap <M-]> <Nop>
+" NOXnoremap <M-[> <Nop>
+" NOXnoremap <M-]> <Nop>
 
 " For the evacuation of "g"
 NOnoremap <C-G> <Nop>
@@ -629,7 +640,7 @@ NOnoremap <C-G> <Nop>
 " Split Nicely
 noremap <expr> <SID>(split-nicely)
 \ myvimrc#split_nicely_expr() ? '<C-W>s' : '<C-W>v'
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Command Line: {{{
@@ -646,14 +657,14 @@ else
   noremap <expr> <SID>? myvimrc#cmdline_enter('?')
 endif
 
-NXOmap ;; <SID>:
-NXOmap :  <SID>:
-NXOmap /  <SID>/
-NXOmap ?  <SID>?
+NOXmap ;; <SID>:
+NOXmap :  <SID>:
+NOXmap /  <SID>/
+NOXmap ?  <SID>?
 
-NXOnoremap <expr> ;: myvimrc#cmdline_enter(':')
-NXOnoremap <expr> ;/ myvimrc#cmdline_enter('/')
-NXOnoremap <expr> ;? myvimrc#cmdline_enter('?')
+NOXnoremap <expr> ;: myvimrc#cmdline_enter(':')
+NOXnoremap <expr> ;/ myvimrc#cmdline_enter('/')
+NOXnoremap <expr> ;? myvimrc#cmdline_enter('?')
 
 NXnoremap <script> <C-W>/ <SID>(split-nicely)<SID>/
 NXnoremap <script> <C-W>? <SID>(split-nicely)<SID>?
@@ -675,7 +686,7 @@ augroup MyVimrc
   autocmd CmdwinLeave *
   \ call myvimrc#cmdwin_leave(expand('<afile>'))
 augroup END
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Search: {{{
@@ -686,12 +697,12 @@ noremap <SID>g# g#zv
 noremap <SID>n  nzv
 noremap <SID>N  Nzv
 
-NXOmap *  <SID>*
-NXOmap #  <SID>#
-NXOmap g* <SID>g*
-NXOmap g# <SID>g#
-NXOmap g/ *
-NXOmap g? #
+NOXmap *  <SID>*
+NOXmap #  <SID>#
+NOXmap g* <SID>g*
+NOXmap g# <SID>g#
+NOXmap g/ *
+NOXmap g? #
 
 nmap <C-W>*  <SID>(split-nicely)<SID>*
 nmap <C-W>#  <SID>(split-nicely)<SID>#
@@ -704,61 +715,31 @@ xnoremap <script> <C-W>g# <SID>(split-nicely)gv<SID>g#
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
 
-NXOmap <expr> n
+NOXmap <expr> n
 \ myvimrc#search_forward_expr() ? '<SID>n' : '<SID>N'
-NXOmap <expr> N
+NOXmap <expr> N
 \ myvimrc#search_forward_expr() ? '<SID>N' : '<SID>n'
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Escape Key: {{{
 nnoremap <expr> <Esc><Esc> myvimrc#escape_key()
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Moving: {{{
-" Insert-mode & Command-line-mode
-noremap! <M-j> <Down>
-noremap! <M-k> <Up>
-noremap! <M-h> <Left>
-noremap! <M-l> <Right>
-
-" Insert-mode
-inoremap <M-w>      <C-O>w
-inoremap <M-b>      <C-O>b
-inoremap <M-e>      <C-O>e
-inoremap <M-g><M-e> <C-O>ge
-inoremap <M-W>      <C-O>W
-inoremap <M-B>      <C-O>B
-inoremap <M-E>      <C-O>E
-inoremap <M-g><M-E> <C-O>gE
-inoremap <M-f>      <C-O>f
-inoremap <M-F>      <C-O>F
-inoremap <M-t>      <C-O>t
-inoremap <M-T>      <C-O>T
-inoremap <M-;>      <C-O>;
-inoremap <M-,>      <C-O>,
-inoremap <M-(>      <C-O>(
-inoremap <M-)>      <C-O>)
-inoremap <M-{>      <C-O>{
-inoremap <M-}>      <C-O>}
-
-" Command-line-mode
-cnoremap <M-H> <Home>
-cnoremap <M-L> <End>
-cnoremap <M-w> <S-Right>
-cnoremap <M-b> <S-Left>
-
 " Jump
 nnoremap <S-Tab> <C-O>
 
 " Mark
-NXOnoremap m<Down> ]`
-NXOnoremap m<Up>   [`
-NXOnoremap mj      ]`
-NXOnoremap mk      [`
+NOXnoremap m<Down> ]`
+NOXnoremap m<Up>   [`
+NOXnoremap mj      ]`
+NOXnoremap mk      [`
 
-" Command-line
+" Command-line-mode
+cnoremap <C-A> <C-B>
+
 cnoremap <expr> <C-H>
 \ getcmdtype() == '@' && getcmdpos() == 1 && empty(getcmdline()) ?
 \   '<Esc>' : '<C-H>'
@@ -769,7 +750,7 @@ cnoremap <expr> <Esc>
 \ &cpoptions =~# 'x' ?
 \   '<Esc>' : '<C-E><C-U><C-C>'
 cnoremap <C-C> <C-E><C-U><C-C>
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Window Control: {{{
@@ -790,7 +771,7 @@ NXnoremap <M-_>   <C-W>_
 NXnoremap <M-<>   <C-W><
 NXnoremap <M->>   <C-W>>
 NXnoremap <M-Bar> <C-W><Bar>
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Leader Prefix: {{{
@@ -827,7 +808,7 @@ NXnoremap <script><expr> <Leader><M-d>
 \ '<SID>:<C-U>lchdir ' . myvimrc#expand('%:p:h') . '/'
 NXnoremap <script><expr> <Leader><M-D>
 \ '<SID>:<C-U>chdir ' . myvimrc#expand('%:p:h') . '/'
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Help: {{{
@@ -839,7 +820,7 @@ inoremap <expr> <F1>
 \ myvimrc#split_nicely_expr() ?
 \   '<C-O>:<C-U>help<Space>' :
 \   '<C-O>:<C-U>vertical help<Space>'
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Auto Mark: {{{
@@ -847,15 +828,13 @@ nnoremap <expr> mm myvimrc#auto_mark()
 nnoremap <expr> mc myvimrc#clear_marks()
 nnoremap <expr> mM myvimrc#auto_file_mark()
 nnoremap <expr> mC myvimrc#clear_file_marks()
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " BOL Toggle: {{{
-NXOnoremap <expr> H myvimrc#bol_toggle()
-NXOnoremap <expr> L myvimrc#eol_toggle()
-inoremap <expr> <M-H> '<C-O>' . myvimrc#bol_toggle()
-inoremap <expr> <M-L> '<C-O>' . myvimrc#eol_toggle()
-"}}}
+NOXnoremap <expr> H myvimrc#bol_toggle()
+NOXnoremap <expr> L myvimrc#eol_toggle()
+" }}}
 
 "------------------------------------------------------------------------------
 " Insert One Character: {{{
@@ -863,25 +842,25 @@ nnoremap  <expr> <M-a> myvimrc#insert_one_char('a')
 NXnoremap <expr> <M-A> myvimrc#insert_one_char('A')
 nnoremap  <expr> <M-i> myvimrc#insert_one_char('i')
 NXnoremap <expr> <M-I> myvimrc#insert_one_char('I')
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
-" Force Blockwise Insert: {{{
-xnoremap <expr> A myvimrc#force_blockwise_insert('A')
-xnoremap <expr> I myvimrc#force_blockwise_insert('I')
-"}}}
+" Blockwise Insert: {{{
+xnoremap <expr> A myvimrc#blockwise_insert('A')
+xnoremap <expr> I myvimrc#blockwise_insert('I')
+" }}}
 
 "------------------------------------------------------------------------------
 " Increment: {{{
 silent! vunmap <C-A>
 silent! vunmap <C-X>
-if s:has_patch(7, 4, 754)
+if s:has_patch('7.4.754')
   xnoremap <C-A>  <C-A>gv
   xnoremap <C-X>  <C-X>gv
   xnoremap g<C-A> g<C-A>gv
   xnoremap g<C-X> g<C-X>gv
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Others: {{{
@@ -896,13 +875,13 @@ nnoremap <C-H> X
 " Yank to end of line
 nnoremap Y y$
 
-" Tabs
+" Tabmove
 NXnoremap <expr> g<M-t>
 \ ':<C-U>tabmove +' . v:count1 . '<CR>'
 NXnoremap <expr> g<M-T>
 \ ':<C-U>tabmove -' . v:count1 . '<CR>'
 
-" New line
+" Append line
 nnoremap <M-o>
 \ :<C-U>call append(line('.'), repeat([''], v:count1))<CR>
 nnoremap <M-O>
@@ -913,12 +892,8 @@ onoremap gv :<C-U>normal! gv<CR>
 
 " The last changed area text object
 nnoremap  g[ `[v`]
-XOnoremap g[ :<C-U>normal g[<CR>
-
-" Delete at Insert-mode
-inoremap <C-W> <C-G>u<C-W>
-inoremap <C-U> <C-G>u<C-U>
-"}}}
+OXnoremap g[ :<C-U>normal g[<CR>
+" }}}
 
 "------------------------------------------------------------------------------
 " Evacuation: {{{
@@ -926,13 +901,13 @@ inoremap <C-U> <C-G>u<C-U>
 nnoremap <M-m> m
 
 " Repeat find
-NXOnoremap <M-;> ;
-NXOnoremap <M-,> ,
+NOXnoremap <M-;> ;
+NOXnoremap <M-,> ,
 
 " Jump
-NXOnoremap gH H
-NXOnoremap gM M
-NXOnoremap gL L
+NOXnoremap gH H
+NOXnoremap gM M
+NOXnoremap gL L
 
 " FileInfo
 nnoremap <C-G><C-G> <C-G>
@@ -955,10 +930,10 @@ nnoremap gQ    gq
 inoremap <C-C> <Esc>
 
 " Rot13
-NXOnoremap s?  g?
+NOXnoremap s?  g?
 nnoremap   s?? g??
-"}}}
-"}}}
+" }}}
+" }}}
 
 "==============================================================================
 " Commands: {{{
@@ -974,7 +949,7 @@ command! -bar
 command! -bar
 \ FfMac
 \ setlocal fileformat=mac
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Change File Encoding Option: {{{
@@ -1007,7 +982,7 @@ if has('multi_byte')
     \ setlocal fileencoding=iso-2022-jp
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Open With A Specific Character Code Again: {{{
@@ -1040,7 +1015,7 @@ if has('multi_byte')
     \ edit<bang> ++enc=iso-2022-jp <args>
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Windows Shell: {{{
@@ -1057,54 +1032,49 @@ if has('win32')
 
   command! -bar -nargs=+ -complete=file
   \ CmdSource
-  \ call myvimrc#cmdsource(<args>)
+  \ call myvimrc#cmdsource(<q-args>)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " VC Vars: {{{
 if has('win32')
   if !exists('$VCVARSALL')
-    if exists('$VS140COMNTOOLS')
+    if filereadable($VS140COMNTOOLS . '..\..\VC\vcvarsall.bat')
       let $VCVARSALL = $VS140COMNTOOLS . '..\..\VC\vcvarsall.bat'
-    elseif exists('$VS120COMNTOOLS')
+    elseif filereadable($VS120COMNTOOLS . '..\..\VC\vcvarsall.bat')
       let $VCVARSALL = $VS120COMNTOOLS . '..\..\VC\vcvarsall.bat'
-    elseif exists('$VS110COMNTOOLS')
+    elseif filereadable($VS110COMNTOOLS . '..\..\VC\vcvarsall.bat')
       let $VCVARSALL = $VS110COMNTOOLS . '..\..\VC\vcvarsall.bat'
-    elseif exists('$VS100COMNTOOLS')
+    elseif filereadable($VS100COMNTOOLS . '..\..\VC\vcvarsall.bat')
       let $VCVARSALL = $VS100COMNTOOLS . '..\..\VC\vcvarsall.bat'
-    elseif exists('$VS90COMNTOOLS')
-      let $VCVARSALL = $VS90COMNTOOLS  . '..\..\VC\vcvarsall.bat'
-    elseif exists('$VS80COMNTOOLS')
-      let $VCVARSALL = $VS80COMNTOOLS  . '..\..\VC\vcvarsall.bat'
+    elseif filereadable($VS90COMNTOOLS . '..\..\VC\vcvarsall.bat')
+      let $VCVARSALL = $VS90COMNTOOLS . '..\..\VC\vcvarsall.bat'
+    elseif filereadable($VS80COMNTOOLS . '..\..\VC\vcvarsall.bat')
+      let $VCVARSALL = $VS80COMNTOOLS . '..\..\VC\vcvarsall.bat'
     endif
   endif
   if !exists('$SDK_INCLUDE_DIR')
-    if isdirectory(
-    \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.1A\Include')
-      let $SDK_INCLUDE_DIR =
-      \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.1A\Include'
-    elseif isdirectory(
-    \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.1\Include')
-      let $SDK_INCLUDE_DIR =
-      \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.1\Include'
-    elseif isdirectory(
-    \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.0A\Include')
-      let $SDK_INCLUDE_DIR =
-      \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.0A\Include'
-    elseif isdirectory(
-    \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.0\Include')
-      let $SDK_INCLUDE_DIR =
-      \ s:programfiles_x86 . '\Microsoft SDKs\Windows\v7.0\Include'
+    if isdirectory(s:pf32 . '\Microsoft SDKs\Windows\v7.1A\Include')
+      let $SDK_INCLUDE_DIR = s:pf32 . '\Microsoft SDKs\Windows\v7.1A\Include'
+    elseif isdirectory(s:pf32 . '\Microsoft SDKs\Windows\v7.1\Include')
+      let $SDK_INCLUDE_DIR = s:pf32 . '\Microsoft SDKs\Windows\v7.1\Include'
+    elseif isdirectory(s:pf32 . '\Microsoft SDKs\Windows\v7.0A\Include')
+      let $SDK_INCLUDE_DIR = s:pf32 . '\Microsoft SDKs\Windows\v7.0A\Include'
+    elseif isdirectory(s:pf32 . '\Microsoft SDKs\Windows\v7.0\Include')
+      let $SDK_INCLUDE_DIR = s:pf32 . '\Microsoft SDKs\Windows\v7.0\Include'
     endif
   endif
 
   command! -bar
+  \ VCVars
+  \ call myvimrc#cmdsource(
+  \   myvimrc#cmdescape($VCVARSALL), $PROCESSOR_ARCHITECTURE)
+  command! -bar
   \ VCVars32
   \ call myvimrc#cmdsource(
   \   myvimrc#cmdescape($VCVARSALL), 'x86')
-
-  if exists('$PROGRAMFILES(X86)')
+  if s:arch
     command! -bar
     \ VCVars64
     \ call myvimrc#cmdsource(
@@ -1113,7 +1083,7 @@ if has('win32')
     \   $PROCESSOR_ARCHITEW6432 : $PROCESSOR_ARCHITECTURE)
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Line Number Toggle: {{{
@@ -1124,7 +1094,7 @@ command! -bar
 
 nnoremap <F12>
 \ :<C-U>LineNumberToggle<CR>
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " QuickFix Toggle: {{{
@@ -1137,7 +1107,7 @@ command! -bar -nargs=?
 
 NXnoremap <C-W>, :<C-U>CToggle<CR>
 NXnoremap <C-W>. :<C-U>LToggle<CR>
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " From CmdEx: {{{
@@ -1148,22 +1118,22 @@ command! -bar
 \ Undiff
 \ diffoff |
 \ setlocal scrollbind< cursorbind< wrap< foldmethod< foldcolumn< |
-\ call s:doautocmd('FileType')
+\ doautocmd FileType
 
 nnoremap <F8> :<C-U>Undiff<CR>
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " From Example: {{{
 command! -bar
 \ DiffOrig
-\ let s:save_ft = &l:filetype | vertical new | setlocal buftype=nofile |
-\ read ++edit # | 0d_ | let &l:filetype = s:save_ft | unlet s:save_ft |
+\ let s:save_ft = &filetype | vertical new | setlocal buftype=nofile |
+\ read ++edit # | 0d_ | let &filetype = s:save_ft | unlet s:save_ft |
 \ diffthis | wincmd p | diffthis
 
-nnoremap <F6> :<C-U>DiffOrig<CR>
-"}}}
-"}}}
+nnoremap <F7> :<C-U>DiffOrig<CR>
+" }}}
+" }}}
 
 "==============================================================================
 " Auto Command: {{{
@@ -1172,7 +1142,7 @@ nnoremap <F6> :<C-U>DiffOrig<CR>
 " Auto MkDir: {{{
 autocmd MyVimrc BufWritePre *
 \ call myvimrc#auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Quick Close: {{{
@@ -1181,19 +1151,19 @@ autocmd MyVimrc FileType *
 \   nnoremap <buffer><silent><expr> q
 \     winnr('$') != 1 ? ':<C-U>close<CR>' : ''|
 \ endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " QuickFix: {{{
 autocmd MyVimrc BufWinEnter,WinEnter *
-\ if &l:buftype == 'quickfix' && !exists('b:qflisttype') |
+\ if &buftype == 'quickfix' && !exists('b:qflisttype') |
 \   call myvimrc#set_qflisttype() |
 \ endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Functions Of Highlight: {{{
-function! s:get_highlight(hi)
+function! s:get_highlight(hi) abort
   redir => hl
   silent execute 'highlight' a:hi
   redir END
@@ -1201,7 +1171,7 @@ function! s:get_highlight(hi)
   return matchstr(hl, 'xxx\zs.*$')
 endfunction
 
-function! s:_reverse_highlight(hl, name)
+function! s:_reverse_highlight(hl, name) abort
   let s = matchstr(a:hl, a:name . '=\zs\S\+')
   if s =~ '\%(re\|in\)verse'
     return substitute(
@@ -1213,18 +1183,18 @@ function! s:_reverse_highlight(hl, name)
   endif
 endfunction
 
-function! s:reverse_highlight(hl)
+function! s:reverse_highlight(hl) abort
   return a:hl .
   \ ' term='  . s:_reverse_highlight(a:hl, 'term') .
   \ ' cterm=' . s:_reverse_highlight(a:hl, 'cterm') .
   \ ' gui='   . s:_reverse_highlight(a:hl, 'gui')
 endfunction
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Reverse Status Line Color At Insert Mode: {{{
-if s:is_colored
-  function! s:reverse_status_line_color(is_insert, reset)
+if s:is_colored_ui
+  function! s:reverse_status_line_color(is_insert, reset) abort
     if !exists('s:hi_status_line') || !exists('s:hi_status_line_i') || a:reset
       silent! let s:hi_status_line   = s:get_highlight('StatusLine')
       silent! let s:hi_status_line_i = s:reverse_highlight(s:hi_status_line)
@@ -1246,12 +1216,12 @@ if s:is_colored
     \ call s:reverse_status_line_color(0, 0)
   augroup END
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Highlight Ideographic Space: {{{
-if has('multi_byte') && s:is_colored
-  function! s:highlight_ideographic_space(reset)
+if has('multi_byte') && s:is_colored_ui
+  function! s:highlight_ideographic_space(reset) abort
     if !exists('s:hi_specialkey') || a:reset
       silent! let s:hi_specialkey =
       \ s:get_highlight('SpecialKey')
@@ -1275,7 +1245,7 @@ if has('multi_byte') && s:is_colored
     \ call s:highlight_ideographic_space(0)
   augroup END
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " From Example: {{{
@@ -1284,8 +1254,8 @@ autocmd MyVimrc FileType *
 \   index(s:ignore_ft, expand('<amatch>')) < 0 |
 \   execute 'normal! g`"' |
 \ endif
-"}}}
-"}}}
+" }}}
+" }}}
 
 "==============================================================================
 " Plugins: {{{
@@ -1304,7 +1274,6 @@ let s:selector_ui = {
 \ 'registers' : 'ctrlp',
 \ 'marks'     : 'ctrlp',
 \ 'tag'       : 'ctrlp',
-\ 'shell'     : 'vimshell',
 \ 'grep'      : '',
 \ 'quickfix'  : '',
 \
@@ -1331,15 +1300,15 @@ let s:altercmd_define = {
 \ 'tbl[ast]'     : 'tab sblast',
 \ 'vunh[ide]'    : 'vertical unhide',
 \ 'vba[ll]'      : 'vertical ball',
-\ 'tun[hide]'    : 'tab unhide',
+\ 'tunh[ide]'    : 'tab unhide',
 \ 'tba[ll]'      : 'tab ball'}
 
-" NeoComplete, NeoComplCache
+" NeoComplete
 " {filetype} : {dictionary}
-let s:neocompl_dictionary_filetype_lists = {
+let s:neocomplete_dictionary_filetype_lists = {
 \ 'default' : ''}
 " {filetype} : {expr}
-let s:neocompl_tags_filter_patterns = {
+let s:neocomplete_tags_filter_patterns = {
 \ 'ant'        : 'v:val.word !~ "^[~_]"',
 \ 'asm'        : 'v:val.word !~ "^[~_]"',
 \ 'aspperl'    : 'v:val.word !~ "^[~_]"',
@@ -1382,37 +1351,34 @@ let s:neocompl_tags_filter_patterns = {
 \ 'verilog'    : 'v:val.word !~ "^[~_]"',
 \ 'vhdl'       : 'v:val.word !~ "^[~_]"',
 \ 'vim'        : 'v:val.word !~ "^[~_]"',
-\ 'yacc'       : 'v:val.word !~ "^[~_]"',
-\
-\ 'vb'         : 'v:val.word !~ "^[~_]"',
-\ 'vbnet'      : 'v:val.word !~ "^[~_]"'}
+\ 'yacc'       : 'v:val.word !~ "^[~_]"'}
 " {command} : {function}
-let s:neocompl_vim_completefuncs = {
+let s:neocomplete_vim_completefuncs = {
 \ 'SQLSetType' : 'SQL_GetList'}
 " {omnifunc} : {pattern}
-let s:neocompl_omni_patterns = {
+let s:neocomplete_omni_patterns = {
 \ 'CucumberComplete'              : '\h\w*',
 \ 'adacomplete#Complete'          : '\h\w*',
 \ 'clojurecomplete#Complete'      : '\h\w*',
 \ 'csscomplete#CompleteCSS'       : '\h\w*\|[@!]',
 \ 'sqlcomplete#Complete'          : '\h\w*'}
 " {omnifunc} : {pattern}
-let s:neocompl_force_omni_patterns = {
+let s:neocomplete_force_omni_patterns = {
 \ 'ccomplete#Complete'            : '\%(\.\|->\|::\)\h\w*',
 \ 'htmlcomplete#CompleteTags'     : '<[^>]*',
 \ 'javascriptcomplete#CompleteJS' : '\.\h\w*',
 \ 'phpcomplete#CompletePHP'       : '\%(->\|::\)\h\w*',
 \ 'xmlcomplete#CompleteTags'      : '<[^>]*'}
 if has('python3')
-  call extend(s:neocompl_force_omni_patterns, {
+  call extend(s:neocomplete_force_omni_patterns, {
   \ 'python3complete#Complete' : '\.\h\w*'})
 endif
 if has('python')
-  call extend(s:neocompl_force_omni_patterns, {
+  call extend(s:neocomplete_force_omni_patterns, {
   \ 'pythoncomplete#Complete' : '\.\h\w*'})
 endif
 if has('ruby')
-  call extend(s:neocompl_force_omni_patterns, {
+  call extend(s:neocomplete_force_omni_patterns, {
   \ 'rubycomplete#Complete' : '\%(\.\|::\)\h\w*'})
 endif
 
@@ -1447,53 +1413,51 @@ if empty(get(s:selector_ui, 'quickfix'))
     \ lwindow
   augroup END
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
-" NeoBundle: {{{
-if isdirectory($HOME . '/.local/bundle/neobundle')
-  set runtimepath+=~/.local/bundle/neobundle
-  let g:neobundle#enable_name_conversion = 1
-  let g:neobundle#install_max_processes  = s:cpucores()
-  call neobundle#begin($HOME . '/.local/bundle')
+" Dein: {{{
+let s:dein_dir = $CACHE . '/dein/repos/github.com/Shougo/dein.vim'
+if v:version > 703 && isdirectory(s:dein_dir)
+  execute 'set runtimepath^=' . escape(s:dein_dir, ' ,\')
+  let g:dein#enable_name_conversion = 1
+  let g:dein#install_max_processes  = min([s:cpucores(), 8])
+  let g:dein#install_progress_type  = 'title'
 
-  if (has('win32') && v:progname !=# 'gvim.exe') ||
-  \ (!has('win32') && v:progname !~# '^g\=vim$')
-    call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
-  elseif neobundle#load_cache($HOME . '/.vim/neobundle.toml')
-    call neobundle#load_toml($HOME . '/.vim/neobundle.toml', {'lazy' : 1})
-    NeoBundleSaveCache
+  if dein#load_state($CACHE . '/dein')
+    let s:dein_toml = compat#glob($HOME . '/.vim/dein/*.toml', 0, 1)
+    call dein#begin($CACHE . '/dein', [$MYVIMRC] + s:dein_toml)
+
+    for s:toml in s:dein_toml
+      call dein#load_toml(s:toml, {'lazy' : 1})
+    endfor
+
+    call dein#end()
+    call dein#save_state()
   endif
-
-  call extend(s:neocompl_vim_completefuncs, {
-  \ 'NeoBundleSource'    : 'neobundle#complete_lazy_bundles',
-  \ 'NeoBundleDisable'   : 'neobundle#complete_bundles',
-  \ 'NeoBundleInstall'   : 'neobundle#complete_bundles',
-  \ 'NeoBundleUpdate'    : 'neobundle#complete_bundles',
-  \ 'NeoBundleClean'     : 'neobundle#complete_deleted_bundles',
-  \ 'NeoBundleReinstall' : 'neobundle#complete_bundles'})
 endif
-"}}}
+unlet! s:dein_dir
+" }}}
 
 "------------------------------------------------------------------------------
 " Alignta: {{{
-if s:neobundle_tap('alignta')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('alignta')
+  function! g:dein#plugin.hook_source() abort
     call operator#user#define(
     \ 'alignta',
     \ 'myvimrc#operator_alignta')
   endfunction
 
-  NXOmap s= <Plug>(operator-alignta)
+  NOXmap s= <Plug>(operator-alignta)
 
   nmap s== s=s=
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " AlterCommand: {{{
-if s:neobundle_tap('altercmd')
-  function! neobundle#hooks.on_post_source(bundle)
+if s:dein_tap('altercmd')
+  function! g:dein#plugin.hook_post_source() abort
     for [key, value] in items(s:altercmd_define)
       execute 'CAlterCommand' key value
     endfor
@@ -1501,26 +1465,26 @@ if s:neobundle_tap('altercmd')
 
   augroup MyVimrc
     autocmd User CmdlineEnter
-    \ NeoBundleSource altercmd
+    \ call dein#source('altercmd')
     autocmd CmdwinEnter :
     \ call myvimrc#cmdwin_enter_altercmd(s:altercmd_define)
   augroup END
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Altr: {{{
-if s:neobundle_tap('altr')
+if s:dein_tap('altr')
   nmap g<M-f>     <Plug>(altr-forward)
   nmap g<M-F>     <Plug>(altr-back)
   nmap <C-W><M-f> <SID>(split-nicely)<Plug>(altr-forward)
   nmap <C-W><M-F> <SID>(split-nicely)<Plug>(altr-back)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Anzu: {{{
-if s:neobundle_tap('anzu')
+if s:dein_tap('anzu')
   set shortmess+=s
 
   nmap <SID>(anzu-jump-n) <Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)
@@ -1537,72 +1501,67 @@ if s:neobundle_tap('anzu')
   cnoremap <script><expr> <CR>
   \ '<C-]><CR>' . (getcmdtype() =~ '[/?]' ? '<SID>(anzu-echo)zv' : '')
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " AutoDate: {{{
-if s:neobundle_tap('autodate')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('autodate')
+  function! g:dein#plugin.hook_source() abort
     let g:autodate_lines = 10
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " AutoFmt: {{{
-if s:neobundle_tap('autofmt')
+if s:dein_tap('autofmt')
   set formatexpr=autofmt#japanese#formatexpr()
 endif
-"}}}
+" }}}
+
+"------------------------------------------------------------------------------
+" Caw: {{{
+if s:dein_tap('caw')
+  function! g:dein#plugin.hook_source() abort
+    let g:caw_dollarpos_sp_left = ' '
+  endfunction
+
+  NXmap gc <Plug>(caw:prefix)
+endif
+" }}}
 
 "------------------------------------------------------------------------------
 " Clang Format: {{{
-if s:neobundle_tap('clang-format')
-  " NXOmap <buffer> sf <Plug>(operator-clang-format)
+if s:dein_tap('clang-format')
+  " NOXmap <buffer> sf <Plug>(operator-clang-format)
   "
   " nmap <buffer> sff sfsf
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Clever F: {{{
-if s:neobundle_tap('clever-f')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('clever-f')
+  function! g:dein#plugin.hook_source() abort
     let g:clever_f_not_overwrites_standard_mappings = 1
     let g:clever_f_fix_key_direction                = 1
     let g:clever_f_use_migemo                       = 1
-
-    nmap <SID>(clever-f-f)              <Plug>(clever-f-f)
-    nmap <SID>(clever-f-F)              <Plug>(clever-f-F)
-    nmap <SID>(clever-f-t)              <Plug>(clever-f-t)
-    nmap <SID>(clever-f-T)              <Plug>(clever-f-T)
-    nmap <SID>(clever-f-reset)          <Plug>(clever-f-reset)
-    nmap <SID>(clever-f-repeat-forward) <Plug>(clever-f-repeat-forward)
-    nmap <SID>(clever-f-repeat-back)    <Plug>(clever-f-repeat-back)
-
-    inoremap <script> <M-f> <C-O><SID>(clever-f-f)
-    inoremap <script> <M-F> <C-O><SID>(clever-f-F)
-    inoremap <script> <M-t> <C-O><SID>(clever-f-t)
-    inoremap <script> <M-T> <C-O><SID>(clever-f-T)
-    inoremap <script> <M-.> <C-O><SID>(clever-f-reset)
-    inoremap <script> <M-;> <C-O><SID>(clever-f-repeat-forward)
-    inoremap <script> <M-,> <C-O><SID>(clever-f-repeat-back)
   endfunction
 
-  NXOmap f     <Plug>(clever-f-f)
-  NXOmap F     <Plug>(clever-f-F)
-  NXOmap t     <Plug>(clever-f-t)
-  NXOmap T     <Plug>(clever-f-T)
-  NXOmap <M-.> <Plug>(clever-f-reset)
-  NXOmap <M-;> <Plug>(clever-f-repeat-forward)
-  NXOmap <M-,> <Plug>(clever-f-repeat-back)
+  NOXmap f     <Plug>(clever-f-f)
+  NOXmap F     <Plug>(clever-f-F)
+  NOXmap t     <Plug>(clever-f-t)
+  NOXmap T     <Plug>(clever-f-T)
+  NOXmap <M-.> <Plug>(clever-f-reset)
+  NOXmap <M-;> <Plug>(clever-f-repeat-forward)
+  NOXmap <M-,> <Plug>(clever-f-repeat-back)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " ColumnJump: {{{
-if s:neobundle_tap('columnjump')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('columnjump')
+  function! g:dein#plugin.hook_source() abort
     call submode#enter_with(
     \ 'coljmp', 'nx', 'r', '<Plug>(submode:coljmp:[)',
     \ '<Plug>(columnjump-backward)')
@@ -1623,12 +1582,12 @@ if s:neobundle_tap('columnjump')
   omap [<M-[> <Plug>(columnjump-backward)
   omap ]<M-]> <Plug>(columnjump-forward)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Universal Ctags: {{{
-if s:neobundle_tap('ctags')
-  call extend(s:neocompl_tags_filter_patterns, {
+if s:dein_tap('ctags')
+  call extend(s:neocomplete_tags_filter_patterns, {
   \ 'ada'        : 'v:val.word !~ "^[~_]"',
   \ 'ant'        : 'v:val.word !~ "^[~_]"',
   \ 'asm'        : 'v:val.word !~ "^[~_]"',
@@ -1690,19 +1649,20 @@ if s:neobundle_tap('ctags')
   \ 'rc'         : 'v:val.word !~ "^[~_]"',
   \ 'yacc'       : 'v:val.word !~ "^[~_]"'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP: {{{
-if s:neobundle_tap('ctrlp')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('ctrlp')
+  function! g:dein#plugin.hook_source() abort
     let g:ctrlp_map                 = ''
     let g:ctrlp_match_window        = 'max:20'
     let g:ctrlp_switch_buffer       = ''
     let g:ctrlp_working_path_mode   = ''
     let g:ctrlp_clear_cache_on_exit = 0
-    let g:ctrlp_cache_dir           = $HOME . '/.local/.cache/ctrlp'
     let g:ctrlp_show_hidden         = 1
+    let g:ctrlp_max_files           = 10000
+    let g:ctrlp_max_depth           = 20
     let g:ctrlp_open_new_file       = 'r'
 
     let g:ctrlp_custom_ignore       = {
@@ -1711,27 +1671,23 @@ if s:neobundle_tap('ctrlp')
     let g:ctrlp_mruf_exclude        =
     \ join(s:ignore_dir, '\|')
 
-    if s:executable('files')
-      let s:ctrlp_user_command =
-      \ s:cpucores() > 1 ? 'files -A %s' : 'files %s'
-    " elseif has('win32')
-    "   let s:ctrlp_user_command =
-    "   \ 'dir %s /-n /b /s /a-d'
-    elseif !has('win32') && s:executable('find')
-      let s:ctrlp_user_command =
+    if !has('win32') && s:executable('find')
+      let l:ctrlp_user_command =
       \ 'find -L %s -type f'
+    " elseif has('win32')
+    "   let l:ctrlp_user_command =
+    "   \ 'dir %s /-n /b /s /a-d'
+    elseif s:executable('files')
+      let l:ctrlp_user_command =
+      \ 'files ' .
+      \ (s:cpucores() > 1 ? '-A ' : '') .
+      \ '%s'
     endif
-    if exists('s:ctrlp_user_command')
+    if exists('l:ctrlp_user_command')
       let g:ctrlp_user_command = {
-      \ 'fallback' : s:ctrlp_user_command,
+      \ 'fallback' : l:ctrlp_user_command,
       \ 'ignore'   : 1}
     endif
-
-    if s:is_enabled_bundle('ctrlp-py-matcher')
-      let g:ctrlp_match_func = {'match' : 'pymatcher#PyMatch'}
-    endif
-
-    let g:ctrlp#tabpage#visible_all_buftype = 1
   endfunction
 
   NXnoremap <Bslash>p <Nop>
@@ -1755,18 +1711,18 @@ if s:neobundle_tap('ctrlp')
   if get(s:selector_ui, 'undo') == 'ctrlp'
     NXmap <Leader>u <Bslash>pu
   endif
-  if get(s:selector_ui, 'change') == 'ctrlp'
+  if get(s:selector_ui, 'changes') == 'ctrlp'
     NXmap <Leader>j <Bslash>pj
   endif
   if get(s:selector_ui, 'tag') == 'ctrlp'
     NXmap <Leader>] <Bslash>p]
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP Chdir: {{{
-if s:neobundle_tap('ctrlp-chdir')
+if s:dein_tap('ctrlp-chdir')
   NXnoremap <Bslash>pd     :<C-U>CtrlPLchdir<CR>
   NXnoremap <Bslash>pD     :<C-U>CtrlPChdir<CR>
   NXnoremap <Bslash>p<M-d> :<C-U>CtrlPLchdir %:p:h<CR>
@@ -1779,47 +1735,47 @@ if s:neobundle_tap('ctrlp-chdir')
     NXmap <Leader><M-D> <Bslash>p<M-D>
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP ColorScheme: {{{
-if s:neobundle_tap('ctrlp-colorscheme')
+if s:dein_tap('ctrlp-colorscheme')
   command! -bar
   \ CtrlPColorScheme
   \ call ctrlp#init(ctrlp#colorscheme#id())
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP FileType: {{{
-if s:neobundle_tap('ctrlp-filetype')
+if s:dein_tap('ctrlp-filetype')
   NXnoremap <Bslash>pT
   \ :<C-U>CtrlPFileType<CR>
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP Help: {{{
-if s:neobundle_tap('ctrlp-help')
+if s:dein_tap('ctrlp-help')
   NXnoremap <Bslash>p<F1>
   \ :<C-U>CtrlPHelp<CR>
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP Jumps: {{{
-if s:neobundle_tap('ctrlp-jumps')
+if s:dein_tap('ctrlp-jumps')
   NXnoremap <Bslash>pJ :<C-U>CtrlPJump<CR>
 
   if get(s:selector_ui, 'jumps') == 'ctrlp'
     NXmap <Leader>J <Bslash>pJ
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP LocationList: {{{
-if s:neobundle_tap('ctrlp-location-list')
+if s:dein_tap('ctrlp-location-list')
   NXnoremap <Bslash>p,
   \ :<C-U>call myvimrc#ctrlp_no_empty('CtrlPQuickfix')<CR>
   NXnoremap <Bslash>p.
@@ -1837,11 +1793,11 @@ if s:neobundle_tap('ctrlp-location-list')
     augroup END
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP Mark: {{{
-if s:neobundle_tap('ctrlp-mark')
+if s:dein_tap('ctrlp-mark')
   NXnoremap <Bslash>pm
   \ :<C-U>CtrlPMark<CR>
 
@@ -1849,12 +1805,21 @@ if s:neobundle_tap('ctrlp-mark')
     NXmap <Leader>m <Bslash>pm
   endif
 endif
-"}}}
+" }}}
+
+"------------------------------------------------------------------------------
+" CtrlP Py Matcher: {{{
+if s:dein_tap('ctrlp-py-matcher')
+  function! g:dein#plugin.hook_source() abort
+    let g:ctrlp_match_func = {'match' : 'pymatcher#PyMatch'}
+  endfunction
+endif
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP Register: {{{
-if s:neobundle_tap('ctrlp-register')
-  if !s:is_enabled_bundle('yankround')
+if s:dein_tap('ctrlp-register')
+  if !s:dein_if('yankround')
     nnoremap <Bslash>pp
     \ :<C-U>CtrlPRegister<CR>
     xnoremap <Bslash>pp
@@ -1865,52 +1830,56 @@ if s:neobundle_tap('ctrlp-register')
     endif
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP Tabpage: {{{
-if s:neobundle_tap('ctrlp-tabpage')
+if s:dein_tap('ctrlp-tabpage')
+  function! g:dein#plugin.hook_source() abort
+    let g:ctrlp#tabpage#visible_all_buftype = 1
+  endfunction
+
   NXnoremap <Bslash>pt :<C-U>CtrlPTabpage<CR>
 
   if get(s:selector_ui, 'tabnext') == 'ctrlp'
     NXmap <Leader>t <Bslash>pt
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " CtrlP Window: {{{
-if s:neobundle_tap('ctrlp-window')
+if s:dein_tap('ctrlp-window')
   NXnoremap <Bslash>pw :<C-U>CtrlPWindow<CR>
   NXnoremap <Bslash>pW :<C-U>CtrlPWindowAll<CR>
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Dispatch: {{{
-if s:neobundle_tap('dispatch')
-  call extend(s:neocompl_vim_completefuncs, {
+if s:dein_tap('dispatch')
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'Dispatch'      : 'dispatch#command_complete',
   \ 'FocusDispatch' : 'dispatch#command_complete',
   \ 'Make'          : 'dispatch#make_complete',
   \ 'Start'         : 'dispatch#command_complete',
   \ 'Spawn'         : 'dispatch#command_complete'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " EchoDoc: {{{
-if s:neobundle_tap('echodoc')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('echodoc')
+  function! g:dein#plugin.hook_source() abort
     call echodoc#enable()
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Emmet: {{{
-if s:neobundle_tap('emmet')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('emmet')
+  function! g:dein#plugin.hook_source() abort
     let g:user_emmet_leader_key = '<M-y>'
     let g:user_emmet_settings   = {
     \ 'lang' : 'ja',
@@ -1918,60 +1887,94 @@ if s:neobundle_tap('emmet')
     \ 'xml' : {'extends' : 'html'}}
   endfunction
 
-  call extend(s:neocompl_omni_patterns, {
+  call extend(s:neocomplete_omni_patterns, {
   \ 'emmet#CompleteTag' : '\h\w*'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Eskk: {{{
-if s:neobundle_tap('eskk')
-  function! neobundle#hooks.on_source(bundle)
-    let g:eskk#directory               = $HOME . '/.local/.eskk'
+if s:dein_tap('eskk')
+  function! g:dein#plugin.hook_source() abort
+    let g:eskk#directory               = $CACHE . '/eskk'
     let g:eskk#no_default_mappings     = 1
     let g:eskk#start_completion_length = 1
-    let g:eskk#dictionary              = {
-    \ 'path' : $HOME . '/.skk/jisyo',
-    \ 'sorted' : 0,
-    \ 'encoding' : 'utf-8'}
-    let g:eskk#large_dictionary        = {
-    \ 'path' : $HOME . '/.skk/SKK-JISYO.L',
-    \ 'sorted' : 1,
-    \ 'encoding' : 'euc-jp'}
     let g:eskk#mapped_keys             =
     \ filter(eskk#get_default_mapped_keys(), 'v:val !=? "<Tab>"')
+    let g:eskk#dictionary              = {
+    \ 'path' : $CACHE . '/skk-jisyo',
+    \ 'sorted' : 0,
+    \ 'encoding' : 'utf-8'}
+
+    if !has('win32') && filereadable('/usr/local/share/skk/SKK-JISYO.L')
+      let g:eskk#large_dictionary        = {
+      \ 'path' : $HOME . '/.vim/dict/SKK-JISYO.L',
+      \ 'sorted' : 1,
+      \ 'encoding' : 'euc-jp'}
+    endif
   endfunction
 
   map! <C-J> <Plug>(eskk:toggle)
   lmap <C-J> <Plug>(eskk:toggle)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
-" Lua Ftplugin: {{{
-if s:neobundle_tap('lua-ftplugin')
-  function! neobundle#hooks.on_source(bundle)
-    let g:lua_complete_omni = 1
-    let g:lua_check_syntax  = 0
-    let g:lua_check_globals = 0
+" FastFold: {{{
+if s:dein_tap('FastFold')
+  function! g:dein#plugin.hook_source() abort
+    let g:fastfold_savehook               = 1
+    let g:fastfold_fold_movement_commands = []
 
-    if s:executable('luajit')
-      let g:lua_interpreter_path = 'luajit'
-      let g:lua_compiler_name    = 'luajit'
-      let g:lua_compiler_args    = '-bl'
-      let g:lua_error_format     = 'luajit: %f:%l: %m'
-    endif
+    call submode#enter_with(
+    \ 'ff/move', 'n', 'se', '<Plug>(submode:ff/move:j)',
+    \ '":<C-U>FastFoldUpdate<CR>" . v:count1 . "zj"')
+    call submode#enter_with(
+    \ 'ff/move', 'n', 'se', '<Plug>(submode:ff/move:k)',
+    \ '":<C-U>FastFoldUpdate<CR>" . v:count1 . "zk"')
+    call submode#enter_with(
+    \ 'ff/move', 'x', 'se', '<Plug>(submode:ff/move:j)',
+    \ '":<C-U>FastFoldUpdate<CR>gv" . v:count1 . "zj"')
+    call submode#enter_with(
+    \ 'ff/move', 'x', 'se', '<Plug>(submode:ff/move:k)',
+    \ '":<C-U>FastFoldUpdate<CR>gv" . v:count1 . "zk"')
+    call submode#map(
+    \ 'ff/move', 'nx', '', 'j', 'zj')
+    call submode#map(
+    \ 'ff/move', 'nx', '', 'k', 'zk')
+
+    call submode#enter_with(
+    \ 'ff/sq', 'n', 'se', '<Plug>(submode:ff/sq:[)',
+    \ '":<C-U>FastFoldUpdate<CR>" . v:count1 . "[z"')
+    call submode#enter_with(
+    \ 'ff/sq', 'n', 'se', '<Plug>(submode:ff/sq:])',
+    \ '":<C-U>FastFoldUpdate<CR>" . v:count1 . "]z"')
+    call submode#enter_with(
+    \ 'ff/sq', 'x', 'se', '<Plug>(submode:ff/sq:[)',
+    \ '":<C-U>FastFoldUpdate<CR>gv" . v:count1 . "[z"')
+    call submode#enter_with(
+    \ 'ff/sq', 'x', 'se', '<Plug>(submode:ff/sq:])',
+    \ '":<C-U>FastFoldUpdate<CR>gv" . v:count1 . "]z"')
+    call submode#map(
+    \ 'ff/sq', 'nx', '', '[', '[z')
+    call submode#map(
+    \ 'ff/sq', 'nx', '', ']', ']z')
   endfunction
 
-  call extend(s:neocompl_force_omni_patterns, {
-  \ 'xolox#lua#omnifunc' : '\%(\.\|:\)\h\w*'})
+  NXmap zj <Plug>(submode:ff/move:j)
+  NXmap zk <Plug>(submode:ff/move:k)
+  NXmap [z <Plug>(submode:ff/sq:[)
+  NXmap ]z <Plug>(submode:ff/sq:])
+
+  autocmd MyVimrc InsertEnter,InsertLeave *
+  \ FastFoldUpdate
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Goto File: {{{
-if s:neobundle_tap('gf-user')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('gf-user')
+  function! g:dein#plugin.hook_source() abort
     let g:gf_user_no_default_key_mappings = 1
   endfunction
 
@@ -1983,94 +1986,131 @@ if s:neobundle_tap('gf-user')
   NXmap <C-W>gF    <Plug>(gf-user-<C-w>gF)
   NXmap <C-W><C-F> <Plug>(gf-user-<C-w><C-f>)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Go Extra: {{{
-if s:neobundle_tap('go-extra')
-  call extend(s:neocompl_force_omni_patterns, {
+if s:dein_tap('go-extra')
+  call extend(s:neocomplete_force_omni_patterns, {
   \ 'go#complete#Complete' : '\.\h\w*',
   \ 'gocomplete#Complete'  : '\.\h\w*'})
-  call extend(s:neocompl_vim_completefuncs, {
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'GoDoc' : 'go#complete#Package'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Grex: {{{
-if s:neobundle_tap('grex')
-  NXOmap sD <Plug>(operator-grex-delete)
-  NXOmap sY <Plug>(operator-grex-yank)
+if s:dein_tap('grex')
+  NOXmap sD <Plug>(operator-grex-delete)
+  NOXmap sY <Plug>(operator-grex-yank)
 
   nmap sDD sDsD
   nmap sYY sYsY
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Hier: {{{
-if s:neobundle_tap('hier')
+if s:dein_tap('hier')
   autocmd MyVimrc User EscapeKey
   \ HierClear
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " IncSearch: {{{
-if s:neobundle_tap('incsearch')
-  NXOnoremap <silent><expr> <SID>/ myvimrc#incsearch_next()
-  NXOnoremap <silent><expr> <SID>? myvimrc#incsearch_prev()
+if s:dein_tap('incsearch')
+  NOXnoremap <silent><expr> <SID>/ myvimrc#incsearch_next()
+  NOXnoremap <silent><expr> <SID>? myvimrc#incsearch_prev()
 
-  if s:is_enabled_bundle('anzu')
+  if s:dein_if('anzu')
     autocmd MyVimrc User IncSearchExecute
     \ call feedkeys(":\<C-U>AnzuUpdateSearchStatusOutput\<CR>", 'n')
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " J6uil: {{{
-if s:neobundle_tap('J6uil')
-  function! neobundle#hooks.on_source(bundle)
-    let g:J6uil_config_dir             = $HOME . '/.local/.cache/J6uil'
+if s:dein_tap('J6uil')
+  function! g:dein#plugin.hook_source() abort
+    let g:J6uil_config_dir             = $CACHE . '/J6uil'
     let g:J6uil_echo_presence          = 0
     let g:J6uil_open_buffer_cmd        = 'tabedit'
     let g:J6uil_no_default_keymappings = 1
     let g:J6uil_user                   = 'DeaR'
 
-    if (!has('win32') && s:executable('convert')) ||
-    \ (has('win32') && isdirectory($PROGRAMFILES . '/ImageMagick-6.9.0-Q16'))
+    if has('win32') && s:executable('imdisplay')
+      let $PATH = fnamemodify(compat#exepath('imdisplay'), ':h') . ';' . $PATH
+      let g:J6uil_display_icon = 1
+    elseif !has('win32') && s:executable('convert')
       let g:J6uil_display_icon = 1
     endif
   endfunction
 
   call extend(s:altercmd_define, {
   \ 'j[6uil]' : 'J6uil'})
-  call extend(s:neocompl_vim_completefuncs, {
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'J6uil' : 'J6uil#complete#room'})
 endif
-"}}}
+" }}}
+
+"------------------------------------------------------------------------------
+" Java Class Path: {{{
+if s:dein_tap('javaclasspath')
+  function! g:dein#plugin.hook_post_source() abort
+    call javaclasspath#on_filetype()
+  endfunction
+endif
+" }}}
 
 "------------------------------------------------------------------------------
 " Jedi: {{{
-if s:neobundle_tap('jedi')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('jedi')
+  function! g:dein#plugin.hook_source() abort
     let g:jedi#auto_initialization    = 0
     let g:jedi#auto_vim_configuration = 0
     let g:jedi#popup_on_dot           = 0
     let g:jedi#auto_close_doc         = 0
+    let g:jedi#show_call_signatures   = 0
   endfunction
 
-  call extend(s:neocompl_force_omni_patterns, {
+  call extend(s:neocomplete_force_omni_patterns, {
   \ 'jedi#completions' : '\.\h\w*'})
-  call extend(s:neocompl_vim_completefuncs, {
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'Pyimport' : 'jedi#py_import_completions'})
 endif
-"}}}
+" }}}
+
+"------------------------------------------------------------------------------
+" Lua Ftplugin: {{{
+if s:dein_tap('lua-ftplugin')
+  function! g:dein#plugin.hook_source() abort
+    let g:lua_complete_omni              = 1
+    let g:lua_check_syntax               = 0
+    let g:lua_check_globals              = 0
+    let g:lua_define_completion_mappings = 0
+
+    if s:executable('luajit')
+      let g:lua_interpreter_path = 'luajit'
+      let g:lua_compiler_name    = 'luajit'
+      let g:lua_compiler_args    = '-bl'
+      let g:lua_error_format     = 'luajit: %f:%l: %m'
+    elseif s:executable('lua53') && s:executable('luac53')
+      let g:lua_interpreter_path = 'lua53'
+      let g:lua_compiler_name    = 'luac53'
+    endif
+  endfunction
+
+  call extend(s:neocomplete_force_omni_patterns, {
+  \ 'xolox#lua#omnifunc' : '\%(\.\|:\)\h\w*'})
+endif
+" }}}
 
 "------------------------------------------------------------------------------
 " Localrc: {{{
-if s:neobundle_tap('localrc')
+if s:dein_tap('localrc')
   augroup MyVimrc
     autocmd BufNewFile,BufRead *
     \ if exists('b:undo_localrc') |
@@ -2084,47 +2124,49 @@ if s:neobundle_tap('localrc')
     \ endif
   augroup END
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " MapList: {{{
-if s:neobundle_tap('maplist')
-  function! neobundle#hooks.on_source(bundle)
-    let g:maplist_mode_length  = 4
-    let g:maplist_lhs_length   = 50
-    let g:maplist_local_length = 2
+if s:dein_tap('maplist')
+  function! g:dein#plugin.hook_source() abort
+    let g:maplist#mode_length  = 4
+    let g:maplist#lhs_length   = 50
+    let g:maplist#local_length = 2
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Marching: {{{
-if s:neobundle_tap('marching')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('marching')
+  function! g:dein#plugin.hook_source() abort
     let g:marching_enable_neocomplete = 1
     let g:marching_backend            =
-    \ s:is_enabled_bundle('snowdrop') ?
+    \ s:dein_if('snowdrop') ?
     \   'snowdrop' : 'sync_clang_command'
   endfunction
 
-  call extend(s:neocompl_force_omni_patterns, {
+  call extend(s:neocomplete_force_omni_patterns, {
   \ 'marching#complete' : '\%(\.\|->\|::\)\h\w*'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Molokai: {{{
-if s:neobundle_tap('molokai')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('molokai')
+  function! g:dein#plugin.hook_source() abort
     let g:molokai_original = 0
     let g:rehash256        = 1
   endfunction
 
-  function! s:molokai_after()
+  function! s:molokai_after() abort
     if get(g:, 'colors_name', '') != 'molokai'
       return
     endif
 
+    highlight clear TabLine
+    highlight clear TabLineFill
     highlight TabLine
     \ ctermbg=244 ctermfg=232 cterm=NONE
     \ guibg=#808080 guifg=#080808 gui=NONE
@@ -2135,12 +2177,12 @@ if s:neobundle_tap('molokai')
   autocmd MyVimrc ColorScheme *
   \ call s:molokai_after()
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Narrow: {{{
-if s:neobundle_tap('narrow')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('narrow')
+  function! g:dein#plugin.hook_source() abort
     call operator#user#define_ex_command(
     \ 'narrow',
     \ 'Narrow')
@@ -2150,117 +2192,50 @@ if s:neobundle_tap('narrow')
   endfunction
 
   NXnoremap sN :<C-U>Widen<CR>
-  NXOmap sn <Plug>(operator-narrow)
+  NOXmap sn <Plug>(operator-narrow)
 
   nmap snn snsn
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Neco Vim: {{{
-if s:neobundle_tap('neco-vim')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('neco-vim')
+  function! g:dein#plugin.hook_source() abort
     let g:necovim#complete_functions =
-    \ s:neocompl_vim_completefuncs
+    \ s:neocomplete_vim_completefuncs
   endfunction
 endif
-"}}}
-
-"------------------------------------------------------------------------------
-" NeoComplCache: {{{
-if s:neobundle_tap('neocomplcache')
-  function! neobundle#hooks.on_source(bundle)
-    let g:neocomplcache_enable_at_startup            = 1
-    let g:neocomplcache_enable_auto_select           = 0
-    let g:neocomplcache_enable_auto_delimiter        = 1
-    let g:neocomplcache_enable_camel_case_completion = 0
-    let g:neocomplcache_enable_underbar_completion   = 0
-    let g:neocomplcache_enable_fuzzy_completion      = 0
-    let g:neocomplcache_force_overwrite_completefunc = 1
-    let g:neocomplcache_temporary_dir                =
-    \ $HOME . '/.local/.cache/neocomplcache'
-
-    let g:neocomplcache_dictionary_filetype_lists =
-    \ s:neocompl_dictionary_filetype_lists
-    let g:neocomplcache_vim_completefuncs         =
-    \ s:neocompl_vim_completefuncs
-    " let g:neocomplcache_tags_filter_patterns      =
-    " \ s:neocompl_tags_filter_patterns
-    " let g:neocomplcache_omni_patterns             =
-    " \ s:neocompl_omni_patterns
-    " let g:neocomplcache_force_omni_patterns       =
-    " \ s:neocompl_force_omni_patterns
-    let g:neocomplcache_tags_filter_patterns      = {}
-    let g:neocomplcache_omni_patterns             = {}
-    let g:neocomplcache_force_omni_patterns       = {}
-
-    call neocomplcache#custom_source('syntax_complete',   'rank',  9)
-    call neocomplcache#custom_source('snippets_complete', 'rank', 80)
-
-    inoremap <expr> <C-Y>
-    \ neocomplcache#close_popup()
-    inoremap <expr> <C-E>
-    \ neocomplcache#cancel_popup()
-    inoremap <expr> <C-L>
-    \ neocomplcache#complete_common_string()
-    inoremap <expr> <C-G>
-    \ neocomplcache#undo_completion()
-    inoremap <expr> <C-X><C-X>
-    \ neocomplcache#close_popup() .
-    \ neocomplcache#start_manual_complete()
-
-    inoremap <expr> <CR>
-    \ neocomplcache#close_popup() . '<CR>'
-    inoremap <expr> <C-H>
-    \ neocomplcache#smart_close_popup() . '<C-H>'
-    inoremap <expr> <BS>
-    \ neocomplcache#smart_close_popup() . '<BS>'
-
-    inoremap <expr> <Tab>
-    \ pumvisible() ? '<C-N>' : '<Tab>'
-    inoremap <expr> <S-Tab>
-    \ pumvisible() ? '<C-P>' : '<S-Tab>'
-  endfunction
-
-  augroup MyVimrc
-    autocmd CmdwinEnter *
-    \ call myvimrc#cmdwin_enter_neocomplcache()
-    autocmd CmdwinEnter :
-    \ let b:neocomplcache_sources_list = ['file_complete', 'vim_complete']
-  augroup END
-
-  call extend(s:neocompl_vim_completefuncs, {
-  \ 'NeoComplCacheCachingDictionary' : 'neocomplcache#filetype_complete',
-  \ 'NeoComplCacheCachingSyntax'     : 'neocomplcache#filetype_complete'})
-endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " NeoComplete: {{{
-if s:neobundle_tap('neocomplete')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('neocomplete')
+  function! g:dein#plugin.hook_source() abort
     let g:neocomplete#enable_at_startup            = 1
     let g:neocomplete#enable_auto_select           = 0
     let g:neocomplete#enable_auto_delimiter        = 1
     let g:neocomplete#force_overwrite_completefunc = 1
-    let g:neocomplete#data_directory               =
-    \ $HOME . '/.local/.cache/neocomplete'
 
     let g:neocomplete#sources#dictionary#dictionaryies =
-    \ s:neocompl_dictionary_filetype_lists
-    " let g:neocomplete#tags_filter_patterns             =
-    " \ s:neocompl_tags_filter_patterns
+    \ s:neocomplete_dictionary_filetype_lists
+    let g:neocomplete#tags_filter_patterns             =
+    \ s:neocomplete_tags_filter_patterns
     " let g:neocomplete#sources#omni#input_patterns      =
-    " \ s:neocompl_omni_patterns
+    " \ s:neocomplete_omni_patterns
     " let g:neocomplete#force_omni_input_patterns        =
-    " \ s:neocompl_force_omni_patterns
-    let g:neocomplete#tags_filter_patterns             = {}
-    let g:neocomplete#sources#omni#input_patterns      = {}
-    let g:neocomplete#force_omni_input_patterns        = {}
+    " \ s:neocomplete_force_omni_patterns
 
     call neocomplete#custom#source('_', 'matchers', ['matcher_head'])
     call neocomplete#custom#source('syntax_complete',   'rank',  9)
     call neocomplete#custom#source('snippets_complete', 'rank', 80)
+
+    call neocomplete#disable_default_dictionary(
+    \ 'g:neocomplete#tags_filter_patterns')
+    call neocomplete#disable_default_dictionary(
+    \ 'g:neocomplete#sources#omni#input_patterns')
+    call neocomplete#disable_default_dictionary(
+    \ 'g:neocomplete#force_omni_input_patterns')
 
     inoremap <expr> <C-Y>
     \ neocomplete#close_popup()
@@ -2294,20 +2269,18 @@ if s:neobundle_tap('neocomplete')
     \ let b:neocomplete_sources = ['file', 'vim']
   augroup END
 
-  call extend(s:neocompl_vim_completefuncs, {
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'NeoCompleteDictionaryMakeCache' : 'neocomplete#filetype_complete',
   \ 'NeoCompleteSyntaxMakeCache'     : 'neocomplete#filetype_complete'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " NeoMru: {{{
-if s:neobundle_tap('neomru')
-  function! neobundle#hooks.on_source(bundle)
-    let g:neomru#file_mru_path      = $HOME . '/.local/.cache/neomru/file'
-    let g:neomru#directory_mru_path = $HOME . '/.local/.cache/neomru/directory'
-    let g:neomru#filename_format    = ':.'
-    let g:neomru#do_validate        = 0
+if s:dein_tap('neomru')
+  function! g:dein#plugin.hook_source() abort
+    let g:neomru#filename_format = ':.'
+    " let g:neomru#do_validate     = 0
 
     let g:neomru#file_mru_ignore_pattern =
     \ '[/\\]doc[/\\][^/\\]\+\.\%(txt\|\a\ax\)$\|' .
@@ -2346,14 +2319,13 @@ if s:neobundle_tap('neomru')
     NXmap <Leader><M-D> <Bslash>u<M-D>
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " NeoSnippet: {{{
-if s:neobundle_tap('neosnippet')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('neosnippet')
+  function! g:dein#plugin.hook_source() abort
     let g:neosnippet#snippets_directory           = $HOME . '/.vim/snippets'
-    let g:neosnippet#data_directory               = $HOME . '/.local/.cache/neosnippet'
     let g:neosnippet#disable_select_mode_mappings = 0
 
     let g:neosnippet#disable_runtime_snippets =
@@ -2369,68 +2341,70 @@ if s:neobundle_tap('neosnippet')
   autocmd MyVimrc InsertLeave *
   \ NeoSnippetClearMarkers
 
-  call extend(s:neocompl_vim_completefuncs, {
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'NeoSnippetEdit'      : 'neosnippet#edit_complete',
   \ 'NeoSnippetMakeCache' : 'neosnippet#filetype_complete'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " OmniSharp: {{{
-if s:neobundle_tap('omnisharp')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('omnisharp')
+  function! g:dein#plugin.hook_source() abort
+    " let g:OmniSharp_server_type = 'roslyn'
+    let g:OmniSharp_server_type = 'v1'
     let g:OmniSharp_server_path =
-    \ a:bundle.path . '/server/OmniSharp/bin/Release/OmniSharp.exe'
+    \ g:dein#plugin.path . '/server/OmniSharp/bin/Release/OmniSharp.exe'
     let g:OmniSharp_selector_ui = get(s:selector_ui, 'omnisharp')
   endfunction
 
-  call extend(s:neocompl_force_omni_patterns, {
+  call extend(s:neocomplete_force_omni_patterns, {
   \ 'OmniSharp#Complete' : '\.\h\w*'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Open Browser: {{{
-if s:neobundle_tap('open-browser')
+if s:dein_tap('open-browser')
   nmap gxgx <Plug>(openbrowser-smart-search)
   nmap gxx gxgx
 
-  call extend(s:neocompl_vim_completefuncs, {
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'OpenBrowserSearch'      : 'openbrowser#_cmd_complete',
   \ 'OpenBrowserSmartSearch' : 'openbrowser#_cmd_complete'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Camelize: {{{
-if s:neobundle_tap('operator-camelize')
-  NXOmap sU <Plug>(operator-camelize)
-  NXOmap su <Plug>(operator-decamelize)
-  NXOmap s~ <Plug>(operator-camelize-toggle)
+if s:dein_tap('operator-camelize')
+  NOXmap sU <Plug>(operator-camelize)
+  NOXmap su <Plug>(operator-decamelize)
+  NOXmap s~ <Plug>(operator-camelize-toggle)
 
   nmap sUU sUsU
   nmap suu susu
   nmap s~~ s~s~
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Filled With Blank: {{{
-if s:neobundle_tap('operator-filled-with-blank')
-  NXOmap s<Space> <Plug>(operator-filled-with-blank)
+if s:dein_tap('operator-filled-with-blank')
+  NOXmap s<Space> <Plug>(operator-filled-with-blank)
 
   nmap s<Space><Space> s<Space>s<Space>
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Furround: {{{
-if s:neobundle_tap('operator-furround')
-  NXOmap sa <Plug>(operator-furround-append-input)
-  NXOmap sA <Plug>(operator-furround-append-reg)
-  NXOmap sd <Plug>(operator-furround-delete)
-  NXOmap sc <Plug>(operator-furround-replace-input)
-  NXOmap sC <Plug>(operator-furround-replace-reg)
+if s:dein_tap('operator-furround')
+  NOXmap sa <Plug>(operator-furround-append-input)
+  NOXmap sA <Plug>(operator-furround-append-reg)
+  NOXmap sd <Plug>(operator-furround-delete)
+  NOXmap sc <Plug>(operator-furround-replace-input)
+  NOXmap sC <Plug>(operator-furround-replace-reg)
 
   nmap sasa <Plug>(operator-furround-append-input)<Plug>(textobj-multiblock-a)
   nmap sAsA <Plug>(operator-furround-append-reg)<Plug>(textobj-multiblock-a)
@@ -2444,87 +2418,87 @@ if s:neobundle_tap('operator-furround')
   nmap scc scsc
   nmap sCC sCsC
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator HTML Escape: {{{
-if s:neobundle_tap('operator-html-escape')
-  NXOmap se <Plug>(operator-html-escape)
-  NXOmap sE <Plug>(operator-html-unescape)
+if s:dein_tap('operator-html-escape')
+  NOXmap se <Plug>(operator-html-escape)
+  NOXmap sE <Plug>(operator-html-unescape)
 
   nmap see sese
   nmap sEE sEsE
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Open Browser: {{{
-if s:neobundle_tap('operator-openbrowser')
-  NXOmap gx <Plug>(operator-openbrowser)
+if s:dein_tap('operator-openbrowser')
+  NOXmap gx <Plug>(operator-openbrowser)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Replace: {{{
-if s:neobundle_tap('operator-replace')
-  NXOmap sr <Plug>(operator-replace)
+if s:dein_tap('operator-replace')
+  NOXmap sr <Plug>(operator-replace)
 
   nnoremap srr srsr
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Reverse: {{{
-if s:neobundle_tap('operator-reverse')
-  NXOmap sv <Plug>(operator-reverse-text)
-  NXOmap sV <Plug>(operator-reverse-lines)
+if s:dein_tap('operator-reverse')
+  NOXmap sv <Plug>(operator-reverse-text)
+  NOXmap sV <Plug>(operator-reverse-lines)
 
   nmap svv svsv
   nmap sVV sVsV
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Search: {{{
-if s:neobundle_tap('operator-search')
-  NXOmap s/ <Plug>(operator-search)
+if s:dein_tap('operator-search')
+  NOXmap s/ <Plug>(operator-search)
 
   nmap s// s/s/
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Sequence: {{{
-if s:neobundle_tap('operator-sequence')
-  NXOmap <expr> s<C-U>
+if s:dein_tap('operator-sequence')
+  NOXmap <expr> s<C-U>
   \ operator#sequence#map("\<Plug>(operator-decamelize)", 'gU')
 
   nmap s<C-U><C-U> s<C-U>s<C-U>
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Shuffle: {{{
-if s:neobundle_tap('operator-shuffle')
-  NXOmap sS <Plug>(operator-shuffle)
+if s:dein_tap('operator-shuffle')
+  NOXmap sS <Plug>(operator-shuffle)
 
   nmap sSS sSsS
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Sort: {{{
-if s:neobundle_tap('operator-sort')
-  NXOmap ss <Plug>(operator-sort)
+if s:dein_tap('operator-sort')
+  NOXmap ss <Plug>(operator-sort)
 
   nmap sss ssss
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Star: {{{
-if s:neobundle_tap('operator-star')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('operator-star')
+  function! g:dein#plugin.hook_source() abort
     let g:loaded_operator_star = 1
 
     call operator#user#define('*',  'myvimrc#operator_star_star')
@@ -2567,21 +2541,21 @@ if s:neobundle_tap('operator-star')
   nmap <C-W>g**  <C-W>g*g*
   nmap <C-W>g##  <C-W>g#g#
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Suddendeath: {{{
-if s:neobundle_tap('operator-suddendeath')
-  NXOmap s! <Plug>(operator-suddendeath)
+if s:dein_tap('operator-suddendeath')
+  NOXmap s! <Plug>(operator-suddendeath)
 
   nmap s!! s!s!
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Tabular: {{{
-if s:neobundle_tap('operator-tabular')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('operator-tabular')
+  function! g:dein#plugin.hook_source() abort
     call operator#user#define(
     \ 'tabularize',
     \ 'myvimrc#operator_tabularize')
@@ -2590,111 +2564,117 @@ if s:neobundle_tap('operator-tabular')
     \ 'myvimrc#operator_untabularize')
   endfunction
 
-  NXOmap st <Plug>(operator-tabularize)
-  NXOmap sT <Plug>(operator-untabularize)
+  NOXmap st <Plug>(operator-tabularize)
+  NOXmap sT <Plug>(operator-untabularize)
 
   nmap stt stst
   nmap sTT sTsT
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator Trailingspace Killer: {{{
-if s:neobundle_tap('operator-trailingspace-killer')
-  NXOmap s$ <Plug>(operator-trailingspace-killer)
+if s:dein_tap('operator-trailingspace-killer')
+  NOXmap s$ <Plug>(operator-trailingspace-killer)
 
   nmap s$$ s$s$
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Operator User: {{{
-if s:neobundle_tap('operator-user')
-  function! neobundle#hooks.on_source(bundle)
-    let g:myvimrc#operator_grep_ui = get(s:selector_ui, 'grep')
-
+if s:dein_tap('operator-user')
+  function! g:dein#plugin.hook_source() abort
     call operator#user#define(
     \ 'lgrep',
     \ 'myvimrc#operator_lgrep')
     call operator#user#define(
     \ 'grep',
     \ 'myvimrc#operator_grep')
-    call operator#user#define(
-    \ 'justify',
-    \ 'myvimrc#operator_justify')
   endfunction
 
-  NXOmap sg <Plug>(operator-grep)
-  NXOmap sG <Plug>(operator-lgrep)
-  NXOmap sJ <Plug>(operator-justify)
+  let g:myvimrc#operator_grep_ui = get(s:selector_ui, 'grep')
+
+  NOXmap sg <Plug>(operator-grep)
+  NOXmap sG <Plug>(operator-lgrep)
 
   nmap sgg sgsg
   nmap sGG sGsG
-  nmap sJJ sJsJ
 
   nmap sgsg <Leader>g
   nmap sGsG <Leader>G
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " ParaJump: {{{
-if s:neobundle_tap('parajump')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('parajump')
+  function! g:dein#plugin.hook_source() abort
     let g:parajump_no_default_key_mappings = 1
-
-    nmap <SID>(parajump-backward) <Plug>(parajump-backward)
-    nmap <SID>(parajump-forward)  <Plug>(parajump-forward)
-
-    inoremap <script> <M-{> <C-O><SID>(parajump-backward)
-    inoremap <script> <M-}> <C-O><SID>(parajump-forward)
   endfunction
 
-  NXOmap { <Plug>(parajump-backward)
-  NXOmap } <Plug>(parajump-forward)
+  NOXmap { <Plug>(parajump-backward)
+  NOXmap } <Plug>(parajump-forward)
 endif
-"}}}
+" }}}
+
+"------------------------------------------------------------------------------
+" ParenMatch: {{{
+if s:dein_tap('parenmatch')
+  function! g:dein#plugin.hook_source() abort
+    let g:parenmatch_highlight = 0
+    highlight link ParenMatch MatchParen
+  endfunction
+
+  let g:loaded_matchparen = 1
+
+  autocmd MyVimrc ColorScheme *
+  \ highlight link ParenMatch MatchParen
+endif
+" }}}
 
 "------------------------------------------------------------------------------
 " PartEdit: {{{
-if s:neobundle_tap('partedit')
-  call extend(s:neocompl_vim_completefuncs, {
+if s:dein_tap('partedit')
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'Partedit' : 'partedit#complete'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " PerlOmni: {{{
-if s:neobundle_tap('perlomni')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('perlomni')
+  function! g:dein#plugin.hook_source() abort
     if has('win32')
-      let $PATH = substitute(a:bundle.path, '/', '\\', 'g') . '\bin;' . $PATH
+      let $PATH = substitute(g:dein#plugin.path, '/', '\\', 'g') . '\bin;' . $PATH
     else
-      let $PATH = a:bundle.path . '/bin:' . $PATH
+      let $PATH = g:dein#plugin.path . '/bin:' . $PATH
     endif
   endfunction
 
-  call extend(s:neocompl_force_omni_patterns, {
+  call extend(s:neocomplete_force_omni_patterns, {
   \ 'PerlComplete' : '\%(->\|::\)\h\w*'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Precious: {{{
-if s:neobundle_tap('precious')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('precious')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_precious_no_default_key_mappings = 1
     let g:precious_enable_switchers                = {
-    \ 'help' : {'setfiletype' : 0}}
+    \ '*'        : {'setfiletype' : 0},
+    \ 'markdown' : {'setfiletype' : 1},
+    \ 'toml'     : {'setfiletype' : 1}}
   endfunction
 
-  function! neobundle#hooks.on_post_source(bundle)
+  function! g:dein#plugin.hook_post_source() abort
     let &g:statusline = substitute(&g:statusline, '%y', '%{Precious_y()}', '')
     let &g:statusline = substitute(&g:statusline, '%Y', '%{Precious_Y()}', '')
   endfunction
 
-  function! Precious_y()
-    if empty(&l:filetype)
+  function! Precious_y() abort
+    if empty(&filetype)
       return ''
     endif
 
@@ -2706,8 +2686,8 @@ if s:neobundle_tap('precious')
       return '[' . b . ':' . c . ']'
     endif
   endfunction
-  function! Precious_Y()
-    if empty(&l:filetype)
+  function! Precious_Y() abort
+    if empty(&filetype)
       return ''
     endif
 
@@ -2721,25 +2701,25 @@ if s:neobundle_tap('precious')
   endfunction
 
   nmap  sR <Plug>(precious-quickrun-op)
-  XOmap ax <Plug>(textobj-precious-i)
-  XOmap ix <Plug>(textobj-precious-i)
+  OXmap ax <Plug>(textobj-precious-i)
+  OXmap ix <Plug>(textobj-precious-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Quickhl: {{{
-if s:neobundle_tap('quickhl')
+if s:dein_tap('quickhl')
   NXmap  sM <Plug>(quickhl-manual-reset)
-  NXOmap sm <Plug>(operator-quickhl-manual-this-motion)
+  NOXmap sm <Plug>(operator-quickhl-manual-this-motion)
 
   nmap smm smsm
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " QuickRun: {{{
-if s:neobundle_tap('quickrun')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('quickrun')
+  function! g:dein#plugin.hook_source() abort
     let g:quickrun_no_default_key_mappings = 1
 
     let g:quickrun_config =
@@ -2806,13 +2786,13 @@ if s:neobundle_tap('quickrun')
     \ ':<C-U>call quickrun#sweep_sessions()<CR>' : '<C-C>'
   endfunction
 
-  function! neobundle#hooks.on_post_source(bundle)
+  function! g:dein#plugin.hook_post_source() abort
     let location_list_outputter        =
     \ quickrun#outputter#buffered#new()
     let location_list_outputter.config = {
     \ 'errorformat' : '&l:errorformat',
     \ 'open_cmd'    : 'lwindow'}
-    function! location_list_outputter.finish(session)
+    function! location_list_outputter.finish(session) abort
       try
         let errorformat = &l:errorformat
         let &l:errorformat = self.config.errorformat
@@ -2833,7 +2813,7 @@ if s:neobundle_tap('quickrun')
     \ 'location_list', location_list_outputter)
   endfunction
 
-  if !s:is_enabled_bundle('precious')
+  if !s:dein_if('precious')
     nmap sR <Plug>(quickrun-op)
   endif
   xmap sR  <Plug>(quickrun)
@@ -2842,16 +2822,16 @@ if s:neobundle_tap('quickrun')
 
   NXmap <F5> :<C-U>QuickRun<CR>
 
-  call extend(s:neocompl_vim_completefuncs, {
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'QuickRun' : 'quickrun#complete'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Reanimate: {{{
-if s:neobundle_tap('reanimate')
-  function! neobundle#hooks.on_source(bundle)
-    let g:reanimate_save_dir = $HOME . '/.local/reanimate'
+if s:dein_tap('reanimate')
+  function! g:dein#plugin.hook_source() abort
+    let g:reanimate_save_dir = $HOME . '/.vim/reanimate'
   endfunction
 
   NXnoremap <Bslash>us  <Nop>
@@ -2860,42 +2840,41 @@ if s:neobundle_tap('reanimate')
   NXnoremap <Bslash>uss :<C-U>Unite reanimate
   \ -buffer-name=files -default-action=reanimate_save<CR>
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Ref: {{{
-if s:neobundle_tap('ref')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('ref')
+  function! g:dein#plugin.hook_source() abort
     let g:ref_no_default_key_mappings = 1
-    let g:ref_cache_dir               = $HOME . '/.local/.cache/vim-ref'
   endfunction
 
   NXmap K <Plug>(ref-keyword)
 
-  call extend(s:neocompl_vim_completefuncs, {
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'Ref' : 'ref#complete'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " RengBang: {{{
-if s:neobundle_tap('rengbang')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('rengbang')
+  function! g:dein#plugin.hook_source() abort
     call operator#user#define_ex_command(
     \ 'rengbang-confirm',
     \ 'RengBangConfirm')
   endfunction
 
-  NXOmap s+ <Plug>(operator-rengbang-confirm)
+  NOXmap s+ <Plug>(operator-rengbang-confirm)
 
   nmap s++ s+s+
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Repeat: {{{
-if s:neobundle_tap('repeat')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('repeat')
+  function! g:dein#plugin.hook_source() abort
     let g:repeat_no_default_key_mappings = 1
 
     call submode#enter_with(
@@ -2926,12 +2905,12 @@ if s:neobundle_tap('repeat')
   \ :<C-U>call append(line('.') - 1, repeat([''], v:count1)) <Bar>
   \ call repeat#set('<M-O>', v:count1)<CR>
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Scratch: {{{
-if s:neobundle_tap('scratch')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('scratch')
+  function! g:dein#plugin.hook_source() abort
     let g:scratch_buffer_name = '[scratch]'
 
     call operator#user#define_ex_command(
@@ -2945,39 +2924,27 @@ if s:neobundle_tap('scratch')
   autocmd MyVimrc User PluginScratchInitializeAfter
   \ nmap <buffer> sR <Plug>(operator-scratch-evaluate)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " SmartWord: {{{
-if s:neobundle_tap('smartword')
-  function! neobundle#hooks.on_source(bundle)
-    nmap <SID>(smartword-w)  <Plug>(smartword-w)
-    nmap <SID>(smartword-b)  <Plug>(smartword-b)
-    nmap <SID>(smartword-e)  <Plug>(smartword-e)
-    nmap <SID>(smartword-ge) <Plug>(smartword-ge)
-
-    inoremap <script> <M-w>      <C-O><SID>(smartword-w)
-    inoremap <script> <M-b>      <C-O><SID>(smartword-b)
-    inoremap <script> <M-e>      <C-O><SID>(smartword-e)
-    inoremap <script> <M-g><M-e> <C-O><SID>(smartword-ge)
-  endfunction
-
-  NXOmap w  <Plug>(smartword-w)
-  NXOmap b  <Plug>(smartword-b)
-  NXOmap e  <Plug>(smartword-e)
-  NXOmap ge <Plug>(smartword-ge)
+if s:dein_tap('smartword')
+  NOXmap w  <Plug>(smartword-w)
+  NOXmap b  <Plug>(smartword-b)
+  NOXmap e  <Plug>(smartword-e)
+  NOXmap ge <Plug>(smartword-ge)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Snowdrop: {{{
-if s:neobundle_tap('snowdrop')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('snowdrop')
+  function! g:dein#plugin.hook_source() abort
     if has('win64')
-      let g:snowdrop#libclang_directory = $PROGRAMFILES . '/LLVM/bin'
+      let g:snowdrop#libclang_directory = s:pf64 . '/LLVM/bin'
       let g:snowdrop#libclang_file      = 'libclang.dll'
     elseif has('win32')
-      let g:snowdrop#libclang_directory = s:programfiles_x86 . '/LLVM/bin'
+      let g:snowdrop#libclang_directory = s:pf32 . '/LLVM/bin'
       let g:snowdrop#libclang_file      = 'libclang.dll'
     elseif filereadable($HOME . '/lib/libclang.so')
       let g:snowdrop#libclang_directory = $HOME . '/lib'
@@ -2991,22 +2958,44 @@ if s:neobundle_tap('snowdrop')
     endif
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " SubMode: {{{
-if s:neobundle_tap('submode')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('submode')
+  function! g:dein#plugin.hook_source() abort
     let g:submode_keep_leaving_key = 1
 
-    call submode#enter_with(
-    \ 'undo/br', 'n', '', '<Plug>(submode:undo/br:-)', 'g-')
-    call submode#enter_with(
-    \ 'undo/br', 'n', '', '<Plug>(submode:undo/br:+)', 'g+')
-    call submode#map(
-    \ 'undo/br', 'n', '', '-', 'g-')
-    call submode#map(
-    \ 'undo/br', 'n', '', '+', 'g+')
+    if !s:dein_if('repeat')
+      call submode#enter_with(
+      \ 'undo/br', 'n', '', '<Plug>(submode:undo/br:-)', 'g-')
+      call submode#enter_with(
+      \ 'undo/br', 'n', '', '<Plug>(submode:undo/br:+)', 'g+')
+      call submode#map(
+      \ 'undo/br', 'n', '', '-', 'g-')
+      call submode#map(
+      \ 'undo/br', 'n', '', '+', 'g+')
+    endif
+
+    if !s:dein_if('FastFold')
+      call submode#enter_with(
+      \ 'move/fold', 'nx', '', '<Plug>(submode:move/fold:j)', 'zj')
+      call submode#enter_with(
+      \ 'move/fold', 'nx', '', '<Plug>(submode:move/fold:k)', 'zk')
+      call submode#map(
+      \ 'move/fold', 'nx', '', 'j', 'zj')
+      call submode#map(
+      \ 'move/fold', 'nx', '', 'k', 'zk')
+
+      call submode#enter_with(
+      \ 'sq/fold', 'nx', '', '<Plug>(submode:sq/fold:[)', '[z')
+      call submode#enter_with(
+      \ 'sq/fold', 'nx', '', '<Plug>(submode:sq/fold:])', ']z')
+      call submode#map(
+      \ 'sq/fold', 'nx', '', '[', '[z')
+      call submode#map(
+      \ 'sq/fold', 'nx', '', ']', ']z')
+    endif
 
     call submode#enter_with(
     \ 'change', 'n', '', '<Plug>(submode:change:;)', 'g;')
@@ -3137,15 +3126,6 @@ if s:neobundle_tap('submode')
     \ 'sq/typo/b', 'nx', '', '[', '[S')
     call submode#map(
     \ 'sq/typo/b', 'nx', '', ']', ']S')
-
-    call submode#enter_with(
-    \ 'sq/fold', 'nx', '', '<Plug>(submode:sq/fold:[)', '[z')
-    call submode#enter_with(
-    \ 'sq/fold', 'nx', '', '<Plug>(submode:sq/fold:])', ']z')
-    call submode#map(
-    \ 'sq/fold', 'nx', '', '[', '[z')
-    call submode#map(
-    \ 'sq/fold', 'nx', '', ']', ']z')
 
     call submode#enter_with(
     \ 'sq/brkt', 'nx', '', '<Plug>(submode:sq/brkt:[)', '[{')
@@ -3312,11 +3292,11 @@ if s:neobundle_tap('submode')
     call submode#map(
     \ 'move/mark', 'nx', '', '<Down>', ']`')
     call submode#map(
-    \ 'move/mark', 'nx', '', '<Up>', '[`')
+    \ 'move/mark', 'nx', '', '<Up>',   '[`')
     call submode#map(
-    \ 'move/mark', 'nx', '', 'j', ']`')
+    \ 'move/mark', 'nx', '', 'j',      ']`')
     call submode#map(
-    \ 'move/mark', 'nx', '', 'k', '[`')
+    \ 'move/mark', 'nx', '', 'k',      '[`')
 
     call submode#enter_with(
     \ 'delchar', 'n', 'se', '<Plug>(submode:delchar:x)',
@@ -3350,9 +3330,16 @@ if s:neobundle_tap('submode')
     \ ':<C-U>call myvimrc#submode_delchar(0)<CR>')
   endfunction
 
-  if !s:is_enabled_bundle('repeat')
+  if !s:dein_if('repeat')
     nmap g- <Plug>(submode:undo/br:-)
     nmap g+ <Plug>(submode:undo/br:+)
+  endif
+
+  if !s:dein_if('FastFold')
+    NXmap zj <Plug>(submode:move/fold:j)
+    NXmap zk <Plug>(submode:move/fold:k)
+    NXmap [z <Plug>(submode:sq/fold:[)
+    NXmap ]z <Plug>(submode:sq/fold:])
   endif
 
   nmap  g;           <Plug>(submode:change:;)
@@ -3387,8 +3374,6 @@ if s:neobundle_tap('submode')
   NXmap ]s           <Plug>(submode:sq/typo/m:])
   NXmap [S           <Plug>(submode:sq/typo/b:[)
   NXmap ]S           <Plug>(submode:sq/typo/b:])
-  NXmap [z           <Plug>(submode:sq/fold:[)
-  NXmap ]z           <Plug>(submode:sq/fold:])
   NXmap [{           <Plug>(submode:sq/brkt:[)
   NXmap ]}           <Plug>(submode:sq/brkt:])
   NXmap <C-W><Down>  <Plug>(submode:win/jump:j)
@@ -3444,12 +3429,12 @@ if s:neobundle_tap('submode')
   nmap  <BS>         <Plug>(submode:delchar:<BS>)
   nmap  <C-H>        <Plug>(submode:delchar:<C-H>)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Switch: {{{
-if s:neobundle_tap('switch')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('switch')
+  function! g:dein#plugin.hook_source() abort
     let g:switch_mapping            = ''
     let g:switch_no_builtins        = 1
     let g:switch_custom_definitions = [
@@ -3535,12 +3520,12 @@ if s:neobundle_tap('switch')
   autocmd MyVimrc VimEnter,BufNewFile,BufRead *
   \ let b:switch_no_builtins = 1
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Tabpage Buffer Misc: {{{
-if s:neobundle_tap('tabpagebuffer-misc')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('tabpagebuffer-misc')
+  function! g:dein#plugin.hook_source() abort
     let g:tabpagebuffer#command#bdelete_keeptabpage = 1
     let g:ctrlp#tabpagebuffer#visible_all_buftype   = 1
   endfunction
@@ -3553,7 +3538,7 @@ if s:neobundle_tap('tabpagebuffer-misc')
     NXnoremap <Leader>Q :<C-U>TpbDeleteAll<CR>
   endif
 
-  if s:is_enabled_bundle('ctrlp')
+  if s:dein_if('ctrlp')
     NXnoremap <Bslash>pb :<C-U>CtrlPTabpageBuffer<CR>
 
     if get(s:selector_ui, 'buffer') == 'ctrlp'
@@ -3599,7 +3584,7 @@ if s:neobundle_tap('tabpagebuffer-misc')
   \ 'tbl[ast]'     : 'TTpbLast',
   \ 'vunh[ide]'    : 'VTpbUnhide',
   \ 'vba[ll]'      : 'VTpbAll',
-  \ 'tun[hide]'    : 'TTpbUnhide',
+  \ 'tunh[ide]'    : 'TTpbUnhide',
   \ 'tba[ll]'      : 'TTpbAll',
   \
   \ '_vb[uffer]'    : 'vertical sbuffer',
@@ -3620,7 +3605,7 @@ if s:neobundle_tap('tabpagebuffer-misc')
   \ '_tbl[ast]'     : 'tab sblast',
   \ '_vunh[ide]'    : 'vertical unhide',
   \ '_vba[ll]'      : 'vertical all',
-  \ '_tun[hide]'    : 'tab unhide',
+  \ '_tunh[ide]'    : 'tab unhide',
   \ '_tba[ll]'      : 'tab ball',
   \
   \ 'files'        : 'TpbFiles',
@@ -3677,84 +3662,20 @@ if s:neobundle_tap('tabpagebuffer-misc')
   \ '_ba[ll]'       : 'ball',
   \ '_sba[ll]'      : 'sball'})
 endif
-"}}}
-
-"------------------------------------------------------------------------------
-" TComment: {{{
-if s:neobundle_tap('tcomment')
-  function! neobundle#hooks.on_source(bundle)
-    let g:tcommentMaps = 0
-
-    call operator#user#define(
-    \ 'tcomment',
-    \ 'tcomment#Operator',
-    \ 'call myvimrc#operator_tcomment_setup({})')
-    call operator#user#define(
-    \ 'tcomment-col=1',
-    \ 'tcomment#Operator',
-    \ 'call myvimrc#operator_tcomment_setup({"col" : 1})')
-
-    call operator#user#define(
-    \ 'tcomment-block',
-    \ 'myvimrc#operator_tcomment_block',
-    \ 'call myvimrc#operator_tcomment_setup({})')
-    call operator#user#define(
-    \ 'tcomment-block-col=1',
-    \ 'myvimrc#operator_tcomment_block',
-    \ 'call myvimrc#operator_tcomment_setup({"col" : 1})')
-  endfunction
-
-  function! neobundle#hooks.on_post_source(bundle)
-    call tcomment#DefineType('c',         '// %s', {}, 1)
-    call tcomment#DefineType('d',         '// %s')
-    call tcomment#DefineType('d_inline',  g:tcommentInlineC)
-    call tcomment#DefineType('d_block',   g:tcommentBlockC)
-    call tcomment#DefineType('gitconfig', '# %s')
-    call tcomment#DefineType('mayu',      '# %s')
-    call tcomment#DefineType('nyaos',     '# %s')
-    call tcomment#DefineType('screen',    '# %s')
-    call tcomment#DefineType('snippet',   '# %s')
-    call tcomment#DefineType('tmux',      '# %s')
-    call tcomment#DefineType('vbnet',     "' %s")
-    call tcomment#DefineType('vimshrc',   '# %s')
-    call tcomment#DefineType('wsh',       "' %s")
-    call tcomment#DefineType('z80',       '; %s')
-    call tcomment#DefineType('zimbu',     '# %s')
-    call tcomment#DefineType('zsh',       '# %s')
-  endfunction
-
-  NXOmap gc     <Plug>(operator-tcomment)
-  NXOmap gC     <Plug>(operator-tcomment-block)
-  NXOmap g<M-c> <Plug>(operator-tcomment-col=1)
-  NXOmap g<M-C> <Plug>(operator-tcomment-block-col=1)
-
-  nmap gcc         gcgc
-  nmap gCC         gCgC
-  nmap g<M-c><M-c> g<M-c>g<M-c>
-  nmap g<M-C><M-C> g<M-C>g<M-C>
-
-  call extend(s:neocompl_vim_completefuncs, {
-  \ 'TComment'            : 'tcomment#CompleteArgs',
-  \ 'TCommentAs'          : 'tcomment#Complete',
-  \ 'TCommentRight'       : 'tcomment#CompleteArgs',
-  \ 'TCommentBlock'       : 'tcomment#CompleteArgs',
-  \ 'TCommentInline'      : 'tcomment#CompleteArgs',
-  \ 'TCommentMaybeInline' : 'tcomment#CompleteArgs'})
-endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Tern: {{{
-if s:neobundle_tap('tern')
-  call extend(s:neocompl_force_omni_patterns, {
+if s:dein_tap('tern')
+  call extend(s:neocomplete_force_omni_patterns, {
   \ 'tern#Complete' : '\.\h\w*'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextManipilate: {{{
-if s:neobundle_tap('textmanip')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textmanip')
+  function! g:dein#plugin.hook_source() abort
     call operator#user#define(
     \ 'textmanip-duplicate-down',
     \ 'myvimrc#operator_textmanip_duplicate_down')
@@ -3831,8 +3752,8 @@ if s:neobundle_tap('textmanip')
     \ '<Plug>(textmanip-move-right)')
   endfunction
 
-  NXOmap <M-p> <Plug>(textmanip-duplicate-down)
-  NXOmap <M-P> <Plug>(textmanip-duplicate-up)
+  NOXmap <M-p> <Plug>(textmanip-duplicate-down)
+  NOXmap <M-P> <Plug>(textmanip-duplicate-up)
 
   NOmap s<Down>  <Plug>(operator-textmanip-move-down)
   NOmap s<Up>    <Plug>(operator-textmanip-move-up)
@@ -3861,274 +3782,260 @@ if s:neobundle_tap('textmanip')
   " nmap shh             shsh
   " nmap sll             slsl
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Between: {{{
-if s:neobundle_tap('textobj-between')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-between')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_between_no_default_key_mappings = 1
   endfunction
 
-  XOmap af <Plug>(textobj-between-a)
-  XOmap if <Plug>(textobj-between-i)
+  OXmap af <Plug>(textobj-between-a)
+  OXmap if <Plug>(textobj-between-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Comment: {{{
-if s:neobundle_tap('textobj-comment')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-comment')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_comment_no_default_key_mappings = 1
   endfunction
 
-  XOmap ac <Plug>(textobj-comment-a)
-  XOmap ic <Plug>(textobj-comment-i)
+  OXmap ac <Plug>(textobj-comment-a)
+  OXmap ic <Plug>(textobj-comment-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Continuous Line: {{{
-if s:neobundle_tap('textobj-continuous-line')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-continuous-line')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_continuous_line_no_default_key_mappings = 1
     let g:textobj_continuous_line_no_default_mappings     = 1
   endfunction
 
-  " XOmap a<Bslash> <Plug>(textobj-continuous-cpp-a)
-  " XOmap a<Bslash> <Plug>(textobj-continuous-python-a)
-  " XOmap a<Bslash> <Plug>(textobj-continuous-vim-a)
-  " XOmap i<Bslash> <Plug>(textobj-continuous-cpp-i)
-  " XOmap i<Bslash> <Plug>(textobj-continuous-python-i)
-  " XOmap i<Bslash> <Plug>(textobj-continuous-vim-i)
+  " OXmap a<Bslash> <Plug>(textobj-continuous-cpp-a)
+  " OXmap a<Bslash> <Plug>(textobj-continuous-python-a)
+  " OXmap a<Bslash> <Plug>(textobj-continuous-vim-a)
+  " OXmap i<Bslash> <Plug>(textobj-continuous-cpp-i)
+  " OXmap i<Bslash> <Plug>(textobj-continuous-python-i)
+  " OXmap i<Bslash> <Plug>(textobj-continuous-vim-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj DateTime: {{{
-if s:neobundle_tap('textobj-datetime')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-datetime')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_datetime_no_default_key_mappings = 1
   endfunction
 
-  XOnoremap ad <Nop>
-  XOmap ada <Plug>(textobj-datetime-auto)
-  XOmap add <Plug>(textobj-datetime-date)
-  XOmap adD <Plug>(textobj-datetime-full)
-  XOmap adt <Plug>(textobj-datetime-time)
-  XOmap adT <Plug>(textobj-datetime-tz)
+  OXnoremap ad <Nop>
+  OXmap ada <Plug>(textobj-datetime-auto)
+  OXmap add <Plug>(textobj-datetime-date)
+  OXmap adD <Plug>(textobj-datetime-full)
+  OXmap adt <Plug>(textobj-datetime-time)
+  OXmap adT <Plug>(textobj-datetime-tz)
 
-  XOnoremap id <Nop>
-  XOmap ida <Plug>(textobj-datetime-auto)
-  XOmap idd <Plug>(textobj-datetime-date)
-  XOmap idD <Plug>(textobj-datetime-full)
-  XOmap idt <Plug>(textobj-datetime-time)
-  XOmap idT <Plug>(textobj-datetime-tz)
+  OXnoremap id <Nop>
+  OXmap ida <Plug>(textobj-datetime-auto)
+  OXmap idd <Plug>(textobj-datetime-date)
+  OXmap idD <Plug>(textobj-datetime-full)
+  OXmap idt <Plug>(textobj-datetime-time)
+  OXmap idT <Plug>(textobj-datetime-tz)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Diff: {{{
-if s:neobundle_tap('textobj-diff')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-diff')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_diff_no_default_key_mappings = 1
   endfunction
 
-  " NXOmap [c <Plug>(textobj-diff-hunk-p)
-  " NXOmap ]c <Plug>(textobj-diff-hunk-n)
-  " NXOmap [C <Plug>(textobj-diff-hunk-P)
-  " NXOmap ]C <Plug>(textobj-diff-hunk-N)
+  " NOXmap [c <Plug>(textobj-diff-hunk-p)
+  " NOXmap ]c <Plug>(textobj-diff-hunk-n)
+  " NOXmap [C <Plug>(textobj-diff-hunk-P)
+  " NOXmap ]C <Plug>(textobj-diff-hunk-N)
   "
-  " NXOmap [<M-c> <Plug>(textobj-diff-file-p)
-  " NXOmap ]<M-c> <Plug>(textobj-diff-file-n)
-  " NXOmap [<M-C> <Plug>(textobj-diff-file-P)
-  " NXOmap ]<M-C> <Plug>(textobj-diff-file-N)
+  " NOXmap [<M-c> <Plug>(textobj-diff-file-p)
+  " NOXmap ]<M-c> <Plug>(textobj-diff-file-n)
+  " NOXmap [<M-C> <Plug>(textobj-diff-file-P)
+  " NOXmap ]<M-C> <Plug>(textobj-diff-file-N)
   "
-  " XOnoremap ad <Nop>
-  " XOmap adh <Plug>(textobj-diff-hunk)
-  " XOmap adf <Plug>(textobj-diff-file)
+  " OXnoremap ad <Nop>
+  " OXmap adh <Plug>(textobj-diff-hunk)
+  " OXmap adf <Plug>(textobj-diff-file)
   "
-  " XOnoremap id <Nop>
-  " XOmap idh <Plug>(textobj-diff-hunk)
-  " XOmap idf <Plug>(textobj-diff-file)
+  " OXnoremap id <Nop>
+  " OXmap idh <Plug>(textobj-diff-hunk)
+  " OXmap idf <Plug>(textobj-diff-file)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Entrie: {{{
-if s:neobundle_tap('textobj-entire')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-entire')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_entire_no_default_key_mappings = 1
   endfunction
 
-  XOmap ae <Plug>(textobj-entire-a)
-  XOmap ie <Plug>(textobj-entire-i)
+  OXmap ae <Plug>(textobj-entire-a)
+  OXmap ie <Plug>(textobj-entire-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj EnclosedSyntax: {{{
-if s:neobundle_tap('textobj-enclosedsyntax')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-enclosedsyntax')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_enclosedsyntax_no_default_key_mappings = 1
   endfunction
 
-  " XOmap aq <Plug>(textobj-enclosedsyntax-a)
-  " XOmap iq <Plug>(textobj-enclosedsyntax-i)
+  " OXmap aq <Plug>(textobj-enclosedsyntax-a)
+  " OXmap iq <Plug>(textobj-enclosedsyntax-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Fold: {{{
-if s:neobundle_tap('textobj-fold')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-fold')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_fold_no_default_key_mappings = 1
   endfunction
 
-  XOmap az <Plug>(textobj-fold-a)
-  XOmap iz <Plug>(textobj-fold-i)
+  OXmap az <Plug>(textobj-fold-a)
+  OXmap iz <Plug>(textobj-fold-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Function: {{{
-if s:neobundle_tap('textobj-function')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-function')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_function_no_default_key_mappings = 1
   endfunction
 
-  " XOmap aF <Plug>(textobj-function-a)
-  " XOmap iF <Plug>(textobj-function-i)
+  " OXmap aF <Plug>(textobj-function-a)
+  " OXmap iF <Plug>(textobj-function-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Ifdef: {{{
-if s:neobundle_tap('textobj-ifdef')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-ifdef')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_ifdef_no_default_key_mappings = 1
   endfunction
 
-  " XOmap a# <Plug>(textobj-ifdef-a)
-  " XOmap i# <Plug>(textobj-ifdef-i)
+  " OXmap a# <Plug>(textobj-ifdef-a)
+  " OXmap i# <Plug>(textobj-ifdef-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj IndentBlock: {{{
-if s:neobundle_tap('textobj-indblock')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-indblock')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_indblock_no_default_key_mappings = 1
   endfunction
 
-  XOmap ao <Plug>(textobj-indblock-a)
-  XOmap io <Plug>(textobj-indblock-i)
-  XOmap aO <Plug>(textobj-indblock-same-a)
-  XOmap iO <Plug>(textobj-indblock-same-i)
+  OXmap ao <Plug>(textobj-indblock-a)
+  OXmap io <Plug>(textobj-indblock-i)
+  OXmap aO <Plug>(textobj-indblock-same-a)
+  OXmap iO <Plug>(textobj-indblock-same-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Indent: {{{
-if s:neobundle_tap('textobj-indent')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-indent')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_indent_no_default_key_mappings = 1
   endfunction
 
-  XOmap ai <Plug>(textobj-indent-a)
-  XOmap ii <Plug>(textobj-indent-i)
-  XOmap aI <Plug>(textobj-indent-same-a)
-  XOmap iI <Plug>(textobj-indent-same-i)
+  OXmap ai <Plug>(textobj-indent-a)
+  OXmap ii <Plug>(textobj-indent-i)
+  OXmap aI <Plug>(textobj-indent-same-a)
+  OXmap iI <Plug>(textobj-indent-same-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj JaBraces: {{{
-if s:neobundle_tap('textobj-jabraces')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-jabraces')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_jabraces_no_default_key_mappings = 1
   endfunction
 
-  XOnoremap aj <Nop>
-  XOmap aj( <Plug>(textobj-jabraces-parens-a)
-  XOmap aj) <Plug>(textobj-jabraces-parens-a)
-  XOmap aj{ <Plug>(textobj-jabraces-braces-a)
-  XOmap aj} <Plug>(textobj-jabraces-braces-a)
-  XOmap aj[ <Plug>(textobj-jabraces-brackets-a)
-  XOmap aj] <Plug>(textobj-jabraces-brackets-a)
-  XOmap aj< <Plug>(textobj-jabraces-angles-a)
-  XOmap aj> <Plug>(textobj-jabraces-angles-a)
-  XOmap aja <Plug>(textobj-jabraces-angles-a)
-  XOmap ajA <Plug>(textobj-jabraces-double-angles-a)
-  XOmap ajk <Plug>(textobj-jabraces-kakko-a)
-  XOmap ajK <Plug>(textobj-jabraces-double-kakko-a)
-  XOmap ajy <Plug>(textobj-jabraces-yama-kakko-a)
-  XOmap ajY <Plug>(textobj-jabraces-double-yama-kakko-a)
-  XOmap ajt <Plug>(textobj-jabraces-kikkou-kakko-a)
-  XOmap ajs <Plug>(textobj-jabraces-sumi-kakko-a)
+  OXnoremap aj <Nop>
+  OXmap aj( <Plug>(textobj-jabraces-parens-a)
+  OXmap aj) <Plug>(textobj-jabraces-parens-a)
+  OXmap aj{ <Plug>(textobj-jabraces-braces-a)
+  OXmap aj} <Plug>(textobj-jabraces-braces-a)
+  OXmap aj[ <Plug>(textobj-jabraces-brackets-a)
+  OXmap aj] <Plug>(textobj-jabraces-brackets-a)
+  OXmap aj< <Plug>(textobj-jabraces-angles-a)
+  OXmap aj> <Plug>(textobj-jabraces-angles-a)
+  OXmap aja <Plug>(textobj-jabraces-angles-a)
+  OXmap ajA <Plug>(textobj-jabraces-double-angles-a)
+  OXmap ajk <Plug>(textobj-jabraces-kakko-a)
+  OXmap ajK <Plug>(textobj-jabraces-double-kakko-a)
+  OXmap ajy <Plug>(textobj-jabraces-yama-kakko-a)
+  OXmap ajY <Plug>(textobj-jabraces-double-yama-kakko-a)
+  OXmap ajt <Plug>(textobj-jabraces-kikkou-kakko-a)
+  OXmap ajs <Plug>(textobj-jabraces-sumi-kakko-a)
 
-  XOnoremap ij <Nop>
-  XOmap ij( <Plug>(textobj-jabraces-parens-i)
-  XOmap ij) <Plug>(textobj-jabraces-parens-i)
-  XOmap ij{ <Plug>(textobj-jabraces-braces-i)
-  XOmap ij} <Plug>(textobj-jabraces-braces-i)
-  XOmap ij[ <Plug>(textobj-jabraces-brackets-i)
-  XOmap ij] <Plug>(textobj-jabraces-brackets-i)
-  XOmap ij< <Plug>(textobj-jabraces-angles-i)
-  XOmap ij> <Plug>(textobj-jabraces-angles-i)
-  XOmap ija <Plug>(textobj-jabraces-angles-i)
-  XOmap ijA <Plug>(textobj-jabraces-double-angles-i)
-  XOmap ijk <Plug>(textobj-jabraces-kakko-i)
-  XOmap ijK <Plug>(textobj-jabraces-double-kakko-i)
-  XOmap ijy <Plug>(textobj-jabraces-yama-kakko-i)
-  XOmap ijY <Plug>(textobj-jabraces-double-yama-kakko-i)
-  XOmap ijt <Plug>(textobj-jabraces-kikkou-kakko-i)
-  XOmap ijs <Plug>(textobj-jabraces-sumi-kakko-i)
+  OXnoremap ij <Nop>
+  OXmap ij( <Plug>(textobj-jabraces-parens-i)
+  OXmap ij) <Plug>(textobj-jabraces-parens-i)
+  OXmap ij{ <Plug>(textobj-jabraces-braces-i)
+  OXmap ij} <Plug>(textobj-jabraces-braces-i)
+  OXmap ij[ <Plug>(textobj-jabraces-brackets-i)
+  OXmap ij] <Plug>(textobj-jabraces-brackets-i)
+  OXmap ij< <Plug>(textobj-jabraces-angles-i)
+  OXmap ij> <Plug>(textobj-jabraces-angles-i)
+  OXmap ija <Plug>(textobj-jabraces-angles-i)
+  OXmap ijA <Plug>(textobj-jabraces-double-angles-i)
+  OXmap ijk <Plug>(textobj-jabraces-kakko-i)
+  OXmap ijK <Plug>(textobj-jabraces-double-kakko-i)
+  OXmap ijy <Plug>(textobj-jabraces-yama-kakko-i)
+  OXmap ijY <Plug>(textobj-jabraces-double-yama-kakko-i)
+  OXmap ijt <Plug>(textobj-jabraces-kikkou-kakko-i)
+  OXmap ijs <Plug>(textobj-jabraces-sumi-kakko-i)
 endif
-"}}}
-
-"------------------------------------------------------------------------------
-" TextObj LastPat: {{{
-if s:neobundle_tap('textobj-lastpat')
-  function! neobundle#hooks.on_source(bundle)
-    let g:textobj_lastpat_no_default_key_mappings = 1
-  endfunction
-
-  if !s:has_patch(7, 3, 610)
-    XOmap gn <Plug>(textobj-lastpat-n)
-    XOmap gN <Plug>(textobj-lastpat-N)
-  endif
-endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Line: {{{
-if s:neobundle_tap('textobj-line')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-line')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_line_no_default_key_mappings = 1
   endfunction
 
-  XOmap al <Plug>(textobj-line-a)
-  XOmap il <Plug>(textobj-line-i)
+  OXmap al <Plug>(textobj-line-a)
+  OXmap il <Plug>(textobj-line-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj MultiBlock: {{{
-if s:neobundle_tap('textobj-multiblock')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-multiblock')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_multiblock_no_default_key_mappings = 1
   endfunction
 
-  XOmap ab <Plug>(textobj-multiblock-a)
-  XOmap ib <Plug>(textobj-multiblock-i)
+  OXmap ab <Plug>(textobj-multiblock-a)
+  OXmap ib <Plug>(textobj-multiblock-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj MultiTextObj: {{{
-if s:neobundle_tap('textobj-multitextobj')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-multitextobj')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_multitextobj_textobjects_group_a = {
     \ 'doublequotes' : [
     \   {'textobj' : 'a"',  'is_cursor_in' : 1, 'noremap' : 1}],
@@ -4169,191 +4076,191 @@ if s:neobundle_tap('textobj-multitextobj')
     \    "\<Plug>(textobj-jabraces-sumi-kakko-i)"]]}
   endfunction
 
-  XOmap <expr> a" textobj#multitextobj#mapexpr_a('doublequotes')
-  XOmap <expr> i" textobj#multitextobj#mapexpr_i('doublequotes')
-  XOmap <expr> a' textobj#multitextobj#mapexpr_a('singlequotes')
-  XOmap <expr> i' textobj#multitextobj#mapexpr_i('singlequotes')
-  XOmap <expr> a` textobj#multitextobj#mapexpr_a('backquotes')
-  XOmap <expr> i` textobj#multitextobj#mapexpr_i('backquotes')
-  XOmap <expr> aB textobj#multitextobj#mapexpr_a('jabraces')
-  XOmap <expr> iB textobj#multitextobj#mapexpr_i('jabraces')
+  OXmap <expr> a" textobj#multitextobj#mapexpr_a('doublequotes')
+  OXmap <expr> i" textobj#multitextobj#mapexpr_i('doublequotes')
+  OXmap <expr> a' textobj#multitextobj#mapexpr_a('singlequotes')
+  OXmap <expr> i' textobj#multitextobj#mapexpr_i('singlequotes')
+  OXmap <expr> a` textobj#multitextobj#mapexpr_a('backquotes')
+  OXmap <expr> i` textobj#multitextobj#mapexpr_i('backquotes')
+  OXmap <expr> aB textobj#multitextobj#mapexpr_a('jabraces')
+  OXmap <expr> iB textobj#multitextobj#mapexpr_i('jabraces')
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj MotionMotion: {{{
-if s:neobundle_tap('textobj-motionmotion')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-motionmotion')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_motionmotion_no_default_key_mappings = 1
   endfunction
 
-  XOmap am <Plug>(textobj-motionmotion-a)
-  XOmap im <Plug>(textobj-motionmotion-i)
+  OXmap am <Plug>(textobj-motionmotion-a)
+  OXmap im <Plug>(textobj-motionmotion-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Parameter: {{{
-if s:neobundle_tap('textobj-parameter')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-parameter')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_parameter_no_default_key_mappings = 1
   endfunction
 
-  XOmap a, <Plug>(textobj-parameter-a)
-  XOmap i, <Plug>(textobj-parameter-i)
+  OXmap a, <Plug>(textobj-parameter-a)
+  OXmap i, <Plug>(textobj-parameter-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj PHP: {{{
-if s:neobundle_tap('textobj-php')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-php')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_php_no_default_key_mappings = 1
   endfunction
 
-  " XOmap aP <Plug>(textobj-php-phptag-a)
-  " XOmap aa <Plug>(textobj-php-phparray-a)
-  " XOmap iP <Plug>(textobj-php-phptag-i)
-  " XOmap ia <Plug>(textobj-php-phparray-i)
+  " OXmap aP <Plug>(textobj-php-phptag-a)
+  " OXmap aa <Plug>(textobj-php-phparray-a)
+  " OXmap iP <Plug>(textobj-php-phptag-i)
+  " OXmap ia <Plug>(textobj-php-phparray-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj PostExpr: {{{
-if s:neobundle_tap('textobj-postexpr')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-postexpr')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_postexpr_no_default_key_mappings = 1
   endfunction
 
-  XOmap aX <Plug>(textobj-postexpr-a)
-  XOmap iX <Plug>(textobj-postexpr-i)
+  OXmap aX <Plug>(textobj-postexpr-a)
+  OXmap iX <Plug>(textobj-postexpr-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Python: {{{
-if s:neobundle_tap('textobj-python')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-python')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_python_no_default_key_mappings = 1
   endfunction
 
-  " XOmap aF <Plug>(textobj-python-function-a)
-  " XOmap aC <Plug>(textobj-python-class-a)
-  " XOmap iF <Plug>(textobj-python-function-i)
-  " XOmap iC <Plug>(textobj-python-class-i)
+  " OXmap aF <Plug>(textobj-python-function-a)
+  " OXmap aC <Plug>(textobj-python-class-a)
+  " OXmap iF <Plug>(textobj-python-function-i)
+  " OXmap iC <Plug>(textobj-python-class-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Ruby: {{{
-if s:neobundle_tap('textobj-ruby')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-ruby')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_ruby_no_default_key_mappings = 1
     let g:textobj_ruby_more_mappings           = 1
   endfunction
 
-  " XOmap aC <Plug>(textobj-ruby-definition-a)
-  " XOmap iC <Plug>(textobj-ruby-definition-i)
-  " XOmap ar <Plug>(textobj-ruby-any-a)
-  " XOmap ir <Plug>(textobj-ruby-any-i)
+  " OXmap aC <Plug>(textobj-ruby-definition-a)
+  " OXmap iC <Plug>(textobj-ruby-definition-i)
+  " OXmap ar <Plug>(textobj-ruby-any-a)
+  " OXmap ir <Plug>(textobj-ruby-any-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Sigil: {{{
-if s:neobundle_tap('textobj-sigil')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-sigil')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_sigil_no_default_key_mappings = 1
   endfunction
 
-  " XOmap ag <Plug>(textobj-sigil-a)
-  " XOmap ig <Plug>(textobj-sigil-i)
+  " OXmap ag <Plug>(textobj-sigil-a)
+  " OXmap ig <Plug>(textobj-sigil-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Space: {{{
-if s:neobundle_tap('textobj-space')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-space')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_space_no_default_key_mappings = 1
   endfunction
 
-  XOmap aS <Plug>(textobj-space-a)
-  XOmap iS <Plug>(textobj-space-i)
+  OXmap aS <Plug>(textobj-space-a)
+  OXmap iS <Plug>(textobj-space-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Syntax: {{{
-if s:neobundle_tap('textobj-syntax')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-syntax')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_syntax_no_default_key_mappings = 1
   endfunction
 
-  XOmap ay <Plug>(textobj-syntax-a)
-  XOmap iy <Plug>(textobj-syntax-i)
+  OXmap ay <Plug>(textobj-syntax-a)
+  OXmap iy <Plug>(textobj-syntax-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Url: {{{
-if s:neobundle_tap('textobj-url')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-url')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_url_no_default_key_mappings = 1
   endfunction
 
-  XOmap au <Plug>(textobj-url-a)
-  XOmap iu <Plug>(textobj-url-i)
+  OXmap au <Plug>(textobj-url-a)
+  OXmap iu <Plug>(textobj-url-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj WordInWord: {{{
-if s:neobundle_tap('textobj-wiw')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-wiw')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_wiw_no_default_key_mappings = 1
   endfunction
 
-  NXOmap <M-w>      <Plug>(textobj-wiw-n)
-  NXOmap <M-b>      <Plug>(textobj-wiw-p)
-  NXOmap <M-e>      <Plug>(textobj-wiw-N)
-  NXOmap <M-g><M-e> <Plug>(textobj-wiw-P)
+  NOXmap <M-w>      <Plug>(textobj-wiw-n)
+  NOXmap <M-b>      <Plug>(textobj-wiw-p)
+  NOXmap <M-e>      <Plug>(textobj-wiw-N)
+  NOXmap <M-g><M-e> <Plug>(textobj-wiw-P)
 
-  XOmap a<M-w> <Plug>(textobj-wiw-a)
-  XOmap i<M-w> <Plug>(textobj-wiw-i)
+  OXmap a<M-w> <Plug>(textobj-wiw-a)
+  OXmap i<M-w> <Plug>(textobj-wiw-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj Word Column: {{{
-if s:neobundle_tap('textobj-word-column')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-word-column')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_wordcolumn_no_default_key_mappings = 1
   endfunction
 
-  XOmap av <Plug>(textobj-wordcolumn-w-a)
-  XOmap aV <Plug>(textobj-wordcolumn-W-a)
-  XOmap iv <Plug>(textobj-wordcolumn-w-i)
-  XOmap iV <Plug>(textobj-wordcolumn-W-i)
+  OXmap av <Plug>(textobj-wordcolumn-w-a)
+  OXmap aV <Plug>(textobj-wordcolumn-W-a)
+  OXmap iv <Plug>(textobj-wordcolumn-w-i)
+  OXmap iV <Plug>(textobj-wordcolumn-W-i)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " TextObj XML Attribute: {{{
-if s:neobundle_tap('textobj-xml-attribute')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('textobj-xml-attribute')
+  function! g:dein#plugin.hook_source() abort
     let g:textobj_xmlattribute_no_default_key_mappings = 1
   endfunction
 
-  " XOmap aa <Plug>(textobj-xmlattribute-xmlattribute)
-  " XOmap ia <Plug>(textobj-xmlattribute-xmlattributenospace)
+  " OXmap aa <Plug>(textobj-xmlattribute-xmlattribute)
+  " OXmap ia <Plug>(textobj-xmlattribute-xmlattributenospace)
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " UndoTree: {{{
-if s:neobundle_tap('undotree')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('undotree')
+  function! g:dein#plugin.hook_source() abort
     let g:undotree_SetFocusWhenToggle = 1
   endfunction
 
@@ -4361,25 +4268,23 @@ if s:neobundle_tap('undotree')
     NXnoremap <Leader>u :<C-U>UndotreeToggle<CR>
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Unified Diff: {{{
-if s:neobundle_tap('unified-diff')
+if s:dein_tap('unified-diff')
   set diffexpr=unified_diff#diffexpr()
 
-  if &diff && has('vim_starting')
-    call neobundle#config({'lazy' : 0})
+  if has('vim_starting') && &diff
+    call dein#source(dein#name)
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Unite: {{{
-if s:neobundle_tap('unite')
-  function! neobundle#hooks.on_source(bundle)
-    let g:unite_data_directory             = $HOME . '/.local/.cache/unite'
-    let g:unite_source_history_yank_enable = !s:is_enabled_bundle('yankround')
+if s:dein_tap('unite')
+  function! g:dein#plugin.hook_source() abort
     let g:unite_source_grep_max_candidates = 1000
     let g:unite_source_grep_encoding       = 'utf-8'
     let g:unite_source_rec_min_cache_files = -1
@@ -4391,7 +4296,8 @@ if s:neobundle_tap('unite')
       \ ['find', '-L']
     elseif s:executable('files')
       let g:unite_source_rec_async_command =
-      \ ['files', s:cpucores() > 1 ? '-A' : '']
+      \ ['files', '-M', g:unite_source_rec_max_cache_files,
+      \  s:cpucores() > 1 ? '-A' : '']
     endif
 
     if s:executable('jvgrep')
@@ -4411,7 +4317,7 @@ if s:neobundle_tap('unite')
     \ 'description' : 'Current directory.'}
     let g:unite_source_menu_menus.directory_current.candidates = {
     \ '_' : ''}
-    function! g:unite_source_menu_menus.directory_current.map(key, value)
+    function! g:unite_source_menu_menus.directory_current.map(key, value) abort
       return {
       \ 'word' : './',
       \ 'kind' : 'directory',
@@ -4422,7 +4328,7 @@ if s:neobundle_tap('unite')
     \ 'description' : 'File directory.'}
     let g:unite_source_menu_menus.directory_file.candidates = {
     \ '_' : ''}
-    function! g:unite_source_menu_menus.directory_file.map(key, value)
+    function! g:unite_source_menu_menus.directory_file.map(key, value) abort
       let d = myvimrc#expand('%:p:h')
       return {
       \ 'word' : d . '/',
@@ -4569,7 +4475,7 @@ if s:neobundle_tap('unite')
     NXmap <Leader>G <Bslash>uG
   endif
 
-  if !s:is_enabled_bundle('neomru')
+  if !s:dein_if('neomru')
     NXnoremap <Bslash>ue
     \ :<C-U>Unite file file/new
     \ -buffer-name=files<CR>
@@ -4600,22 +4506,10 @@ if s:neobundle_tap('unite')
       NXmap <Leader><M-D> <Bslash>u<M-D>
     endif
   endif
-  if !s:is_enabled_bundle('yankround')
-    nnoremap <Bslash>up
-    \ :<C-U>Unite history/yank register
-    \ -buffer-name=register<CR>
-    xnoremap <Bslash>up
-    \ d:<C-U>Unite history/yank register
-    \ -buffer-name=register<CR>
-
-    if get(s:selector_ui, 'registers') == 'unite'
-      NXmap <Leader>p <Bslash>up
-    endif
-  endif
 
   call extend(s:altercmd_define, {
   \ 'u[nite]' : 'Unite'})
-  call extend(s:neocompl_vim_completefuncs, {
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'Unite'                   : 'unite#complete_source',
   \ 'UniteWithCurrentDir'     : 'unite#complete_source',
   \ 'UniteWithBufferDir'      : 'unite#complete_source',
@@ -4630,20 +4524,20 @@ if s:neobundle_tap('unite')
   \ 'UniteFirst'              : 'unite#complete_buffer_name',
   \ 'UniteLast'               : 'unite#complete_buffer_name'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Unite FileType: {{{
-if s:neobundle_tap('unite-filetype')
+if s:dein_tap('unite-filetype')
   NXnoremap <Bslash>uT
   \ :<C-U>Unite filetype
   \ -buffer-name=files<CR>
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Unite Help: {{{
-if s:neobundle_tap('unite-help')
+if s:dein_tap('unite-help')
   NXnoremap <Bslash>u<F1>
   \ :<C-U>Unite help
   \ -buffer-name=help<CR>
@@ -4651,12 +4545,12 @@ if s:neobundle_tap('unite-help')
   \ :<C-U>UniteWithCursorWord help
   \ -buffer-name=help -no-start-insert<CR>
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Unite Mark: {{{
-if s:neobundle_tap('unite-mark')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('unite-mark')
+  function! g:dein#plugin.hook_source() abort
     let g:unite_source_mark_marks =
     \ 'abcdefghijklmnopqrstuvwxyz' .
     \ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' .
@@ -4668,25 +4562,25 @@ if s:neobundle_tap('unite-mark')
   \ -buffer-name=register<CR>
   NXnoremap <Bslash>uM :<C-U>UniteBookmarkAdd<CR>
 
-  if get(s:selector_ui, 'mark') == 'unite'
+  if get(s:selector_ui, 'marks') == 'unite'
     NXmap <Leader>m <Bslash>um
     NXmap MM        <Bslash>uM
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Unite Outline: {{{
-if s:neobundle_tap('unite-outline')
+if s:dein_tap('unite-outline')
   NXnoremap <Bslash>uo
   \ :<C-U>Unite outline
   \ -buffer-name=outline<CR>
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Unite QuickFix: {{{
-if s:neobundle_tap('unite-quickfix')
+if s:dein_tap('unite-quickfix')
   NXnoremap <Bslash>u,
   \ :<C-U>Unite quickfix
   \ -buffer-name=register<CR>
@@ -4708,20 +4602,20 @@ if s:neobundle_tap('unite-quickfix')
     augroup END
   endif
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Unite QuickRun Config: {{{
-if s:neobundle_tap('unite-quickrun_config')
+if s:dein_tap('unite-quickrun_config')
   NXnoremap <Bslash>u<F5>
   \ :<C-U>Unite quickrun_config
   \ -buffer-name=register<CR>
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " Unite Tag: {{{
-if s:neobundle_tap('unite-tag')
+if s:dein_tap('unite-tag')
   NXnoremap <Bslash>u]
   \ :<C-U>UniteWithCursorWord tag tag/include
   \ -buffer-name=outline -no-start-insert<CR>
@@ -4730,31 +4624,22 @@ if s:neobundle_tap('unite-tag')
     NXmap <Leader>] <Bslash>u]
   endif
 endif
-"}}}
-
-"------------------------------------------------------------------------------
-" VeryftEnc: {{{
-if s:neobundle_tap('verifyenc')
-  autocmd MyVimrc BufReadPre *
-  \ NeoBundleSource verifyenc
-endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " VimConsole: {{{
-if s:neobundle_tap('vimconsole')
-  call extend(s:neocompl_vim_completefuncs, {
+if s:dein_tap('vimconsole')
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'VimConsoleLog'   : 'expression',
   \ 'VimConsoleWarn'  : 'expression',
   \ 'VimConsoleError' : 'expression'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " VimFiler: {{{
-if s:neobundle_tap('vimfiler')
-  function! neobundle#hooks.on_source(bundle)
-    let g:vimfiler_data_directory      = $HOME . '/.local/.cache/vimfiler'
+if s:dein_tap('vimfiler')
+  function! g:dein#plugin.hook_source() abort
     let g:vimfiler_as_default_explorer = 1
   endfunction
 
@@ -4764,7 +4649,7 @@ if s:neobundle_tap('vimfiler')
     NXnoremap <Leader>E :<C-U>VimFiler<CR>
   endif
 
-  call extend(s:neocompl_vim_completefuncs, {
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'VimFiler'           : 'vimfiler#complete',
   \ 'VimFilerDouble'     : 'vimfiler#complete',
   \ 'VimFilerCurrentDir' : 'vimfiler#complete',
@@ -4779,92 +4664,25 @@ if s:neobundle_tap('vimfiler')
   \ 'VimFilerSource'     : 'vimfiler#complete',
   \ 'VimFilerWrite'      : 'vimfiler#complete'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
-" VimShell: {{{
-if s:neobundle_tap('vimshell')
-  function! neobundle#hooks.on_source(bundle)
-    let g:vimshell_data_directory           = $HOME . '/.local/.cache/vimshell'
-    let g:vimshell_vimshrc_path             = $HOME . '/.vim/vimshrc'
-    let g:vimshell_max_command_history      = 100000
-    let g:vimshell_no_save_history_commands = {}
-    let g:vimshell_scrollback_limit         = 500
-    let g:vimshell_prompt                   = '$ '
-    let g:vimshell_secondary_prompt         = '> '
-    " let g:vimshell_right_prompt             =
-    " \ 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
-
-    if has('win32')
-      if filereadable('C:/Apps/ckw/ckw.exe')
-        let g:vimshell_use_terminal_command = 'C:/Apps/ckw/ckw.exe -e'
-      endif
-      let g:vimshell_environment_term     = 'cygwin'
-      let g:vimshell_user_prompt          =
-      \ '$USERNAME . "@" . hostname() . " " . getcwd()'
-    else
-      let g:vimshell_environment_term     = 'xterm-256color'
-      let g:vimshell_user_prompt          =
-      \ '$USER . "@" . hostname() . " " . getcwd()'
-    endif
-
-    if s:executable('grep')
-      call vimshell#set_alias('lld', 'ls -alF | grep "/$"')
-      call vimshell#set_alias('llf', 'ls -alF | grep -v "/$"')
-      call vimshell#set_alias('lle', 'ls -alF | grep "\*$"')
-      call vimshell#set_alias('lls', 'ls -alF | grep "\->"')
-    endif
-    if s:executable('head')
-      call vimshell#set_alias('h', 'head')
-    endif
-    if s:executable('tailf')
-      call vimshell#set_alias('t', 'tailf')
-    elseif s:executable('tail')
-      call vimshell#set_alias('t', 'tail -f')
-    endif
+" VimProc: {{{
+if s:dein_tap('vimproc')
+  function! g:dein#plugin.hook_source() abort
+    let g:vimproc#download_windows_dll = 1
   endfunction
-
-  if get(s:selector_ui, 'shell') == 'vimshell'
-    NXnoremap <Leader>! :<C-U>VimShell<CR>
-  endif
-
-  call extend(s:altercmd_define, {
-  \ 'sh[ell]' : 'VimShell',
-  \
-  \ '_sh[ell]' : 'shell'})
-  call extend(s:neocompl_dictionary_filetype_lists, {
-  \ 'vimshell' : $HOME . '/.local/.vimshell/command-history'})
-
-  call extend(s:neocompl_vim_completefuncs, {
-  \ 'VimShell'            : 'vimshell#complete',
-  \ 'VimShellCreate'      : 'vimshell#complete',
-  \ 'VimShellPop'         : 'vimshell#complete',
-  \ 'VimShellTab'         : 'vimshell#complete',
-  \ 'VimShellCurrentDir'  : 'vimshell#complete',
-  \ 'VimShellBufferDir'   : 'vimshell#complete',
-  \ 'VimShellExecute'     : 'vimshell#vimshell_execute_complete',
-  \ 'VimShellInteractive' : 'vimshell#vimshell_execute_complete',
-  \ 'VimShellTerminal'    : 'vimshell#vimshell_execute_complete'})
 endif
-"}}}
-
-"------------------------------------------------------------------------------
-" Vinarize: {{{
-if s:neobundle_tap('vinarize')
-  call extend(s:neocompl_vim_completefuncs, {
-  \ 'Vinarise'     : 'vinarise#complete',
-  \ 'VinariseDump' : 'vinarise#complete'})
-endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " VisualStar: {{{
-if s:neobundle_tap('visualstar')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('visualstar')
+  function! g:dein#plugin.hook_source() abort
     let g:visualstar_no_default_key_mappings = 1
   endfunction
 
-  if s:is_enabled_bundle('anzu')
+  if s:dein_if('anzu')
     xmap <SID>(visualstar-*)
     \ <Plug>(visualstar-*)<Plug>(anzu-update-search-status-with-echo)
     xmap <SID>(visualstar-#)
@@ -4885,40 +4703,32 @@ if s:neobundle_tap('visualstar')
   xnoremap <script> <SID>g* <SID>(visualstar-g*)zv
   xnoremap <script> <SID>g# <SID>(visualstar-g#)zv
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " VisualStudio: {{{
-if s:neobundle_tap('visualstudio')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('visualstudio')
+  function! g:dein#plugin.hook_source() abort
     let g:visualstudio_controllerpath =
-    \ neobundle#get('VisualStudioController').path .
+    \ dein#get('VisualStudioController').path .
     \ '/bin/VisualStudioController.exe'
   endfunction
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " VBNet: {{{
-if s:neobundle_tap('vbnet')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('vbnet')
+  function! g:dein#plugin.hook_source() abort
     unlet! g:vbnet_no_code_folds
   endfunction
 endif
-"}}}
-
-"------------------------------------------------------------------------------
-" Vital: {{{
-if s:neobundle_tap('vital')
-  call extend(s:neocompl_vim_completefuncs, {
-  \ 'Vitalize' : 'vitalizer#complete'})
-endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " WatchDogs: {{{
-if s:neobundle_tap('watchdogs')
-  function! neobundle#hooks.on_source(bundle)
+if s:dein_tap('watchdogs')
+  function! g:dein#plugin.hook_source() abort
     let g:watchdogs_check_BufWritePost_enable = 1
 
     let g:quickrun_config =
@@ -4944,25 +4754,44 @@ if s:neobundle_tap('watchdogs')
     \ 'watchdogs_checker/msvc' : {
     \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
     \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-    \   'hook/vcvarsall/bat' : has('win32') ? myvimrc#cmdescape($VCVARSALL) : $VCVARSALL},
+    \   'hook/vcvarsall/bat' :
+    \     has('win32') ? myvimrc#cmdescape($VCVARSALL) : $VCVARSALL},
+    \
+    \ 'lua/watchdogs_checker' : {
+    \   'type' :
+    \     s:executable('luajit') ? 'watchdogs_checker/luajit' :
+    \     s:executable('luac53') ? 'watchdogs_checker/luac53' :
+    \     s:executable('luac')   ? 'watchdogs_checker/luac' : ''},
+    \ 'watchdogs_checker/luajit' : {
+    \   'command' : 'luajit',
+    \   'exec'    : '%c %o -bl %s:p',
+    \   'errorformat' : '%.%#: %#%f:%l: %m'},
+    \ 'watchdogs_checker/luac53' : {
+    \   'command' : 'luac53',
+    \   'exec'    : '%c %o -p %s:p',
+    \   'errorformat' : '%.%#: %#%f:%l: %m'},
     \
     \ 'vim/watchdogs_checker' : {
-    \   'type' : ''}})
+    \   'type' : ''},
+    \
+    \ 'help/watchdogs_checker' : {
+    \   'type':
+    \     s:dein_if('vimhelplint') ? 'watchdogs_checker/vimhelplint' : ''}})
 
     call watchdogs#setup(g:quickrun_config)
   endfunction
 
-  call extend(s:neocompl_vim_completefuncs, {
+  call extend(s:neocomplete_vim_completefuncs, {
   \ 'WatchdogsRun'       : 'quickrun#complete',
   \ 'WatchdogsRunSilent' : 'quickrun#complete'})
 endif
-"}}}
+" }}}
 
 "------------------------------------------------------------------------------
 " YankRound: {{{
-if s:neobundle_tap('yankround')
-  function! neobundle#hooks.on_source(bundle)
-    let g:yankround_dir           = $HOME . '/.local/.cache/yankround'
+if s:dein_tap('yankround')
+  function! g:dein#plugin.hook_source() abort
+    let g:yankround_dir           = $CACHE . '/yankround'
     let g:yankround_max_history   = 100
     let g:yankround_use_region_hl = 1
   endfunction
@@ -4998,7 +4827,7 @@ if s:neobundle_tap('yankround')
 
   autocmd MyVimrc User EscapeKey
   \ if exists('#yankround_rounder#InsertEnter') |
-  \   call s:doautocmd('yankround_rounder', 'InsertEnter') |
+  \   call compat#doautocmd('<nomodeline>', 'yankround_rounder', 'InsertEnter') |
   \ endif
 
   if get(s:selector_ui, 'registers') == 'unite'
@@ -5007,27 +4836,17 @@ if s:neobundle_tap('yankround')
     NXmap <Leader>p <Bslash>pp
   endif
 endif
-"}}}
-
-silent! call neobundle#untap()
-"}}}
+" }}}
+" }}}
 
 "==============================================================================
 " Post Init: {{{
-" Do PostInit Event
-if exists('#User#MyVimrcPost')
-  call s:doautocmd('User', 'MyVimrcPost')
-endif
-
 " Local vimrc
-if filereadable($HOME . '/.local/.vimrc_local.vim')
-  source ~/.local/.vimrc_local.vim
-elseif filereadable($HOME . '/.local/.vim/vimrc_local.vim')
-  source ~/.local/.vim/vimrc_local.vim
+if filereadable($HOME . '/.vimrc_local.vim')
+  source ~/.vimrc_local.vim
+elseif filereadable($HOME . '/.vim/vimrc_local.vim')
+  source ~/.vim/vimrc_local.vim
 endif
-
-" Enable NeoBundle
-silent! call neobundle#end()
 
 " Enable plugin
 filetype plugin indent on
@@ -5036,7 +4855,11 @@ filetype plugin indent on
 syntax enable
 
 " ColorScheme
-if &t_Co > 255 && !exists('g:colors_name')
-  silent! colorscheme molokai
+if !exists('g:colors_name') && !has('gui_running') && s:is_colored_ui
+  try
+    colorscheme molokai
+  catch /.*/
+    colorscheme desert
+  endtry
 endif
-"}}}
+" }}}

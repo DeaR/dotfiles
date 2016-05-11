@@ -1,0 +1,301 @@
+-- NYAGOS settings
+--
+-- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
+-- Last Change:  27-Apr-2016.
+-- License:      MIT License {{{
+--     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
+--
+--     Permission is hereby granted, free of charge, to any person obtaining a
+--     copy of this software and associated documentation files (the
+--     "Software"), to deal in the Software without restriction, including
+--     without limitation the rights to use, copy, modify, merge, publish,
+--     distribute, sublicense, and/or sell copies of the Software, and to
+--     permit persons to whom the Software is furnished to do so, subject to
+--     the following conditions:
+--
+--     The above copyright notice and this permission notice shall be included
+--     in all copies or substantial portions of the Software.
+--
+--     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+--     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+--     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+--     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+--     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+--     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+--     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-- }}}
+
+-------------------------------------------------------------------------------
+-- Pre Init: {{{
+local home  = nyagos.getenv('HOME') or nyagos.getenv('USERPROFILE')
+local arch  = nyagos.getenv('PROGRAMFILES(X86)') and true or false
+local pf64  = nyagos.getenv('PROGRAMW6432')      or nyagos.getenv('PROGRAMFILES')
+local pf32  = nyagos.getenv('PROGRAMFILES(X86)') or nyagos.getenv('PROGRAMFILES')
+local prof  = nyagos.getenv('USERPROFILE')
+local cache = nyagos.getenv('CACHE') or nyagos.getenv('XDG_CACHE_HOME') or (home .. '\\.cache')
+set {
+  HOME  = home,
+  CACHE = cache,
+}
+
+local function include(fname)
+  local chank, err = loadfile(fname)
+  if err then
+    print(err)
+  elseif chank then
+    local ok, err = pcall(chank)
+    if not ok then
+      print(fname .. ': ' .. err)
+    end
+  else
+    print(fname .. ':fail to load')
+  end
+end
+
+local function ext(fname)
+  local p = nyagos.which(fname)
+  return p and nyagos.stat(p).name or ''
+end
+-- }}}
+
+-------------------------------------------------------------------------------
+-- Environment Variable: {{{
+set {
+  TZ   = 'JST-09',
+  LANG = 'C',
+  TERM = 'cygwin',
+}
+
+if nyagos.which('vim') then
+  if nyagos.which('gvim') then
+    set { EDITOR = ext('gvim') }
+  else
+    set { EDITOR = ext('vim') }
+  end
+  if nyagos.which('git') then
+    set { GIT_EDITOR = '%EDITOR% --remote-wait-silent' }
+  end
+  if nyagos.which('hg') then
+    set { HGEDITOR = '%EDITOR% --remote-wait-silent' }
+  end
+elseif nyagos.which('vi') then
+  set { EDITOR = ext('vi') }
+end
+
+if nyagos.which('less') then
+  set { PAGER = ext('less') }
+elseif nyagos.which('lv') then
+  set { PAGER = ext('lv') }
+elseif nyagos.which('more') then
+  set { PAGER = ext('more') }
+end
+
+if nyagos.which('less') then
+  set {
+    LESS         = '-r',
+    LESSCHARSET  = 'utf-8',
+    LESSHISTFILE = cache .. '\\.lesshst',
+  }
+  if nyagos.which('lesspipe') then
+    set {
+      LESSOPEN  = '| lesspipe %s',
+      LESSCLOSE = 'lesspipe %s %s',
+    }
+  elseif nyagos.which('lesspipe.sh') then
+    set {
+      LESSOPEN  = '| lesspipe.sh %s',
+      LESSCLOSE = 'lesspipe.sh %s %s',
+    }
+  end
+end
+if nyagos.which('lv') then
+  set { LV = '-Ia -c' }
+end
+
+if nyagos.which('git') then
+  set { GIT_PAGER = '%PAGER%' }
+  if nyagos.which('diff-highlight') then
+    set { GIT_PAGER = ext('diff-highlight') .. ' | %GIT_PAGER%' }
+  end
+  if nyagos.which('nkf') then
+    set { GIT_PAGER = ext('nkf') .. ' | %GIT_PAGER%' }
+  end
+end
+
+if nyagos.which('hg') then
+  set {
+    HGENCODING = 'utf-8',
+    HGPAGER    = '%PAGER%',
+  }
+  if nyagos.which('nkf') then
+    set { HGPAGER = ext('nkf') .. ' | %HGPAGER%' }
+  end
+end
+-- }}}
+
+-------------------------------------------------------------------------------
+-- Catalog: {{{
+use "dollar"
+if nyagos.which('peco') then
+  use "peco"
+end
+-- }}}
+
+-------------------------------------------------------------------------------
+-- Prompt: {{{
+share.__prompt = nyagos.prompt
+nyagos.prompt = function(template)
+  local user = nyagos.getenv('USERNAME')
+  local host = nyagos.getenv('USERDOMAIN')
+  local home = nyagos.getenv('HOME') or nyagos.getenv('USERPROFILE')
+  local path = nyagos.getwd():gsub(home, '~')
+  local output, err = nyagos.raweval('net', 'session')
+  local root = err and '$$' or '#'
+  return share.__prompt('$e[32;40;1m' .. user .. '@' .. host ..
+    ' $e[33;40;1m' .. path .. '$e[0m\n' .. root .. ' ')
+end
+-- }}}
+
+-------------------------------------------------------------------------------
+-- Su: {{{
+if nyagos.stat(prof .. '\\Apps\\ckw') then
+  share.__su    = nyagos.getalias('su')
+  share.__clone = nyagos.getalias('clone')
+  alias {
+    su = function()
+      local arch = nyagos.getenv('PROGRAMFILES(X86)') and 'x64' or 'x86'
+      local status, err = nyagos.shellexecute('runas',
+        nyagos.getenv('USERPROFILE') .. '\\Apps\\ckw\\' .. arch .. '\\ckw.exe')
+      if not status and _su then
+        share.__su()
+      else
+        assert(status, err)
+      end
+    end,
+    clone = function()
+      local arch = nyagos.getenv('PROGRAMFILES(X86)') and 'x64' or 'x86'
+      local status, err = nyagos.shellexecute('open',
+        nyagos.getenv('USERPROFILE') .. '\\Apps\\ckw\\' .. arch .. '\\ckw.exe')
+      if not status and _clone then
+        share.__clone()
+      else
+        assert(status, err)
+      end
+    end,
+  }
+end
+-- }}}
+
+-------------------------------------------------------------------------------
+-- Less TailF: {{{
+if nyagos.which('less') then
+  nyagos.alias.ltail = function(args)
+    local o = nyagos.getenv('LESSOPEN')
+    local c = nyagos.getenv('LESSCLOSE')
+    nyagos.setenv('LESSOPEN')
+    nyagos.setenv('LESSCLOSE')
+    nyagos.exec('less +F ' .. table.concat(args, ' '))
+    nyagos.setenv('LESSOPEN', o)
+    nyagos.setenv('LESSCLOSE', c)
+  end
+end
+-- }}}
+
+-------------------------------------------------------------------------------
+-- VC Vars: {{{
+include(home .. '\\.nyagos.d\\vcvars.lua')
+-- }}}
+
+-------------------------------------------------------------------------------
+-- Alias: {{{
+alias {
+  q     = '__exit__',
+  clear = '__cls__',
+  ls    = '__ls__ -o',
+  ll    = '__ls__ -oalF',
+}
+if nyagos.which('grep') then
+  alias {
+    grep = ext('grep') .. ' --color',
+    lld  = '__ls__ -alF | ' .. ext('grep') .. ' --color=never "^d"',
+    llf  = '__ls__ -alF | ' .. ext('grep') .. ' --color=never "^-"',
+    lle  = '__ls__ -alF | ' .. ext('grep') .. ' --color=never "\\*$"',
+    lls  = '__ls__ -alF | ' .. ext('grep') .. ' --color=never "@$\\|\\->"',
+  }
+end
+if nyagos.getenv('EDITOR') then
+  alias { e = '%EDITOR%' }
+end
+if nyagos.getenv('PAGER') then
+  alias { l = '%PAGER%' }
+end
+if nyagos.which('head') then
+  alias { h = ext('head') }
+end
+if nyagos.getalias('ltail') then
+  alias { t = 'ltail' }
+elseif nyagos.which('tailf') then
+  alias { t = ext('tailf') }
+elseif nyagos.which('tail') then
+  alias { t = ext('tail') .. ' -f' }
+end
+if nyagos.which('gvim') then
+  alias {
+    vi  = ext('gvim'),
+    vim = ext('gvim')
+  }
+elseif nyagos.which('vim') then
+  alias { vi = ext('vim') }
+end
+if nyagos.which('hub') then
+  alias { git = ext('hub') }
+end
+if nyagos.getenv('HGPAGER') then
+  alias { hg = ext('hg') .. ' --config pager.pager="%HGPAGER%"' }
+end
+if nyagos.which('colordiff') then
+  alias { diff = ext('colordiff') }
+end
+
+if nyagos.stat(pf64 .. '\\Git') then
+  alias {
+    find = '"' .. pf64 .. '\\Git\\usr\\bin\\find.exe"',
+    sort = '"' .. pf64 .. '\\Git\\usr\\bin\\sort.exe"',
+  }
+elseif nyagos.stat(pf32 .. '\\Git') then
+  alias {
+    find = '"' .. pf32 .. '\\Git\\usr\\bin\\find.exe"',
+    sort = '"' .. pf32 .. '\\Git\\usr\\bin\\sort.exe"',
+  }
+end
+if nyagos.which('mingw32-make') then
+  alias { make = ext('mingw32-make') }
+end
+-- }}}
+
+-------------------------------------------------------------------------------
+-- Suffix: {{{
+suffix.htm  = 'open'
+suffix.html = 'open'
+suffix.msi  = 'open'
+if nyagos.which('sh') then
+  suffix.sh = 'sh'
+end
+if nyagos.which('bash') then
+  suffix.bash = 'bash'
+end
+if nyagos.which('zsh') then
+  suffix.zsh = 'zsh'
+end
+-- }}}
+
+-------------------------------------------------------------------------------
+-- Post Init: {{{
+if nyagos.stat(home .. '\\.nyagos_local.lua') then
+  include(home .. '\\.nyagos_local.lua')
+elseif nyagos.stat(home .. '\\.nyagos.d\\nyagos_local.lua') then
+  include(home .. '\\.nyagos.d\\nyagos_local.lua')
+end
+-- }}}
+
+-- vim: ft=lua

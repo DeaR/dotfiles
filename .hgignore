@@ -1,0 +1,13 @@
+syntax: glob
+
+tags
+*.swp
+*.swo
+*.swn
+*.lc
+*.elc
+*.fas
+*.pyc
+*.pyo
+*.luac
+*.zwc

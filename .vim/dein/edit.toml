@@ -1,0 +1,143 @@
+# Edit plugins
+#
+# Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
+# Last Change:  11-May-2016.
+# License:      MIT License {{{
+#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#
+#     Permission is hereby granted, free of charge, to any person obtaining a
+#     copy of this software and associated documentation files (the
+#     "Software"), to deal in the Software without restriction, including
+#     without limitation the rights to use, copy, modify, merge, publish,
+#     distribute, sublicense, and/or sell copies of the Software, and to permit
+#     persons to whom the Software is furnished to do so, subject to the
+#     following conditions:
+#
+#     The above copyright notice and this permission notice shall be included
+#     in all copies or substantial portions of the Software.
+#
+#     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+#     OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#     IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+#     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+#     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+#     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# }}}
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/vim-anzu'
+on_cmd = ['AnzuClearSearchStatus', 'AnzuClearSearchCache', 'AnzuUpdateSearchStatus', 'AnzuUpdateSearchStatusOutput', 'AnzuSignMatchLine', 'AnzuClearSignMatchLine']
+on_map = [['n', '<Plug>'], ['n', '<Plug>(anzu-jump-n)<Plug>(anzu', '<Plug>(anzu-jump-N)<Plug>(anzu']]
+on_source = 'unite'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo ='autodate.vim'
+on_path = '.*'
+on_cmd = ['Autodate', 'AutodateOFF', 'AutodateON']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'vim-jp/autofmt'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'rhysd/clever-f.vim'
+on_map = [['nov', '<Plug>']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tyru/eskk.vim'
+on_ft = 'skkdict'
+on_cmd = ['EskkMap', 'EskkForgetRegisteredWords', 'EskkUpdateDictionary', 'EskkFixDictionary']
+on_map = [['ic', '<Plug>']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'mattn/emmet-vim'
+on_cmd = ['Emmet', 'EmmetInstall']
+on_map = [['nvi', '<Plug>'], ['nvi', '<M-y>']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'cohama/vim-hier'
+on_ft = 'qf'
+on_cmd = ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'haya14busa/incsearch.vim'
+on_cmd = ['IncSearchNoreMap', 'IncSearchMap']
+on_map = [['nov', '<Plug>']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'peco/migemogrep'
+if = 'executable("go")'
+rtp = 'misc/vim'
+on_cmd = 'MigemoGrep'
+build = 'go get -u github.com/peco/migemogrep'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'deris/parajump'
+on_map = [['nov', '<Plug>']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'osyo-manga/vim-precious'
+on_path = '.*'
+on_cmd = ['PreciousSwitch', 'PreciousReset', 'PreciousSetContextLocal', 'PreciousSwitchAutcmd']
+depends = ['context_filetype', 'quickrun', 'textobj-user']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-qfreplace'
+on_ft = ['qf', 'unite']
+on_cmd = 'Qfreplace'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'dannyob/quickfixstatus'
+on_ft = 'qf'
+on_cmd = ['QuickfixStatusEnable', 'QuickfixStatusDisable']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-smartword'
+on_map = [['nov', '<Plug>']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'AndrewRadev/switch.vim'
+on_cmd = ['Switch', 'SwitchReverse', 'SwitchIncrement', 'SwitchDecrement']
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'mbbill/undotree'
+on_cmd = ['UndotreeToggle', 'UndotreeHidew', 'UndotreeShow', 'UndotreeFocus']
+on_func = 'UndotreeToggle'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'koron/verifyenc-vim'
+if = 'has("iconv")'
+on_cmd = 'VerifyEnc'
+on_event = 'BufReadPre'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'thinca/vim-visualstar'
+on_map = [['nov', '<Plug>']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'LeafCage/yankround.vim'
+on_cmd = 'CtrlPYankRound'
+on_map = [['nxc', '<Plug>']]
+on_event = 'CursorMoved'
+on_if = 'empty(&buftype) && (line("$") - col("$"))'
+on_source = 'unite'
+depends = 'ctrlp'

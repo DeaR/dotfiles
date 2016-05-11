@@ -1,7 +1,7 @@
 # GNU screen settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  05-Oct-2015.
+# Last Change:  29-Oct-2015.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -27,7 +27,6 @@
 
 #------------------------------------------------------------------------------
 # Option: {{{
-maptimeout 1
 altscreen on
 attrcolor b ".I"
 autodetach on
@@ -35,6 +34,7 @@ bell_msg "Bell in window %"
 defbce on
 defscrollback 10000
 escape ^Zz
+maptimeout 1
 msgminwait 1
 msgwait 5
 screen 1
@@ -43,21 +43,21 @@ shelltitle "$ |${SHELL}"
 startup_message off
 term screen-256color
 vbell off
-#}}}
+# }}}
 
 #------------------------------------------------------------------------------
 # Termcapinfo: {{{
 termcapinfo xterm* "is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l"
 termcapinfo xterm* "hs:ts=\E]0;:fs=\007:ds=\E]0;\007"
 termcapinfo xterm* "ti@:te@"
-#}}}
+# }}}
 
 #------------------------------------------------------------------------------
 # Hardstatus And Caption: {{{
 caption splitonly "%{= Kw}%?%F%? %?%h%:%t #%n%?"
 hardstatus alwayslastline "%{= .c}%? %-Lw%?%40L>%{+r} %n %t %{-}%+Lw%-015=%c %d-%M-%y%{-}"
 sorendition "= Kw"
-#}}}
+# }}}
 
 #------------------------------------------------------------------------------
 # Keybind: {{{
@@ -71,4 +71,4 @@ bind  c screen 1
 bind  o focus down
 bind  z
 bind  | split -v
-#}}}
+# }}}
