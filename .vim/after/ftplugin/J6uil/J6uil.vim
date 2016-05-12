@@ -34,15 +34,6 @@ nmap <buffer> D       <Plug>(J6uil_disconnect)
 nmap <buffer> <CR>    <Plug>(J6uil_action_enter)
 nmap <buffer> o       <Plug>(J6uil_action_open_links)
 
-function! s:echo_members()
-  echo join(map(
-  \ copy(b:J6uil_roster.members),
-  \ '(v:val.is_online ? "+ " : "  ") . ' .
-  \ '(v:val.is_owner ? "★ " : "") . ' .
-  \ 'v:val.name'), "\n")
-endfunction
-nmap <buffer> u :<C-U>call <SID>echo_members()<CR>
-
 function! s:del_count()
   return v:count > 0 ? repeat("\<Del>", len(v:count)) : ''
 endfunction
@@ -91,7 +82,6 @@ let b:undo_ftplugin .= '
 \ silent! execute "nunmap <buffer> <Space>" |
 \ silent! execute "nunmap <buffer> R" |
 \ silent! execute "nunmap <buffer> D" |
-\ silent! execute "nunmap <buffer> u" |
 \ silent! execute "nunmap <buffer> <CR>" |
 \ silent! execute "nunmap <buffer> o" |
 \ silent! execute "nunmap <buffer> <Down>" |
