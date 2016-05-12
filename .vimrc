@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  11-May-2016.
+" Last Change:  12-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -190,11 +190,6 @@ endfunction
 " dein#tap
 function! s:dein_tap(name) abort
   return exists('*dein#tap') && dein#tap(a:name)
-endfunction
-
-" dein#get().if
-function! s:dein_if(name) abort
-  return exists('*dein#get') && !empty(dein#get(a:name))
 endfunction
 " }}}
 " }}}
@@ -612,9 +607,6 @@ let g:mapleader      = ';'
 let g:maplocalleader = ','
 NOXnoremap <Leader>      <Nop>
 NOXnoremap <LocalLeader> <Nop>
-
-" For plugin
-NOXnoremap <Bslash> <Nop>
 
 " For mark
 NOXnoremap m <Nop>
@@ -1155,10 +1147,16 @@ autocmd MyVimrc FileType *
 
 "------------------------------------------------------------------------------
 " QuickFix: {{{
-autocmd MyVimrc BufWinEnter,WinEnter *
-\ if &buftype == 'quickfix' && !exists('b:qflisttype') |
-\   call myvimrc#set_qflisttype() |
-\ endif
+augroup MyVimrc
+  autocmd BufWinEnter,WinEnter *
+  \ if &buftype == 'quickfix' && !exists('b:qflisttype') |
+  \   call myvimrc#set_qflisttype() |
+  \ endif
+  autocmd QuickFixCmdPost [^l]*
+  \ cwindow
+  autocmd QuickFixCmdPost l*
+  \ lwindow
+augroup END
 " }}}
 
 "------------------------------------------------------------------------------
@@ -1259,26 +1257,6 @@ autocmd MyVimrc FileType *
 
 "==============================================================================
 " Plugins: {{{
-" Default selector
-let s:selector_ui = {
-\ 'edit'      : 'ctrlp',
-\ 'explorer'  : 'ctrlp',
-\ 'chdir'     : 'ctrlp',
-\ 'buffer'    : 'ctrlp',
-\ 'buffers'   : 'tabpagebuffer',
-\ 'bdelete'   : 'tabpagebuffer',
-\ 'tabnext'   : 'ctrlp',
-\ 'undo'      : 'undotree',
-\ 'changes'   : 'ctrlp',
-\ 'jumps'     : 'ctrlp',
-\ 'registers' : 'ctrlp',
-\ 'marks'     : 'ctrlp',
-\ 'tag'       : 'ctrlp',
-\ 'grep'      : '',
-\ 'quickfix'  : '',
-\
-\ 'omnisharp' : 'ctrlp'}
-
 " AlterCommand
 " {original} : {alternative}
 let s:altercmd_define = {
@@ -1403,16 +1381,6 @@ let g:ruby_fold          = 1
 let g:sh_fold_enabled    = 1
 let g:vimsyn_folding     = 'af'
 let g:xml_syntax_folding = 1
-
-" Auto Open QuickFix
-if empty(get(s:selector_ui, 'quickfix'))
-  augroup MyVimrc
-    autocmd QuickFixCmdPost [^l]*
-    \ cwindow
-    autocmd QuickFixCmdPost l*
-    \ lwindow
-  augroup END
-endif
 " }}}
 
 "------------------------------------------------------------------------------
@@ -1690,32 +1658,15 @@ if s:dein_tap('ctrlp')
     endif
   endfunction
 
-  NXnoremap <Bslash>p <Nop>
+  NXnoremap <Leader>e :<C-U>CtrlPMRUFiles<CR>
+  NXnoremap <Leader>E :<C-U>CtrlP<CR>
 
-  NXnoremap <Bslash>pe :<C-U>CtrlPMRUFiles<CR>
-  NXnoremap <Bslash>pE :<C-U>CtrlP<CR>
-  NXnoremap <Bslash>pB :<C-U>CtrlPBuffer<CR>
+  NXnoremap <Leader>u :<C-U>CtrlPUndo<CR>
+  NXnoremap <Leader>j :<C-U>CtrlPChange<CR>
+  NXnoremap <Leader>] :<C-U>CtrlPTag<CR>
 
-  NXnoremap <Bslash>pu :<C-U>CtrlPUndo<CR>
-  NXnoremap <Bslash>pj :<C-U>CtrlPChange<CR>
-  NXnoremap <Bslash>p] :<C-U>CtrlPTag<CR>
-
-  NXnoremap <Bslash>p/ :<C-U>CtrlPLine<CR>
-
-  if get(s:selector_ui, 'edit') == 'ctrlp'
-    NXmap <Leader>e <Bslash>pe
-  endif
-  if get(s:selector_ui, 'explorer') == 'ctrlp'
-    NXmap <Leader>E <Bslash>pE
-  endif
-  if get(s:selector_ui, 'undo') == 'ctrlp'
-    NXmap <Leader>u <Bslash>pu
-  endif
-  if get(s:selector_ui, 'changes') == 'ctrlp'
-    NXmap <Leader>j <Bslash>pj
-  endif
-  if get(s:selector_ui, 'tag') == 'ctrlp'
-    NXmap <Leader>] <Bslash>p]
+  if empty(dein#get('tabpagebuffer-misc'))
+    NXnoremap <Leader>b :<C-U>CtrlPBuffer<CR>
   endif
 endif
 " }}}
@@ -1723,17 +1674,10 @@ endif
 "------------------------------------------------------------------------------
 " CtrlP Chdir: {{{
 if s:dein_tap('ctrlp-chdir')
-  NXnoremap <Bslash>pd     :<C-U>CtrlPLchdir<CR>
-  NXnoremap <Bslash>pD     :<C-U>CtrlPChdir<CR>
-  NXnoremap <Bslash>p<M-d> :<C-U>CtrlPLchdir %:p:h<CR>
-  NXnoremap <Bslash>p<M-D> :<C-U>CtrlPChdir %:p:h<CR>
-
-  if get(s:selector_ui, 'chdir') == 'ctrlp'
-    NXmap <Leader>d     <Bslash>pd
-    NXmap <Leader>D     <Bslash>pD
-    NXmap <Leader><M-d> <Bslash>p<M-d>
-    NXmap <Leader><M-D> <Bslash>p<M-D>
-  endif
+  NXnoremap <Leader>d     :<C-U>CtrlPLchdir<CR>
+  NXnoremap <Leader>D     :<C-U>CtrlPChdir<CR>
+  NXnoremap <Leader><M-d> :<C-U>CtrlPLchdir %:p:h<CR>
+  NXnoremap <Leader><M-D> :<C-U>CtrlPChdir %:p:h<CR>
 endif
 " }}}
 
@@ -1747,63 +1691,16 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" CtrlP FileType: {{{
-if s:dein_tap('ctrlp-filetype')
-  NXnoremap <Bslash>pT
-  \ :<C-U>CtrlPFileType<CR>
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" CtrlP Help: {{{
-if s:dein_tap('ctrlp-help')
-  NXnoremap <Bslash>p<F1>
-  \ :<C-U>CtrlPHelp<CR>
-endif
-" }}}
-
-"------------------------------------------------------------------------------
 " CtrlP Jumps: {{{
 if s:dein_tap('ctrlp-jumps')
-  NXnoremap <Bslash>pJ :<C-U>CtrlPJump<CR>
-
-  if get(s:selector_ui, 'jumps') == 'ctrlp'
-    NXmap <Leader>J <Bslash>pJ
-  endif
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" CtrlP LocationList: {{{
-if s:dein_tap('ctrlp-location-list')
-  NXnoremap <Bslash>p,
-  \ :<C-U>call myvimrc#ctrlp_no_empty('CtrlPQuickfix')<CR>
-  NXnoremap <Bslash>p.
-  \ :<C-U>call myvimrc#ctrlp_no_empty('CtrlPLocList')<CR>
-
-  if get(s:selector_ui, 'quickfix') == 'ctrlp'
-    NXmap <C-W>, <Bslash>p,
-    NXmap <C-W>. <Bslash>p.
-
-    augroup MyVimrc
-      autocmd QuickFixCmdPost [^l]*
-      \ call myvimrc#ctrlp_no_empty('CtrlPQuickfix')<CR>
-      autocmd QuickFixCmdPost l*
-      \ call myvimrc#ctrlp_no_empty('CtrlPLocList')<CR>
-    augroup END
-  endif
+  NXnoremap <Leader>J :<C-U>CtrlPJump<CR>
 endif
 " }}}
 
 "------------------------------------------------------------------------------
 " CtrlP Mark: {{{
 if s:dein_tap('ctrlp-mark')
-  NXnoremap <Bslash>pm
-  \ :<C-U>CtrlPMark<CR>
-
-  if get(s:selector_ui, 'marks') == 'ctrlp'
-    NXmap <Leader>m <Bslash>pm
-  endif
+  NXnoremap <Leader>m :<C-U>CtrlPMark<CR>
 endif
 " }}}
 
@@ -1819,15 +1716,9 @@ endif
 "------------------------------------------------------------------------------
 " CtrlP Register: {{{
 if s:dein_tap('ctrlp-register')
-  if !s:dein_if('yankround')
-    nnoremap <Bslash>pp
-    \ :<C-U>CtrlPRegister<CR>
-    xnoremap <Bslash>pp
-    \ d:<C-U>CtrlPRegister<CR>
-
-    if get(s:selector_ui, 'registers') == 'ctrlp'
-      NXmap <Leader>p <Bslash>pp
-    endif
+  if empty(dein#get('yankround'))
+    nnoremap <Leader>p :<C-U>CtrlPRegister<CR>
+    xnoremap <Leader>p d:<C-U>CtrlPRegister<CR>
   endif
 endif
 " }}}
@@ -1839,31 +1730,7 @@ if s:dein_tap('ctrlp-tabpage')
     let g:ctrlp#tabpage#visible_all_buftype = 1
   endfunction
 
-  NXnoremap <Bslash>pt :<C-U>CtrlPTabpage<CR>
-
-  if get(s:selector_ui, 'tabnext') == 'ctrlp'
-    NXmap <Leader>t <Bslash>pt
-  endif
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" CtrlP Window: {{{
-if s:dein_tap('ctrlp-window')
-  NXnoremap <Bslash>pw :<C-U>CtrlPWindow<CR>
-  NXnoremap <Bslash>pW :<C-U>CtrlPWindowAll<CR>
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Dispatch: {{{
-if s:dein_tap('dispatch')
-  call extend(s:neocomplete_vim_completefuncs, {
-  \ 'Dispatch'      : 'dispatch#command_complete',
-  \ 'FocusDispatch' : 'dispatch#command_complete',
-  \ 'Make'          : 'dispatch#make_complete',
-  \ 'Start'         : 'dispatch#command_complete',
-  \ 'Spawn'         : 'dispatch#command_complete'})
+  NXnoremap <Leader>t :<C-U>CtrlPTabpage<CR>
 endif
 " }}}
 
@@ -2024,7 +1891,7 @@ if s:dein_tap('incsearch')
   NOXnoremap <silent><expr> <SID>/ myvimrc#incsearch_next()
   NOXnoremap <silent><expr> <SID>? myvimrc#incsearch_prev()
 
-  if s:dein_if('anzu')
+  if !empty(dein#get('anzu'))
     autocmd MyVimrc User IncSearchExecute
     \ call feedkeys(":\<C-U>AnzuUpdateSearchStatusOutput\<CR>", 'n')
   endif
@@ -2053,15 +1920,6 @@ if s:dein_tap('J6uil')
   \ 'j[6uil]' : 'J6uil'})
   call extend(s:neocomplete_vim_completefuncs, {
   \ 'J6uil' : 'J6uil#complete#room'})
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Java Class Path: {{{
-if s:dein_tap('javaclasspath')
-  function! g:dein#plugin.hook_post_source() abort
-    call javaclasspath#on_filetype()
-  endfunction
 endif
 " }}}
 
@@ -2143,12 +2001,54 @@ if s:dein_tap('marching')
   function! g:dein#plugin.hook_source() abort
     let g:marching_enable_neocomplete = 1
     let g:marching_backend            =
-    \ s:dein_if('snowdrop') ?
+    \ !empty(dein#get('snowdrop')) ?
     \   'snowdrop' : 'sync_clang_command'
   endfunction
 
   call extend(s:neocomplete_force_omni_patterns, {
   \ 'marching#complete' : '\%(\.\|->\|::\)\h\w*'})
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" MetaRW: {{{
+if s:dein_tap('metarw')
+  function! g:dein#plugin.hook_source() abort
+    call metarw#define_wrapper_commands(1)
+  endfunction
+
+  let g:loaded_netrw             = 1
+  let g:loaded_netrwPlugin       = 1
+  let g:loaded_netrwSettings     = 1
+  let g:loaded_netrwFileHandlers = 1
+
+  if empty(dein#get('ctrlp'))
+    NXnoremap <script> <Leader>e <SID>:<C-U>Edit<Space>
+  endif
+
+  call extend(s:altercmd_define, {
+  \ 'e[dit]'   : 'Edit',
+  \ 'r[ead]'   : 'Read',
+  \ 'so[urce]' : 'Source',
+  \ 'w[rite]'  : 'Write',
+  \
+  \ '_e[dit]'   : 'edit',
+  \ '_r[ead]'   : 'read',
+  \ '_so[urce]' : 'source',
+  \ '_w[rite]'  : 'write'})
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" MetaRW Local: {{{
+if s:dein_tap('metarw-local')
+  function! g:dein#plugin.hook_source() abort
+    let g:metarw_local_enable_fallback = 1
+  endfunction
+
+  if empty(dein#get('ctrlp'))
+    NXnoremap <Leader>E :<C-U>Edit local:<CR>
+  endif
 endif
 " }}}
 
@@ -2276,52 +2176,6 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" NeoMru: {{{
-if s:dein_tap('neomru')
-  function! g:dein#plugin.hook_source() abort
-    let g:neomru#filename_format = ':.'
-    " let g:neomru#do_validate     = 0
-
-    let g:neomru#file_mru_ignore_pattern =
-    \ '[/\\]doc[/\\][^/\\]\+\.\%(txt\|\a\ax\)$\|' .
-    \ '\.\%(' . join(s:ignore_ext, '\|') . '\)$'
-    let g:neomru#directory_mru_ignore_pattern =
-    \ join(s:ignore_dir, '\|')
-  endfunction
-
-  NXnoremap <Bslash>ue
-  \ :<C-U>Unite neomru/file file file/new
-  \ -buffer-name=files<CR>
-  NXnoremap <Bslash>ud
-  \ :<C-U>Unite
-  \ menu:directory_current neomru/directory directory directory/new
-  \ -buffer-name=files -default-action=lcd<CR>
-  NXnoremap <Bslash>uD
-  \ :<C-U>Unite
-  \ menu:directory_current neomru/directory directory directory/new
-  \ -buffer-name=files -default-action=cd<CR>
-  NXnoremap <Bslash>u<M-d>
-  \ :<C-U>UniteWithBufferDir
-  \ menu:directory_file neomru/directory directory directory/new
-  \ -buffer-name=files -default-action=lcd<CR>
-  NXnoremap <Bslash>u<M-D>
-  \ :<C-U>UniteWithBufferDir
-  \ menu:directory_file neomru/directory directory directory/new
-  \ -buffer-name=files -default-action=cd<CR>
-
-  if get(s:selector_ui, 'edit') == 'unite'
-    NXmap <Leader>e <Bslash>ue
-  endif
-  if get(s:selector_ui, 'chdir') == 'unite'
-    NXmap <Leader>d     <Bslash>ud
-    NXmap <Leader>D     <Bslash>uD
-    NXmap <Leader><M-d> <Bslash>u<M-d>
-    NXmap <Leader><M-D> <Bslash>u<M-D>
-  endif
-endif
-" }}}
-
-"------------------------------------------------------------------------------
 " NeoSnippet: {{{
 if s:dein_tap('neosnippet')
   function! g:dein#plugin.hook_source() abort
@@ -2355,7 +2209,7 @@ if s:dein_tap('omnisharp')
     let g:OmniSharp_server_type = 'v1'
     let g:OmniSharp_server_path =
     \ g:dein#plugin.path . '/server/OmniSharp/bin/Release/OmniSharp.exe'
-    let g:OmniSharp_selector_ui = get(s:selector_ui, 'omnisharp')
+    let g:OmniSharp_selector_ui = 'ctrlp'
   endfunction
 
   call extend(s:neocomplete_force_omni_patterns, {
@@ -2593,8 +2447,6 @@ if s:dein_tap('operator-user')
     \ 'myvimrc#operator_grep')
   endfunction
 
-  let g:myvimrc#operator_grep_ui = get(s:selector_ui, 'grep')
-
   NOXmap sg <Plug>(operator-grep)
   NOXmap sG <Plug>(operator-lgrep)
 
@@ -2813,7 +2665,7 @@ if s:dein_tap('quickrun')
     \ 'location_list', location_list_outputter)
   endfunction
 
-  if !s:dein_if('precious')
+  if empty(dein#get('precious'))
     nmap sR <Plug>(quickrun-op)
   endif
   xmap sR  <Plug>(quickrun)
@@ -2824,21 +2676,6 @@ if s:dein_tap('quickrun')
 
   call extend(s:neocomplete_vim_completefuncs, {
   \ 'QuickRun' : 'quickrun#complete'})
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Reanimate: {{{
-if s:dein_tap('reanimate')
-  function! g:dein#plugin.hook_source() abort
-    let g:reanimate_save_dir = $HOME . '/.vim/reanimate'
-  endfunction
-
-  NXnoremap <Bslash>us  <Nop>
-  NXnoremap <Bslash>usl :<C-U>Unite reanimate
-  \ -buffer-name=files -default-action=reanimate_load<CR>
-  NXnoremap <Bslash>uss :<C-U>Unite reanimate
-  \ -buffer-name=files -default-action=reanimate_save<CR>
 endif
 " }}}
 
@@ -2966,7 +2803,7 @@ if s:dein_tap('submode')
   function! g:dein#plugin.hook_source() abort
     let g:submode_keep_leaving_key = 1
 
-    if !s:dein_if('repeat')
+    if empty(dein#get('repeat'))
       call submode#enter_with(
       \ 'undo/br', 'n', '', '<Plug>(submode:undo/br:-)', 'g-')
       call submode#enter_with(
@@ -2977,7 +2814,7 @@ if s:dein_tap('submode')
       \ 'undo/br', 'n', '', '+', 'g+')
     endif
 
-    if !s:dein_if('FastFold')
+    if empty(dein#get('FastFold'))
       call submode#enter_with(
       \ 'move/fold', 'nx', '', '<Plug>(submode:move/fold:j)', 'zj')
       call submode#enter_with(
@@ -3330,12 +3167,12 @@ if s:dein_tap('submode')
     \ ':<C-U>call myvimrc#submode_delchar(0)<CR>')
   endfunction
 
-  if !s:dein_if('repeat')
+  if empty(dein#get('repeat'))
     nmap g- <Plug>(submode:undo/br:-)
     nmap g+ <Plug>(submode:undo/br:+)
   endif
 
-  if !s:dein_if('FastFold')
+  if empty(dein#get('FastFold'))
     NXmap zj <Plug>(submode:move/fold:j)
     NXmap zk <Plug>(submode:move/fold:k)
     NXmap [z <Plug>(submode:sq/fold:[)
@@ -3530,20 +3367,12 @@ if s:dein_tap('tabpagebuffer-misc')
     let g:ctrlp#tabpagebuffer#visible_all_buftype   = 1
   endfunction
 
-  if get(s:selector_ui, 'buffers') == 'tabpagebuffer'
-    NXnoremap <Leader>B :<C-U>TpbBuffers<CR>
-  endif
-  if get(s:selector_ui, 'bdelete') == 'tabpagebuffer'
-    NXnoremap <Leader>q :<C-U>TpbDelete<CR>
-    NXnoremap <Leader>Q :<C-U>TpbDeleteAll<CR>
-  endif
+  NXnoremap <Leader>B :<C-U>TpbBuffers<CR>
+  NXnoremap <Leader>q :<C-U>TpbDelete<CR>
+  NXnoremap <Leader>Q :<C-U>TpbDeleteAll<CR>
 
-  if s:dein_if('ctrlp')
-    NXnoremap <Bslash>pb :<C-U>CtrlPTabpageBuffer<CR>
-
-    if get(s:selector_ui, 'buffer') == 'ctrlp'
-      NXmap <Leader>b <Bslash>pb
-    endif
+  if !empty(dein#get('ctrlp'))
+    NXnoremap <Leader>b :<C-U>CtrlPTabpageBuffer<CR>
   endif
 
   call extend(s:altercmd_define, {
@@ -4264,9 +4093,7 @@ if s:dein_tap('undotree')
     let g:undotree_SetFocusWhenToggle = 1
   endfunction
 
-  if get(s:selector_ui, 'undo') == 'undotree'
-    NXnoremap <Leader>u :<C-U>UndotreeToggle<CR>
-  endif
+  NXnoremap <Leader>u :<C-U>UndotreeToggle<CR>
 endif
 " }}}
 
@@ -4282,387 +4109,12 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" Unite: {{{
-if s:dein_tap('unite')
-  function! g:dein#plugin.hook_source() abort
-    let g:unite_source_grep_max_candidates = 1000
-    let g:unite_source_grep_encoding       = 'utf-8'
-    let g:unite_source_rec_min_cache_files = -1
-    let g:unite_source_rec_max_cache_files = 10000
-    let g:unite_source_rec_unit            = 1000
-
-    if !has('win32') && s:executable('find')
-      let g:unite_source_rec_async_command =
-      \ ['find', '-L']
-    elseif s:executable('files')
-      let g:unite_source_rec_async_command =
-      \ ['files', '-M', g:unite_source_rec_max_cache_files,
-      \  s:cpucores() > 1 ? '-A' : '']
-    endif
-
-    if s:executable('jvgrep')
-      let g:unite_source_grep_command       = 'jvgrep'
-      let g:unite_source_grep_recursive_opt = '-R'
-      let g:unite_source_grep_default_opts  = '-n'
-    elseif s:executable('grep')
-      let g:unite_source_grep_command       = 'grep'
-      let g:unite_source_grep_recursive_opt = '-r'
-      let g:unite_source_grep_default_opts  = '-Hn'
-    endif
-
-    let g:unite_source_menu_menus =
-    \ get(g:, 'unite_source_menu_menus', {})
-
-    let g:unite_source_menu_menus.directory_current = {
-    \ 'description' : 'Current directory.'}
-    let g:unite_source_menu_menus.directory_current.candidates = {
-    \ '_' : ''}
-    function! g:unite_source_menu_menus.directory_current.map(key, value) abort
-      return {
-      \ 'word' : './',
-      \ 'kind' : 'directory',
-      \ 'action__directory' : getcwd()}
-    endfunction
-
-    let g:unite_source_menu_menus.directory_file = {
-    \ 'description' : 'File directory.'}
-    let g:unite_source_menu_menus.directory_file.candidates = {
-    \ '_' : ''}
-    function! g:unite_source_menu_menus.directory_file.map(key, value) abort
-      let d = myvimrc#expand('%:p:h')
-      return {
-      \ 'word' : d . '/',
-      \ 'kind' : 'directory',
-      \ 'action__directory' : d}
-    endfunction
-
-    let g:unite_source_menu_menus.set_ff = {
-    \ 'description' : 'Change file format option.'}
-    let g:unite_source_menu_menus.set_ff.command_candidates = [
-    \ ['unix', 'FfUnix'],
-    \ ['dos',  'FfDos'],
-    \ ['mac',  'FfMac']]
-
-    if has('multi_byte')
-      let g:unite_source_menu_menus.set_fenc = {
-      \ 'description' : 'Change file encding option.'}
-      let g:unite_source_menu_menus.set_fenc.command_candidates = [
-      \ ['utf-8',    'FencUtf8'],
-      \ ['utf-16le', 'FencUtf16le'],
-      \ ['utf-16',   'FencUtf16'],
-      \ ['cp932',    'FencCp932'],
-      \ ['euc-jp',   'FencEucjp']]
-      if s:has_jisx0213
-        call extend(g:unite_source_menu_menus.set_fenc.command_candidates, [
-        \ ['euc-jisx0213',  'FencEucJisx0213'],
-        \ ['iso-2022-jp-3', 'FencIso2022jp']])
-      else
-        call extend(g:unite_source_menu_menus.set_fenc.command_candidates, [
-        \ ['iso-2022-jp', 'FencIso2022jp']])
-      endif
-
-      let g:unite_source_menu_menus.edit_enc = {
-      \ 'description' : 'Open with a specific character code again.'}
-      let g:unite_source_menu_menus.edit_enc.command_candidates = [
-      \ ['utf-8',    'EditUtf8'],
-      \ ['utf-16le', 'EditUtf16le'],
-      \ ['utf-16',   'EditUtf16'],
-      \ ['cp932',    'EditCp932'],
-      \ ['euc-jp',   'EditEucjp']]
-      if s:has_jisx0213
-        call extend(g:unite_source_menu_menus.edit_enc.command_candidates, [
-        \ ['euc-jisx0213',  'EditEucJisx0213'],
-        \ ['iso-2022-jp-3', 'EditIso2022jp']])
-      else
-        call extend(g:unite_source_menu_menus.edit_enc.command_candidates, [
-        \ ['iso-2022-jp', 'EditIso2022jp']])
-      endif
-    endif
-
-    call unite#custom#profile('default', 'context', {
-    \ 'split'          : 0,
-    \ 'candidate_icon' : '-',
-    \ 'marked_icon'    : '+',
-    \ 'hide_icon'      : 0,
-    \ 'start_insert'   : 1})
-    call unite#custom#source(
-    \ 'file,file_rec,file_rec/async', 'ignore_globs',
-    \ map(copy(s:ignore_ext), '"*." . v:val'))
-    call unite#custom#source(
-    \ 'directory,directory_rec,directory_rec/async', 'ignore_globs',
-    \ s:ignore_dir)
-  endfunction
-
-  NXnoremap <Bslash>u <Nop>
-  NXnoremap <script> <Bslash>uu <SID>:<C-U>Unite<Space>
-
-  NXnoremap <Bslash>u<CR>
-  \ :<C-U>Unite menu:set_ff
-  \ -buffer-name=files<CR>
-  if has('multi_byte')
-    NXnoremap <Bslash>uF
-    \ :<C-U>Unite menu:edit_enc
-    \ -buffer-name=files<CR>
-    NXnoremap <Bslash>uf
-    \ :<C-U>Unite menu:set_fenc
-    \ -buffer-name=files<CR>
-  endif
-
-  NXnoremap <Bslash>ub
-  \ :<C-U>Unite buffer_tab
-  \ -buffer-name=files<CR>
-  NXnoremap <Bslash>uB
-  \ :<C-U>Unite buffer
-  \ -buffer-name=files<CR>
-  NXnoremap <Bslash>uw
-  \ :<C-U>Unite window
-  \ -buffer-name=files<CR>
-  NXnoremap <Bslash>uW
-  \ :<C-U>Unite window:all
-  \ -buffer-name=files<CR>
-  NXnoremap <Bslash>ut
-  \ :<C-U>Unite tab
-  \ -buffer-name=files<CR>
-
-  NXnoremap <Bslash>uj
-  \ :<C-U>Unite change
-  \ -buffer-name=register<CR>
-  NXnoremap <Bslash>uJ
-  \ :<C-U>Unite jump
-  \ -buffer-name=register<CR>
-
-  if &grepprg == 'internal'
-    nnoremap <Bslash>ug
-    \ :<C-U>Unite vimgrep
-    \ -buffer-name=grep<CR>
-  else
-    nnoremap <Bslash>ug
-    \ :<C-U>Unite grep
-    \ -buffer-name=grep<CR>
-  endif
-  NXnoremap <Bslash>uG
-  \ :<C-U>UniteResume grep<CR>
-
-  NXnoremap <Bslash>u/
-  \ :<C-U>Unite line
-  \ -buffer-name=search<CR>
-  NXnoremap <Bslash>u?
-  \ :<C-U>Unite line:backward
-  \ -buffer-name=search<CR>
-  NXnoremap <Bslash>u*
-  \ :<C-U>UniteWithCursorWord line
-  \ -buffer-name=search -no-start-insert<CR>
-  NXnoremap <Bslash>u#
-  \ :<C-U>UniteWithCursorWord line:backward
-  \ -buffer-name=search -no-start-insert<CR>
-  NXnoremap <Bslash>un
-  \ :<C-U>UniteResume search<CR>
-
-  if get(s:selector_ui, 'buffer') == 'unite'
-    NXmap <Leader>b <Bslash>ub
-  endif
-  if get(s:selector_ui, 'tabnext') == 'unite'
-    NXmap <Leader>t <Bslash>ut
-  endif
-  if get(s:selector_ui, 'changes') == 'unite'
-    NXmap <Leader>j <Bslash>uj
-  endif
-  if get(s:selector_ui, 'jumps') == 'unite'
-    NXmap <Leader>J <Bslash>uJ
-  endif
-  if get(s:selector_ui, 'grep') == 'unite'
-    NXmap <Leader>g <Bslash>ug
-    NXmap <Leader>G <Bslash>uG
-  endif
-
-  if !s:dein_if('neomru')
-    NXnoremap <Bslash>ue
-    \ :<C-U>Unite file file/new
-    \ -buffer-name=files<CR>
-    NXnoremap <Bslash>ud
-    \ :<C-U>Unite
-    \ menu:directory_current directory directory/new
-    \ -buffer-name=files -default-action=lcd<CR>
-    NXnoremap <Bslash>uD
-    \ :<C-U>Unite
-    \ menu:directory_current directory directory/new
-    \ -buffer-name=files -default-action=cd<CR>
-    NXnoremap <Bslash>u<M-d>
-    \ :<C-U>UniteWithBufferDir
-    \ menu:directory_file directory directory/new
-    \ -buffer-name=files -default-action=lcd<CR>
-    NXnoremap <Bslash>u<M-D>
-    \ :<C-U>UniteWithBufferDir
-    \ menu:directory_file directory directory/new
-    \ -buffer-name=files -default-action=cd<CR>
-
-    if get(s:selector_ui, 'edit') == 'unite'
-      NXmap <Leader>e <Bslash>ue
-    endif
-    if get(s:selector_ui, 'chdir') == 'unite'
-      NXmap <Leader>d     <Bslash>ud
-      NXmap <Leader>D     <Bslash>uD
-      NXmap <Leader><M-d> <Bslash>u<M-d>
-      NXmap <Leader><M-D> <Bslash>u<M-D>
-    endif
-  endif
-
-  call extend(s:altercmd_define, {
-  \ 'u[nite]' : 'Unite'})
-  call extend(s:neocomplete_vim_completefuncs, {
-  \ 'Unite'                   : 'unite#complete_source',
-  \ 'UniteWithCurrentDir'     : 'unite#complete_source',
-  \ 'UniteWithBufferDir'      : 'unite#complete_source',
-  \ 'UniteWithProjectDir'     : 'unite#complete_source',
-  \ 'UniteWithInputDirectory' : 'unite#complete_source',
-  \ 'UniteWithCursorWord'     : 'unite#complete_source',
-  \ 'UniteWithInput'          : 'unite#complete_source',
-  \ 'UniteResume'             : 'unite#complete_buffer_name',
-  \ 'UniteClose'              : 'unite#complete_buffer_name',
-  \ 'UniteNext'               : 'unite#complete_buffer_name',
-  \ 'UnitePrevious'           : 'unite#complete_buffer_name',
-  \ 'UniteFirst'              : 'unite#complete_buffer_name',
-  \ 'UniteLast'               : 'unite#complete_buffer_name'})
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Unite FileType: {{{
-if s:dein_tap('unite-filetype')
-  NXnoremap <Bslash>uT
-  \ :<C-U>Unite filetype
-  \ -buffer-name=files<CR>
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Unite Help: {{{
-if s:dein_tap('unite-help')
-  NXnoremap <Bslash>u<F1>
-  \ :<C-U>Unite help
-  \ -buffer-name=help<CR>
-  NXnoremap <Bslash>u<F2>
-  \ :<C-U>UniteWithCursorWord help
-  \ -buffer-name=help -no-start-insert<CR>
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Unite Mark: {{{
-if s:dein_tap('unite-mark')
-  function! g:dein#plugin.hook_source() abort
-    let g:unite_source_mark_marks =
-    \ 'abcdefghijklmnopqrstuvwxyz' .
-    \ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' .
-    \ "0123456789.'`^<>[]{}()\""
-  endfunction
-
-  NXnoremap <Bslash>um
-  \ :<C-U>Unite bookmark mark
-  \ -buffer-name=register<CR>
-  NXnoremap <Bslash>uM :<C-U>UniteBookmarkAdd<CR>
-
-  if get(s:selector_ui, 'marks') == 'unite'
-    NXmap <Leader>m <Bslash>um
-    NXmap MM        <Bslash>uM
-  endif
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Unite Outline: {{{
-if s:dein_tap('unite-outline')
-  NXnoremap <Bslash>uo
-  \ :<C-U>Unite outline
-  \ -buffer-name=outline<CR>
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Unite QuickFix: {{{
-if s:dein_tap('unite-quickfix')
-  NXnoremap <Bslash>u,
-  \ :<C-U>Unite quickfix
-  \ -buffer-name=register<CR>
-  NXnoremap <Bslash>u.
-  \ :<C-U>Unite location_list
-  \ -buffer-name=register<CR>
-
-  if get(s:selector_ui, 'quickfix') == 'unite'
-    NXmap <C-W>, <Bslash>u,
-    NXmap <C-W>. <Bslash>u.
-
-    augroup MyVimrc
-      autocmd QuickFixCmdPost [^l]*
-      \ Unite quickfix
-      \ -buffer-name=register -no-empty
-      autocmd QuickFixCmdPost l*
-      \ Unite location_list
-      \ -buffer-name=register -no-empty
-    augroup END
-  endif
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Unite QuickRun Config: {{{
-if s:dein_tap('unite-quickrun_config')
-  NXnoremap <Bslash>u<F5>
-  \ :<C-U>Unite quickrun_config
-  \ -buffer-name=register<CR>
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Unite Tag: {{{
-if s:dein_tap('unite-tag')
-  NXnoremap <Bslash>u]
-  \ :<C-U>UniteWithCursorWord tag tag/include
-  \ -buffer-name=outline -no-start-insert<CR>
-
-  if get(s:selector_ui, 'tag') == 'unite'
-    NXmap <Leader>] <Bslash>u]
-  endif
-endif
-" }}}
-
-"------------------------------------------------------------------------------
 " VimConsole: {{{
 if s:dein_tap('vimconsole')
   call extend(s:neocomplete_vim_completefuncs, {
   \ 'VimConsoleLog'   : 'expression',
   \ 'VimConsoleWarn'  : 'expression',
   \ 'VimConsoleError' : 'expression'})
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" VimFiler: {{{
-if s:dein_tap('vimfiler')
-  function! g:dein#plugin.hook_source() abort
-    let g:vimfiler_as_default_explorer = 1
-  endfunction
-
-  let g:loaded_netrwPlugin = 1
-
-  if get(s:selector_ui, 'explorer') == 'vimfiler'
-    NXnoremap <Leader>E :<C-U>VimFiler<CR>
-  endif
-
-  call extend(s:neocomplete_vim_completefuncs, {
-  \ 'VimFiler'           : 'vimfiler#complete',
-  \ 'VimFilerDouble'     : 'vimfiler#complete',
-  \ 'VimFilerCurrentDir' : 'vimfiler#complete',
-  \ 'VimFilerBufferDir'  : 'vimfiler#complete',
-  \ 'VimFilerCreate'     : 'vimfiler#complete',
-  \ 'VimFilerSimple'     : 'vimfiler#complete',
-  \ 'VimFilerSplit'      : 'vimfiler#complete',
-  \ 'VimFilerTab'        : 'vimfiler#complete',
-  \ 'VimFilerExplorer'   : 'vimfiler#complete',
-  \ 'VimFilerEdit'       : 'vimfiler#complete',
-  \ 'VimFilerRead'       : 'vimfiler#complete',
-  \ 'VimFilerSource'     : 'vimfiler#complete',
-  \ 'VimFilerWrite'      : 'vimfiler#complete'})
 endif
 " }}}
 
@@ -4682,7 +4134,7 @@ if s:dein_tap('visualstar')
     let g:visualstar_no_default_key_mappings = 1
   endfunction
 
-  if s:dein_if('anzu')
+  if !empty(dein#get('anzu'))
     xmap <SID>(visualstar-*)
     \ <Plug>(visualstar-*)<Plug>(anzu-update-search-status-with-echo)
     xmap <SID>(visualstar-#)
@@ -4776,7 +4228,7 @@ if s:dein_tap('watchdogs')
     \
     \ 'help/watchdogs_checker' : {
     \   'type':
-    \     s:dein_if('vimhelplint') ? 'watchdogs_checker/vimhelplint' : ''}})
+    \     !empty(dein#get('vimhelplint')) ? 'watchdogs_checker/vimhelplint' : ''}})
 
     call watchdogs#setup(g:quickrun_config)
   endfunction
@@ -4813,28 +4265,13 @@ if s:dein_tap('yankround')
   \ yankround#is_cmdline_popable() ?
   \   '<Plug>(yankround-backpop)' : '<SID><C-P>'
 
-  nnoremap <Bslash>up
-  \ :<C-U>Unite yankround register
-  \ -buffer-name=register<CR>
-  xnoremap <Bslash>up
-  \ d:<C-U>Unite yankround register
-  \ -buffer-name=register<CR>
-
-  nnoremap <Bslash>pp
-  \ :<C-U>CtrlPYankRound<CR>
-  xnoremap <Bslash>pp
-  \ d:<C-U>CtrlPYankRound<CR>
+  nnoremap <Leader>p :<C-U>CtrlPYankRound<CR>
+  xnoremap <Leader>p d:<C-U>CtrlPYankRound<CR>
 
   autocmd MyVimrc User EscapeKey
   \ if exists('#yankround_rounder#InsertEnter') |
   \   call compat#doautocmd('<nomodeline>', 'yankround_rounder', 'InsertEnter') |
   \ endif
-
-  if get(s:selector_ui, 'registers') == 'unite'
-    NXmap <Leader>p <Bslash>up
-  elseif get(s:selector_ui, 'registers') == 'ctrlp'
-    NXmap <Leader>p <Bslash>pp
-  endif
 endif
 " }}}
 " }}}

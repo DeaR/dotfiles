@@ -1,7 +1,7 @@
 # Ref plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  27-Apr-2016.
+# Last Change:  12-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -30,7 +30,6 @@
 repo = 'thinca/vim-ref'
 on_map = [['nv', '<Plug>']]
 on_cmd = 'Ref'
-on_source = 'unite'
 
 #------------------------------------------------------------------------------
 [[plugins]]

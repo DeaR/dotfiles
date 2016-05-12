@@ -1,7 +1,7 @@
 " Ftplugin for J6uil
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  22-Apr-2016.
+" Last Change:  12-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -31,10 +31,17 @@ set cpo&vim
 nmap <buffer> <Space> <Plug>(J6uil_open_say_buffer)
 nmap <buffer> R       <Plug>(J6uil_reconnect)
 nmap <buffer> D       <Plug>(J6uil_disconnect)
-nmap <buffer> r       <Plug>(J6uil_unite_rooms)
-nmap <buffer> u       <Plug>(J6uil_unite_members)
 nmap <buffer> <CR>    <Plug>(J6uil_action_enter)
 nmap <buffer> o       <Plug>(J6uil_action_open_links)
+
+function! s:echo_members()
+  echo join(map(
+  \ copy(b:J6uil_roster.members),
+  \ '(v:val.is_online ? "+ " : "  ") . ' .
+  \ '(v:val.is_owner ? "★ " : "") . ' .
+  \ 'v:val.name'), "\n")
+endfunction
+nmap <buffer> u :<C-U>call <SID>echo_members()<CR>
 
 function! s:del_count()
   return v:count > 0 ? repeat("\<Del>", len(v:count)) : ''
@@ -84,7 +91,6 @@ let b:undo_ftplugin .= '
 \ silent! execute "nunmap <buffer> <Space>" |
 \ silent! execute "nunmap <buffer> R" |
 \ silent! execute "nunmap <buffer> D" |
-\ silent! execute "nunmap <buffer> r" |
 \ silent! execute "nunmap <buffer> u" |
 \ silent! execute "nunmap <buffer> <CR>" |
 \ silent! execute "nunmap <buffer> o" |

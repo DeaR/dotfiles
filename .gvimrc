@@ -3,7 +3,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-May-2016.
+" Last Change:  12-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -129,11 +129,6 @@ endfunction
 " dein#tap
 function! s:dein_tap(name) abort
   return exists('*dein#tap') && dein#tap(a:name)
-endfunction
-
-" dein#get().if
-function! s:dein_if(name) abort
-  return exists('*dein#get') && !empty(dein#get(a:name))
 endfunction
 " }}}
 " }}}

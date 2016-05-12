@@ -1,7 +1,7 @@
 # System plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  11-May-2016.
+# Last Change:  12-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -96,7 +96,7 @@ on_cmd = 'Scouter'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-# repository = 'kana/vim-scratch'
+# repo = 'kana/vim-scratch'
 repo = 'DeaR/vim-scratch'
 rev = 'original-mduem'
 on_cmd = ['ScratchOpen', 'ScratchClose', 'ScratchEvaluate']

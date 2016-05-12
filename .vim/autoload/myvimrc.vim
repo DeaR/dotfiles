@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  11-May-2016.
+" Last Change:  12-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -125,11 +125,6 @@ endfunction
 " dein#tap
 function! s:dein_tap(name) abort
   return exists('*dein#tap') && dein#tap(a:name)
-endfunction
-
-" dein#get().if
-function! s:dein_if(name) abort
-  return exists('*dein#get') && !empty(dein#get(a:name))
 endfunction
 " }}}
 " }}}
@@ -457,18 +452,6 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" CtrlP: {{{
-if s:dein_tap('ctrlp')
-  function! myvimrc#ctrlp_no_empty(command, ...) abort
-    execute a:command join(a:000)
-    if empty(ctrlp#getvar('s:lines'))
-      call ctrlp#exit()
-    endif
-  endfunction
-endif
-" }}}
-
-"------------------------------------------------------------------------------
 " IncSearch: {{{
 if s:dein_tap('incsearch')
   function! myvimrc#incsearch_next() abort
@@ -628,9 +611,6 @@ endif
 "------------------------------------------------------------------------------
 " Operator User: {{{
 if s:dein_tap('operator-user')
-  let g:myvimrc#operator_grep_ui =
-  \ get(g:, 'myvimrc#operator_grep_ui')
-
   function! s:get_grepprg_escape(grepprg) abort
     if a:grepprg =~? '\<jvgrep\>'
       return '\[](){}|.?+*^$'
@@ -658,25 +638,16 @@ if s:dein_tap('operator-user')
       \ 'v:val[start : end]')
     endif
 
-    if g:myvimrc#operator_grep_ui == 'unite' && &grepprg != 'internal'
-      let esc = s:get_grepprg_escape(g:unite_source_grep_command)
-      execute 'Unite' 'grep:::' . escape(join(lines), esc . ' :')
-      \ '-buffer-name=grep'
+    let esc = s:get_grepprg_escape(&grepprg)
+    if &grepprg == 'internal'
+      execute input(':', (a:is_lgrep ? 'l' : '') .
+      \ 'vimgrep /' . escape(join(lines), esc . '/') . '/ .')
+    elseif &grepprg =~? 'findstr'
+      execute input(':', (a:is_lgrep ? 'l' : '') .
+      \ 'grep /c:' . shellescape(escape(join(lines), esc)) . ' *')
     else
-      let esc = s:get_grepprg_escape(&grepprg)
-      if g:myvimrc#operator_grep_ui == 'unite'
-        execute 'Unite' 'vimgrep::' . escape(join(lines), esc . ' :')
-        \ '-buffer-name=grep'
-      elseif &grepprg == 'internal'
-        execute input(':', (a:is_lgrep ? 'l' : '') .
-        \ 'vimgrep /' . escape(join(lines), esc . '/') . '/ .')
-      elseif &grepprg =~? 'findstr'
-        execute input(':', (a:is_lgrep ? 'l' : '') .
-        \ 'grep /c:' . shellescape(escape(join(lines), esc)) . ' *')
-      else
-        execute input(':', (a:is_lgrep ? 'l' : '') .
-        \ 'grep ' . shellescape(escape(join(lines), esc)) . ' .')
-      endif
+      execute input(':', (a:is_lgrep ? 'l' : '') .
+      \ 'grep ' . shellescape(escape(join(lines), esc)) . ' .')
     endif
   endfunction
   function! myvimrc#operator_grep(motion_wise) abort

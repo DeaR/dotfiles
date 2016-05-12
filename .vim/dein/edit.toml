@@ -1,7 +1,7 @@
 # Edit plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  11-May-2016.
+# Last Change:  12-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -30,7 +30,6 @@
 repo = 'osyo-manga/vim-anzu'
 on_cmd = ['AnzuClearSearchStatus', 'AnzuClearSearchCache', 'AnzuUpdateSearchStatus', 'AnzuUpdateSearchStatusOutput', 'AnzuSignMatchLine', 'AnzuClearSignMatchLine']
 on_map = [['n', '<Plug>'], ['n', '<Plug>(anzu-jump-n)<Plug>(anzu', '<Plug>(anzu-jump-N)<Plug>(anzu']]
-on_source = 'unite'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -95,7 +94,7 @@ depends = ['context_filetype', 'quickrun', 'textobj-user']
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'thinca/vim-qfreplace'
-on_ft = ['qf', 'unite']
+on_ft = 'qf'
 on_cmd = 'Qfreplace'
 
 #------------------------------------------------------------------------------
@@ -139,5 +138,4 @@ on_cmd = 'CtrlPYankRound'
 on_map = [['nxc', '<Plug>']]
 on_event = 'CursorMoved'
 on_if = 'empty(&buftype) && (line("$") - col("$"))'
-on_source = 'unite'
-depends = 'ctrlp'
+# depends = 'ctrlp'

@@ -1,7 +1,7 @@
 -- NYAGOS settings
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  27-Apr-2016.
+-- Last Change:  12-May-2016.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -257,7 +257,12 @@ if nyagos.which('colordiff') then
   alias { diff = ext('colordiff') }
 end
 
-if nyagos.stat(pf64 .. '\\Git') then
+if nyagos.stat(prof .. '\\Apps\\PortableGit') then
+  alias {
+    find = '"' .. prof .. '\\Apps\\PortableGit\\usr\\bin\\find.exe"',
+    sort = '"' .. prof .. '\\Apps\\PortableGit\\usr\\bin\\sort.exe"',
+  }
+elseif nyagos.stat(pf64 .. '\\Git') then
   alias {
     find = '"' .. pf64 .. '\\Git\\usr\\bin\\find.exe"',
     sort = '"' .. pf64 .. '\\Git\\usr\\bin\\sort.exe"',

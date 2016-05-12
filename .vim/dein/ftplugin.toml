@@ -1,7 +1,7 @@
 # FileType plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  28-Apr-2016.
+# Last Change:  12-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -47,10 +47,6 @@ on_map = [['n', '<Plug>(godoc']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo = 'kamichidu/vim-javaclasspath'
-
-#------------------------------------------------------------------------------
-[[plugins]]
 repo = 'davidhalter/jedi-vim'
 if = 'has("python") || has("python3")'
 # on_ft = ['pyrex', 'python']
@@ -79,15 +75,9 @@ repo = 'OmniSharp/omnisharp-vim'
 # if = 'has("python") && (exists("$VCVARSALL") || executable("mono"))'
 if = 'has("python") && (exists("$VCVARSALL") || executable("xbuild"))'
 on_ft = 'cs'
-on_source = 'unite'
 depends = ['ctrlp', 'vimproc']
 # build = 'omnisharp-roslyn/build'
 build = '~/.vim/dein/script/omnisharp/build'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'y-uuki/perl-local-lib-path.vim'
-on_cmd = 'PerlLocalLibPath'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -113,7 +103,6 @@ repo = 'osyo-manga/vim-snowdrop'
 if =  'has("python") && executable("clang")'
 # on_ft = ['c', 'cpp']
 on_cmd = ['SnowdropVerify', 'SnowdropEchoClangVersion', 'SnowdropLogs', 'SnowdropClearLogs']
-on_source = 'unite'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -143,7 +132,6 @@ on_ft = 'help'
 repo = 'taku25/vim-visualstudio'
 if = 'has("win32")'
 on_cmd = ['VSCompile', 'VSBuild', 'VSReBuild', 'VSBuildProject', 'VSReBuildProject', 'VSCompileNoWait', 'VSBuildNoWait', 'VSReBuildNoWait', 'VSBuildProjectNoWait', 'VSReBuildProjectNoWait', 'VSSetBuildConfig', 'VSSetPlatform', 'VSCancelBuild', 'VSClean', 'VSOutput', 'VSErorrList', 'VSRun', 'VSDebugRun', 'VSSetStartupProject', 'VSStopDebugRun', 'VSFindSolution1', 'VSFindSolution2', 'VSFindSolutionNoWait1', 'VSFindSolutionNoWait2', 'VSFindProject1', 'VSFindProject2', 'VSFindProjectNoWait1', 'VSFindProjectNoWait2', 'VSFindSymbol', 'VSFindSymbolNoWait', 'VSFindResult1', 'VSFindResult2', 'VSFindSymbolResult', 'VSOpenFile', 'VSGetFile', 'VSAddBreakPoint', 'VSChangeDirectory', 'VSGoToDefinition']
-on_source = 'unite'
 depends = 'VisualStudioController'
 
 #------------------------------------------------------------------------------

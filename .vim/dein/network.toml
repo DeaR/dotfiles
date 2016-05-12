@@ -1,7 +1,7 @@
 # Network plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  27-Apr-2016.
+# Last Change:  12-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -42,7 +42,6 @@ repo = 'basyura/J6uil.vim'
 if = 'executable("curl")'
 on_cmd = ['J6uil', 'J6uilReconnect', 'J6uilDisconnect', 'J6uilNextRoom', 'J6uilPrevRoom']
 on_map = [['n', '<Plug>']]
-on_source = 'unite'
 depends = ['open-browser', 'vimproc']
 
 #------------------------------------------------------------------------------

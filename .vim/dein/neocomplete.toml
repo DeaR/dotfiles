@@ -1,7 +1,7 @@
 # NeoComplete plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  27-Apr-2016.
+# Last Change:  12-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -66,7 +66,6 @@ repo = 'Shougo/neocomplete.vim'
 if = 'has("lua")'
 on_cmd = ['NeoCompleteEnable', 'NeoCompleteDisable', 'NeoCompleteLock', 'NeoCompleteUnlock', 'NeoCompleteToggle', 'NeoCompleteSetFileType', 'NeoCompleteBufferMakeCache', 'NeoCompleteDictionaryMakeCache', 'NeoCompleteMemberMakeCache', 'NeoCompleteTagMakeCache']
 on_event = 'InsertEnter'
-on_source = 'unite'
 depends = ['context_filetype', 'echodoc', 'FastFold', 'neoinclude']
 
 #------------------------------------------------------------------------------
@@ -82,5 +81,4 @@ on_ft = 'snippet'
 on_cmd = ['NeoSnippetEdit', 'NeoSnippetMakeCache', 'NeoSnippetSource', 'NeoSnippetClearMarkers']
 on_map = [['vi', '<Plug>']]
 on_event = 'InsertEnter'
-on_source = 'unite'
 depends = 'context_filetype'
