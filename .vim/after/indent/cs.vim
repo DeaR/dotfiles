@@ -11,7 +11,7 @@ setlocal indentexpr=GetCSIndent()
 setlocal cindent
 setlocal cinkeys-=0#
 
-function! GetCSIndent()
+function! GetCSIndent() abort
   let this_line = getline(v:lnum)
   let previous_line = getline(v:lnum - 1)
 

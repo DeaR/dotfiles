@@ -1,7 +1,7 @@
 # MetaRW plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  12-May-2016.
+# Last Change:  13-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -29,6 +29,7 @@
 [[plugins]]
 # repo = 'kana/vim-metarw'
 repo = 'mattn/vim-metarw'
+rev = 'win32'
 on_path = '.*'
 on_cmd = ['Edit', 'Read', 'Source', 'Write']
 
@@ -48,6 +49,7 @@ depends = ['metarw', 'webapi']
 [[plugins]]
 # repo = 'sgur/vim-metarw-local'
 repo = 'DeaR/vim-metarw-local'
+rev = 'visible-dot'
 # on_path = '^local:'
 on_path = '.*'
 depends = 'metarw'

@@ -1,7 +1,7 @@
 " Ftplugin for Zimbu
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  02-Oct-2015.
+" Last Change:  13-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,7 +28,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! s:maparg(name, ...)
+function! s:maparg(name, ...) abort
   let mode = get(a:000, 0, '')
   let abbr = get(a:000, 1)
   let dict = get(a:000, 2)

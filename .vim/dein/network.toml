@@ -53,3 +53,4 @@ on_map = [['nv', '<Plug>']]
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'mattn/webapi-vim'
+if = 'executable("curl") || executable("wget")'

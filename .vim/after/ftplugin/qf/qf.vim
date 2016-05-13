@@ -1,7 +1,7 @@
 " Ftplugin for QuickFix
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  22-Apr-2016.
+" Last Change:  13-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -31,7 +31,7 @@ set cpo&vim
 nnoremap <buffer> <S-CR> <CR>zz<C-W>p
 
 let s:default_qflisttype = 'location'
-function! s:get_qflisttype()
+function! s:get_qflisttype() abort
   if exists('b:qflisttype')
     return b:qflisttype
   endif
@@ -50,10 +50,10 @@ nnoremap <buffer><expr> <C-P>
 \ <SID>get_qflisttype() == 'location' ?
 \ ':<C-U>lolder<CR>' : ':<C-U>colder<CR>'
 
-function! s:del_count()
+function! s:del_count() abort
   return v:count > 0 ? repeat("\<Del>", len(v:count)) : ''
 endfunction
-function! s:jk(count)
+function! s:jk(count) abort
   let list = s:get_qflisttype() == 'location' ?
   \ getloclist(0) : getqflist()
   let pos = line('.') - 1

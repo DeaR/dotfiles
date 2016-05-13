@@ -1,7 +1,7 @@
 " Ftplugin for J6uil
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  12-May-2016.
+" Last Change:  13-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,10 +34,10 @@ nmap <buffer> D       <Plug>(J6uil_disconnect)
 nmap <buffer> <CR>    <Plug>(J6uil_action_enter)
 nmap <buffer> o       <Plug>(J6uil_action_open_links)
 
-function! s:del_count()
+function! s:del_count() abort
   return v:count > 0 ? repeat("\<Del>", len(v:count)) : ''
 endfunction
-function! s:jk(count)
+function! s:jk(count) abort
   let pos = line('.')
   let max = line('$')
   let add = a:count > 0 ? 1 : -1

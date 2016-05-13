@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  12-May-2016.
+" Last Change:  13-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -452,6 +452,28 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
+" Clurin: {{{
+if s:dein_tap('clurin')
+  function! myvimrc#clurin_nomatch(cnt) abort
+    if a:cnt >= 0
+      execute 'normal!' a:cnt . "\<C-A>"
+    else
+      execute 'normal!' (-a:cnt) . "\<C-X>"
+    endif
+  endfunction
+
+  let s:ordinal_suffixes = [
+  \ ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'],
+  \ ['TH', 'ST', 'ND', 'RD', 'TH', 'TH', 'TH', 'TH', 'TH', 'TH']]
+  function! myvimrc#clurin_ordinal(str, cnt, def) abort
+    let num  = str2nr(a:str) + a:cnt
+    let caps = a:str[-2:] =~# '[A-Z]'
+    return string(num) . s:ordinal_suffixes[caps][abs(num % 10)]
+  endfunction
+endif
+" }}}
+
+"------------------------------------------------------------------------------
 " IncSearch: {{{
 if s:dein_tap('incsearch')
   function! myvimrc#incsearch_next() abort
@@ -685,60 +707,6 @@ if s:dein_tap('submode')
         call setreg('-', r3)
       endif
     endif
-  endfunction
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Switch: {{{
-if s:dein_tap('switch')
-  let s:ordinal_suffixes = [
-  \ 'th', 'st', 'nd', 'rd', 'th',
-  \ 'th', 'th', 'th', 'th', 'th']
-
-  function! myvimrc#ordinal(num) abort
-    return a:num . s:ordinal_suffixes[abs(a:num % 10)]
-  endfunction
-
-  function! myvimrc#switch(is_increment) abort
-    let save_count1 = v:count1
-
-    let definitions = []
-    if exists('g:switch_custom_definitions')
-      call extend(definitions, g:switch_custom_definitions)
-    endif
-    if !exists('g:switch_no_builtins')
-      call extend(definitions, g:switch_definitions)
-    endif
-    if exists('b:switch_custom_definitions')
-      call extend(definitions, b:switch_custom_definitions)
-    endif
-    if exists('b:switch_definitions') && !exists('b:switch_no_builtins')
-      call extend(definitions, b:switch_definitions)
-    endif
-    if a:is_increment
-      if exists('g:switch_increment_definitions')
-        call extend(definitions, g:switch_increment_definitions)
-      endif
-      if exists('b:switch_increment_definitions')
-        call extend(definitions, b:switch_increment_definitions)
-      endif
-    else
-      if exists('g:switch_decrement_definitions')
-        call extend(definitions, g:switch_decrement_definitions)
-      endif
-      if exists('b:switch_decrement_definitions')
-        call extend(definitions, b:switch_decrement_definitions)
-      endif
-    endif
-
-    if !switch#Switch(definitions, {})
-      execute "normal!" save_count1 .
-      \ (a:is_increment ? "\<C-A>" : "\<C-X>")
-    endif
-
-    silent! call repeat#set(
-    \ a:is_increment ? "\<C-A>" : "\<C-X>", save_count1)
   endfunction
 endif
 " }}}

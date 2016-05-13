@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  12-May-2016.
+" Last Change:  13-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1523,6 +1523,83 @@ if s:dein_tap('clever-f')
   NOXmap <M-.> <Plug>(clever-f-reset)
   NOXmap <M-;> <Plug>(clever-f-repeat-forward)
   NOXmap <M-,> <Plug>(clever-f-repeat-back)
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" Clurin: {{{
+if s:dein_tap('clurin')
+  function! g:dein#plugin.hook_source() abort
+    let g:clurin = get(g:, 'clurin', {})
+    call extend(g:clurin, {
+    \ 'use_default' : 0})
+
+    let g:clurin['-'] = get(g:clurin, '-', {})
+    call extend(g:clurin['-'], {
+    \ 'nomatch' : function('myvimrc#clurin_nomatch'),
+    \ 'jump' : 1})
+
+    let g:clurin['-'].def = get(g:clurin['-'], 'def', [])
+    call extend(g:clurin['-'].def, [
+    \ ['TRUE', 'FALSE'], ['True', 'False'], ['true', 'false'],
+    \ ['ENABLE', 'DISABLE'], ['Enable', 'Disable'], ['enable', 'disable'],
+    \
+    \ ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+    \  'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+    \ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    \  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    \ ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
+    \  'jul', 'aug', 'sep', 'oct', 'nov', 'dec'],
+    \
+    \ ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
+    \ ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    \ ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
+    \
+    \ ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY',
+    \  'THURSDAY', 'FRIDAY', 'SATURDAY'],
+    \ ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
+    \  'Thursday', 'Friday', 'Saturday'],
+    \ ['sunday', 'monday', 'tuesday', 'wednesday',
+    \  'thursday', 'friday', 'saturday'],
+    \
+    \ ['ZERO', 'ONE', 'TWO',   'THREE', 'FOUR',
+    \  'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN',
+    \  'ELEVEN',  'TWELVE',    'THIRTEEN', 'FOURTEEN', 'FIFTEEN',
+    \  'SIXTEEN', 'SEVENTEEN', 'EIGHTEEN', 'NINETEEN', 'TWENTY'],
+    \ ['Zero', 'One', 'Two',   'Three', 'Four',
+    \  'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+    \  'Eleven',  'Twelve',    'Thirteen', 'Fourteen', 'Fifteen',
+    \  'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen', 'Twenty'],
+    \ ['zero', 'one', 'two',   'three', 'four',
+    \  'five', 'six', 'seven', 'eight', 'nine', 'ten',
+    \  'eleven',  'twelve',    'thirteen', 'fourteen', 'fifteen',
+    \  'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'],
+    \
+    \ ['ZEROTH', 'FIRST', 'SECOND',  'THIRD',  'FOURTH',
+    \  'FIFTH',  'SIXTH', 'SEVENTH', 'EIGHTH', 'NINTH', 'TENTH',
+    \  'ELEVENTH',  'TWELFTH',     'THIRTEENTH', 'FOURTEENTH', 'FIFTEENTH',
+    \  'SIXTEENTH', 'SEVENTEENTH', 'EIGHTEENTH', 'NINETEENTH', 'TWENTIETH'],
+    \ ['Zeroth', 'First', 'Second',  'Third',  'Fourth',
+    \  'Fifth',  'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth',
+    \  'Eleventh',  'Twelfth',     'Thirteenth', 'Fourteenth', 'Fifteenth',
+    \  'Sixteenth', 'Seventeenth', 'Eighteenth', 'Nineteenth', 'Twentieth'],
+    \ ['zeroth', 'first', 'second',  'third',  'fourth',
+    \  'fifth',  'sixth', 'seventh', 'eighth', 'ninth', 'tenth',
+    \  'eleventh',  'twelfth',     'thirteenth', 'fourteenth', 'fifteenth',
+    \  'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth', 'twentieth'],
+    \
+    \ [{'pattern' : '\<\(-\?\d*1st\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\<\(-\?\d*2nd\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\<\(-\?\d*3rd\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\<\(-\?\d*[04-9]th\)\>\C', 'replace' : function('myvimrc#clurin_ordinal')}],
+    \ [{'pattern' : '\<\(-\?\d*1ST\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\<\(-\?\d*2ND\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\<\(-\?\d*3RD\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\<\(-\?\d*[04-9]TH\)\>\C', 'replace' : function('myvimrc#clurin_ordinal')}]])
+  endfunction
+
+  nmap <C-A> <Plug>(clurin-next)
+  nmap <C-X> <Plug>(clurin-prev)
 endif
 " }}}
 
@@ -3265,97 +3342,6 @@ if s:dein_tap('submode')
   nmap  <Del>        <Plug>(submode:delchar:<Del>)
   nmap  <BS>         <Plug>(submode:delchar:<BS>)
   nmap  <C-H>        <Plug>(submode:delchar:<C-H>)
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Switch: {{{
-if s:dein_tap('switch')
-  function! g:dein#plugin.hook_source() abort
-    let g:switch_mapping            = ''
-    let g:switch_no_builtins        = 1
-    let g:switch_custom_definitions = [
-    \ ['TRUE', 'FALSE'], ['True', 'False'], ['true', 'false'],
-    \ ['ENABLE', 'DISABLE'], ['Enable', 'Disable'], ['enable', 'disable']]
-
-    let g:switch_increment_definitions = []
-    let g:switch_decrement_definitions = []
-
-    for l in [
-    \ ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY',
-    \  'THURSDAY', 'FRIDAY', 'SATURDAY'],
-    \ ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
-    \  'Thursday', 'Friday', 'Saturday'],
-    \ ['sunday', 'monday', 'tuesday', 'wednesday',
-    \  'thursday', 'friday', 'saturday'],
-    \ ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY',
-    \  'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'],
-    \ ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-    \  'August', 'September', 'October', 'November', 'December'],
-    \ ['january', 'february', 'march', 'april', 'may', 'june', 'july',
-    \  'august', 'september', 'october', 'november', 'december']]
-      let inc = {}
-      let dec = {}
-      for i in range(len(l))
-        let s1 = l[i]
-        let s2 = get(l, i + 1, l[0])
-        if len(s1) > 3
-          call extend(inc, {'\C\<' . s1[:2] . '\>' : s2[:2]})
-        endif
-        if len(s2) > 3
-          call extend(dec, {'\C\<' . s2[:2] . '\>' : s1[:2]})
-        endif
-      endfor
-      call add(g:switch_increment_definitions, inc)
-      call add(g:switch_decrement_definitions, dec)
-      call add(g:switch_increment_definitions, l)
-      call add(g:switch_decrement_definitions, reverse(copy(l)))
-    endfor
-
-    for l in [
-    \ ['ZEROTH', 'FIRST', 'SECOND',  'THIRD',  'FOURTH',
-    \  'FIFTH',  'SIXTH', 'SEVENTH', 'EIGHTH', 'NINTH',
-    \  'TENTH',      'ELEVENTH',   'TWELFTH',   'THIRTEENTH',
-    \  'FOURTEENTH', 'FIFTEENTH',  'SIXTEENTH', 'SEVENTEENTH',
-    \  'EIGHTEENTH', 'NINETEENTH', 'TWENTIETH'],
-    \ ['Zeroth', 'First', 'Second',  'Third',  'Fourth',
-    \  'Fifth',  'Sixth', 'Seventh', 'Eighth', 'Ninth',
-    \  'Tenth',      'Eleventh',   'Twelfth',   'Thirteenth',
-    \  'Fourteenth', 'Fifteenth',  'Sixteenth', 'Seventeenth',
-    \  'Eighteenth', 'Nineteenth', 'Twentieth'],
-    \ ['zeroth', 'first', 'second',  'third',  'fourth',
-    \  'fifth',  'sixth', 'seventh', 'eighth', 'ninth',
-    \  'tenth',      'eleventh',   'twelfth',   'thirteenth',
-    \  'fourteenth', 'fifteenth',  'sixteenth', 'seventeenth',
-    \  'eighteenth', 'nineteenth', 'twentieth']]
-      call add(g:switch_increment_definitions, l)
-      call add(g:switch_decrement_definitions, reverse(copy(l)))
-    endfor
-
-    call extend(g:switch_increment_definitions, [{
-    \ '\C\(-\=\d\+\)\%(TH\|ST\|ND\|RD\)' :
-    \   '\=toupper(call("myvimrc#ordinal", [submatch(1) + 1]))',
-    \ '\C\(-\=\d\+\)\%(th\|st\|nd\|rd\)' :
-    \   '\=tolower(call("myvimrc#ordinal", [submatch(1) + 1]))'}])
-    call extend(g:switch_decrement_definitions, [{
-    \ '\C\(-\=\d\+\)\%(TH\|ST\|ND\|RD\)' :
-    \   '\=toupper(call("myvimrc#ordinal", [submatch(1) - 1]))',
-    \ '\C\(-\=\d\+\)\%(th\|st\|nd\|rd\)' :
-    \   '\=tolower(call("myvimrc#ordinal", [submatch(1) - 1]))'}])
-
-    command! -bar
-    \ SwitchIncrement
-    \ call myvimrc#switch(1)
-    command! -bar
-    \ SwitchDecrement
-    \ call myvimrc#switch(0)
-  endfunction
-
-  nnoremap <C-A> :<C-U>SwitchIncrement<CR>
-  nnoremap <C-X> :<C-U>SwitchDecrement<CR>
-
-  autocmd MyVimrc VimEnter,BufNewFile,BufRead *
-  \ let b:switch_no_builtins = 1
 endif
 " }}}
 

@@ -1,7 +1,7 @@
 " Lua ftplugin
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Apr-2016.
+" Last Change:  13-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -35,7 +35,7 @@ set cpo&vim
 
 setlocal omnifunc=xolox#lua#omnifunc
 
-function! s:maparg(name, ...)
+function! s:maparg(name, ...) abort
   let mode = get(a:000, 0, '')
   let abbr = get(a:000, 1)
   let dict = get(a:000, 2)

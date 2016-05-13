@@ -1,7 +1,7 @@
 # Edit plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  12-May-2016.
+# Last Change:  13-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -45,6 +45,14 @@ repo = 'vim-jp/autofmt'
 [[plugins]]
 repo = 'rhysd/clever-f.vim'
 on_map = [['nov', '<Plug>']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+# repo = 'syngan/vim-clurin'
+repo = 'DeaR/vim-clurin'
+rev = 'buffer-local'
+on_cmd = ['ClurinNext', 'ClurinPrev']
+on_map = [['nv', '<Plug>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -107,11 +115,6 @@ on_cmd = ['QuickfixStatusEnable', 'QuickfixStatusDisable']
 [[plugins]]
 repo = 'kana/vim-smartword'
 on_map = [['nov', '<Plug>']]
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'AndrewRadev/switch.vim'
-on_cmd = ['Switch', 'SwitchReverse', 'SwitchIncrement', 'SwitchDecrement']
 
 #------------------------------------------------------------------------------
 [[plugins]]
