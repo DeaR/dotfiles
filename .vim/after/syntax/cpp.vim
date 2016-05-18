@@ -1,7 +1,7 @@
-" Syntax settings for C++/CLI
+" Syntax settings for C++
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-Aug-2013.
+" Last Change:  18-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,13 +28,16 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-" Region folding
-if !exists('cpp_no_region_fold')
+"------------------------------------------------------------------------------
+" Region Folding: {{{
+if !exists('g:cpp_no_region_fold')
   syntax region cppRegion matchgroup=cPreCondit start="^\s*#\s*pragma\s*region.*$" end ="^\s*#\s*pragma\s*endregion" transparent fold contains=TOP
 endif
+" }}}
 
-" Xml markup inside '///' comments
-if !exists('cpp_no_xml_comment')
+"------------------------------------------------------------------------------
+" Xml Comments: {{{
+if !exists('g:cpp_no_xml_comment')
   syntax cluster xmlRegionHook   add=cppXmlCommentLeader
   syntax cluster xmlCdataHook    add=cppXmlCommentLeader
   syntax cluster xmlStartTagHook add=cppXmlCommentLeader
@@ -69,13 +72,16 @@ if !exists('cpp_no_xml_comment')
   highlight def link cppXmlComment       Comment
   highlight def link cppXmlTag           Statement
 endif
+" }}}
 
-" C++/CLI
+"------------------------------------------------------------------------------
+" CLI: {{{
 syntax keyword cppType         pin_ptr
 syntax keyword cppStatement    get set
 syntax keyword cppStorageClass abstract sealed ref value
 syntax match   cppCast         "\<safe_cast\s*<"me=e-1
 syntax match   cppCast         "\<safe_cast\s*$"
+" }}}
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

@@ -1,9 +1,9 @@
 # Edit plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-May-2016.
+# Last Change:  18-May-2016.
 # License:      MIT License {{{
-#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
 #     Permission is hereby granted, free of charge, to any person obtaining a
 #     copy of this software and associated documentation files (the
@@ -33,9 +33,9 @@ on_map = [['n', '<Plug>'], ['n', '<Plug>(anzu-jump-n)<Plug>(anzu', '<Plug>(anzu-
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo ='autodate.vim'
-on_path = '.*'
+repo = 'autodate.vim'
 on_cmd = ['Autodate', 'AutodateOFF', 'AutodateON']
+on_if = 'empty(&buftype)'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -48,9 +48,7 @@ on_map = [['nov', '<Plug>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
-# repo = 'syngan/vim-clurin'
-repo = 'DeaR/vim-clurin'
-rev = 'buffer-local'
+repo = 'syngan/vim-clurin'
 on_cmd = ['ClurinNext', 'ClurinPrev']
 on_map = [['nv', '<Plug>']]
 
@@ -81,23 +79,15 @@ on_map = [['nov', '<Plug>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo = 'peco/migemogrep'
-if = 'executable("go")'
-rtp = 'misc/vim'
-on_cmd = 'MigemoGrep'
-build = 'go get -u github.com/peco/migemogrep'
-
-#------------------------------------------------------------------------------
-[[plugins]]
 repo = 'deris/parajump'
 on_map = [['nov', '<Plug>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'osyo-manga/vim-precious'
-on_path = '.*'
 on_cmd = ['PreciousSwitch', 'PreciousReset', 'PreciousSetContextLocal', 'PreciousSwitchAutcmd']
 depends = ['context_filetype', 'quickrun', 'textobj-user']
+on_if = 'empty(&buftype)'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -140,5 +130,5 @@ repo = 'LeafCage/yankround.vim'
 on_cmd = 'CtrlPYankRound'
 on_map = [['nxc', '<Plug>']]
 on_event = 'CursorMoved'
-on_if = 'empty(&buftype) && (line("$") - col("$"))'
+on_if = 'empty(&buftype) && (line("$") > 1 || col("$") > 1)'
 # depends = 'ctrlp'

@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-May-2016.
+" Last Change:  18-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -495,40 +495,6 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" NeoComplCache: {{{
-if s:dein_tap('neocomplcache')
-  function! myvimrc#check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1] =~ '\s'
-  endfunction
-
-  function! myvimrc#cmdwin_enter_neocomplcache() abort
-    let b:neocomplcache_sources_list = []
-
-    inoremap <buffer><expr> <Tab>
-    \ pumvisible() ?
-    \   '<C-N>' :
-    \   myvimrc#check_back_space() ?
-    \     '<Tab>' :
-    \     neocomplcache#start_manual_complete()
-    inoremap <buffer><expr> <S-Tab>
-    \ pumvisible() ?
-    \   '<C-P>' :
-    \   neocomplcache#start_manual_complete()
-
-    inoremap <buffer><silent><expr> <C-H>
-    \ col('.') == 1 && getline('.') == '' ?
-    \   '<Esc>:<C-U>quit<CR>' :
-    \   (neocomplcache#smart_close_popup() . '<C-H>')
-    inoremap <buffer><silent><expr> <BS>
-    \ col('.') == 1 && getline('.') == '' ?
-    \   '<Esc>:<C-U>quit<CR>' :
-    \   (neocomplcache#smart_close_popup() . '<BS>')
-  endfunction
-endif
-" }}}
-
-"------------------------------------------------------------------------------
 " NeoComplete: {{{
 if s:dein_tap('neocomplete')
   function! myvimrc#check_back_space() abort
@@ -537,8 +503,6 @@ if s:dein_tap('neocomplete')
   endfunction
 
   function! myvimrc#cmdwin_enter_neocomplete() abort
-    let b:neocomplete_sources = []
-
     inoremap <buffer><expr> <Tab>
     \ pumvisible() ?
     \   '<C-N>' :
@@ -567,10 +531,11 @@ endif
 if s:dein_tap('operator-star')
   function! s:operator_star_post() abort
     normal! zv
-    call feedkeys(":\<C-U>let &hls=&hls\<CR>", 'n')
-    if s:dein_if('anzu')
-      call feedkeys(":\<C-U>AnzuUpdateSearchStatusOutput\<CR>", 'n')
+    let cmd = 'let &hls=&hls'
+    if !empty(dein#get('anzu'))
+      let cmd .= '|AnzuUpdateSearchStatusOutput'
     endif
+    call feedkeys(":\<C-U>" . cmd . "\<CR>", 'n')
   endfunction
 
   function! myvimrc#operator_star_star(wiseness) abort

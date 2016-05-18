@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-May-2016.
+" Last Change:  18-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -96,7 +96,7 @@ let s:ignore_ext = [
 \ 'o', 'obj', 'a', 'lib', 'so', 'dll', 'dylib', 'exe', 'bin',
 \ 'swp', 'swo', 'swn', 'lc', 'elc', 'fas', 'pyc', 'pyo', 'luac', 'zwc']
 let s:ignore_ft = [
-\ 'gitcommit', 'gitrebase', 'hgcommit', 'unite']
+\ 'gitcommit', 'gitrebase', 'hgcommit']
 
 "------------------------------------------------------------------------------
 " Common: {{{
@@ -226,8 +226,8 @@ set swapfile
 " Undo file
 set undofile
 set undodir^=$CACHE/vimundo
-autocmd MyVimrc FileType *
-\ let &undofile = index(s:ignore_ft, expand('<amatch>')) < 0
+autocmd MyVimrc BufWritePre *
+\ let &undofile = index(s:ignore_ft, &filetype) < 0
 if !isdirectory($CACHE . '/vimundo')
   call mkdir($CACHE . '/vimundo')
 endif
@@ -372,7 +372,7 @@ set foldlevelstart=99
 " Status Line: {{{
 set statusline=%f%<\ %m%r[
 if has('multi_byte')
-  set statusline+=%{&fenc!=''?&fenc:&enc}:
+  set statusline+=%{empty(&fenc)?&enc:&fenc}:
 endif
 set statusline+=%{&ff}]%y%=
 
@@ -384,7 +384,7 @@ set statusline+=\ (%l,%v)/%L
 if s:is_lang_ja
   set statusline+=\ %4P
 else
-  set statusline+=\ %3P
+  set statusline+=\ %P
 endif
 " }}}
 
@@ -435,23 +435,21 @@ if has('multi_byte')
   else
     set fileencodings=iso-2022-jp,cp932,euc-jp,ucs-bom
   endif
+  autocmd MyVimrc BufReadPost *
+  \ if &modifiable && !search('[^\x00-\x7F]', 'cnw') |
+  \   setlocal fileencoding= |
+  \ endif
 endif
 if has('guess_encode')
   set fileencodings^=guess
 endif
 if has('iconv')
   let s:last_enc = &encoding
-  augroup MyVimrc
-    autocmd EncodingChanged *
-    \ if s:last_enc !=# &encoding |
-    \   let &runtimepath = iconv(&runtimepath, s:last_enc, &encoding) |
-    \   let s:last_enc = &encoding |
-    \ endif
-    autocmd BufReadPost *
-    \ if &modifiable && !search('[^\x00-\x7F]', 'cnw') |
-    \   setlocal fileencoding= |
-    \ endif
-  augroup END
+  autocmd MyVimrc EncodingChanged *
+  \ if s:last_enc !=# &encoding |
+  \   let &runtimepath = iconv(&runtimepath, s:last_enc, &encoding) |
+  \   let s:last_enc = &encoding |
+  \ endif
 endif
 " }}}
 
@@ -1141,7 +1139,7 @@ autocmd MyVimrc BufWritePre *
 autocmd MyVimrc FileType *
 \ if (&readonly || !&modifiable) && empty(maparg('q', 'n')) |
 \   nnoremap <buffer><silent><expr> q
-\     winnr('$') != 1 ? ':<C-U>close<CR>' : ''|
+\     winnr('$') != 1 ? ':<C-U>close<CR>' : 'q'|
 \ endif
 " }}}
 
@@ -1370,6 +1368,9 @@ let g:asmsyntax = 'masm'
 " Shell Script
 let g:is_bash = 1
 
+" Doxygen
+let g:load_doxygen_syntax = 1
+
 " Indent
 let g:vim_indent_cont = 0
 
@@ -1381,6 +1382,12 @@ let g:ruby_fold          = 1
 let g:sh_fold_enabled    = 1
 let g:vimsyn_folding     = 'af'
 let g:xml_syntax_folding = 1
+
+" Disable
+let g:loaded_getscript       = 1
+let g:loaded_getscriptPlugin = 1
+let g:loaded_vimball         = 1
+let g:loaded_vimballPlugin   = 1
 " }}}
 
 "------------------------------------------------------------------------------
@@ -1530,16 +1537,13 @@ endif
 " Clurin: {{{
 if s:dein_tap('clurin')
   function! g:dein#plugin.hook_source() abort
-    let g:clurin = get(g:, 'clurin', {})
-    call extend(g:clurin, {
-    \ 'use_default' : 0})
+    let g:clurin = {
+    \ '-' : {
+    \   'def' : [],
+    \   'nomatch' : function('myvimrc#clurin_nomatch'),
+    \   'jump' : 1},
+    \ 'use_default' : 0}
 
-    let g:clurin['-'] = get(g:clurin, '-', {})
-    call extend(g:clurin['-'], {
-    \ 'nomatch' : function('myvimrc#clurin_nomatch'),
-    \ 'jump' : 1})
-
-    let g:clurin['-'].def = get(g:clurin['-'], 'def', [])
     call extend(g:clurin['-'].def, [
     \ ['TRUE', 'FALSE'], ['True', 'False'], ['true', 'false'],
     \ ['ENABLE', 'DISABLE'], ['Enable', 'Disable'], ['enable', 'disable'],
@@ -1850,8 +1854,8 @@ if s:dein_tap('eskk')
     \ 'sorted' : 0,
     \ 'encoding' : 'utf-8'}
 
-    if !has('win32') && filereadable('/usr/local/share/skk/SKK-JISYO.L')
-      let g:eskk#large_dictionary        = {
+    if has('win32') || !filereadable('/usr/local/share/skk/SKK-JISYO.L')
+      let g:eskk#large_dictionary = {
       \ 'path' : $HOME . '/.vim/dict/SKK-JISYO.L',
       \ 'sorted' : 1,
       \ 'encoding' : 'euc-jp'}
@@ -2078,8 +2082,7 @@ if s:dein_tap('marching')
   function! g:dein#plugin.hook_source() abort
     let g:marching_enable_neocomplete = 1
     let g:marching_backend            =
-    \ !empty(dein#get('snowdrop')) ?
-    \   'snowdrop' : 'sync_clang_command'
+    \ !empty(dein#get('snowdrop')) ? 'snowdrop' : 'sync_clang_command'
   endfunction
 
   call extend(s:neocomplete_force_omni_patterns, {
@@ -2094,15 +2097,20 @@ if s:dein_tap('metarw')
     call metarw#define_wrapper_commands(1)
   endfunction
 
+  " let g:loaded_gzip              = 1
   let g:loaded_netrw             = 1
+  let g:loaded_netrwFileHandlers = 1
   let g:loaded_netrwPlugin       = 1
   let g:loaded_netrwSettings     = 1
-  let g:loaded_netrwFileHandlers = 1
+  " let g:loaded_tar               = 1
+  " let g:loaded_tarPlugin         = 1
+  " let g:loaded_zip               = 1
+  " let g:loaded_zipPlugin         = 1
 
   if empty(dein#get('ctrlp'))
     NXnoremap <script> <Leader>e <SID>:<C-U>Edit<Space>
   endif
-
+  
   call extend(s:altercmd_define, {
   \ 'e[dit]'   : 'Edit',
   \ 'r[ead]'   : 'Read',
@@ -2182,6 +2190,10 @@ if s:dein_tap('neco-vim')
     let g:necovim#complete_functions =
     \ s:neocomplete_vim_completefuncs
   endfunction
+
+  autocmd MyVimrc CmdwinEnter :
+  \ let b:neocomplete_sources =
+  \ add(get(b:, 'neocomplete_sources', []), 'vim')
 endif
 " }}}
 
@@ -2205,7 +2217,6 @@ if s:dein_tap('neocomplete')
 
     call neocomplete#custom#source('_', 'matchers', ['matcher_head'])
     call neocomplete#custom#source('syntax_complete',   'rank',  9)
-    call neocomplete#custom#source('snippets_complete', 'rank', 80)
 
     call neocomplete#disable_default_dictionary(
     \ 'g:neocomplete#tags_filter_patterns')
@@ -2243,38 +2254,13 @@ if s:dein_tap('neocomplete')
     autocmd CmdwinEnter *
     \ call myvimrc#cmdwin_enter_neocomplete()
     autocmd CmdwinEnter :
-    \ let b:neocomplete_sources = ['file', 'vim']
+    \ let b:neocomplete_sources =
+    \ add(get(b:, 'neocomplete_sources', []), 'file')
   augroup END
 
   call extend(s:neocomplete_vim_completefuncs, {
   \ 'NeoCompleteDictionaryMakeCache' : 'neocomplete#filetype_complete',
   \ 'NeoCompleteSyntaxMakeCache'     : 'neocomplete#filetype_complete'})
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" NeoSnippet: {{{
-if s:dein_tap('neosnippet')
-  function! g:dein#plugin.hook_source() abort
-    let g:neosnippet#snippets_directory           = $HOME . '/.vim/snippets'
-    let g:neosnippet#disable_select_mode_mappings = 0
-
-    let g:neosnippet#disable_runtime_snippets =
-    \ get(g:, 'neosnippet#disable_runtime_snippets', {})
-    let g:neosnippet#disable_runtime_snippets._ = 1
-
-    imap <C-K> <Plug>(neosnippet_expand_or_jump)
-  endfunction
-
-  smap <C-K> <Plug>(neosnippet_expand_or_jump)
-  xmap <C-K> <Plug>(neosnippet_expand_target)
-
-  autocmd MyVimrc InsertLeave *
-  \ NeoSnippetClearMarkers
-
-  call extend(s:neocomplete_vim_completefuncs, {
-  \ 'NeoSnippetEdit'      : 'neosnippet#edit_complete',
-  \ 'NeoSnippetMakeCache' : 'neosnippet#filetype_complete'})
 endif
 " }}}
 
@@ -2559,14 +2545,6 @@ if s:dein_tap('parenmatch')
 
   autocmd MyVimrc ColorScheme *
   \ highlight link ParenMatch MatchParen
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" PartEdit: {{{
-if s:dein_tap('partedit')
-  call extend(s:neocomplete_vim_completefuncs, {
-  \ 'Partedit' : 'partedit#complete'})
 endif
 " }}}
 
@@ -3857,38 +3835,43 @@ if s:dein_tap('textobj-multitextobj')
     \ 'singlequotes' : [
     \   {'textobj' : "a'", 'is_cursor_in' : 1, 'noremap' : 1}],
     \ 'backquotes' : [
-    \   {'textobj' : 'a`',  'is_cursor_in' : 1, 'noremap' : 1}],
-    \ 'jabraces' : [
-    \   ["\<Plug>(textobj-jabraces-parens-a)",
-    \    "\<Plug>(textobj-jabraces-braces-a)",
-    \    "\<Plug>(textobj-jabraces-brackets-a)",
-    \    "\<Plug>(textobj-jabraces-angles-a)",
-    \    "\<Plug>(textobj-jabraces-double-angles-a)",
-    \    "\<Plug>(textobj-jabraces-kakko-a)",
-    \    "\<Plug>(textobj-jabraces-double-kakko-a)",
-    \    "\<Plug>(textobj-jabraces-yama-kakko-a)",
-    \    "\<Plug>(textobj-jabraces-double-yama-kakko-a)",
-    \    "\<Plug>(textobj-jabraces-kikkou-kakko-a)",
-    \    "\<Plug>(textobj-jabraces-sumi-kakko-a)"]]}
+    \   {'textobj' : 'a`',  'is_cursor_in' : 1, 'noremap' : 1}]}
     let g:textobj_multitextobj_textobjects_group_i = {
     \ 'doublequotes' : [
     \   {'textobj' : 'i"',  'is_cursor_in' : 1, 'noremap' : 1}],
     \ 'singlequotes' : [
     \   {'textobj' : "i'", 'is_cursor_in' : 1, 'noremap' : 1}],
     \ 'backquotes' : [
-    \   {'textobj' : 'i`',  'is_cursor_in' : 1, 'noremap' : 1}],
-    \ 'jabraces' : [
-    \   ["\<Plug>(textobj-jabraces-parens-i)",
-    \    "\<Plug>(textobj-jabraces-braces-i)",
-    \    "\<Plug>(textobj-jabraces-brackets-i)",
-    \    "\<Plug>(textobj-jabraces-angles-i)",
-    \    "\<Plug>(textobj-jabraces-double-angles-i)",
-    \    "\<Plug>(textobj-jabraces-kakko-i)",
-    \    "\<Plug>(textobj-jabraces-double-kakko-i)",
-    \    "\<Plug>(textobj-jabraces-yama-kakko-i)",
-    \    "\<Plug>(textobj-jabraces-double-yama-kakko-i)",
-    \    "\<Plug>(textobj-jabraces-kikkou-kakko-i)",
-    \    "\<Plug>(textobj-jabraces-sumi-kakko-i)"]]}
+    \   {'textobj' : 'i`',  'is_cursor_in' : 1, 'noremap' : 1}]}
+
+    if !empty(dein#get('textobj-jabraces'))
+      call extend(g:textobj_multitextobj_textobjects_group_a, {
+      \ 'jabraces' : [
+      \   ["\<Plug>(textobj-jabraces-parens-a)",
+      \    "\<Plug>(textobj-jabraces-braces-a)",
+      \    "\<Plug>(textobj-jabraces-brackets-a)",
+      \    "\<Plug>(textobj-jabraces-angles-a)",
+      \    "\<Plug>(textobj-jabraces-double-angles-a)",
+      \    "\<Plug>(textobj-jabraces-kakko-a)",
+      \    "\<Plug>(textobj-jabraces-double-kakko-a)",
+      \    "\<Plug>(textobj-jabraces-yama-kakko-a)",
+      \    "\<Plug>(textobj-jabraces-double-yama-kakko-a)",
+      \    "\<Plug>(textobj-jabraces-kikkou-kakko-a)",
+      \    "\<Plug>(textobj-jabraces-sumi-kakko-a)"]]})
+      call extend(g:textobj_multitextobj_textobjects_group_i, {
+      \ 'jabraces' : [
+      \   ["\<Plug>(textobj-jabraces-parens-i)",
+      \    "\<Plug>(textobj-jabraces-braces-i)",
+      \    "\<Plug>(textobj-jabraces-brackets-i)",
+      \    "\<Plug>(textobj-jabraces-angles-i)",
+      \    "\<Plug>(textobj-jabraces-double-angles-i)",
+      \    "\<Plug>(textobj-jabraces-kakko-i)",
+      \    "\<Plug>(textobj-jabraces-double-kakko-i)",
+      \    "\<Plug>(textobj-jabraces-yama-kakko-i)",
+      \    "\<Plug>(textobj-jabraces-double-yama-kakko-i)",
+      \    "\<Plug>(textobj-jabraces-kikkou-kakko-i)",
+      \    "\<Plug>(textobj-jabraces-sumi-kakko-i)"]]})
+    endif
   endfunction
 
   OXmap <expr> a" textobj#multitextobj#mapexpr_a('doublequotes')
@@ -3897,8 +3880,11 @@ if s:dein_tap('textobj-multitextobj')
   OXmap <expr> i' textobj#multitextobj#mapexpr_i('singlequotes')
   OXmap <expr> a` textobj#multitextobj#mapexpr_a('backquotes')
   OXmap <expr> i` textobj#multitextobj#mapexpr_i('backquotes')
-  OXmap <expr> aB textobj#multitextobj#mapexpr_a('jabraces')
-  OXmap <expr> iB textobj#multitextobj#mapexpr_i('jabraces')
+
+  if !empty(dein#get('textobj-jabraces'))
+    OXmap <expr> aB textobj#multitextobj#mapexpr_a('jabraces')
+    OXmap <expr> iB textobj#multitextobj#mapexpr_i('jabraces')
+  endif
 endif
 " }}}
 
@@ -4000,8 +3986,8 @@ if s:dein_tap('textobj-space')
     let g:textobj_space_no_default_key_mappings = 1
   endfunction
 
-  OXmap aS <Plug>(textobj-space-a)
-  OXmap iS <Plug>(textobj-space-i)
+  OXmap a<Space> <Plug>(textobj-space-a)
+  OXmap i<Space> <Plug>(textobj-space-i)
 endif
 " }}}
 
@@ -4105,6 +4091,22 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
+" Vimhelp Lint: {{{
+if s:dein_tap('vimhelplint')
+  function! g:dein#plugin.hook_source() abort
+    let g:quickrun_config =
+    \ get(g:, 'quickrun_config', {})
+
+    " call extend(g:quickrun_config, {
+    " \ 'help/watchdogs_checker' : {
+    " \   'type': 'watchdogs_checker/vimhelplint'}})
+
+    call watchdogs#setup(g:quickrun_config)
+  endfunction
+endif
+" }}}
+
+"------------------------------------------------------------------------------
 " VimProc: {{{
 if s:dein_tap('vimproc')
   function! g:dein#plugin.hook_source() abort
@@ -4121,14 +4123,10 @@ if s:dein_tap('visualstar')
   endfunction
 
   if !empty(dein#get('anzu'))
-    xmap <SID>(visualstar-*)
-    \ <Plug>(visualstar-*)<Plug>(anzu-update-search-status-with-echo)
-    xmap <SID>(visualstar-#)
-    \ <Plug>(visualstar-#)<Plug>(anzu-update-search-status-with-echo)
-    xmap <SID>(visualstar-g*)
-    \ <Plug>(visualstar-g*)<Plug>(anzu-update-search-status-with-echo)
-    xmap <SID>(visualstar-g#)
-    \ <Plug>(visualstar-g#)<Plug>(anzu-update-search-status-with-echo)
+    xmap <SID>(visualstar-*)  <Plug>(visualstar-*)<SID>(anzu-echo)
+    xmap <SID>(visualstar-#)  <Plug>(visualstar-#)<SID>(anzu-echo)
+    xmap <SID>(visualstar-g*) <Plug>(visualstar-g*)<SID>(anzu-echo)
+    xmap <SID>(visualstar-g#) <Plug>(visualstar-g#)<SID>(anzu-echo)
   else
     xmap <SID>(visualstar-*)  <Plug>(visualstar-*)
     xmap <SID>(visualstar-#)  <Plug>(visualstar-#)
@@ -4210,11 +4208,7 @@ if s:dein_tap('watchdogs')
     \   'errorformat' : '%.%#: %#%f:%l: %m'},
     \
     \ 'vim/watchdogs_checker' : {
-    \   'type' : ''},
-    \
-    \ 'help/watchdogs_checker' : {
-    \   'type':
-    \     !empty(dein#get('vimhelplint')) ? 'watchdogs_checker/vimhelplint' : ''}})
+    \   'type' : ''}})
 
     call watchdogs#setup(g:quickrun_config)
   endfunction

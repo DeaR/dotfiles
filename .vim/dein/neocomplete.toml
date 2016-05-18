@@ -1,9 +1,9 @@
 # NeoComplete plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  12-May-2016.
+# Last Change:  18-May-2016.
 # License:      MIT License {{{
-#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
 #     Permission is hereby granted, free of charge, to any person obtaining a
 #     copy of this software and associated documentation files (the
@@ -27,7 +27,7 @@
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo ='Shougo/context_filetype.vim'
+repo = 'Shougo/context_filetype.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -58,7 +58,8 @@ on_source = 'neocomplete'
 [[plugins]]
 repo = 'Shougo/neco-vim'
 name = 'neco-vim'
-on_source = 'neocomplete'
+on_event = 'CmdwinEnter'
+depends = 'neocomplete'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -73,12 +74,3 @@ depends = ['context_filetype', 'echodoc', 'FastFold', 'neoinclude']
 repo = 'Shougo/neoinclude.vim'
 on_cmd = 'NeoIncludeMakeCache'
 on_event = 'InsertEnter'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'Shougo/neosnippet.vim'
-on_ft = 'snippet'
-on_cmd = ['NeoSnippetEdit', 'NeoSnippetMakeCache', 'NeoSnippetSource', 'NeoSnippetClearMarkers']
-on_map = [['vi', '<Plug>']]
-on_event = 'InsertEnter'
-depends = 'context_filetype'

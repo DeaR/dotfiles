@@ -1,9 +1,9 @@
 # System plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  12-May-2016.
+# Last Change:  18-May-2016.
 # License:      MIT License {{{
-#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
 #     Permission is hereby granted, free of charge, to any person obtaining a
 #     copy of this software and associated documentation files (the
@@ -39,7 +39,7 @@ repo = 'h1mesuke/vim-benchmark'
 [[plugins]]
 repo = 'itchyny/vim-cursorword'
 on_event = ['CursorMoved', 'CursorMovedI']
-on_if = 'empty(&buftype) && (line("$") - col("$"))'
+on_if = 'empty(&buftype) && (line("$") > 1 || col("$") > 1)'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -53,7 +53,7 @@ lazy = 0
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'thinca/vim-localrc'
-on_path = '.*'
+on_if = 'empty(&buftype)'
 augroup = 'plugin-localrc'
 
 #------------------------------------------------------------------------------
@@ -76,13 +76,13 @@ lazy = 0
 [[plugins]]
 repo = 'itchyny/vim-parenmatch'
 on_event = ['CursorMoved', 'CursorMovedI']
-on_if = 'empty(&buftype) && (line("$") - col("$"))'
+on_if = 'empty(&buftype) && (line("$") > 1 || col("$") > 1)'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'thinca/vim-prettyprint'
-on_func = ['PrettyPrint', 'PP']
 on_cmd = ['PrettyPrint', 'PP']
+on_func = ['PrettyPrint', 'PP']
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -132,8 +132,8 @@ depends = 'prettyprint'
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'vim-jp/vimdoc-ja'
-if = 'has("multi_byte")'
-on_ft = 'help'
+# on_ft = 'help'
+lazy = 0
 
 #------------------------------------------------------------------------------
 [[plugins]]

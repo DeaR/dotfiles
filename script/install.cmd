@@ -3,7 +3,7 @@
 rem Install DotFiles
 rem
 rem Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-rem Last Change:  27-Apr-2016.
+rem Last Change:  18-May-2016.
 rem License:      MIT License {{{
 rem     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 rem
@@ -37,6 +37,13 @@ exit /b 0
 
 :mklink_d
 if not exist "%HOME%\%~1" mklink /j "%HOME%\%~1" "%~f1"
+exit /b 0
+
+:dein
+if not exist %1 (
+  mkdir %1
+  git clone https://github.com/DeaR/dein.vim.git %1
+)
 exit /b 0
 
 :install
@@ -111,6 +118,8 @@ where /q gvim && (
 where /q vim && (
   call :mklink_d .vim
   call :mklink_f .vimrc
+
+  where /q git && call :dein "%CACHE%\dein\repos\github.com\Shougo\dein.vim"
 )
 
 endlocal

@@ -1,7 +1,7 @@
-" Indantation of tab(8)
+" Syntax settings for MetaRW
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-Sep-2015.
+" Last Change:  18-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,18 +28,9 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-setlocal shiftwidth=8
-setlocal tabstop=8
-setlocal softtabstop=8
-setlocal noexpandtab
-
-if exists('b:undo_ftplugin')
-  let b:undo_ftplugin .= ' |'
-else
-  let b:undo_ftplugin = ''
-endif
-let b:undo_ftplugin .= '
-\ setlocal shiftwidth< tabstop< softtabstop< expandtab<'
+highlight link metarwLocalDate       Comment
+highlight link metarwLocalSize       Comment
+highlight link metarwLocalPermission Comment
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

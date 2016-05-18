@@ -1,9 +1,9 @@
 " Vim compatibility
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  01-May-2016.
+" Last Change:  18-May-2016.
 " License:      MIT License {{{
-"     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+"     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
 "     Permission is hereby granted, free of charge, to any person obtaining a
 "     copy of this software and associated documentation files (the

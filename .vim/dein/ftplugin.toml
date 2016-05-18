@@ -1,9 +1,9 @@
 # FileType plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  12-May-2016.
+# Last Change:  18-May-2016.
 # License:      MIT License {{{
-#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
 #     Permission is hereby granted, free of charge, to any person obtaining a
 #     copy of this software and associated documentation files (the
@@ -32,11 +32,6 @@ if = 'executable("clang-format")'
 on_cmd = ['ClangFormat', 'ClangFormatEchoFormattedCode']
 on_map = [['nov', '<Plug>(operator-clang-format']]
 depends = 'operator-user'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'rhysd/committia.vim'
-on_path = ['COMMIT_EDITMSG', 'MERGE_MSG']
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -90,6 +85,7 @@ on_func = 'PerlComplete'
 [[plugins]]
 repo = 'shawncplus/phpcomplete.vim'
 # on_ft = 'php'
+lazy = 0
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -106,7 +102,7 @@ on_cmd = ['SnowdropVerify', 'SnowdropEchoClangVersion', 'SnowdropLogs', 'Snowdro
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo = 'marijnh/tern_for_vim'
+repo = 'ternjs/tern_for_vim'
 name = 'tern'
 if = '(has("python") || has("python3")) && executable("node")'
 # on_ft = 'javascript'
@@ -126,6 +122,7 @@ repo = 'ynkdir/vim-vimlparser'
 [[plugins]]
 repo = 'machakann/vim-vimhelplint'
 on_ft = 'help'
+depends = 'watchdogs'
 
 #------------------------------------------------------------------------------
 [[plugins]]

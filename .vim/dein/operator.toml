@@ -1,9 +1,9 @@
 # Operator plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  12-May-2016.
+# Last Change:  18-May-2016.
 # License:      MIT License {{{
-#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
 #     Permission is hereby granted, free of charge, to any person obtaining a
 #     copy of this software and associated documentation files (the
@@ -108,6 +108,7 @@ depends = 'operator-user'
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'thinca/vim-operator-sequence'
+on_func = 'operator#sequence#map'
 depends = 'operator-camelize'
 
 #------------------------------------------------------------------------------
@@ -150,6 +151,7 @@ depends = 'operator-user'
 [[plugins]]
 repo = 'kana/vim-operator-user'
 on_map = [['nov', '<Plug>(operator']]
+on_func = ['operator#user#define', 'operator#user#define_ex_command', 'operator#user#register', 'operator#user#visual_command_from_wise_name']
 
 #------------------------------------------------------------------------------
 [[plugins]]

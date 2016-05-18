@@ -20,4 +20,5 @@ if not defined VCVARSALL (
 )
 call "%VCVARSALL%" %PROCESSOR_ARCHITECTURE%
 
+chcp 65001
 msbuild server\OmniSharp.sln /p:Configuration="Release" /p:Platform="Any CPU" %*

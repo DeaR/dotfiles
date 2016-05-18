@@ -1,9 +1,9 @@
 # SubMode plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  12-May-2016.
+# Last Change:  18-May-2016.
 # License:      MIT License {{{
-#     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
+#     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
 #     Permission is hereby granted, free of charge, to any person obtaining a
 #     copy of this software and associated documentation files (the
@@ -28,9 +28,9 @@
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'Konfekt/FastFold'
-on_path = '.*'
 on_cmd = 'FastFoldUpdate'
 on_map = [['n', '<Plug>'], ['nx', '<Plug>(submode:ff/']]
+on_if = 1
 depends = 'submode'
 
 #------------------------------------------------------------------------------

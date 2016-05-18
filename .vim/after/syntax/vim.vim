@@ -1,7 +1,7 @@
-" Syntax settings for Vim 7.3 Script
+" Syntax settings for Vim Script
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  22-Apr-2016.
+" Last Change:  18-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "

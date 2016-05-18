@@ -3,7 +3,7 @@
 # Install DotFiles
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  27-Apr-2016.
+# Last Change:  18-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -33,6 +33,13 @@ mklink_f() {
 
 mklink_d() {
   [ -d "~/$1" ] || ln -s "$(cd $(dirname $1) && pwd)/$(basename $1)" "~/$1"
+}
+
+dein() {
+  if [ ! -d "$1" ]; then
+    mkdir -p "$1"
+    git clone https://github.com/DeaR/dein.vim.git "$1"
+  fi
 }
 
 pushd $(dirname $0)/..
@@ -92,6 +99,8 @@ fi
 if which vim > /dev/null; then
   mklink_d .vim
   mklink_f .vimrc
+
+  which git > /dev/null && dein "$CACHE/dein/repos/github.com/Shougo/dein.vim"
 fi
 
 popd

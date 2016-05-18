@@ -1,7 +1,7 @@
 " FileType detects for Default
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  08-Sep-2015.
+" Last Change:  18-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -26,6 +26,6 @@
 " }}}
 
 autocmd BufNewFile,BufRead *
-\ if bufname('%') != '' && &l:filetype == '' |
+\ if !empty(bufname('%')) && empty(&filetype) |
 \   setfiletype text |
 \ endif
