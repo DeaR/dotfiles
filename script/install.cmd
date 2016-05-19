@@ -1,9 +1,10 @@
 @echo off
+goto :install
 
 rem Install DotFiles
 rem
 rem Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-rem Last Change:  18-May-2016.
+rem Last Change:  19-May-2016.
 rem License:      MIT License {{{
 rem     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 rem
@@ -26,10 +27,6 @@ rem     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 rem     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 rem     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 rem }}}
-
-call :install
-pause
-exit /b 0
 
 :mklink_f
 if not exist "%HOME%\%~1" mklink "%HOME%\%~1" "%~f1"
@@ -124,4 +121,4 @@ where /q vim && (
 
 endlocal
 popd
-exit /b 0
+pause

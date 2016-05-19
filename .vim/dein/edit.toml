@@ -1,7 +1,7 @@
 # Edit plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  18-May-2016.
+# Last Change:  19-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -58,12 +58,6 @@ repo = 'tyru/eskk.vim'
 on_ft = 'skkdict'
 on_cmd = ['EskkMap', 'EskkForgetRegisteredWords', 'EskkUpdateDictionary', 'EskkFixDictionary']
 on_map = [['ic', '<Plug>']]
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'mattn/emmet-vim'
-on_cmd = ['Emmet', 'EmmetInstall']
-on_map = [['nvi', '<Plug>'], ['nvi', '<M-y>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]

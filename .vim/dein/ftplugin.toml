@@ -1,7 +1,7 @@
 # FileType plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  18-May-2016.
+# Last Change:  19-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -32,6 +32,12 @@ if = 'executable("clang-format")'
 on_cmd = ['ClangFormat', 'ClangFormatEchoFormattedCode']
 on_map = [['nov', '<Plug>(operator-clang-format']]
 depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'mattn/emmet-vim'
+on_cmd = ['Emmet', 'EmmetInstall']
+on_map = [['nvi', '<Plug>'], ['nvi', '<C-K>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]

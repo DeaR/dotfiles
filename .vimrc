@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-May-2016.
+" Last Change:  20-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -219,10 +219,6 @@ if !isdirectory($CACHE)
   call mkdir($CACHE, 'p')
 endif
 
-" Backup
-set nobackup
-set swapfile
-
 " Undo file
 set undofile
 set undodir^=$CACHE/vimundo
@@ -239,7 +235,6 @@ if has('unnamedplus')
 endif
 
 " Timeout
-set timeout
 set timeoutlen=3000
 set ttimeoutlen=10
 set updatetime=1000
@@ -248,7 +243,9 @@ set updatetime=1000
 set hidden
 
 " Multi byte charactor width
-set ambiwidth=double
+if has('multi_byte')
+  set ambiwidth=double
+endif
 
 " Wild menu
 set wildmenu
@@ -257,14 +254,8 @@ execute 'set wildignore+=' . join(s:ignore_dir +
 
 " Mouse
 set mouse=a
-set nomousefocus
 set nomousehide
-
-" Help
-if s:is_lang_ja
-  set helplang-=ja
-  set helplang^=ja
-endif
+set mousemodel=extend
 " }}}
 
 "------------------------------------------------------------------------------
@@ -276,7 +267,6 @@ set lazyredraw
 set number
 set relativenumber
 set ruler
-set wrap
 set display=lastline
 " set scrolloff=5
 
@@ -306,7 +296,6 @@ endif
 set ignorecase
 set smartcase
 set incsearch
-set wrapscan
 
 " Highlight
 if s:is_colored_ui
@@ -332,18 +321,19 @@ set completeopt=menu,menuone
 if s:has_patch('7.4.775')
   set completeopt+=noselect
 endif
+set showfulltag
 
 " Format
 set nrformats=hex
+if s:has_patch('7.4.1027')
+  set nrformats+=bin
+endif
 set formatoptions+=m
 set formatoptions+=B
 
 " Cursor
 set virtualedit=block
 set backspace=indent,eol,start
-
-" Ctags
-set showfulltag
 
 " File format
 set fileformat=unix
@@ -362,7 +352,6 @@ set copyindent
 set cinoptions=:0,l1,g0,(0,U1,Ws,j1,J1,)20
 
 " Folding
-set foldenable
 set foldmethod=marker
 set foldcolumn=2
 set foldlevelstart=99
@@ -454,8 +443,7 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" Colors: {{{
-" Cursor line & column
+" Cursor Line: {{{
 if s:is_colored_ui
   set cursorline
   set cursorcolumn
@@ -564,11 +552,11 @@ command! -nargs=* -complete=mapping
 " Source macros
 if has('packages')
   function! s:source_macros(name) abort
-    execute 'packadd' a:name
+    silent! execute 'packadd' a:name
   endfunction
 else
   function! s:source_macros(name) abort
-    execute 'source' $VIMRUNTIME . '/macros/' . a:name . '.vim'
+    silent! execute 'source' $VIMRUNTIME . '/macros/' . a:name . '.vim'
   endfunction
 endif
 
@@ -802,14 +790,14 @@ NXnoremap <script><expr> <Leader><M-D>
 
 "------------------------------------------------------------------------------
 " Help: {{{
-nnoremap <expr> <F1>
+nnoremap <script><expr> <F1>
 \ myvimrc#split_nicely_expr() ?
-\   ':<C-U>help<Space>' :
-\   ':<C-U>vertical help<Space>'
-inoremap <expr> <F1>
+\   '<SID>:<C-U>help<Space>' :
+\   '<SID>:<C-U>vertical help<Space>'
+inoremap <script><expr> <F1>
 \ myvimrc#split_nicely_expr() ?
-\   '<C-O>:<C-U>help<Space>' :
-\   '<C-O>:<C-U>vertical help<Space>'
+\   '<C-O><SID>:<C-U>help<Space>' :
+\   '<C-O><SID>:<C-U>vertical help<Space>'
 " }}}
 
 "------------------------------------------------------------------------------
@@ -1411,7 +1399,7 @@ if v:version > 703 && isdirectory(s:dein_dir)
     call dein#save_state()
   endif
 endif
-unlet! s:dein_dir
+unlet! s:dein_dir s:dein_toml
 " }}}
 
 "------------------------------------------------------------------------------
@@ -1828,7 +1816,7 @@ endif
 " Emmet: {{{
 if s:dein_tap('emmet')
   function! g:dein#plugin.hook_source() abort
-    let g:user_emmet_leader_key = '<M-y>'
+    let g:user_emmet_leader_key = '<C-K>'
     let g:user_emmet_settings   = {
     \ 'lang' : 'ja',
     \ 'indentation' : '  ',
@@ -2691,33 +2679,6 @@ if s:dein_tap('quickrun')
     nnoremap <expr> <C-C>
     \ quickrun#is_running() ?
     \ ':<C-U>call quickrun#sweep_sessions()<CR>' : '<C-C>'
-  endfunction
-
-  function! g:dein#plugin.hook_post_source() abort
-    let location_list_outputter        =
-    \ quickrun#outputter#buffered#new()
-    let location_list_outputter.config = {
-    \ 'errorformat' : '&l:errorformat',
-    \ 'open_cmd'    : 'lwindow'}
-    function! location_list_outputter.finish(session) abort
-      try
-        let errorformat = &l:errorformat
-        let &l:errorformat = self.config.errorformat
-        lgetexpr self._result
-        execute self.config.open_cmd
-        for winnr in range(1, winnr('$'))
-          if getwinvar(winnr, '&buftype') ==# 'quickfix'
-            call setwinvar(winnr, 'quickfix_title', 'quickrun: ' .
-            \ join(a:session.commands, ' && '))
-            break
-          endif
-        endfor
-      finally
-        let &l:errorformat = errorformat
-      endtry
-    endfunction
-    call quickrun#register_outputter(
-    \ 'location_list', location_list_outputter)
   endfunction
 
   if empty(dein#get('precious'))
@@ -4172,7 +4133,8 @@ if s:dein_tap('watchdogs')
 
     call extend(g:quickrun_config, {
     \ 'watchdogs_checker/_' : {
-    \   'runner' : s:has_vimproc() ? 'vimproc' : 'system'},
+    \   'runner' : s:has_vimproc() ? 'vimproc' : 'system',
+    \   'outputter' : 'quickfix'},
     \
     \ 'c/watchdogs_checker' : {
     \   'type' :

@@ -2,6 +2,6 @@
 
 mingw32-make CC=gcc %*
 
-chcp 65001
+chcp 65001 > nul
 if not exist "%HOME%\Bin" mkdir "%HOME%\Bin"
-copy nkf.exe %HOME%\Bin\
+copy /y nkf.exe %HOME%\Bin\
