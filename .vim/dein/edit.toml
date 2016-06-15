@@ -1,7 +1,7 @@
 # Edit plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  19-May-2016.
+# Last Change:  01-Jun-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -27,6 +27,13 @@
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repo = 'h1mesuke/vim-alignta'
+on_cmd = ['Align', 'Alignta']
+on_map = [['nov', '<Plug>(operator-alignta']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repo = 'osyo-manga/vim-anzu'
 on_cmd = ['AnzuClearSearchStatus', 'AnzuClearSearchCache', 'AnzuUpdateSearchStatus', 'AnzuUpdateSearchStatusOutput', 'AnzuSignMatchLine', 'AnzuClearSignMatchLine']
 on_map = [['n', '<Plug>'], ['n', '<Plug>(anzu-jump-n)<Plug>(anzu', '<Plug>(anzu-jump-N)<Plug>(anzu']]
@@ -43,6 +50,12 @@ repo = 'vim-jp/autofmt'
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repo = 'tyru/caw.vim'
+on_map = [['nox', '<Plug>'], ['nox', '<Plug>(operator-caw']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repo = 'rhysd/clever-f.vim'
 on_map = [['nov', '<Plug>']]
 
@@ -54,6 +67,13 @@ on_map = [['nv', '<Plug>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repo = 'deris/columnjump'
+on_cmd = ['ColumnJumpBackward', 'ColumnJumpForward']
+on_map = [['nov', '<Plug>'], ['nx', '<Plug>(submode:coljmp']]
+depends = 'submode'
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repo = 'tyru/eskk.vim'
 on_ft = 'skkdict'
 on_cmd = ['EskkMap', 'EskkForgetRegisteredWords', 'EskkUpdateDictionary', 'EskkFixDictionary']
@@ -61,15 +81,31 @@ on_map = [['ic', '<Plug>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo = 'cohama/vim-hier'
-on_ft = 'qf'
-on_cmd = ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']
+repo = 'Konfekt/FastFold'
+on_cmd = 'FastFoldUpdate'
+on_map = [['n', '<Plug>'], ['nx', '<Plug>(submode:ff/']]
+on_if = 1
+depends = 'submode'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-grex'
+on_cmd = ['Gred', 'Grey']
+on_map = [['nov', '<Plug>(operator-grex']]
+depends = 'operator-user'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'haya14busa/incsearch.vim'
 on_cmd = ['IncSearchNoreMap', 'IncSearchMap']
 on_map = [['nov', '<Plug>']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-narrow'
+on_cmd = ['Narrow', 'Widen']
+on_map = [['nov', '<Plug>(operator-narrow']]
+depends = 'operator-user'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -85,20 +121,22 @@ on_if = 'empty(&buftype)'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo = 'thinca/vim-qfreplace'
-on_ft = 'qf'
-on_cmd = 'Qfreplace'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'dannyob/quickfixstatus'
-on_ft = 'qf'
-on_cmd = ['QuickfixStatusEnable', 'QuickfixStatusDisable']
+repo = 'deris/vim-rengbang'
+on_cmd = ['RengBang', 'RengBangUsePrev', 'RengBangConfirm']
+on_map = [['nov', '<Plug>(operator-rengbang']]
+depends = 'operator-user'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'kana/vim-smartword'
 on_map = [['nov', '<Plug>']]
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 't9md/vim-textmanip'
+on_cmd = ['TextmanipToggleMode', 'TextmanipToggleIgnoreShiftWidth']
+on_map = [['nv', '<Plug>'], ['nov', '<Plug>(operator-textmanip'], ['x', '<Plug>(submode:tm/']]
+depends = ['operator-user', 'submode']
 
 #------------------------------------------------------------------------------
 [[plugins]]

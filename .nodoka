@@ -1,7 +1,7 @@
 # Nodoka settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  29-Apr-2016.
+# Last Change:  10-Jun-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -141,13 +141,6 @@ endif
 # }}}
 
 #------------------------------------------------------------------------------
-# Command Prompt: {{{
-if(USEdefault)
-  window CommandPrompt /^ConsoleWindowClass$/ : Global
-endif
-# }}}
-
-#------------------------------------------------------------------------------
 # CraftLaunch: {{{
 keymap Global
  if(HHKB)
@@ -158,6 +151,31 @@ keymap Global
  endif
  mod Ctrl += !!RCtrl
  key *RCtrl = *Pause
+# }}}
+
+#------------------------------------------------------------------------------
+# Edge: {{{
+if(USEdefault)
+  window Edge ( /ApplicationFrameHost\.exe/ && /Microsoft Edge$/ ) : EmacsEdit
+endif
+# }}}
+
+#------------------------------------------------------------------------------
+# Internet Explorer: {{{
+if(USEdefault)
+  window InternetExplorer /:Internet Explorer_Server$/ : EmacsEdit
+  window IEFrame /:IEFrame/ : EmacsEdit
+endif
+# }}}
+
+#------------------------------------------------------------------------------
+# Office: {{{
+if(USEdefault)
+  window MicrosoftWord /WINWORD\.EXE:.*:_WwG$/ : EmacsEdit
+  window MicrosoftExcel /EXCEL\.EXE:XLMAIN:/ : EmacsEdit
+  window PowerPoint /POWERPNT\.EXE:.*:(paneClassDC|REComboBox20W|RichEdit20W)$/ : EmacsEdit
+  window PowerPoint2 /POWERPNT\.EXE:PP9FrameClass.*/ : EmacsEdit
+endif
 # }}}
 
 #------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 # Ref plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  18-May-2016.
+# Last Change:  24-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -30,6 +30,7 @@
 repo = 'thinca/vim-ref'
 on_map = [['nv', '<Plug>']]
 on_cmd = 'Ref'
+depends = 'wwwrenderer'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -43,10 +44,10 @@ on_source = 'ref'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo = 'Jagua/vim-ref-gene'
+repo = 'eiiches/vim-ref-info'
 on_source = 'ref'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo = 'eiiches/vim-ref-info'
+repo = 'pekepeke/ref-javadoc'
 on_source = 'ref'

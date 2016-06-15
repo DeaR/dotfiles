@@ -1,7 +1,7 @@
 # Operator plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  18-May-2016.
+# Last Change:  01-Jun-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -27,34 +27,7 @@
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo = 'h1mesuke/vim-alignta'
-on_cmd = ['Align', 'Alignta']
-on_map = [['nov', '<Plug>(operator-alignta']]
-depends = 'operator-user'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'tyru/caw.vim'
-on_map = [['nox', '<Plug>'], ['nox', '<Plug>(operator-caw']]
-depends = 'operator-user'
-
-#------------------------------------------------------------------------------
-[[plugins]]
 repo = 'pekepeke/vim-csvutil'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'kana/vim-grex'
-on_cmd = ['Gred', 'Grey']
-on_map = [['nov', '<Plug>(operator-grex']]
-depends = 'operator-user'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'kana/vim-narrow'
-on_cmd = ['Narrow', 'Widen']
-on_map = [['nov', '<Plug>(operator-narrow']]
-depends = 'operator-user'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -152,17 +125,3 @@ depends = 'operator-user'
 repo = 'kana/vim-operator-user'
 on_map = [['nov', '<Plug>(operator']]
 on_func = ['operator#user#define', 'operator#user#define_ex_command', 'operator#user#register', 'operator#user#visual_command_from_wise_name']
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 't9md/vim-quickhl'
-on_cmd = ['QuickhlManualEnable', 'QuickhlManualDisable', 'QuickhlManualList', 'QuickhlManualDump', 'QuickhlManualReset', 'QuickhlManualColors', 'QuickhlManualAdd', 'QuickhlManualDelete', 'QuickhlManualLock', 'QuickhlManualUnlock', 'QuickhlManualLockToggle', 'QuickhlManualLockWindow', 'QuickhlManualUnlockWindow', 'QuickhlManualLockWindowToggle', 'QuickhlCwordEnable', 'QuickhlCwordDisable', 'QuickhlCwordToggle', 'QuickhlTagEnable', 'QuickhlTagDisable', 'QuickhlTagToggle']
-on_map = [['nv', '<Plug>'], ['nov', '<Plug>(operator-quickhl']]
-depends = 'operator-user'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'deris/vim-rengbang'
-on_cmd = ['RengBang', 'RengBangUsePrev', 'RengBangConfirm']
-on_map = [['nov', '<Plug>(operator-rengbang']]
-depends = 'operator-user'

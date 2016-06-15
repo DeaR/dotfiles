@@ -1,7 +1,7 @@
 # CtrlP plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  18-May-2016.
+# Last Change:  27-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -112,7 +112,7 @@ depends = 'ctrlp'
 [[plugins]]
 repo = 'mattn/ctrlp-vimpatches'
 on_cmd = 'CtrlPVimPatches'
-depends = ['ctrlp', 'webapi']
+depends = ['ctrlp', 'open-browser', 'webapi']
 
 #------------------------------------------------------------------------------
 [[plugins]]

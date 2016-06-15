@@ -1,7 +1,7 @@
 # FileType plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  19-May-2016.
+# Last Change:  02-Jun-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -50,14 +50,12 @@ on_map = [['n', '<Plug>(godoc']]
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
 if = 'has("python") || has("python3")'
-# on_ft = ['pyrex', 'python']
 on_cmd = ['JediDebugInfo', 'Pyimport']
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'xolox/vim-lua-ftplugin'
 if = 'has("lua")'
-# on_ft = 'lua'
 on_cmd = ['LuaCheckSyntax', 'LuaCheckGlobals']
 depends = 'xolox'
 
@@ -65,7 +63,6 @@ depends = 'xolox'
 [[plugins]]
 repo = 'osyo-manga/vim-marching'
 if = 'executable("clang")'
-# on_ft = ['c', 'cpp']
 on_cmd = ['MarchingBufferClearCache', 'MarchingDebugLog', 'MarchingDebugClearLog', 'MarchingEnableDebug', 'MarchingDisableDebug', 'MarchingDebugCheck']
 on_map = [['i', '<Plug>']]
 depends = 'vimproc'
@@ -84,13 +81,11 @@ build = '~/.vim/dein/script/omnisharp/build'
 [[plugins]]
 repo = 'c9s/perlomni.vim'
 if = 'executable("perl")'
-# on_ft = 'perl'
 on_func = 'PerlComplete'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'shawncplus/phpcomplete.vim'
-# on_ft = 'php'
 lazy = 0
 
 #------------------------------------------------------------------------------
@@ -101,9 +96,14 @@ depends = 'open-browser'
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repo = 'thinca/vim-qfreplace'
+on_ft = 'qf'
+on_cmd = 'Qfreplace'
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repo = 'osyo-manga/vim-snowdrop'
 if =  'has("python") && executable("clang")'
-# on_ft = ['c', 'cpp']
 on_cmd = ['SnowdropVerify', 'SnowdropEchoClangVersion', 'SnowdropLogs', 'SnowdropClearLogs']
 
 #------------------------------------------------------------------------------
@@ -111,13 +111,13 @@ on_cmd = ['SnowdropVerify', 'SnowdropEchoClangVersion', 'SnowdropLogs', 'Snowdro
 repo = 'ternjs/tern_for_vim'
 name = 'tern'
 if = '(has("python") || has("python3")) && executable("node")'
-# on_ft = 'javascript'
 build = 'npm install'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'syngan/vim-vimlint'
 on_cmd = 'VimLint'
+on_source = 'watchdogs'
 depends = 'vimlparser'
 
 #------------------------------------------------------------------------------
@@ -133,17 +133,18 @@ depends = 'watchdogs'
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'taku25/vim-visualstudio'
-if = 'has("win32")'
+if = 'has("win32") && exists("$VCVARSALL")'
 on_cmd = ['VSCompile', 'VSBuild', 'VSReBuild', 'VSBuildProject', 'VSReBuildProject', 'VSCompileNoWait', 'VSBuildNoWait', 'VSReBuildNoWait', 'VSBuildProjectNoWait', 'VSReBuildProjectNoWait', 'VSSetBuildConfig', 'VSSetPlatform', 'VSCancelBuild', 'VSClean', 'VSOutput', 'VSErorrList', 'VSRun', 'VSDebugRun', 'VSSetStartupProject', 'VSStopDebugRun', 'VSFindSolution1', 'VSFindSolution2', 'VSFindSolutionNoWait1', 'VSFindSolutionNoWait2', 'VSFindProject1', 'VSFindProject2', 'VSFindProjectNoWait1', 'VSFindProjectNoWait2', 'VSFindSymbol', 'VSFindSymbolNoWait', 'VSFindResult1', 'VSFindResult2', 'VSFindSymbolResult', 'VSOpenFile', 'VSGetFile', 'VSAddBreakPoint', 'VSChangeDirectory', 'VSGoToDefinition']
 depends = 'VisualStudioController'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'taku25/VisualStudioController'
-if = 'has("win32")'
+if = 'has("win32") && exists("$VCVARSALL")'
 rtp = ''
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'xolox/vim-misc'
 name = 'xolox'
+if = 'has("lua")'

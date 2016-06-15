@@ -1,7 +1,7 @@
-# SubMode plugins
+# Dein settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  18-May-2016.
+# Last Change:  01-Jun-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -26,37 +26,11 @@
 # }}}
 
 #------------------------------------------------------------------------------
-[[plugins]]
-repo = 'Konfekt/FastFold'
-on_cmd = 'FastFoldUpdate'
-on_map = [['n', '<Plug>'], ['nx', '<Plug>(submode:ff/']]
-on_if = 1
-depends = 'submode'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'kana/vim-repeat'
-on_cmd = 'RepeatDefaultKeyMappings'
-on_map = [['n', '<Plug>'], ['n', '<Plug>(submode:rep/']]
-depends = 'submode'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-# repo = 'kana/vim-submode'
-repo = 'DeaR/vim-submode'
-rev = 'reduce-lhs'
-on_map = [['novic', '<Plug>']]
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'deris/columnjump'
-on_cmd = ['ColumnJumpBackward', 'ColumnJumpForward']
-on_map = [['nov', '<Plug>'], ['nx', '<Plug>(submode:coljmp']]
-depends = 'submode'
-
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 't9md/vim-textmanip'
-on_cmd = ['TextmanipToggleMode', 'TextmanipToggleIgnoreShiftWidth']
-on_map = [['nv', '<Plug>'], ['nov', '<Plug>(operator-textmanip'], ['x', '<Plug>(submode:tm/']]
-depends = ['operator-user', 'submode']
+[ftplugin]
+_ = '''
+if !empty(dein#get('caw'))
+  if expand('<amatch>') ==# 'dosbatch'
+    let b:caw_oneline_comment = 'rem'
+  endif
+endif
+'''

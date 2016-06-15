@@ -6,6 +6,7 @@ tags
 *.elc
 *.fas
 *.pyc
+*.pyd
 *.pyo
 *.luac
 *.zwc

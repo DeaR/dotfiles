@@ -1,7 +1,7 @@
 " Clurin for Python
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  13-May-2016.
+" Last Change:  10-Jun-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,7 +34,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let s:def = get(s:, 'def', [
-\ ['and', 'or'], ['release', 'acquire'],
+\ ['and', 'or'],
 \
 \ ['==', '!=']])
 

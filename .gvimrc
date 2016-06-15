@@ -3,7 +3,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-May-2016.
+" Last Change:  01-Jun-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -47,6 +47,15 @@ function! s:SID() abort
   return s:_SID
 endfunction
 
+" Cached executable
+let s:_executable = {}
+function! s:executable(expr) abort
+  if !has_key(s:_executable, a:expr)
+    let s:_executable[a:expr] = executable(a:expr)
+  endif
+  return s:_executable[a:expr]
+endfunction
+
 " CPU Cores
 function! s:cpucores() abort
   if !exists('s:_cpucores')
@@ -56,18 +65,9 @@ function! s:cpucores() abort
     \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
     \ s:executable('sysctl')          ? system('sysctl hw.ncpu') :
     \ filereadable('/proc/cpuinfo')   ?
-    \   len(filter(readfile('/proc/cpuinfo'), 'v:val =~ "processor"')) : '1')
+    \   len(filter(readfile('/proc/cpuinfo'), 'v:val =~ "processor"')) : 1)
   endif
   return s:_cpucores
-endfunction
-
-" Cached executable
-let s:_executable = {}
-function! s:executable(expr) abort
-  if !has_key(s:_executable, a:expr)
-    let s:_executable[a:expr] = executable(a:expr)
-  endif
-  return s:_executable[a:expr]
 endfunction
 
 " Check japanese
@@ -98,7 +98,7 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" Wrapper: {{{
+" Compatibility: {{{
 " Vim.Compat.has_version
 " 7.4.237  (after 7.4.236) has() not checking for specific patch
 if has('patch-7.4.237')

@@ -1,7 +1,7 @@
 # System plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  18-May-2016.
+# Last Change:  01-Jun-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -47,6 +47,13 @@ repo = 'Shougo/dein.vim'
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repo = 'cohama/vim-hier'
+on_ft = 'qf'
+on_cmd = ['HierUpdate', 'HierClear', 'HierStart', 'HierStop']
+on_event = 'QuickFixCmdPost'
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repo = 'itchyny/vim-highlighturl'
 lazy = 0
 
@@ -86,6 +93,20 @@ on_func = ['PrettyPrint', 'PP']
 
 #------------------------------------------------------------------------------
 [[plugins]]
+repo = 't9md/vim-quickhl'
+on_cmd = ['QuickhlManualEnable', 'QuickhlManualDisable', 'QuickhlManualList', 'QuickhlManualDump', 'QuickhlManualReset', 'QuickhlManualColors', 'QuickhlManualAdd', 'QuickhlManualDelete', 'QuickhlManualLock', 'QuickhlManualUnlock', 'QuickhlManualLockToggle', 'QuickhlManualLockWindow', 'QuickhlManualUnlockWindow', 'QuickhlManualLockWindowToggle', 'QuickhlCwordEnable', 'QuickhlCwordDisable', 'QuickhlCwordToggle', 'QuickhlTagEnable', 'QuickhlTagDisable', 'QuickhlTagToggle']
+on_map = [['nv', '<Plug>'], ['nov', '<Plug>(operator-quickhl']]
+depends = 'operator-user'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'kana/vim-repeat'
+on_cmd = 'RepeatDefaultKeyMappings'
+on_map = [['n', '<Plug>'], ['n', '<Plug>(submode:rep/']]
+depends = 'submode'
+
+#------------------------------------------------------------------------------
+[[plugins]]
 repo = 'osyo-manga/vim-reunions'
 depends = 'vimproc'
 
@@ -106,6 +127,13 @@ on_map = [['nov', '<Plug>']]
 [[plugins]]
 repo = 'thinca/vim-singleton'
 if = 'has("clientserver")'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+# repo = 'kana/vim-submode'
+repo = 'DeaR/vim-submode'
+rev = 'reduce-lhs'
+on_map = [['novic', '<Plug>']]
 
 #------------------------------------------------------------------------------
 [[plugins]]

@@ -1,7 +1,7 @@
 # QuickRun plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  18-May-2016.
+# Last Change:  23-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -34,7 +34,7 @@ on_cmd = 'QuickRun'
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'osyo-manga/quickrun-hook-vcvarsall'
-if = 'has("win32")'
+if = 'has("win32") && exists("$VCVARSALL")'
 on_source = 'quickrun'
 
 #------------------------------------------------------------------------------
@@ -46,5 +46,5 @@ on_source = 'quickrun'
 [[plugins]]
 repo = 'osyo-manga/vim-watchdogs'
 on_cmd = ['WatchdogsRun', 'WatchdogsRunSilent', 'WatchdogsRunSweep']
-depends = ['quickrun', 'shabadou', 'vimlint']
+depends = ['quickrun', 'shabadou']
 on_if = 'empty(&buftype)'

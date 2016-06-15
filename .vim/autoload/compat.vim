@@ -1,7 +1,7 @@
 " Vim compatibility
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-May-2016.
+" Last Change:  27-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -218,7 +218,8 @@ if exists('*systemlist')
 else
   function! compat#systemlist(...) abort
     let r = call('compat#system', a:000)
-    return strlen(r) ? split(r, '\n') : ''
+    return empty(r) ? '' :
+    \ map(split(r, '\n'), 'substitute(v:val, 0, "\\n", "")')
   endfunction
 endif
 " }}}
@@ -292,83 +293,194 @@ if compat#has_patch('7.4.1143')
   function! compat#uniq(...) abort
     return call('uniq', a:000)
   endfunction
-else
-  if !compat#has_patch('7.4.1143')
-    function! s:__f(i1, i2) abort
-      if type(a:i1) == type(function('tr'))
-        echoerr 'E891: Using a Funcref as a Float'
-      elseif type(a:i1) == type('')
-        echoerr 'E892: Using a String as a Float'
-      elseif type(a:i1) == type([])
-        echoerr 'E893: Using a List as a Float'
-      elseif type(a:i1) == type({})
-        echoerr 'E894: Using a Dictionary as a Float'
-      endif
-      if type(a:i2) == type(function('tr'))
-        echoerr 'E891: Using a Funcref as a Float'
-      elseif type(a:i2) == type('')
-        echoerr 'E892: Using a String as a Float'
-      elseif type(a:i2) == type([])
-        echoerr 'E893: Using a List as a Float'
-      elseif type(a:i2) == type({})
-        echoerr 'E894: Using a Dictionary as a Float'
-      endif
-      return a:i1 == a:i2 ? 0 : a:i1 > a:i2 ? 1 : -1
-    endfunction
-  endif
-  if !compat#has_patch('7.4.951')
-    function! s:__N(i1, i2) abort
-      return a:i1 == a:i2 ? 0 : a:i1 > a:i2 ? 1 : -1
-    endfunction
-  endif
-  if !compat#has_patch('7.4.341')
-    function! s:__n(i1, i2) abort
-      let i1 = type(a:i1) == type(0) || type(a:i1) == type(0.0) ? a:i1 : 0
-      let i2 = type(a:i2) == type(0) || type(a:i2) == type(0.0) ? a:i2 : 0
-      return i1 == i2 ? 0 : i1 > i2 ? 1 : -1
-    endfunction
-  endif
-
+elseif compat#has_patch('7.4.951')
   function! compat#sort(list, ...) abort
     let func = get(a:000, 0)
     return sort(a:list,
-    \ func ==# 'n' && exists('*s:__n') ? 's:__n' :
-    \ func ==# 'N' && exists('*s:__N') ? 's:__N' :
-    \ func ==# 'f' && exists('*s:__f') ? 's:__f' :
+    \ func ==# 'f' ? 's:compare_f' :
     \ func)
   endfunction
+  function! compat#uniq(list, ...) abort
+    let func = get(a:000, 0)
+    return uniq(a:list,
+    \ func ==# 'f' ? 's:compare_f' :
+    \ func)
+  endfunction
+elseif compat#has_patch('7.4.341')
+  function! compat#sort(list, ...) abort
+    let func = get(a:000, 0)
+    return sort(a:list,
+    \ func ==# 'N' ? 's:compare_N' :
+    \ func ==# 'f' ? 's:compare_f' :
+    \ func)
+  endfunction
+  function! compat#uniq(list, ...) abort
+    let func = get(a:000, 0)
+    return uniq(a:list,
+    \ func ==# 'N' ? 's:compare_N' :
+    \ func ==# 'f' ? 's:compare_f' :
+    \ func)
+  endfunction
+elseif compat#has_patch('7.4.218')
+  function! compat#sort(list, ...) abort
+    let func = get(a:000, 0)
+    return sort(a:list,
+    \ func ==# '1' ? 's:compare_1' :
+    \ func ==# 'i' ? 's:compare_1' :
+    \ func ==# 'n' ? 's:compare_n' :
+    \ func ==# 'N' ? 's:compare_N' :
+    \ func ==# 'f' ? 's:compare_f' :
+    \ func)
+  endfunction
+  function! compat#uniq(list, ...) abort
+    let func = get(a:000, 0)
+    return uniq(a:list,
+    \ func ==# '1' ? 's:compare_1' :
+    \ func ==# 'i' ? 's:compare_1' :
+    \ func ==# 'n' ? 's:compare_n' :
+    \ func ==# 'N' ? 's:compare_N' :
+    \ func ==# 'f' ? 's:compare_f' :
+    \ func)
+  endfunction
+else
+  function! compat#sort(list, ...) abort
+    let func = get(a:000, 0)
+    return sort(a:list,
+    \ func ==# '1' ? 's:compare_1' :
+    \ func ==# 'i' ? 's:compare_1' :
+    \ func ==# 'n' ? 's:compare_n' :
+    \ func ==# 'N' ? 's:compare_N' :
+    \ func ==# 'f' ? 's:compare_f' :
+    \ func)
+  endfunction
+  function! compat#uniq(list, ...) abort
+    let func = get(a:000, 0)
+    let r = a:list[0]
+    for l in a:list[1:]
+      if call(
+      \ empty(func)  ? 's:compare_0' :
+      \ func ==# '1' ? 's:compare_1' :
+      \ func ==# 'i' ? 's:compare_1' :
+      \ func ==# 'n' ? 's:compare_n' :
+      \ func ==# 'N' ? 's:compare_N' :
+      \ func ==# 'f' ? 's:compare_f' :
+      \ func, [r[-1], l])
+        call add(r, l)
+      endif
+    endfor
+    return r
+  endfunction
+endif
 
-  if compat#has_patch('7.4.218')
-    function! compat#uniq(list, ...) abort
-      let func = get(a:000, 0)
-      return uniq(a:list,
-      \ func ==# 'n' && exists('*s:__n') ? 's:__n' :
-      \ func ==# 'N' && exists('*s:__N') ? 's:__N' :
-      \ func ==# 'f' && exists('*s:__f') ? 's:__f' :
-      \ func)
-    endfunction
-  else
-    function! compat#uniq(list, ...) abort
-      let func = get(a:000, 0)
-      let r = a:list[0]
-      for l in a:list[1:]
-        if empty(func)
-          let b = r[-1] ==# l
-        elseif func ==# '1' || func ==# 'i'
-          let b = r[-1] ==? l
-        else
-          let b = call(
-          \ func ==# 'n' && exists('*s:__n') ? 's:__n' :
-          \ func ==# 'N' && exists('*s:__N') ? 's:__N' :
-          \ func ==# 'f' && exists('*s:__f') ? 's:__f' :
-          \ func, [r[-1], l])
-        endif
-        if b
-          call add(r, l)
+if !compat#has_patch('7.4.218')
+  function! s:compare_0(i1, i2) abort
+    return i1 ==# i2 ? 0 : i1 ># i2 ? 1 : -1
+  endfunction
+endif
+if !compat#has_patch('7.4.341')
+  function! s:compare_1(i1, i2) abort
+    return i1 ==? i2 ? 0 : i1 >? i2 ? 1 : -1
+  endfunction
+  function! s:compare_n(i1, i2) abort
+    let i1 = type(a:i1) == type(0) || type(a:i1) == type(0.0) ? a:i1 : 0
+    let i2 = type(a:i2) == type(0) || type(a:i2) == type(0.0) ? a:i2 : 0
+    return i1 == i2 ? 0 : i1 > i2 ? 1 : -1
+  endfunction
+endif
+if !compat#has_patch('7.4.951')
+  function! s:compare_N(i1, i2) abort
+    let i1 = a:i1 != type('') ? a:i1 : compat#str2nr(a:i1,
+    \ a:i1 =~? '0x\x\+'   ? 16 :
+    \ a:i1 =~? '0\d\+'    ? 8 :
+    \ a:i1 =~? '0b[01]\+' ? 2 : 10)
+    let i2 = a:i2 != type('') ? a:i2 : compat#str2nr(a:i2,
+    \ a:i2 =~? '0x\x\+'   ? 16 :
+    \ a:i2 =~? '0\d\+'    ? 8 :
+    \ a:i2 =~? '0b[01]\+' ? 2 : 10)
+    return i1 == i2 ? 0 : i1 > i2 ? 1 : -1
+  endfunction
+endif
+if !compat#has_patch('7.4.1143')
+  function! s:compare_f(i1, i2) abort
+    if type(a:i1) == type(function('tr'))
+      echoerr 'E891: Using a Funcref as a Float'
+    elseif type(a:i1) == type('')
+      echoerr 'E892: Using a String as a Float'
+    elseif type(a:i1) == type([])
+      echoerr 'E893: Using a List as a Float'
+    elseif type(a:i1) == type({})
+      echoerr 'E894: Using a Dictionary as a Float'
+    endif
+    if type(a:i2) == type(function('tr'))
+      echoerr 'E891: Using a Funcref as a Float'
+    elseif type(a:i2) == type('')
+      echoerr 'E892: Using a String as a Float'
+    elseif type(a:i2) == type([])
+      echoerr 'E893: Using a List as a Float'
+    elseif type(a:i2) == type({})
+      echoerr 'E894: Using a Dictionary as a Float'
+    endif
+    return a:i1 == a:i2 ? 0 : a:i1 > a:i2 ? 1 : -1
+  endfunction
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" str2nr(): {{{
+" 7.4.1027  No support for binary numbers.
+if compat#has_patch('7.4.1027')
+  function! compat#str2nr(...)
+    return call('str2nr', a:000)
+  endfunction
+else
+  function! compat#str2nr(expr, ...)
+    let base = get(a:000, 0, 10)
+    if base == 2
+      let r = 0
+      for c in split(matchstr(a:expr, '0b\zs[01]\+\c'), '\zs')
+        let r = r * 2
+        if c == '1'
+          let r += 1
         endif
       endfor
       return r
-    endfunction
-  endif
+    else
+      return call('str2nr', [a:expr] + a:000)
+    endif
+  endfunction
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" resolve(): {{{
+" FIXME
+if has('win32') && executable('realpath') && executable('cygpath')
+  function! compat#resolve(...) abort
+    return system('realpath ' . shellescape(call('resolve', a:000)) .
+    \ ' | cygpath -w -f -')
+  endfunction
+else
+  function! compat#resolve(...) abort
+    return call('resolve', a:000)
+  endfunction
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" expand(): {{{
+if exists('+shellslash')
+  function! compat#expand_slash(...) abort
+    let save_ssl = &shellslash
+    try
+      set shellslash
+      return call('expand', a:000)
+    finally
+      let &shellslash = save_ssl
+    endtry
+  endfunction
+else
+  function! compat#expand_slash(...) abort
+    return call('expand', a:000)
+  endfunction
 endif
 " }}}

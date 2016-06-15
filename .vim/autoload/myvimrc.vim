@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-May-2016.
+" Last Change:  10-Jun-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -43,6 +43,15 @@ function! s:SID() abort
   return s:_SID
 endfunction
 
+" Cached executable
+let s:_executable = {}
+function! s:executable(expr) abort
+  if !has_key(s:_executable, a:expr)
+    let s:_executable[a:expr] = executable(a:expr)
+  endif
+  return s:_executable[a:expr]
+endfunction
+
 " CPU Cores
 function! s:cpucores() abort
   if !exists('s:_cpucores')
@@ -52,18 +61,9 @@ function! s:cpucores() abort
     \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
     \ s:executable('sysctl')          ? system('sysctl hw.ncpu') :
     \ filereadable('/proc/cpuinfo')   ?
-    \   len(filter(readfile('/proc/cpuinfo'), 'v:val =~ "processor"')) : '1')
+    \   len(filter(readfile('/proc/cpuinfo'), 'v:val =~ "processor"')) : 1)
   endif
   return s:_cpucores
-endfunction
-
-" Cached executable
-let s:_executable = {}
-function! s:executable(expr) abort
-  if !has_key(s:_executable, a:expr)
-    let s:_executable[a:expr] = executable(a:expr)
-  endif
-  return s:_executable[a:expr]
 endfunction
 
 " Check japanese
@@ -94,7 +94,7 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" Wrapper: {{{
+" Compatibility: {{{
 " Vim.Compat.has_version
 " 7.4.237  (after 7.4.236) has() not checking for specific patch
 if has('patch-7.4.237')
@@ -135,13 +135,17 @@ endfunction
 "------------------------------------------------------------------------------
 " Common: {{{
 " Split Nicely
-function! myvimrc#split_nicely_expr() abort
+function! myvimrc#split_direction() abort
   return &columns < 160
 endfunction
 " }}}
 
 "------------------------------------------------------------------------------
 " Command Line: {{{
+function! s:check_blank()
+  return col('.') == 1 && empty(getline('.'))
+endfunction
+
 function! myvimrc#cmdwin_enter(type) abort
   let s:save_bs = &backspace
   set backspace=
@@ -160,9 +164,9 @@ function! myvimrc#cmdwin_enter(type) abort
   endif
 
   inoremap <buffer><silent><expr> <C-H>
-  \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<C-H>'
+  \ col('.') == 1 && empty(getline('.')) ? '<Esc>:<C-U>quit<CR>' : '<C-H>'
   inoremap <buffer><silent><expr> <BS>
-  \ col('.') == 1 && getline('.') == '' ? '<Esc>:<C-U>quit<CR>' : '<BS>'
+  \ col('.') == 1 && empty(getline('.')) ? '<Esc>:<C-U>quit<CR>' : '<BS>'
 
   nnoremap <buffer><silent> q :<C-U>quit<CR>
 endfunction
@@ -185,24 +189,6 @@ function! myvimrc#escape_key() abort
     call compat#doautocmd('<nomodeline>', 'User', 'EscapeKey')
   endif
   return "\<Esc>:\<C-U>nohlsearch\<CR>"
-endfunction
-" }}}
-
-"------------------------------------------------------------------------------
-" Search: {{{
-function! myvimrc#search_forward_expr() abort
-  return exists('v:searchforward') ? v:searchforward : 1
-endfunction
-" }}}
-
-"------------------------------------------------------------------------------
-" Leader Prefix: {{{
-function! myvimrc#expand(expr, ...) abort
-  let nosuf = get(a:000, 0)
-  let list  = get(a:000, 1)
-  return expand(a:expr .
-  \ (exists('+shellslash') && !&shellslash ? ':gs?\\?/?' : ''),
-  \ nosuf, list)
 endfunction
 " }}}
 
@@ -257,10 +243,12 @@ endfunction
 "------------------------------------------------------------------------------
 " BOL Toggle: {{{
 function! myvimrc#bol_toggle() abort
-  return col('.') <= 1 || col('.') > match(getline('.'), '^\s*\zs') + 1 ? '^' : '0'
+  return col('.') <= 1 || col('.') > match(getline('.'), '^\s*\zs') + 1 ?
+  \ '^' : '0'
 endfunction
 function! myvimrc#eol_toggle() abort
-  return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ? '$' : 'g_'
+  return col('.') < col('$') - (mode() !~# "[vV\<C-V>]" ? 1 : 0) ?
+  \ '$' : 'g_'
 endfunction
 " }}}
 
@@ -299,47 +287,55 @@ endfunction
 " Windows Shell: {{{
 if has('win32')
   function! myvimrc#get_shell() abort
-    return [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote]
+    return [&shell, &shellcmdflag, &shellquote, &shellxquote, &shellslash]
   endfunction
   function! myvimrc#set_shell(...) abort
-    let value = get(a:000, 0, [])
-    if empty(value)
-      set shell& shellslash& shellcmdflag& shellquote& shellxquote&
+    if a:0 == 5
+      let [&shell, &shellcmdflag, &shellquote, &shellxquote, &shellslash] =
+      \ a:000
     else
-      let [&shell, &shellslash, &shellcmdflag, &shellquote, &shellxquote] = value
+      set shell& shellcmdflag& shellquote& shellxquote& shellslash&
     endif
   endfunction
 
-  function! myvimrc#cmdescape(string, ...) abort
-    let special = get(a:000, 0)
-    let save_shell = myvimrc#get_shell()
+  let s:save_shell = []
+  function! myvimrc#save_shell() abort
+    call add(s:save_shell, myvimrc#get_shell())
+  endfunction
+  function! myvimrc#restore_shell(...) abort
+    if !empty('s:save_shell')
+      call myvimrc#set_shell(s:save_shell[-1])
+      call remove(s:save_shell, -1)
+    endif
+  endfunction
+
+  function! myvimrc#cmdescape(...) abort
+    call myvimrc#save_shell()
     try
       call myvimrc#set_shell()
-      return shellescape(a:string, special)
+      return call('shellescape', a:000)
     finally
-      call myvimrc#set_shell(save_shell)
+      call myvimrc#restore_shell()
     endtry
   endfunction
   function! myvimrc#cmdsource(...) abort
-    let save_shell = myvimrc#get_shell()
-    let save_isi   = &isident
+    let save_isi = &isident
+    call myvimrc#save_shell()
     try
       call myvimrc#set_shell()
-      let env = system(join(a:000) . ' & set')
+      let out = split(system(join(a:000) . ' & set'), '\n')
 
       set isident+=(,)
-      for [name; rest] in map(split(env, '\n'), 'split(v:val, "=")')
+      for [name; rest] in map(out, 'split(v:val, "=")')
         let new = join(rest, '=')
-        execute 'let old=$' . name
+        let old = expand('$' . name)
         if new != old
-          let cmd = 'let $' . name . '=' . string(new)
-          echo cmd
-          execute cmd
+          execute 'let $' . name . '=' . string(new)
         endif
       endfor
     finally
-      call myvimrc#set_shell(save_shell)
       let &isident = save_isi
+      call myvimrc#restore_shell()
     endtry
   endfunction
 endif
@@ -368,6 +364,33 @@ function! myvimrc#quickfix_toggle(type, height) abort
   endif
 endfunction
 " }}}
+
+"------------------------------------------------------------------------------
+" From CmdEx: {{{
+function! myvimrc#undiff()
+  diffoff
+  setlocal scrollbind< cursorbind< wrap< foldmethod< foldcolumn<
+  doautocmd FileType
+endfunction
+" }}}
+
+"------------------------------------------------------------------------------
+" From Example: {{{
+function! myvimrc#difforig()
+  let save_ft = &filetype
+  try
+    vertical new
+    setlocal buftype=nofile
+    read ++edit #
+    0d_
+  finally
+    let &filetype = save_ft
+  endtry
+  diffthis
+  wincmd p
+  diffthis
+endfunction
+" }}}
 " }}}
 
 "==============================================================================
@@ -388,6 +411,16 @@ function! myvimrc#auto_mkdir(dir, force) abort
     let dir = (has('iconv') && &termencoding != '') ?
     \ iconv(a:dir, &encoding, &termencoding) : a:dir
     call mkdir(dir, 'p')
+  endif
+endfunction
+" }}}
+
+"------------------------------------------------------------------------------
+" Quick Close: {{{
+function! myvimrc#quick_close()
+  if (&readonly || !&modifiable) && empty(maparg('q', 'n'))
+    nnoremap <buffer><silent><expr> q
+    \ winnr('$') != 1 ? ':<C-U>close<CR>' : 'q'
   endif
 endfunction
 " }}}
@@ -425,6 +458,16 @@ function! myvimrc#set_qflisttype() abort
   let b:qflisttype = s:get_qflisttype()
 endfunction
 " }}}
+" }}}
+
+"------------------------------------------------------------------------------
+" From Example: {{{
+function! myvimrc#jump_to_last_position(ignore_ft)
+  if line('.') == 1 && line("'\"") > 1 && line("'\"") <= line('$') &&
+  \ index(a:ignore_ft, expand('<amatch>')) < 0
+    execute 'normal! g`"'
+  endif
+endfunction
 " }}}
 
 "==============================================================================
@@ -470,6 +513,17 @@ if s:dein_tap('clurin')
     let caps = a:str[-2:] =~# '[A-Z]'
     return string(num) . s:ordinal_suffixes[caps][abs(num % 10)]
   endfunction
+
+  function! myvimrc#clurin_bypass(str, cnt, def) abort
+    echomsg string(a:str)
+    echomsg string(a:def)
+    if a:cnt >= 0
+      call feedkeys(a:cnt . "\<C-A>", 'n')
+    else
+      call feedkeys((-a:cnt) . "\<C-X>", 'n')
+    endif
+    return a:str
+  endfunction
 endif
 " }}}
 
@@ -495,31 +549,34 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" NeoComplete: {{{
-if s:dein_tap('neocomplete')
-  function! myvimrc#check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1] =~ '\s'
+" Localrc: {{{
+if s:dein_tap('localrc')
+  function! myvimrc#localrc_undo() abort
+    if exists('b:undo_localrc')
+      execute b:undo_localrc
+      unlet! b:undo_localrc
+    endif
   endfunction
 
-  function! myvimrc#cmdwin_enter_neocomplete() abort
-    inoremap <buffer><expr> <Tab>
-    \ pumvisible() ?
-    \   '<C-N>' :
-    \   myvimrc#check_back_space() ?
-    \     '<Tab>' :
-    \     neocomplete#start_manual_complete()
-    inoremap <buffer><expr> <S-Tab>
-    \ pumvisible() ?
-    \   '<C-P>' :
-    \   neocomplete#start_manual_complete()
+  function! myvimrc#localrc_undo_filetype() abort
+    if exists('b:undo_ftlocalrc')
+      execute b:undo_ftlocalrc
+      unlet! b:undo_ftlocalrc
+    endif
+  endfunction
+endif
+" }}}
 
+"------------------------------------------------------------------------------
+" NeoComplete: {{{
+if s:dein_tap('neocomplete')
+  function! myvimrc#cmdwin_enter_neocomplete() abort
     inoremap <buffer><silent><expr> <C-H>
-    \ col('.') == 1 && getline('.') == '' ?
+    \ col('.') == 1 && empty(getline('.')) ?
     \   '<Esc>:<C-U>quit<CR>' :
     \   (neocomplete#smart_close_popup() . '<C-H>')
     inoremap <buffer><silent><expr> <BS>
-    \ col('.') == 1 && getline('.') == '' ?
+    \ col('.') == 1 && empty(getline('.')) ?
     \   '<Esc>:<C-U>quit<CR>' :
     \   (neocomplete#smart_close_popup() . '<BS>')
   endfunction
@@ -531,11 +588,13 @@ endif
 if s:dein_tap('operator-star')
   function! s:operator_star_post() abort
     normal! zv
-    let cmd = 'let &hls=&hls'
-    if !empty(dein#get('anzu'))
-      let cmd .= '|AnzuUpdateSearchStatusOutput'
+    if &hlsearch
+      nnoremap <silent> <SID>(hlsearch) :<C-U>set hlsearch<CR>
+      call feedkeys("\<SNR>" . s:SID() . '_(hlsearch)')
     endif
-    call feedkeys(":\<C-U>" . cmd . "\<CR>", 'n')
+    if exists('#User#OperatorStarPost')
+      call compat#doautocmd('<nomodeline>', 'User', 'OperatorStarPost')
+    endif
   endfunction
 
   function! myvimrc#operator_star_star(wiseness) abort
@@ -577,7 +636,7 @@ if s:dein_tap('operator-tabular')
     endif
 
     call operator#tabular#{s:operator_tabular_kind . 
-    \ (a:0 && a:1 ? '#untabularize_' : '#tabularize_') .
+    \ (get(a:000, 1) ? '#untabularize_' : '#tabularize_') .
     \ s:operator_tabular_ext}(a:motion_wise)
   endfunction
 
@@ -642,6 +701,19 @@ if s:dein_tap('operator-user')
   endfunction
   function! myvimrc#operator_lgrep(motion_wise) abort
     call s:operator_grep(a:motion_wise, 1)
+  endfunction
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" QuickRun: {{{
+if s:dein_tap('quickrun')
+  let g:quickrun_config =
+  \ get(g:, 'quickrun_config', {})
+
+  function! myvimrc#extend_quickrun_config(type, config) abort
+    let g:quickrun_config[a:type] = get(g:quickrun_config, a:type, {})
+    return extend(g:quickrun_config[a:type], a:config)
   endfunction
 endif
 " }}}
@@ -726,6 +798,17 @@ if s:dein_tap('textmanip')
   function! myvimrc#operator_textmanip_move_up(motion_wise) abort
     call s:operator_textmanip(
     \ a:motion_wise, "\<Plug>(textmanip-move-up)")
+  endfunction
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" YankRound: {{{
+if s:dein_tap('yankround')
+  function! myvimrc#yankround_escape()
+    if exists('#yankround_rounder#InsertEnter')
+      call compat#doautocmd('<nomodeline>', 'yankround_rounder', 'InsertEnter')
+    endif
   endfunction
 endif
 " }}}

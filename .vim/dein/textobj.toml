@@ -1,7 +1,7 @@
 # TextObj plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  18-May-2016.
+# Last Change:  15-Jun-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -140,8 +140,8 @@ depends = 'textobj-user'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo = 'hchbaw/textobj-motionmotion.vim'
-on_cmd = 'TextobjMotionmotionDefaultKeyMappings'
+repo = 'thalesmello/vim-textobj-methodcall'
+on_cmd = 'TextobjMethodcallDefaultKeyMappings'
 on_map = [['ov', '<Plug>']]
 depends = 'textobj-user'
 

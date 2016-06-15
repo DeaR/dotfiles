@@ -1,7 +1,7 @@
 # Network plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  18-May-2016.
+# Last Change:  24-May-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -53,4 +53,8 @@ on_map = [['nv', '<Plug>']]
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'mattn/webapi-vim'
-if = 'executable("curl") || executable("wget")'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'mattn/wwwrenderer-vim'
+depends = 'webapi'

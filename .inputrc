@@ -1,7 +1,7 @@
 # Shell input settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Aug-2013.
+# Last Change:  07-Jun-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -25,5 +25,17 @@
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-set completion-ignore-case on
-set bell-style none
+$if Bash
+  set bell-style none
+  set colored-stats on
+  set completion-ignore-case on
+  set completion-map-case on
+  set menu-complete-display-prefix off
+  set show-all-if-ambiguous on
+  set show-all-if-unmodified on
+  set skip-completed-text on
+  set visible-stats on
+
+  TAB: menu-complete
+  "\e[Z": "\e-1\C-i"
+$endif

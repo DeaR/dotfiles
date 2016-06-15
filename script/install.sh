@@ -3,7 +3,7 @@
 # Install DotFiles
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  18-May-2016.
+# Last Change:  07-Jun-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -27,80 +27,96 @@
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
 
-mklink_f() {
-  [ -f "~/$1" ] || ln -s "$(cd $(dirname $1) && pwd)/$(basename $1)" "~/$1"
-}
-
-mklink_d() {
-  [ -d "~/$1" ] || ln -s "$(cd $(dirname $1) && pwd)/$(basename $1)" "~/$1"
+mklink() {
+  if [ $# -lt 2 ]; then
+    mklink "$1" "${HOME}/$1"
+  elif [ ! -e "$2" ]; then
+    ln -s "$(cd $(dirname $1) && pwd)/$(basename $1)" "$2"
+  fi
 }
 
 dein() {
-  if [ ! -d "$1" ]; then
+  if [ ! -e "$1" ]; then
+    read -p "Install dein.vim? (y/N): " REPLY
+    [ "${REPLY}" != "y" -a "${REPLY}" != "Y" ] && return
+
     mkdir -p "$1"
-    git clone https://github.com/DeaR/dein.vim.git "$1"
+    git clone https://github.com/Shougo/dein.vim.git "$1"
   fi
 }
 
-pushd $(dirname $0)/..
+cd $(dirname $0)/..
 
-if [ -n "$CACHE" ]; then
-  if [ -n "$XDG_CACHE_HOME" ]; then
-    set CACHE="$XDG_CACHE_HOME"
-  else
-    set CACHE="~/.cache"
-  fi
+if [ -z "${XDG_DATA_HOME}" ]; then
+  XDG_DATA_HOME="${HOME}/.local/share"
 fi
-[ -d "$CACHE" ] || mkdir "$CACHE"
+if [ -z "${XDG_CACHE_HOME}" ]; then
+  XDG_CACHE_HOME="${HOME}/.cache"
+fi
+if [ -z "${XDG_CONFIG_HOME}" ]; then
+  XDG_CONFIG_HOME="${HOME}/.config"
+fi
+[ -d "${XDG_DATA_HOME}" ]   || mkdir -p "${XDG_DATA_HOME}"
+[ -d "${XDG_CACHE_HOME}" ]  || mkdir -p "${XDG_CACHE_HOME}"
+# [ -d "${XDG_CONFIG_HOME}" ] || mkdir -p "${XDG_CONFIG_HOME}"
+mklink .config "${XDG_CONFIG_HOME}"
+
+# Bash
+if which bash >/dev/null 2>&1; then
+  mklink .bash.d
+  mklink .bash_profile
+  mklink .bashrc
+  mklink .inputrc
+fi
 
 # ColorDiff
-if which colordiff > /dev/null; then
-  mklink_f .colordiffrc
+if which colordiff >/dev/null 2>&1; then
+  mklink .colordiffrc
 fi
 
 # Git
-if which git > /dev/null; then
-  mklink_f .gitconfig
-  mklink_f .gitignore
+if which git >/dev/null 2>&1; then
+  mklink .gitconfig
+  mklink .gitignore
 fi
 
 # Mercurial
-if which hg > /dev/null; then
-  mklink_f .hgignore
-  mklink_f .hgrc
+if which hg >/dev/null 2>&1; then
+  mklink .hgignore
+  mklink .hgrc
 fi
 
 # NYAGOS
-# if which nyagos > /dev/null; then
-#   mklink_d .nyagos.d
-#   mklink_f .nyagos
+# if which nyagos >/dev/null 2>&1; then
+#   mklink .nyagos.d
+#   mklink .nyagos
 # fi
 
 # Nodoka
-# if which nodoka > /dev/null; then
-#   mklink_d .nodoka.d
-#   mklink_f .nodoka
+# if which nodoka >/dev/null 2>&1; then
+#   mklink .nodoka.d
+#   mklink .nodoka
 # fi
 
 # Screen
-if which screen > /dev/null; then
-  mklink_f .screenrc
+if which screen >/dev/null 2>&1; then
+  mklink .screenrc
 fi
 
 # tmux
-if which tmux > /dev/null; then
-  mklink_f .tmux.conf
+if which tmux >/dev/null 2>&1; then
+  mklink .tmux.conf
 fi
 
 # Vim
-if which gvim > /dev/null; then
-  mklink_f .gvimrc
+if which gvim >/dev/null 2>&1; then
+  mklink .gvimrc
 fi
-if which vim > /dev/null; then
-  mklink_d .vim
-  mklink_f .vimrc
+if which vim >/dev/null 2>&1; then
+  mklink .vim
+  mklink .vimrc
 
-  which git > /dev/null && dein "$CACHE/dein/repos/github.com/Shougo/dein.vim"
+  which git >/dev/null 2>&1 && dein "${XDG_DATA_HOME}/dein/repos/github.com/Shougo/dein.vim"
 fi
 
-popd
+cd -

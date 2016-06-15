@@ -1,7 +1,7 @@
 # GNU screen settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  29-Oct-2015.
+# Last Change:  07-Jun-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -30,7 +30,7 @@
 altscreen on
 attrcolor b ".I"
 autodetach on
-bell_msg "Bell in window %"
+bell_msg ""
 defbce on
 defscrollback 10000
 escape ^Zz

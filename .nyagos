@@ -1,7 +1,7 @@
 -- NYAGOS settings
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  12-May-2016.
+-- Last Change:  15-Jun-2016.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -27,19 +27,35 @@
 
 -------------------------------------------------------------------------------
 -- Pre Init: {{{
-local home  = nyagos.getenv('HOME') or nyagos.getenv('USERPROFILE')
-local arch  = nyagos.getenv('PROGRAMFILES(X86)') and true or false
-local pf64  = nyagos.getenv('PROGRAMW6432')      or nyagos.getenv('PROGRAMFILES')
-local pf32  = nyagos.getenv('PROGRAMFILES(X86)') or nyagos.getenv('PROGRAMFILES')
-local prof  = nyagos.getenv('USERPROFILE')
-local cache = nyagos.getenv('CACHE') or nyagos.getenv('XDG_CACHE_HOME') or (home .. '\\.cache')
+local home = nyagos.getenv('HOME') or nyagos.getenv('USERPROFILE')
+local prof = nyagos.getenv('USERPROFILE')
+local arch = nyagos.getenv('PROGRAMFILES(X86)') and true or false
+local pf64 =
+  nyagos.getenv('PROGRAMW6432')      or nyagos.getenv('PROGRAMFILES')
+local pf32 =
+  nyagos.getenv('PROGRAMFILES(X86)') or nyagos.getenv('PROGRAMFILES')
+
 set {
-  HOME  = home,
-  CACHE = cache,
+  HOME = home,
+
+  XDG_DATA_HOME   =
+    nyagos.getenv('XDG_DATA_HOME')   or (home .. '\\.local\\share'),
+  XDG_CACHE_HOME  =
+    nyagos.getenv('XDG_CACHE_HOME')  or (home .. '\\.cache'),
+  XDG_CONFIG_HOME =
+    nyagos.getenv('XDG_CONFIG_HOME') or (home .. '\\.config'),
 }
 
+local function ext(fname)
+  local p = nyagos.which(fname)
+  return p and nyagos.stat(p).name or fname
+end
+-- }}}
+
+-------------------------------------------------------------------------------
+-- Fix nyagos.lua: {{{
 local function include(fname)
-  local chank, err = loadfile(fname)
+  local chank, err = nyagos.loadfile(fname)
   if err then
     print(err)
   elseif chank then
@@ -52,9 +68,15 @@ local function include(fname)
   end
 end
 
-local function ext(fname)
-  local p = nyagos.which(fname)
-  return p and nyagos.stat(p).name or ''
+local org_use = use
+function use(name)
+  local name = string.gsub(name, '%.lua$', '') .. '.lua'
+  local script = nyagos.pathjoin(home, '.nyagos.d', name)
+  if nyagos.stat(script) then
+    include(script)
+  else
+    org_use(name)
+  end
 end
 -- }}}
 
@@ -63,7 +85,7 @@ end
 set {
   TZ   = 'JST-09',
   LANG = 'C',
-  TERM = 'cygwin',
+  TERM = 'msys',
 }
 
 if nyagos.which('vim') then
@@ -94,7 +116,7 @@ if nyagos.which('less') then
   set {
     LESS         = '-r',
     LESSCHARSET  = 'utf-8',
-    LESSHISTFILE = cache .. '\\.lesshst',
+    LESSHISTFILE = '%XDG_CACHE_HOME%\\lesshst',
   }
   if nyagos.which('lesspipe') then
     set {
@@ -135,75 +157,114 @@ end
 
 -------------------------------------------------------------------------------
 -- Catalog: {{{
-use "dollar"
+use 'autocd'
+use 'dollar'
 if nyagos.which('peco') then
-  use "peco"
+  use 'peco'
 end
+
+-- use 'ignoreeof'
+use 'vcvars'
 -- }}}
 
 -------------------------------------------------------------------------------
 -- Prompt: {{{
-share.__prompt = nyagos.prompt
 nyagos.prompt = function(template)
   local user = nyagos.getenv('USERNAME')
   local host = nyagos.getenv('USERDOMAIN')
   local home = nyagos.getenv('HOME') or nyagos.getenv('USERPROFILE')
-  local path = nyagos.getwd():gsub(home, '~')
-  local output, err = nyagos.raweval('net', 'session')
+  local pat  = '^' .. home:gsub('[().%%+-*?%[%]^$]', '%%%0')
+  local cwd  = nyagos.netdrivetounc(nyagos.getwd()):gsub(pat, '~')
+  local _, err = nyagos.raweval('net', 'session')
   local root = err and '$$' or '#'
-  return share.__prompt('$e[32;40;1m' .. user .. '@' .. host ..
-    ' $e[33;40;1m' .. path .. '$e[0m\n' .. root .. ' ')
+  return nyagos.default_prompt(
+    '$e[32;1m' .. user .. '@' .. host ..
+    ' $e[33;1m' .. cwd .. '\n$e[m' .. root .. ' ')
 end
 -- }}}
 
 -------------------------------------------------------------------------------
 -- Su: {{{
-if nyagos.stat(prof .. '\\Apps\\ckw') then
-  share.__su    = nyagos.getalias('su')
-  share.__clone = nyagos.getalias('clone')
-  alias {
-    su = function()
-      local arch = nyagos.getenv('PROGRAMFILES(X86)') and 'x64' or 'x86'
-      local status, err = nyagos.shellexecute('runas',
-        nyagos.getenv('USERPROFILE') .. '\\Apps\\ckw\\' .. arch .. '\\ckw.exe')
-      if not status and _su then
-        share.__su()
-      else
-        assert(status, err)
-      end
-    end,
-    clone = function()
-      local arch = nyagos.getenv('PROGRAMFILES(X86)') and 'x64' or 'x86'
-      local status, err = nyagos.shellexecute('open',
-        nyagos.getenv('USERPROFILE') .. '\\Apps\\ckw\\' .. arch .. '\\ckw.exe')
-      if not status and _clone then
-        share.__clone()
-      else
-        assert(status, err)
-      end
-    end,
-  }
+share.org_sudo  = nyagos.alias.sudo
+share.org_clone = share._clone
+share._clone = function(action)
+  local prof = nyagos.getenv('USERPROFILE')
+  local arch = nyagos.getenv('PROGRAMFILES(X86)') and 'x64' or 'x86'
+  local ckw  = prof .. '\\Apps\\ckw-mod-0.9.1-mod-r3_' .. arch .. '\\ckw.exe'
+  local cwd  = nyagos.netdrivetounc(nyagos.getwd())
+  local args = '-cd "' .. cwd .. '"'
+  local status, err = nyagos.shellexecute(action, ckw, args)
+  if not status and string.match(err, '^Error%(5%)') then
+    status, err = share.org_clone(action)
+  end
+  return status, err
 end
+alias {
+  sudo = function(args)
+    if #args <= 0 then
+      assert(share._clone('runas'))
+      return
+    end
+    local prof = nyagos.getenv('USERPROFILE')
+    local arch = nyagos.getenv('PROGRAMFILES(X86)') and 'x64' or 'x86'
+    local ckw  = prof .. '\\Apps\\ckw-mod-0.9.1-mod-r3_' .. arch .. '\\ckw.exe'
+    local cwd  = nyagos.netdrivetounc(nyagos.getwd())
+    local args = '-cd "' .. cwd .. '" -e "' .. table.concat(args, ' ') .. '"'
+    local status, err = nyagos.shellexecute('runas', ckw, args)
+    if not status and string.match(err, '^Error%(5%)') then
+      share.org_sudo()
+    end
+  end,
+}
 -- }}}
 
 -------------------------------------------------------------------------------
 -- Less TailF: {{{
 if nyagos.which('less') then
-  nyagos.alias.ltail = function(args)
-    local o = nyagos.getenv('LESSOPEN')
-    local c = nyagos.getenv('LESSCLOSE')
-    nyagos.setenv('LESSOPEN')
-    nyagos.setenv('LESSCLOSE')
-    nyagos.exec('less +F ' .. table.concat(args, ' '))
-    nyagos.setenv('LESSOPEN', o)
-    nyagos.setenv('LESSCLOSE', c)
-  end
+  alias {
+    ltail = function(args)
+      local o = nyagos.getenv('LESSOPEN')
+      local c = nyagos.getenv('LESSCLOSE')
+      nyagos.setenv('LESSOPEN')
+      nyagos.setenv('LESSCLOSE')
+      nyagos.exec('less +F ' .. table.concat(args.rawargs, ' '))
+      nyagos.setenv('LESSOPEN', o)
+      nyagos.setenv('LESSCLOSE', c)
+    end
+  }
 end
 -- }}}
 
 -------------------------------------------------------------------------------
--- VC Vars: {{{
-include(home .. '\\.nyagos.d\\vcvars.lua')
+-- LS: {{{
+share._llx = function(args, ...)
+  local a = {...}
+  local o = nyagos.eval('ll ' .. table.concat(args.rawargs, ' '))
+  o:gsub('[^\n]+', function(s)
+    for _, p in pairs(a) do
+      if s:match(p) then
+        nyagos.write(s .. '\n')
+        return
+      end
+    end
+  end)
+end
+alias {
+  ls  = '__ls__ -o',
+  ll  = 'ls -alF',
+  lld = function(args)
+    share._llx(args, '^d')
+  end,
+  llf = function(args)
+    share._llx(args, '^-')
+  end,
+  lle = function(args)
+    share._llx(args, '%*$')
+  end,
+  lls = function(args)
+    share._llx(args, '@$', '->')
+  end,
+}
 -- }}}
 
 -------------------------------------------------------------------------------
@@ -211,18 +272,7 @@ include(home .. '\\.nyagos.d\\vcvars.lua')
 alias {
   q     = '__exit__',
   clear = '__cls__',
-  ls    = '__ls__ -o',
-  ll    = '__ls__ -oalF',
 }
-if nyagos.which('grep') then
-  alias {
-    grep = ext('grep') .. ' --color',
-    lld  = '__ls__ -alF | ' .. ext('grep') .. ' --color=never "^d"',
-    llf  = '__ls__ -alF | ' .. ext('grep') .. ' --color=never "^-"',
-    lle  = '__ls__ -alF | ' .. ext('grep') .. ' --color=never "\\*$"',
-    lls  = '__ls__ -alF | ' .. ext('grep') .. ' --color=never "@$\\|\\->"',
-  }
-end
 if nyagos.getenv('EDITOR') then
   alias { e = '%EDITOR%' }
 end
@@ -252,6 +302,9 @@ if nyagos.which('hub') then
 end
 if nyagos.getenv('HGPAGER') then
   alias { hg = ext('hg') .. ' --config pager.pager="%HGPAGER%"' }
+end
+if nyagos.which('grep') then
+  alias { grep = ext('grep') .. ' --color' }
 end
 if nyagos.which('colordiff') then
   alias { diff = ext('colordiff') }

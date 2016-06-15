@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  20-May-2016.
+" Last Change:  15-Jun-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -38,13 +38,10 @@ if &compatible
 endif
 
 " Encoding
-if has('multi_byte')
-  set encoding=utf-8
-  scriptencoding utf-8
-
-  if &term == 'win32'
-    set termencoding=cp932
-  endif
+set encoding=utf-8
+scriptencoding utf-8
+if &term == 'win32'
+  set termencoding=cp932
 endif
 
 if has('win32')
@@ -56,23 +53,31 @@ if has('win32')
   " set shell=sh
   " set shellslash
 
-  " Unix like runtime
+  " Path
+  let $PATH = $VIM . ';' . $PATH
+
+  " Unix like path
   let &runtimepath = substitute(&runtimepath,
   \ '\V' . escape($HOME, '\') . '/\zsvimfiles', '.vim', 'g')
-  if exists('&packpath')
+  if has('packages')
     let &packpath = substitute(&packpath,
     \ '\V' . escape($HOME, '\') . '/\zsvimfiles', '.vim', 'g')
   endif
 endif
 
-" Cache directory
-let $CACHE = exists('$CACHE') ? $CACHE :
-\ exists('$XDG_CACHE_HOME') ? $XDG_CACHE_HOME : ($HOME . '/.cache')
+" XDG Base Directory
+let $XDG_DATA_HOME =
+\ exists('$XDG_DATA_HOME')   ? $XDG_DATA_HOME   : ($HOME . '/.local/share')
+let $XDG_CACHE_HOME =
+\ exists('$XDG_CACHE_HOME')  ? $XDG_CACHE_HOME  : ($HOME . '/.cache')
+let $XDG_CONFIG_HOME =
+\ exists('$XDG_CONFIG_HOME') ? $XDG_CONFIG_HOME : ($HOME . '/.config')
 
 " Singleton
-let s:singleton_dir = $CACHE . '/dein/repos/github.com/thinca/vim-singleton'
+let s:singleton_dir =
+\ $XDG_DATA_HOME . '/dein/repos/github.com/thinca/vim-singleton'
 if has("clientserver") && isdirectory(s:singleton_dir)
-  execute 'set runtimepath^=' . escape(s:singleton_dir, ' ,\')
+  execute 'set runtimepath^=' . escape(escape(s:singleton_dir, ' ,'), ' \')
   let g:singleton#opener = 'drop'
   call singleton#enable()
 endif
@@ -85,16 +90,12 @@ augroup END
 
 "------------------------------------------------------------------------------
 " Variable: {{{
-" Command line window
-let s:cmdwin_ex_enable     = 0
-let s:cmdwin_search_enable = 0
-
 " Ignore pattern
 let s:ignore_dir = [
 \ '.git', '.hg', '.bzr', '.svn']
 let s:ignore_ext = [
 \ 'o', 'obj', 'a', 'lib', 'so', 'dll', 'dylib', 'exe', 'bin',
-\ 'swp', 'swo', 'swn', 'lc', 'elc', 'fas', 'pyc', 'pyo', 'luac', 'zwc']
+\ 'swp', 'swo', 'swn', 'lc', 'elc', 'fas', 'pyc', 'pyd', 'pyo', 'luac', 'zwc']
 let s:ignore_ft = [
 \ 'gitcommit', 'gitrebase', 'hgcommit']
 
@@ -108,6 +109,15 @@ function! s:SID() abort
   return s:_SID
 endfunction
 
+" Cached executable
+let s:_executable = {}
+function! s:executable(expr) abort
+  if !has_key(s:_executable, a:expr)
+    let s:_executable[a:expr] = executable(a:expr)
+  endif
+  return s:_executable[a:expr]
+endfunction
+
 " CPU Cores
 function! s:cpucores() abort
   if !exists('s:_cpucores')
@@ -117,18 +127,9 @@ function! s:cpucores() abort
     \ s:executable('getconf')         ? system('getconf _NPROCESSORS_ONLN') :
     \ s:executable('sysctl')          ? system('sysctl hw.ncpu') :
     \ filereadable('/proc/cpuinfo')   ?
-    \   len(filter(readfile('/proc/cpuinfo'), 'v:val =~ "processor"')) : '1')
+    \   len(filter(readfile('/proc/cpuinfo'), 'v:val =~ "processor"')) : 1)
   endif
   return s:_cpucores
-endfunction
-
-" Cached executable
-let s:_executable = {}
-function! s:executable(expr) abort
-  if !has_key(s:_executable, a:expr)
-    let s:_executable[a:expr] = executable(a:expr)
-  endif
-  return s:_executable[a:expr]
 endfunction
 
 " Check japanese
@@ -159,7 +160,7 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" Wrapper: {{{
+" Compatibility: {{{
 " Vim.Compat.has_version
 " 7.4.237  (after 7.4.236) has() not checking for specific patch
 if has('patch-7.4.237')
@@ -214,19 +215,16 @@ set t_vb=
 
 " VimInfo
 set history=10000
-set viminfo+=n$CACHE/viminfo
-if !isdirectory($CACHE)
-  call mkdir($CACHE, 'p')
-endif
+set viminfo+=n$XDG_CACHE_HOME/viminfo
 
 " Undo file
 set undofile
-set undodir^=$CACHE/vimundo
+set undodir^=$XDG_CACHE_HOME/vimundo
+if !isdirectory($XDG_CACHE_HOME . '/vimundo')
+  call mkdir($XDG_CACHE_HOME . '/vimundo', 'p')
+endif
 autocmd MyVimrc BufWritePre *
 \ let &undofile = index(s:ignore_ft, &filetype) < 0
-if !isdirectory($CACHE . '/vimundo')
-  call mkdir($CACHE . '/vimundo')
-endif
 
 " ClipBoard
 set clipboard=unnamed
@@ -243,14 +241,12 @@ set updatetime=1000
 set hidden
 
 " Multi byte charactor width
-if has('multi_byte')
-  set ambiwidth=double
-endif
+set ambiwidth=double
 
 " Wild menu
 set wildmenu
 execute 'set wildignore+=' . join(s:ignore_dir +
-\ map(copy(s:ignore_ext), '"*." . escape(v:val, " ,\\")'), ',')
+\ map(copy(s:ignore_ext), '"*." . escape(escape(v:val, " ,"), " \\")'), ',')
 
 " Mouse
 set mouse=a
@@ -284,10 +280,8 @@ set fillchars=vert:\|
 set helpheight=999
 
 " Conceal
-if has('conceal')
-  set conceallevel=2
-  set concealcursor=nc
-endif
+set conceallevel=2
+set concealcursor=nc
 " }}}
 
 "------------------------------------------------------------------------------
@@ -352,8 +346,8 @@ set copyindent
 set cinoptions=:0,l1,g0,(0,U1,Ws,j1,J1,)20
 
 " Folding
-set foldmethod=marker
-set foldcolumn=2
+set nofoldenable
+" set foldcolumn=2
 set foldlevelstart=99
 " }}}
 
@@ -616,44 +610,35 @@ NOXnoremap S <Nop>
 NOnoremap <C-G> <Nop>
 
 " Split Nicely
-noremap <expr> <SID>(split-nicely)
-\ myvimrc#split_nicely_expr() ? '<C-W>s' : '<C-W>v'
+noremap <expr> <SID>(split)
+\ myvimrc#split_direction() ? '<C-W>s' : '<C-W>v'
 " }}}
 
 "------------------------------------------------------------------------------
 " Command Line: {{{
-if s:cmdwin_ex_enable
-  noremap <SID>: q:
-else
-  noremap <expr> <SID>: myvimrc#cmdline_enter(':')
-endif
-if s:cmdwin_search_enable
-  noremap <SID>/ q/
-  noremap <SID>? q?
-else
-  noremap <expr> <SID>/ myvimrc#cmdline_enter('/')
-  noremap <expr> <SID>? myvimrc#cmdline_enter('?')
-endif
+NOXnoremap <expr> <SID>: myvimrc#cmdline_enter(':')
+NXnoremap  <expr> <SID>/ myvimrc#cmdline_enter('/')
+NXnoremap  <expr> <SID>? myvimrc#cmdline_enter('?')
 
 NOXmap ;; <SID>:
 NOXmap :  <SID>:
-NOXmap /  <SID>/
-NOXmap ?  <SID>?
+NXmap  /  <SID>/
+NXmap  ?  <SID>?
 
 NOXnoremap <expr> ;: myvimrc#cmdline_enter(':')
-NOXnoremap <expr> ;/ myvimrc#cmdline_enter('/')
-NOXnoremap <expr> ;? myvimrc#cmdline_enter('?')
+NXnoremap  <expr> ;/ myvimrc#cmdline_enter('/')
+NXnoremap  <expr> ;? myvimrc#cmdline_enter('?')
 
-NXnoremap <script> <C-W>/ <SID>(split-nicely)<SID>/
-NXnoremap <script> <C-W>? <SID>(split-nicely)<SID>?
+NXnoremap <script> <C-W>/ <SID>(split)<SID>/
+NXnoremap <script> <C-W>? <SID>(split)<SID>?
 
-NXnoremap <script> <C-W>q/ <SID>(split-nicely)q/
-NXnoremap <script> <C-W>q? <SID>(split-nicely)q?
+NXnoremap <script> <C-W>q/ <SID>(split)q/
+NXnoremap <script> <C-W>q? <SID>(split)q?
 
 NXnoremap <script><expr> <C-W>;/
-\ '<SID>(split-nicely)' . myvimrc#cmdline_enter('/')
+\ '<SID>(split)' . myvimrc#cmdline_enter('/')
 NXnoremap <script><expr> <C-W>;?
-\ '<SID>(split-nicely)' . myvimrc#cmdline_enter('?')
+\ '<SID>(split)' . myvimrc#cmdline_enter('?')
 
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
@@ -682,21 +667,19 @@ NOXmap g# <SID>g#
 NOXmap g/ *
 NOXmap g? #
 
-nmap <C-W>*  <SID>(split-nicely)<SID>*
-nmap <C-W>#  <SID>(split-nicely)<SID>#
-nmap <C-W>g* <SID>(split-nicely)<SID>g*
-nmap <C-W>g# <SID>(split-nicely)<SID>g#
-xnoremap <script> <C-W>*  <SID>(split-nicely)gv<SID>*
-xnoremap <script> <C-W>#  <SID>(split-nicely)gv<SID>#
-xnoremap <script> <C-W>g* <SID>(split-nicely)gv<SID>g*
-xnoremap <script> <C-W>g# <SID>(split-nicely)gv<SID>g#
+nmap <C-W>*  <SID>(split)<SID>*
+nmap <C-W>#  <SID>(split)<SID>#
+nmap <C-W>g* <SID>(split)<SID>g*
+nmap <C-W>g# <SID>(split)<SID>g#
+xnoremap <script> <C-W>*  <SID>(split)gv<SID>*
+xnoremap <script> <C-W>#  <SID>(split)gv<SID>#
+xnoremap <script> <C-W>g* <SID>(split)gv<SID>g*
+xnoremap <script> <C-W>g# <SID>(split)gv<SID>g#
 NXmap <C-W>g/ <C-W>*
 NXmap <C-W>g? <C-W>#
 
-NOXmap <expr> n
-\ myvimrc#search_forward_expr() ? '<SID>n' : '<SID>N'
-NOXmap <expr> N
-\ myvimrc#search_forward_expr() ? '<SID>N' : '<SID>n'
+NOXmap <expr> n v:searchforward ? '<SID>n' : '<SID>N'
+NOXmap <expr> N v:searchforward ? '<SID>N' : '<SID>n'
 " }}}
 
 "------------------------------------------------------------------------------
@@ -783,19 +766,19 @@ NXnoremap <script> <Leader>G <SID>:<C-U>lgrep<Space>
 NXnoremap <expr> <Leader>Q
 \ ':<C-U>1,' . bufnr('$') . 'bdelete<CR>'
 NXnoremap <script><expr> <Leader><M-d>
-\ '<SID>:<C-U>lchdir ' . myvimrc#expand('%:p:h') . '/'
+\ '<SID>:<C-U>lchdir ' . compat#expand_slash('%:p:h') . '/'
 NXnoremap <script><expr> <Leader><M-D>
-\ '<SID>:<C-U>chdir ' . myvimrc#expand('%:p:h') . '/'
+\ '<SID>:<C-U>chdir ' . compat#expand_slash('%:p:h') . '/'
 " }}}
 
 "------------------------------------------------------------------------------
 " Help: {{{
 nnoremap <script><expr> <F1>
-\ myvimrc#split_nicely_expr() ?
+\ myvimrc#split_direction() ?
 \   '<SID>:<C-U>help<Space>' :
 \   '<SID>:<C-U>vertical help<Space>'
 inoremap <script><expr> <F1>
-\ myvimrc#split_nicely_expr() ?
+\ myvimrc#split_direction() ?
 \   '<C-O><SID>:<C-U>help<Space>' :
 \   '<C-O><SID>:<C-U>vertical help<Space>'
 " }}}
@@ -1001,12 +984,12 @@ if has('win32')
   command! -bar
   \ ShellCmd
   \ call myvimrc#set_shell() |
-  \ set shell? shellslash? shellcmdflag? shellquote? shellxquote?
+  \ set shell? shellcmdflag? shellquote? shellxquote? shellslash?
   command! -bar -nargs=?
   \ ShellSh
   \ call myvimrc#set_shell(
-  \   [!empty(<q-args>) ? <q-args> : 'sh', 1, '-c', '', '"']) |
-  \ set shell? shellslash? shellcmdflag? shellquote? shellxquote?
+  \   !empty(<q-args>) ? <q-args> : 'sh', '-c', '', '"', 1) |
+  \ set shell? shellcmdflag? shellquote? shellxquote? shellslash?
 
   command! -bar -nargs=+ -complete=file
   \ CmdSource
@@ -1015,7 +998,7 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" VC Vars: {{{
+" VcVarsAll: {{{
 if has('win32')
   if !exists('$VCVARSALL')
     if filereadable($VS140COMNTOOLS . '..\..\VC\vcvarsall.bat')
@@ -1044,21 +1027,19 @@ if has('win32')
     endif
   endif
 
-  command! -bar
-  \ VCVars
-  \ call myvimrc#cmdsource(
-  \   myvimrc#cmdescape($VCVARSALL), $PROCESSOR_ARCHITECTURE)
-  command! -bar
-  \ VCVars32
-  \ call myvimrc#cmdsource(
-  \   myvimrc#cmdescape($VCVARSALL), 'x86')
-  if s:arch
+  if exists('$VCVARSALL')
     command! -bar
-    \ VCVars64
+    \ VCVars32
     \ call myvimrc#cmdsource(
-    \   myvimrc#cmdescape($VCVARSALL),
-    \   exists('PROCESSOR_ARCHITEW6432') ?
-    \   $PROCESSOR_ARCHITEW6432 : $PROCESSOR_ARCHITECTURE)
+    \   myvimrc#cmdescape($VCVARSALL), 'x86')
+    if s:arch
+      command! -bar
+      \ VCVars64
+      \ call myvimrc#cmdsource(
+      \   myvimrc#cmdescape($VCVARSALL),
+      \   exists('PROCESSOR_ARCHITEW6432') ?
+      \   $PROCESSOR_ARCHITEW6432 : $PROCESSOR_ARCHITECTURE)
+    endif
   endif
 endif
 " }}}
@@ -1094,9 +1075,7 @@ command! -bar -nargs=1 -complete=file
 \ vertical diffsplit <args>
 command! -bar
 \ Undiff
-\ diffoff |
-\ setlocal scrollbind< cursorbind< wrap< foldmethod< foldcolumn< |
-\ doautocmd FileType
+\ call myvimrc#undiff()
 
 nnoremap <F8> :<C-U>Undiff<CR>
 " }}}
@@ -1105,9 +1084,7 @@ nnoremap <F8> :<C-U>Undiff<CR>
 " From Example: {{{
 command! -bar
 \ DiffOrig
-\ let s:save_ft = &filetype | vertical new | setlocal buftype=nofile |
-\ read ++edit # | 0d_ | let &filetype = s:save_ft | unlet s:save_ft |
-\ diffthis | wincmd p | diffthis
+\ call myvimrc#difforig()
 
 nnoremap <F7> :<C-U>DiffOrig<CR>
 " }}}
@@ -1125,10 +1102,7 @@ autocmd MyVimrc BufWritePre *
 "------------------------------------------------------------------------------
 " Quick Close: {{{
 autocmd MyVimrc FileType *
-\ if (&readonly || !&modifiable) && empty(maparg('q', 'n')) |
-\   nnoremap <buffer><silent><expr> q
-\     winnr('$') != 1 ? ':<C-U>close<CR>' : 'q'|
-\ endif
+\ call myvimrc#quick_close()
 " }}}
 
 "------------------------------------------------------------------------------
@@ -1234,10 +1208,7 @@ endif
 "------------------------------------------------------------------------------
 " From Example: {{{
 autocmd MyVimrc FileType *
-\ if line('.') == 1 && line("'\"") > 1 && line("'\"") <= line('$') &&
-\   index(s:ignore_ft, expand('<amatch>')) < 0 |
-\   execute 'normal! g`"' |
-\ endif
+\ call myvimrc#jump_to_last_position(s:ignore_ft)
 " }}}
 " }}}
 
@@ -1359,17 +1330,17 @@ let g:is_bash = 1
 " Doxygen
 let g:load_doxygen_syntax = 1
 
-" Indent
+" Vim Script
 let g:vim_indent_cont = 0
 
-" Folding
-let g:javaScript_fold    = 1
-let g:perl_fold          = 1
-let g:php_folding        = 1
-let g:ruby_fold          = 1
-let g:sh_fold_enabled    = 1
-let g:vimsyn_folding     = 'af'
-let g:xml_syntax_folding = 1
+" " Folding
+" let g:javaScript_fold    = 1
+" let g:perl_fold          = 1
+" let g:php_folding        = 1
+" let g:ruby_fold          = 1
+" let g:sh_fold_enabled    = 1
+" let g:vimsyn_folding     = 'af'
+" let g:xml_syntax_folding = 1
 
 " Disable
 let g:loaded_getscript       = 1
@@ -1380,16 +1351,17 @@ let g:loaded_vimballPlugin   = 1
 
 "------------------------------------------------------------------------------
 " Dein: {{{
-let s:dein_dir = $CACHE . '/dein/repos/github.com/Shougo/dein.vim'
+let s:dein_dir = $XDG_DATA_HOME . '/dein/repos/github.com/Shougo/dein.vim'
 if v:version > 703 && isdirectory(s:dein_dir)
-  execute 'set runtimepath^=' . escape(s:dein_dir, ' ,\')
-  let g:dein#enable_name_conversion = 1
-  let g:dein#install_max_processes  = min([s:cpucores(), 8])
-  let g:dein#install_progress_type  = 'title'
+  execute 'set runtimepath^=' . escape(escape(s:dein_dir, ' ,'), ' \')
+  let g:dein#enable_name_conversion  = 1
+  let g:dein#install_max_processes   = min([s:cpucores(), 8])
+  let g:dein#install_process_timeout = 6000
+  let g:dein#install_progress_type   = 'title'
 
-  if dein#load_state($CACHE . '/dein')
+  if dein#load_state($XDG_DATA_HOME . '/dein')
     let s:dein_toml = compat#glob($HOME . '/.vim/dein/*.toml', 0, 1)
-    call dein#begin($CACHE . '/dein', [$MYVIMRC] + s:dein_toml)
+    call dein#begin($XDG_DATA_HOME . '/dein', [$MYVIMRC] + s:dein_toml)
 
     for s:toml in s:dein_toml
       call dein#load_toml(s:toml, {'lazy' : 1})
@@ -1398,6 +1370,8 @@ if v:version > 703 && isdirectory(s:dein_dir)
     call dein#end()
     call dein#save_state()
   endif
+
+  autocmd MyVimrc VimEnter * filetype detect
 endif
 unlet! s:dein_dir s:dein_toml
 " }}}
@@ -1440,8 +1414,8 @@ endif
 if s:dein_tap('altr')
   nmap g<M-f>     <Plug>(altr-forward)
   nmap g<M-F>     <Plug>(altr-back)
-  nmap <C-W><M-f> <SID>(split-nicely)<Plug>(altr-forward)
-  nmap <C-W><M-F> <SID>(split-nicely)<Plug>(altr-back)
+  nmap <C-W><M-f> <SID>(split)<Plug>(altr-forward)
+  nmap <C-W><M-F> <SID>(split)<Plug>(altr-back)
 endif
 " }}}
 
@@ -1463,6 +1437,13 @@ if s:dein_tap('anzu')
 
   cnoremap <script><expr> <CR>
   \ '<C-]><CR>' . (getcmdtype() =~ '[/?]' ? '<SID>(anzu-echo)zv' : '')
+
+  augroup MyVimrc
+    autocmd CmdwinLeave [/?]
+    \ call feedkeys("\<Plug>(anzu-update-search-status-with-echo)")
+    autocmd User IncSearchExecute,OperatorStarPost
+    \ call feedkeys("\<Plug>(anzu-update-search-status-with-echo)")
+  augroup END
 endif
 " }}}
 
@@ -1530,11 +1511,19 @@ if s:dein_tap('clurin')
     \   'def' : [],
     \   'nomatch' : function('myvimrc#clurin_nomatch'),
     \   'jump' : 1},
+    \ 'c' : {},
     \ 'use_default' : 0}
 
     call extend(g:clurin['-'].def, [
     \ ['TRUE', 'FALSE'], ['True', 'False'], ['true', 'false'],
     \ ['ENABLE', 'DISABLE'], ['Enable', 'Disable'], ['enable', 'disable'],
+    \
+    \ ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
+    \  'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'],
+    \ ['January', 'February', 'March', 'April', 'May', 'June',
+    \  'July', 'August', 'September', 'October', 'November', 'December'],
+    \ ['january', 'february', 'march', 'april', 'may', 'june',
+    \  'july', 'august', 'september', 'october', 'november', 'december'],
     \
     \ ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
     \  'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
@@ -1580,14 +1569,64 @@ if s:dein_tap('clurin')
     \  'eleventh',  'twelfth',     'thirteenth', 'fourteenth', 'fifteenth',
     \  'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth', 'twentieth'],
     \
-    \ [{'pattern' : '\<\(-\?\d*1st\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\<\(-\?\d*2nd\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\<\(-\?\d*3rd\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\<\(-\?\d*[04-9]th\)\>\C', 'replace' : function('myvimrc#clurin_ordinal')}],
-    \ [{'pattern' : '\<\(-\?\d*1ST\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\<\(-\?\d*2ND\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\<\(-\?\d*3RD\)\>\C',      'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\<\(-\?\d*[04-9]TH\)\>\C', 'replace' : function('myvimrc#clurin_ordinal')}]])
+    \ [{'pattern' : '\(-\?\d*1st\)\C',
+    \   'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\(-\?\d*2nd\)\C',
+    \   'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\(-\?\d*3rd\)\C',
+    \   'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\(-\?\d*[04-9]th\)\C',
+    \   'replace' : function('myvimrc#clurin_ordinal')}],
+    \ [{'pattern' : '\(-\?\d*1ST\)\C',
+    \   'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\(-\?\d*2ND\)\C',
+    \   'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\(-\?\d*3RD\)\C',
+    \   'replace' : function('myvimrc#clurin_ordinal')},
+    \  {'pattern' : '\(-\?\d*[04-9]TH\)\C',
+    \   'replace' : function('myvimrc#clurin_ordinal')}],
+    \
+    \ [{'pattern' : '\(-\?\d\*1\)\%(st\)\@!\C',
+    \   'replace' : function('myvimrc#clurin_bypass')},
+    \  {'pattern' : '\(-\?\d\*2\)\%(nd\)\@!\C',
+    \   'replace' : function('myvimrc#clurin_bypass')},
+    \  {'pattern' : '\(-\?\d\*3\)\%(rd\)\@!\C',
+    \   'replace' : function('myvimrc#clurin_bypass')},
+    \  {'pattern' : '\(-\?\d\*[04-9]\)\%(th\)\@!\C',
+    \   'replace' : function('myvimrc#clurin_bypass')}],
+    \ [{'pattern' : '\(-\?\d\*1\)\%(ST\)\@!\C',
+    \   'replace' : function('myvimrc#clurin_bypass')},
+    \  {'pattern' : '\(-\?\d\*2\)\%(ND\)\@!\C',
+    \   'replace' : function('myvimrc#clurin_bypass')},
+    \  {'pattern' : '\(-\?\d\*3\)\%(RD\)\@!\C',
+    \   'replace' : function('myvimrc#clurin_bypass')},
+    \  {'pattern' : '\(-\?\d\*[04-9]\)\%(TH\)\@!\C',
+    \   'replace' : function('myvimrc#clurin_bypass')}]])
+
+    if !empty(&nrformats)
+      let def = []
+      if &nrformats =~ 'alpha'
+        call add(def, {
+        \ 'pattern' : '\(\a\)',
+        \ 'replace' : function('myvimrc#clurin_bypass')})
+      endif
+      if &nrformats =~ 'octal'
+        call add(def, {
+        \ 'pattern' : '\(0[0-7]\+\)',
+        \ 'replace' : function('myvimrc#clurin_bypass')})
+      endif
+      if &nrformats =~ 'hex'
+        call add(def, {
+        \ 'pattern' : '\(0x\x\+\)\c',
+        \ 'replace' : function('myvimrc#clurin_bypass')})
+      endif
+      if &nrformats =~ 'bin'
+        call add(def, {
+        \ 'pattern' : '\(0b[01]\+\)\c',
+        \ 'replace' : function('myvimrc#clurin_bypass')})
+      endif
+      call add(g:clurin['-'].def, def)
+    endif
   endfunction
 
   nmap <C-A> <Plug>(clurin-next)
@@ -1701,6 +1740,8 @@ if s:dein_tap('ctrlp')
     let g:ctrlp_max_files           = 10000
     let g:ctrlp_max_depth           = 20
     let g:ctrlp_open_new_file       = 'r'
+    let g:ctrlp_mruf_max            = 1000
+    let g:ctrlp_mruf_case_sensitive = !&fileignorecase
 
     let g:ctrlp_custom_ignore       = {
     \ 'dir'  : join(s:ignore_dir, '\|'),
@@ -1832,13 +1873,13 @@ endif
 " Eskk: {{{
 if s:dein_tap('eskk')
   function! g:dein#plugin.hook_source() abort
-    let g:eskk#directory               = $CACHE . '/eskk'
+    let g:eskk#directory               = $XDG_CACHE_HOME . '/eskk'
     let g:eskk#no_default_mappings     = 1
     let g:eskk#start_completion_length = 1
     let g:eskk#mapped_keys             =
     \ filter(eskk#get_default_mapped_keys(), 'v:val !=? "<Tab>"')
     let g:eskk#dictionary              = {
-    \ 'path' : $CACHE . '/skk-jisyo',
+    \ 'path' : $XDG_CACHE_HOME . '/skk-jisyo',
     \ 'sorted' : 0,
     \ 'encoding' : 'utf-8'}
 
@@ -1959,11 +2000,6 @@ endif
 if s:dein_tap('incsearch')
   NOXnoremap <silent><expr> <SID>/ myvimrc#incsearch_next()
   NOXnoremap <silent><expr> <SID>? myvimrc#incsearch_prev()
-
-  if !empty(dein#get('anzu'))
-    autocmd MyVimrc User IncSearchExecute
-    \ call feedkeys(":\<C-U>AnzuUpdateSearchStatusOutput\<CR>", 'n')
-  endif
 endif
 " }}}
 
@@ -1971,7 +2007,7 @@ endif
 " J6uil: {{{
 if s:dein_tap('J6uil')
   function! g:dein#plugin.hook_source() abort
-    let g:J6uil_config_dir             = $CACHE . '/J6uil'
+    let g:J6uil_config_dir             = $XDG_CACHE_HOME . '/J6uil'
     let g:J6uil_echo_presence          = 0
     let g:J6uil_open_buffer_cmd        = 'tabedit'
     let g:J6uil_no_default_keymappings = 1
@@ -2040,15 +2076,9 @@ endif
 if s:dein_tap('localrc')
   augroup MyVimrc
     autocmd BufNewFile,BufRead *
-    \ if exists('b:undo_localrc') |
-    \   execute b:undo_localrc |
-    \   unlet! b:undo_localrc |
-    \ endif
+    \ call myvimrc#localrc_undo()
     autocmd FileType *
-    \ if exists('b:undo_ftlocalrc') |
-    \   execute b:undo_ftlocalrc |
-    \   unlet! b:undo_ftlocalrc |
-    \ endif
+    \ call myvimrc#localrc_undo_filetype()
   augroup END
 endif
 " }}}
@@ -2109,6 +2139,11 @@ if s:dein_tap('metarw')
   \ '_r[ead]'   : 'read',
   \ '_so[urce]' : 'source',
   \ '_w[rite]'  : 'write'})
+  call extend(s:neocomplete_vim_completefuncs, {
+  \ 'Edit'   : 'metarw#complete',
+  \ 'Read'   : 'metarw#complete',
+  \ 'Source' : 'metarw#complete',
+  \ 'Write'  : 'metarw#complete'})
 endif
 " }}}
 
@@ -2257,7 +2292,6 @@ endif
 if s:dein_tap('omnisharp')
   function! g:dein#plugin.hook_source() abort
     " let g:OmniSharp_server_type = 'roslyn'
-    let g:OmniSharp_server_type = 'v1'
     let g:OmniSharp_server_path =
     \ g:dein#plugin.path . '/server/OmniSharp/bin/Release/OmniSharp.exe'
     let g:OmniSharp_selector_ui = 'ctrlp'
@@ -2417,20 +2451,20 @@ if s:dein_tap('operator-star')
   NOmap g* <Plug>(operator-g*)
   NOmap g# <Plug>(operator-g#)
 
-  nmap <C-W>*  <SID>(split-nicely)<Plug>(operator-*)
-  nmap <C-W>#  <SID>(split-nicely)<Plug>(operator-#)
-  nmap <C-W>g* <SID>(split-nicely)<Plug>(operator-g*)
-  nmap <C-W>g# <SID>(split-nicely)<Plug>(operator-g#)
+  nmap <C-W>*  <SID>(split)<Plug>(operator-*)
+  nmap <C-W>#  <SID>(split)<Plug>(operator-#)
+  nmap <C-W>g* <SID>(split)<Plug>(operator-g*)
+  nmap <C-W>g# <SID>(split)<Plug>(operator-g#)
 
   nnoremap <script> **   <SID>*
   nnoremap <script> ##   <SID>#
   nnoremap <script> g*g* <SID>g*
   nnoremap <script> g#g# <SID>g#
 
-  nnoremap <script> <C-W>**   <SID>(split-nicely)<SID>*
-  nnoremap <script> <C-W>##   <SID>(split-nicely)<SID>#
-  nnoremap <script> <C-W>g*g* <SID>(split-nicely)<SID>g*
-  nnoremap <script> <C-W>g#g# <SID>(split-nicely)<SID>g#
+  nnoremap <script> <C-W>**   <SID>(split)<SID>*
+  nnoremap <script> <C-W>##   <SID>(split)<SID>#
+  nnoremap <script> <C-W>g*g* <SID>(split)<SID>g*
+  nnoremap <script> <C-W>g#g# <SID>(split)<SID>g#
 
   nmap g/g/ **
   nmap g?g? ##
@@ -2541,7 +2575,8 @@ endif
 if s:dein_tap('perlomni')
   function! g:dein#plugin.hook_source() abort
     if has('win32')
-      let $PATH = substitute(g:dein#plugin.path, '/', '\\', 'g') . '\bin;' . $PATH
+      let $PATH =
+      \ substitute(g:dein#plugin.path, '/', '\\', 'g') . '\bin;' . $PATH
     else
       let $PATH = g:dein#plugin.path . '/bin:' . $PATH
     endif
@@ -2559,13 +2594,7 @@ if s:dein_tap('precious')
     let g:textobj_precious_no_default_key_mappings = 1
     let g:precious_enable_switchers                = {
     \ '*'        : {'setfiletype' : 0},
-    \ 'markdown' : {'setfiletype' : 1},
-    \ 'toml'     : {'setfiletype' : 1}}
-  endfunction
-
-  function! g:dein#plugin.hook_post_source() abort
-    let &g:statusline = substitute(&g:statusline, '%y', '%{Precious_y()}', '')
-    let &g:statusline = substitute(&g:statusline, '%Y', '%{Precious_Y()}', '')
+    \ 'markdown' : {'setfiletype' : 1}}
   endfunction
 
   function! Precious_y() abort
@@ -2595,9 +2624,16 @@ if s:dein_tap('precious')
     endif
   endfunction
 
+  let &statusline  = substitute(&statusline, '%y\C', '%{Precious_y()}', 'g')
+  " let &statusline  = substitute(&statusline, '%Y\C', '%{Precious_Y()}', 'g')
+  " let &tabline     = substitute(&statusline, '%y\C', '%{Precious_y()}', 'g')
+  " let &tabline     = substitute(&statusline, '%Y\C', '%{Precious_Y()}', 'g')
+  " let &titlestring = substitute(&statusline, '%y\C', '%{Precious_y()}', 'g')
+  " let &titlestring = substitute(&statusline, '%Y\C', '%{Precious_Y()}', 'g')
+
   nmap  sR <Plug>(precious-quickrun-op)
-  OXmap ax <Plug>(textobj-precious-i)
-  OXmap ix <Plug>(textobj-precious-i)
+  OXmap aX <Plug>(textobj-precious-i)
+  OXmap iX <Plug>(textobj-precious-i)
 endif
 " }}}
 
@@ -2617,64 +2653,58 @@ if s:dein_tap('quickrun')
   function! g:dein#plugin.hook_source() abort
     let g:quickrun_no_default_key_mappings = 1
 
-    let g:quickrun_config =
-    \ get(g:, 'quickrun_config', {})
+    call myvimrc#extend_quickrun_config('_', {
+    \ 'runner' : s:has_vimproc() ? 'vimproc' : 'system',
+    \ 'runner/vimproc/updatetime' : 100,
+    \ 'outputter' : 'quickfix'})
 
-    call extend(g:quickrun_config, {
-    \ '_' : {
-    \   'runner' : s:has_vimproc() ? 'vimproc' : 'system',
-    \   'runner/vimproc/updatetime' : 100,
-    \   'outputter' : 'quickfix'},
-    \
-    \ 'c' : {
-    \   'type' :
-    \     s:executable('clang') ? 'c/clang' :
-    \     s:executable('gcc')   ? 'c/gcc' :
-    \     exists('$VCVARSALL')  ? 'c/vc' :
-    \     s:executable('cl')    ? 'c/vc' : ''},
-    \ 'c/vc' : {
-    \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
-    \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-    \   'hook/vcvarsall/bat' : has('win32') ? myvimrc#cmdescape($VCVARSALL) : $VCVARSALL},
-    \
-    \ 'cpp' : {
-    \   'type' :
-    \     s:executable('clang++') ? 'cpp/clang++' :
-    \     s:executable('g++')     ? 'cpp/g++' :
-    \     exists('$VCVARSALL')    ? 'cpp/vc' :
-    \     s:executable('cl')      ? 'cpp/vc' : ''},
-    \ 'cpp/vc' : {
-    \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
-    \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-    \   'hook/vcvarsall/bat' : has('win32') ? myvimrc#cmdescape($VCVARSALL) : $VCVARSALL},
-    \
-    \ 'cs' : {
-    \   'type' :
-    \     exists('$VCVARSALL') ? 'cs/csc' :
-    \     s:executable('csc')  ? 'cs/csc' :
-    \     s:executable('dmcs') ? 'cs/dmcs' :
-    \     s:executable('smcs') ? 'cs/smcs' :
-    \     s:executable('gmcs') ? 'cs/gmcs' :
-    \     s:executable('mcs')  ? 'cs/mcs' : ''},
-    \ 'cs/csc' : {
-    \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
-    \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-    \   'hook/vcvarsall/bat' : has('win32') ? myvimrc#cmdescape($VCVARSALL) : $VCVARSALL},
-    \
-    \ 'vbnet' : {
-    \   'type' :
-    \     exists('$VCVARSALL') ? 'vbnet/vbc' :
-    \     s:executable('vbc')  ? 'vbnet/vbc' : ''},
-    \ 'vbnet/vbc' : {
-    \   'command' : 'vbc',
-    \   'exec' : [
-    \     '%c /nologo /out:%s:p:r.exe %s',
-    \     '%s:p:r.exe %a'],
-    \   'tempfile' : '%{tempname()}.vb',
-    \   'hook/sweep/files' : ['%s:p:r.exe'],
-    \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
-    \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-    \   'hook/vcvarsall/bat' : has('win32') ? myvimrc#cmdescape($VCVARSALL) : $VCVARSALL}})
+    call myvimrc#extend_quickrun_config('c', {
+    \ 'type' :
+    \   s:executable('clang') ? 'c/clang' :
+    \   s:executable('gcc')   ? 'c/gcc' :
+    \   exists('$VCVARSALL')  ? 'c/vc' :
+    \   s:executable('cl')    ? 'c/vc' : ''})
+
+    call myvimrc#extend_quickrun_config('cpp', {
+    \ 'type' :
+    \   s:executable('clang++') ? 'cpp/clang++' :
+    \   s:executable('g++')     ? 'cpp/g++' :
+    \   exists('$VCVARSALL')    ? 'cpp/vc' :
+    \   s:executable('cl')      ? 'cpp/vc' : ''})
+
+    call myvimrc#extend_quickrun_config('cs', {
+    \ 'type' :
+    \   exists('$VCVARSALL') ? 'cs/csc' :
+    \   s:executable('csc')  ? 'cs/csc' :
+    \   s:executable('dmcs') ? 'cs/dmcs' :
+    \   s:executable('smcs') ? 'cs/smcs' :
+    \   s:executable('gmcs') ? 'cs/gmcs' :
+    \   s:executable('mcs')  ? 'cs/mcs' : ''})
+
+    call myvimrc#extend_quickrun_config('vbnet', {
+    \ 'type' :
+    \   exists('$VCVARSALL') ? 'vbnet/vbc' :
+    \   s:executable('vbc')  ? 'vbnet/vbc' : ''})
+
+    call myvimrc#extend_quickrun_config('vbnet/vbc', {
+    \ 'command' : 'vbc',
+    \ 'exec' : ['%c /nologo /out:%s:p:r.exe %s', '%s:p:r.exe %a'],
+    \ 'tempfile' : '%{tempname()}.vb',
+    \ 'hook/sweep/files' : ['%s:p:r.exe']})
+
+    if has('win32')
+      call myvimrc#extend_quickrun_config('c/vc', {
+      \ 'hook/output_encode/encoding' : 'cp932'})
+
+      call myvimrc#extend_quickrun_config('cpp/vc', {
+      \ 'hook/output_encode/encoding' : 'cp932'})
+
+      call myvimrc#extend_quickrun_config('cs/csc', {
+      \ 'hook/output_encode/encoding' : 'cp932'})
+
+      call myvimrc#extend_quickrun_config('vbnet/vbc', {
+      \ 'hook/output_encode/encoding' : 'cp932'})
+    endif
 
     nnoremap <expr> <C-C>
     \ quickrun#is_running() ?
@@ -2692,6 +2722,33 @@ if s:dein_tap('quickrun')
 
   call extend(s:neocomplete_vim_completefuncs, {
   \ 'QuickRun' : 'quickrun#complete'})
+endif
+" }}}
+
+"------------------------------------------------------------------------------
+" QuickRun Hook VcVarsAll: {{{
+if s:dein_tap('quickrun-hook-vcvarsall')
+  function! g:dein#plugin.hook_source() abort
+    call myvimrc#extend_quickrun_config('c/vc', {
+    \ 'hook/vcvarsall/enable' : 1,
+    \ 'hook/vcvarsall/bat' : myvimrc#cmdescape($VCVARSALL)})
+
+    call myvimrc#extend_quickrun_config('cpp/vc', {
+    \ 'hook/vcvarsall/enable' : 1,
+    \ 'hook/vcvarsall/bat' : myvimrc#cmdescape($VCVARSALL)})
+
+    call myvimrc#extend_quickrun_config('cs/csc', {
+    \ 'hook/vcvarsall/enable' : 1,
+    \ 'hook/vcvarsall/bat' : myvimrc#cmdescape($VCVARSALL)})
+
+    call myvimrc#extend_quickrun_config('vbnet/vbc', {
+    \ 'hook/vcvarsall/enable' : 1,
+    \ 'hook/vcvarsall/bat' : myvimrc#cmdescape($VCVARSALL)})
+
+    call myvimrc#extend_quickrun_config('watchdogs_checker/msvc', {
+    \ 'hook/vcvarsall/enable' : 1,
+    \ 'hook/vcvarsall/bat' : myvimrc#cmdescape($VCVARSALL)})
+  endfunction
 endif
 " }}}
 
@@ -3850,14 +3907,16 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" TextObj MotionMotion: {{{
-if s:dein_tap('textobj-motionmotion')
+" TextObj MethodCall: {{{
+if s:dein_tap('textobj-methodcall')
   function! g:dein#plugin.hook_source() abort
-    let g:textobj_motionmotion_no_default_key_mappings = 1
+    let g:textobj_methodcall_no_default_key_mappings = 1
   endfunction
 
-  OXmap am <Plug>(textobj-motionmotion-a)
-  OXmap im <Plug>(textobj-motionmotion-i)
+  OXmap am <Plug>(textobj-methodcall-a)
+  OXmap aM <Plug>(textobj-methodcall-chain-a)
+  OXmap im <Plug>(textobj-methodcall-i)
+  OXmap iM <Plug>(textobj-methodcall-chain-i)
 endif
 " }}}
 
@@ -3894,8 +3953,8 @@ if s:dein_tap('textobj-postexpr')
     let g:textobj_postexpr_no_default_key_mappings = 1
   endfunction
 
-  OXmap aX <Plug>(textobj-postexpr-a)
-  OXmap iX <Plug>(textobj-postexpr-i)
+  OXmap ax <Plug>(textobj-postexpr-a)
+  OXmap ix <Plug>(textobj-postexpr-i)
 endif
 " }}}
 
@@ -3921,10 +3980,19 @@ if s:dein_tap('textobj-ruby')
     let g:textobj_ruby_more_mappings           = 1
   endfunction
 
-  " OXmap aC <Plug>(textobj-ruby-definition-a)
-  " OXmap iC <Plug>(textobj-ruby-definition-i)
-  " OXmap ar <Plug>(textobj-ruby-any-a)
-  " OXmap ir <Plug>(textobj-ruby-any-i)
+  " OXmap ar  <Nop>
+  " OXmap arr <Plug>(textobj-ruby-any-a)
+  " OXmap aro <Plug>(textobj-ruby-definition-a)
+  " OXmap arl <Plug>(textobj-ruby-loop-a)
+  " OXmap arc <Plug>(textobj-ruby-control-a)
+  " OXmap ard <Plug>(textobj-ruby-do-a)
+  "
+  " OXmap ir  <Nop>
+  " OXmap irr <Plug>(textobj-ruby-any-i)
+  " OXmap iro <Plug>(textobj-ruby-definition-i)
+  " OXmap irl <Plug>(textobj-ruby-loop-i)
+  " OXmap irc <Plug>(textobj-ruby-control-i)
+  " OXmap ird <Plug>(textobj-ruby-do-i)
 endif
 " }}}
 
@@ -4055,14 +4123,20 @@ endif
 " Vimhelp Lint: {{{
 if s:dein_tap('vimhelplint')
   function! g:dein#plugin.hook_source() abort
-    let g:quickrun_config =
-    \ get(g:, 'quickrun_config', {})
+    call myvimrc#extend_quickrun_config('help/watchdogs_checker', {
+    \ 'type' : ''})
+    " \ 'type': 'watchdogs_checker/vimhelplint'})
+  endfunction
+endif
+" }}}
 
-    " call extend(g:quickrun_config, {
-    " \ 'help/watchdogs_checker' : {
-    " \   'type': 'watchdogs_checker/vimhelplint'}})
-
-    call watchdogs#setup(g:quickrun_config)
+"------------------------------------------------------------------------------
+" Vim Lint: {{{
+if s:dein_tap('vimlint')
+  function! g:dein#plugin.hook_source() abort
+    call myvimrc#extend_quickrun_config('vim/watchdogs_checker', {
+    \ 'type' : ''})
+    " \ 'type' : 'watchdogs_checker/vimlint'})
   endfunction
 endif
 " }}}
@@ -4128,49 +4202,45 @@ if s:dein_tap('watchdogs')
   function! g:dein#plugin.hook_source() abort
     let g:watchdogs_check_BufWritePost_enable = 1
 
-    let g:quickrun_config =
-    \ get(g:, 'quickrun_config', {})
+    call myvimrc#extend_quickrun_config('watchdogs_checker/_', {
+    \ 'runner' : s:has_vimproc() ? 'vimproc' : 'system',
+    \ 'outputter' : 'quickfix'})
 
-    call extend(g:quickrun_config, {
-    \ 'watchdogs_checker/_' : {
-    \   'runner' : s:has_vimproc() ? 'vimproc' : 'system',
-    \   'outputter' : 'quickfix'},
-    \
-    \ 'c/watchdogs_checker' : {
-    \   'type' :
-    \     s:executable('clang') ? 'watchdogs_checker/clang' :
-    \     s:executable('gcc')   ? 'watchdogs_checker/gcc' :
-    \     exists('$VCVARSALL')  ? 'watchdogs_checker/msvc' :
-    \     s:executable('cl')    ? 'watchdogs_checker/msvc' : ''},
-    \ 'cpp/watchdogs_checker' : {
-    \   'type' :
-    \     s:executable('clang-check') ? 'watchdogs_checker/clang_check' :
-    \     s:executable('clang++')     ? 'watchdogs_checker/clang++' :
-    \     s:executable('g++')         ? 'watchdogs_checker/g++' :
-    \     exists('$VCVARSALL')        ? 'watchdogs_checker/msvc' :
-    \     s:executable('cl')          ? 'watchdogs_checker/msvc' : ''},
-    \ 'watchdogs_checker/msvc' : {
-    \   'hook/output_encode/encoding' : has('win32') ? 'cp932' : &encoding,
-    \   'hook/vcvarsall/enable' : exists('$VCVARSALL'),
-    \   'hook/vcvarsall/bat' :
-    \     has('win32') ? myvimrc#cmdescape($VCVARSALL) : $VCVARSALL},
-    \
-    \ 'lua/watchdogs_checker' : {
-    \   'type' :
-    \     s:executable('luajit') ? 'watchdogs_checker/luajit' :
-    \     s:executable('luac53') ? 'watchdogs_checker/luac53' :
-    \     s:executable('luac')   ? 'watchdogs_checker/luac' : ''},
-    \ 'watchdogs_checker/luajit' : {
-    \   'command' : 'luajit',
-    \   'exec'    : '%c %o -bl %s:p',
-    \   'errorformat' : '%.%#: %#%f:%l: %m'},
-    \ 'watchdogs_checker/luac53' : {
-    \   'command' : 'luac53',
-    \   'exec'    : '%c %o -p %s:p',
-    \   'errorformat' : '%.%#: %#%f:%l: %m'},
-    \
-    \ 'vim/watchdogs_checker' : {
-    \   'type' : ''}})
+    call myvimrc#extend_quickrun_config('c/watchdogs_checker', {
+    \ 'type' :
+    \   s:executable('clang') ? 'watchdogs_checker/clang' :
+    \   s:executable('gcc')   ? 'watchdogs_checker/gcc' :
+    \   exists('$VCVARSALL')  ? 'watchdogs_checker/msvc' :
+    \   s:executable('cl')    ? 'watchdogs_checker/msvc' : ''})
+
+    call myvimrc#extend_quickrun_config('cpp/watchdogs_checker', {
+    \ 'type' :
+    \   s:executable('clang-check') ? 'watchdogs_checker/clang_check' :
+    \   s:executable('clang++')     ? 'watchdogs_checker/clang++' :
+    \   s:executable('g++')         ? 'watchdogs_checker/g++' :
+    \   exists('$VCVARSALL')        ? 'watchdogs_checker/msvc' :
+    \   s:executable('cl')          ? 'watchdogs_checker/msvc' : ''})
+
+    call myvimrc#extend_quickrun_config('lua/watchdogs_checker', {
+    \ 'type' :
+    \   s:executable('luajit') ? 'watchdogs_checker/luajit' :
+    \   s:executable('luac53') ? 'watchdogs_checker/luac53' :
+    \   s:executable('luac')   ? 'watchdogs_checker/luac' : ''})
+
+    call myvimrc#extend_quickrun_config('watchdogs_checker/luajit', {
+    \ 'command' : 'luajit',
+    \ 'exec' : '%c %o -bl %s:p',
+    \ 'errorformat' : '%.%#: %#%f:%l: %m'})
+
+    call myvimrc#extend_quickrun_config('watchdogs_checker/luac53', {
+    \ 'command' : 'luac53',
+    \ 'exec' : '%c %o -p %s:p',
+    \ 'errorformat' : '%.%#: %#%f:%l: %m'})
+
+    if has('win32')
+      call myvimrc#extend_quickrun_config('watchdogs_checker/msvc', {
+      \ 'hook/output_encode/encoding' : 'cp932'})
+    endif
 
     call watchdogs#setup(g:quickrun_config)
   endfunction
@@ -4185,7 +4255,7 @@ endif
 " YankRound: {{{
 if s:dein_tap('yankround')
   function! g:dein#plugin.hook_source() abort
-    let g:yankround_dir           = $CACHE . '/yankround'
+    let g:yankround_dir           = $XDG_CACHE_HOME . '/yankround'
     let g:yankround_max_history   = 100
     let g:yankround_use_region_hl = 1
   endfunction
@@ -4211,9 +4281,7 @@ if s:dein_tap('yankround')
   xnoremap <Leader>p d:<C-U>CtrlPYankRound<CR>
 
   autocmd MyVimrc User EscapeKey
-  \ if exists('#yankround_rounder#InsertEnter') |
-  \   call compat#doautocmd('<nomodeline>', 'yankround_rounder', 'InsertEnter') |
-  \ endif
+  \ call myvimrc#yankround_escape()
 endif
 " }}}
 " }}}

@@ -1,10 +1,10 @@
 @echo off
-goto :install
+goto :runas
 
 rem Install DotFiles
 rem
 rem Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-rem Last Change:  19-May-2016.
+rem Last Change:  07-Jun-2016.
 rem License:      MIT License {{{
 rem     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 rem
@@ -28,24 +28,38 @@ rem     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 rem     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 rem }}}
 
-:mklink_f
-if not exist "%HOME%\%~1" mklink "%HOME%\%~1" "%~f1"
-exit /b 0
-
-:mklink_d
-if not exist "%HOME%\%~1" mklink /j "%HOME%\%~1" "%~f1"
+:mklink
+if "%2" == "" (
+  call :mklink %1 "%HOME%\%~1"
+) else if not exist "%2" (
+  if exist "%~1\" (
+    mklink /j %2 "%~f1"
+  ) else (
+    mklink %2 "%~f1"
+  )
+)
 exit /b 0
 
 :dein
 if not exist %1 (
+  set /p REPLY="Install dein.vim? (y/N): "
+  if /i "!REPLY!" neq "y" exit /b 0
+
   mkdir %1
-  git clone https://github.com/DeaR/dein.vim.git %1
+  git clone https://github.com/Shougo/dein.vim.git %1
 )
 exit /b 0
 
+:runas
+whoami /priv | find "SeLoadDriverPrivilege" >nul
+if errorlevel 1 (
+  powershell.exe -Command Start-Process """%0""" -Verb Runas
+  exit /b 0
+)
+
 :install
 pushd "%~dp0\.."
-setlocal
+setlocal enabledelayedexpansion
 
 if not defined HOME (
   set "HOME=%USERPROFILE%"
@@ -60,63 +74,77 @@ if defined PROGRAMFILES(X86) (
 ) else (
   set "PF32=%PROGRAMFILES%"
 )
-if not defined CACHE (
-  if defined XDG_CACHE_HOME (
-    set "CACHE=%XDG_CACHE_HOME%"
-  ) else (
-    set "CACHE=%HOME%\.cache"
-  )
+
+if not defined XDG_DATA_HOME (
+  set "XDG_DATA_HOME=%HOME%\.local\share"
 )
-if not exist "%CACHE%" mkdir "%CACHE%"
+if not defined XDG_CACHE_HOME (
+  set "XDG_CACHE_HOME=%HOME%\.cache"
+)
+if not defined XDG_CONFIG_HOME (
+  set "XDG_CONFIG_HOME=%HOME%\.config"
+)
+if not exist "%XDG_DATA_HOME%"   mkdir "%XDG_DATA_HOME%"
+if not exist "%XDG_CACHE_HOME%"  mkdir "%XDG_CACHE_HOME%"
+rem if not exist "%XDG_CONFIG_HOME%" mkdir "%XDG_CONFIG_HOME%"
+call :mklink .config "%XDG_CONFIG_HOME%"
+
+rem Bash
+where /q bash && (
+  call :mklink .bash.d
+  call :mklink .bash_profile
+  call :mklink .bashrc
+  call :mklink .inputrc
+)
 
 rem ColorDiff
 where /q colordiff.pl && (
-  call :mklink_f .colordiffrc
+  call :mklink .colordiffrc
 )
 
 rem Git
 where /q git && (
-  call :mklink_f .gitconfig
-  call :mklink_f .gitignore
+  call :mklink .gitconfig
+  call :mklink .gitignore
 )
 
 rem Mercurial
 where /q hg && (
-  call :mklink_f .hgignore
-  call :mklink_f .hgrc
+  call :mklink .hgignore
+  call :mklink .hgrc
 )
 
 rem Nyagos
-if exist "%USERPROFILE%\Apps\nyagos\nyagos.exe" (
-  call :mklink_d .nyagos.d
-  call :mklink_f .nyagos
+if exist "%USERPROFILE%\Apps\nyagos-*" (
+  call :mklink .nyagos.d
+  call :mklink .nyagos
 )
 
 rem NODOKA
-if exist "%PF64%\nodoka\nodoka.exe" (
-  call :mklink_d .nodoka.d
-  call :mklink_f .nodoka
+if exist "%PF64%\nodoka" (
+  call :mklink .nodoka.d
+  call :mklink .nodoka
 )
 
 rem Screen
 where /q screen && (
-  call :mklink_f .screenrc
+  call :mklink .screenrc
 )
 
 rem tmux
 where /q tmux && (
-  call :mklink_f .tmux.conf
+  call :mklink .tmux.conf
 )
 
 rem Vim
 where /q gvim && (
-  call :mklink_f .gvimrc
+  call :mklink .gvimrc
 )
 where /q vim && (
-  call :mklink_d .vim
-  call :mklink_f .vimrc
+  call :mklink .vim
+  call :mklink .vimrc
 
-  where /q git && call :dein "%CACHE%\dein\repos\github.com\Shougo\dein.vim"
+  where /q git && call :dein "%XDG_DATA_HOME%\dein\repos\github.com\Shougo\dein.vim"
 )
 
 endlocal

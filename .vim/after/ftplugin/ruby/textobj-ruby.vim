@@ -1,7 +1,7 @@
 " TextObj Ruby
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Apr-2016.
+" Last Change:  15-Jun-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -33,14 +33,31 @@ endif
 let s:save_cpo = &cpo
 set cpo&vim
 
-omap <buffer> aC <Plug>(textobj-ruby-definition-a)
-xmap <buffer> aC <Plug>(textobj-ruby-definition-a)
-omap <buffer> iC <Plug>(textobj-ruby-definition-i)
-xmap <buffer> iC <Plug>(textobj-ruby-definition-i)
-omap <buffer> ar <Plug>(textobj-ruby-any-a)
-xmap <buffer> ar <Plug>(textobj-ruby-any-a)
-omap <buffer> ir <Plug>(textobj-ruby-any-i)
-xmap <buffer> ir <Plug>(textobj-ruby-any-i)
+omap <buffer> ar  <Nop>
+xmap <buffer> ar  <Nop>
+omap <buffer> arr <Plug>(textobj-ruby-any-a)
+xmap <buffer> arr <Plug>(textobj-ruby-any-a)
+omap <buffer> aro <Plug>(textobj-ruby-definition-a)
+xmap <buffer> aro <Plug>(textobj-ruby-definition-a)
+omap <buffer> arl <Plug>(textobj-ruby-loop-a)
+xmap <buffer> arl <Plug>(textobj-ruby-loop-a)
+omap <buffer> arc <Plug>(textobj-ruby-control-a)
+xmap <buffer> arc <Plug>(textobj-ruby-control-a)
+omap <buffer> ard <Plug>(textobj-ruby-do-a)
+xmap <buffer> ard <Plug>(textobj-ruby-do-a)
+
+omap <buffer> ir  <Nop>
+xmap <buffer> ir  <Nop>
+omap <buffer> irr <Plug>(textobj-ruby-any-i)
+xmap <buffer> irr <Plug>(textobj-ruby-any-i)
+omap <buffer> iro <Plug>(textobj-ruby-definition-i)
+xmap <buffer> iro <Plug>(textobj-ruby-definition-i)
+omap <buffer> irl <Plug>(textobj-ruby-loop-i)
+xmap <buffer> irl <Plug>(textobj-ruby-loop-i)
+omap <buffer> irc <Plug>(textobj-ruby-control-i)
+xmap <buffer> irc <Plug>(textobj-ruby-control-i)
+omap <buffer> ird <Plug>(textobj-ruby-do-i)
+xmap <buffer> ird <Plug>(textobj-ruby-do-i)
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'
