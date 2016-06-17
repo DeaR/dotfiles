@@ -163,7 +163,7 @@ if nyagos.which('peco') then
   use 'peco'
 end
 
--- use 'ignoreeof'
+use 'ignoreeof'
 use 'vcvars'
 -- }}}
 
@@ -181,6 +181,7 @@ nyagos.prompt = function(template)
     '$e[32;1m' .. user .. '@' .. host ..
     ' $e[33;1m' .. cwd .. '\n$e[m' .. root .. ' ')
 end
+share.ignoreeof = 1
 -- }}}
 
 -------------------------------------------------------------------------------

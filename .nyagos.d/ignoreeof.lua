@@ -18,7 +18,6 @@ nyagos.bindkey('C_D', function(this)
     nyagos.write('Use "exit" to leave the shell.')
     return false
   else
-    this:insert('exit')
-    return true
+    os.exit()
   end
 end)
