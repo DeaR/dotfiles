@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Jun-2016.
+" Last Change:  29-Jun-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -67,7 +67,7 @@ function! s:cpucores() abort
 endfunction
 
 " Check japanese
-let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
+let s:is_lang_ja = v:lang =~? '^ja'
 
 " Check colored UI
 let s:is_colored_ui = has('gui_running') || has('termguicolors') || &t_Co > 255
@@ -176,7 +176,7 @@ endfunction
 
 function! myvimrc#cmdline_enter(type) abort
   if exists('#User#CmdlineEnter')
-    call compat#doautocmd('<nomodeline>', 'User', 'CmdlineEnter')
+    doautocmd <nomodeline> User CmdlineEnter
   endif
   return a:type
 endfunction
@@ -186,7 +186,7 @@ endfunction
 " Escape Key: {{{
 function! myvimrc#escape_key() abort
   if exists('#User#EscapeKey')
-    call compat#doautocmd('<nomodeline>', 'User', 'EscapeKey')
+    doautocmd <nomodeline> User EscapeKey
   endif
   return "\<Esc>:\<C-U>nohlsearch\<CR>"
 endfunction
@@ -593,7 +593,7 @@ if s:dein_tap('operator-star')
       call feedkeys("\<SNR>" . s:SID() . '_(hlsearch)')
     endif
     if exists('#User#OperatorStarPost')
-      call compat#doautocmd('<nomodeline>', 'User', 'OperatorStarPost')
+      doautocmd <nomodeline> User OperatorStarPost
     endif
   endfunction
 
@@ -807,7 +807,7 @@ endif
 if s:dein_tap('yankround')
   function! myvimrc#yankround_escape()
     if exists('#yankround_rounder#InsertEnter')
-      call compat#doautocmd('<nomodeline>', 'yankround_rounder', 'InsertEnter')
+      doautocmd <nomodeline> yankround_rounder InsertEnter
     endif
   endfunction
 endif

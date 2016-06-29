@@ -3,7 +3,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  01-Jun-2016.
+" Last Change:  29-Jun-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -29,8 +29,8 @@ scriptencoding utf-8
 
 "==============================================================================
 " Pre Init: {{{
-" Skip vim-tiny, vim-small, below vim-7.2
-if v:version < 703 | finish | endif
+" Skip vim-tiny, vim-small, below vim-7.3
+if v:version < 704 | finish | endif
 
 " GVimrc autocmd group
 augroup MyGVimrc
@@ -71,7 +71,7 @@ function! s:cpucores() abort
 endfunction
 
 " Check japanese
-let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
+let s:is_lang_ja = v:lang =~? '^ja'
 
 " Check colored UI
 let s:is_colored_ui = has('gui_running') || has('termguicolors') || &t_Co > 255

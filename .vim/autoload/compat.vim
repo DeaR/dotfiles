@@ -1,7 +1,7 @@
 " Vim compatibility
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-May-2016.
+" Last Change:  29-Jun-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -42,25 +42,6 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
-" Vim.Compat.shiftwidth: {{{
-" 7.3.629  there is no way to make 'shiftwidth' follow 'tabstop'
-" 7.3.694  'shiftwidth' is not so easy to use in indent files
-if exists('*shiftwidth')
-  function! compat#shiftwidth() abort
-    return shiftwidth()
-  endfunction
-elseif compat#has_patch('7.3.629')
-  function! compat#shiftwidth() abort
-    return &shiftwidth ? &shiftwidth : &tabstop
-  endfunction
-else
-  function! compat#shiftwidth() abort
-    return &shiftwidth
-  endfunction
-endif
-" }}}
-
-"------------------------------------------------------------------------------
 " Vim.Compat.writefile: {{{
 " 7.4.503  cannot append a list of lines to a file
 if compat#has_patch('7.4.503')
@@ -81,42 +62,6 @@ else
       \ a:list[0] : string(a:list[0]))
       return writefile(list[:-2] + [connect] + a:list[1:], a:fname, flags)
     endif
-  endfunction
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Vim.Compat.doautocmd: {{{
-" 7.3.438  there is no way to avoid ":doautoall" reading modelines
-if compat#has_patch('7.3.438')
-  function! compat#doautocmd(...) abort
-    execute 'doautocmd' join(a:000)
-  endfunction
-else
-  function! compat#doautocmd(...) abort
-    execute 'doautocmd' substitute(join(a:000), '^\s*<nomodeline>', '', '')
-  endfunction
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Vim.Compat.getbufvar, Vim.Compat.getwinvar: {{{
-" 7.3.831  clumsy to handle the situation that a variable does not exist
-if compat#has_patch('7.3.831')
-  function! compat#getbufvar(...) abort
-    return call('getbufvar', a:000)
-  endfunction
-  function! compat#getwinvar(...) abort
-    return call('getwinvar', a:000)
-  endfunction
-else
-  function! compat#getbufvar(expr, varname, ...) abort
-    let v = getbufvar(a:expr, a:varname)
-    return empty(v) ? get(a:000, 0, '') : v
-  endfunction
-  function! compat#getwinvar(expr, varname, ...) abort
-    let v = getwinvar(a:expr, a:varname)
-    return empty(v) ? get(a:000, 0, '') : v
   endfunction
 endif
 " }}}

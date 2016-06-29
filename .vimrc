@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  15-Jun-2016.
+" Last Change:  29-Jun-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -29,8 +29,8 @@ scriptencoding utf-8
 
 "==============================================================================
 " Pre Init: {{{
-" Skip vim-tiny, vim-small, below vim-7.2
-if v:version < 703 | finish | endif
+" Skip vim-tiny, vim-small, below vim-7.3
+if v:version < 704 | finish | endif
 
 " Be iMproved
 if &compatible
@@ -133,7 +133,7 @@ function! s:cpucores() abort
 endfunction
 
 " Check japanese
-let s:is_lang_ja = has('multi_byte') && v:lang =~? '^ja'
+let s:is_lang_ja = v:lang =~? '^ja'
 
 " Check colored UI
 let s:is_colored_ui = has('gui_running') || has('termguicolors') || &t_Co > 255
@@ -353,16 +353,8 @@ set foldlevelstart=99
 
 "------------------------------------------------------------------------------
 " Status Line: {{{
-set statusline=%f%<\ %m%r[
-if has('multi_byte')
-  set statusline+=%{empty(&fenc)?&enc:&fenc}:
-endif
-set statusline+=%{&ff}]%y%=
-
-if has('multi_byte')
-  set statusline+=\ [U+%04B]
-endif
-set statusline+=\ (%l,%v)/%L
+set statusline=%f%<\ %m%r[%{empty(&fenc)?&enc:&fenc}:%{&ff}]%y%=
+\\ [U+%04B]\ (%l,%v)/%L
 
 if s:is_lang_ja
   set statusline+=\ %4P
@@ -412,28 +404,29 @@ set showtabline=2
 
 "------------------------------------------------------------------------------
 " File Encodings: {{{
-if has('multi_byte')
-  if s:has_jisx0213
-    set fileencodings=iso-2022-jp-3,cp932,euc-jisx0213,euc-jp,ucs-bom
-  else
-    set fileencodings=iso-2022-jp,cp932,euc-jp,ucs-bom
-  endif
-  autocmd MyVimrc BufReadPost *
-  \ if &modifiable && !search('[^\x00-\x7F]', 'cnw') |
-  \   setlocal fileencoding= |
-  \ endif
+if s:has_jisx0213
+  set fileencodings=iso-2022-jp-3,cp932,euc-jisx0213,euc-jp,ucs-bom
+else
+  set fileencodings=iso-2022-jp,cp932,euc-jp,ucs-bom
 endif
 if has('guess_encode')
   set fileencodings^=guess
 endif
-if has('iconv')
-  let s:last_enc = &encoding
-  autocmd MyVimrc EncodingChanged *
-  \ if s:last_enc !=# &encoding |
-  \   let &runtimepath = iconv(&runtimepath, s:last_enc, &encoding) |
-  \   let s:last_enc = &encoding |
+
+augroup MyVimrc
+  if has('iconv')
+    let s:last_enc = &encoding
+    autocmd EncodingChanged *
+    \ if s:last_enc !=# &encoding |
+    \   let &runtimepath = iconv(&runtimepath, s:last_enc, &encoding) |
+    \   let s:last_enc = &encoding |
+    \ endif
+  endif
+  autocmd BufReadPost *
+  \ if &modifiable && !search('[^\x00-\x7F]', 'cnw') |
+  \   setlocal fileencoding= |
   \ endif
-endif
+augroup END
 " }}}
 
 "------------------------------------------------------------------------------
@@ -914,67 +907,63 @@ command! -bar
 
 "------------------------------------------------------------------------------
 " Change File Encoding Option: {{{
-if has('multi_byte')
+command! -bar
+\ FencUtf8
+\ setlocal fileencoding=utf-8
+command! -bar
+\ FencUtf16le
+\ setlocal fileencoding=utf-16le
+command! -bar
+\ FencUtf16
+\ setlocal fileencoding=utf-16
+command! -bar
+\ FencCp932
+\ setlocal fileencoding=cp932
+command! -bar
+\ FencEucjp
+\ setlocal fileencoding=euc-jp
+if s:has_jisx0213
   command! -bar
-  \ FencUtf8
-  \ setlocal fileencoding=utf-8
+  \ FencEucJisx0213
+  \ setlocal fileencoding=euc-jisx0213
   command! -bar
-  \ FencUtf16le
-  \ setlocal fileencoding=utf-16le
+  \ FencIso2022jp
+  \ setlocal fileencoding=iso-2022-jp-3
+else
   command! -bar
-  \ FencUtf16
-  \ setlocal fileencoding=utf-16
-  command! -bar
-  \ FencCp932
-  \ setlocal fileencoding=cp932
-  command! -bar
-  \ FencEucjp
-  \ setlocal fileencoding=euc-jp
-  if s:has_jisx0213
-    command! -bar
-    \ FencEucJisx0213
-    \ setlocal fileencoding=euc-jisx0213
-    command! -bar
-    \ FencIso2022jp
-    \ setlocal fileencoding=iso-2022-jp-3
-  else
-    command! -bar
-    \ FencIso2022jp
-    \ setlocal fileencoding=iso-2022-jp
-  endif
+  \ FencIso2022jp
+  \ setlocal fileencoding=iso-2022-jp
 endif
 " }}}
 
 "------------------------------------------------------------------------------
 " Open With A Specific Character Code Again: {{{
-if has('multi_byte')
+command! -bang -bar -nargs=* -complete=file
+\ EditUtf8
+\ edit<bang> ++enc=utf-8 <args>
+command! -bang -bar -nargs=* -complete=file
+\ EditUtf16le
+\ edit<bang> ++enc=utf-16le <args>
+command! -bang -bar -nargs=* -complete=file
+\ EditUtf16
+\ edit<bang> ++enc=utf-16 <args>
+command! -bang -bar -nargs=* -complete=file
+\ EditCp932
+\ edit<bang> ++enc=cp932 <args>
+command! -bang -bar -nargs=* -complete=file
+\ EditEucjp
+\ edit<bang> ++enc=euc-jp <args>
+if s:has_jisx0213
   command! -bang -bar -nargs=* -complete=file
-  \ EditUtf8
-  \ edit<bang> ++enc=utf-8 <args>
+  \ EditEucJisx0213
+  \ edit<bang> ++enc=euc-jisx0213 <args>
   command! -bang -bar -nargs=* -complete=file
-  \ EditUtf16le
-  \ edit<bang> ++enc=utf-16le <args>
+  \ EditIso2022jp
+  \ edit<bang> ++enc=iso-2022-jp-3 <args>
+else
   command! -bang -bar -nargs=* -complete=file
-  \ EditUtf16
-  \ edit<bang> ++enc=utf-16 <args>
-  command! -bang -bar -nargs=* -complete=file
-  \ EditCp932
-  \ edit<bang> ++enc=cp932 <args>
-  command! -bang -bar -nargs=* -complete=file
-  \ EditEucjp
-  \ edit<bang> ++enc=euc-jp <args>
-  if s:has_jisx0213
-    command! -bang -bar -nargs=* -complete=file
-    \ EditEucJisx0213
-    \ edit<bang> ++enc=euc-jisx0213 <args>
-    command! -bang -bar -nargs=* -complete=file
-    \ EditIso2022jp
-    \ edit<bang> ++enc=iso-2022-jp-3 <args>
-  else
-    command! -bang -bar -nargs=* -complete=file
-    \ EditIso2022jp
-    \ edit<bang> ++enc=iso-2022-jp <args>
-  endif
+  \ EditIso2022jp
+  \ edit<bang> ++enc=iso-2022-jp <args>
 endif
 " }}}
 
@@ -1178,7 +1167,7 @@ endif
 
 "------------------------------------------------------------------------------
 " Highlight Ideographic Space: {{{
-if has('multi_byte') && s:is_colored_ui
+if s:is_colored_ui
   function! s:highlight_ideographic_space(reset) abort
     if !exists('s:hi_specialkey') || a:reset
       silent! let s:hi_specialkey =
@@ -1352,7 +1341,7 @@ let g:loaded_vimballPlugin   = 1
 "------------------------------------------------------------------------------
 " Dein: {{{
 let s:dein_dir = $XDG_DATA_HOME . '/dein/repos/github.com/Shougo/dein.vim'
-if v:version > 703 && isdirectory(s:dein_dir)
+if isdirectory(s:dein_dir)
   execute 'set runtimepath^=' . escape(escape(s:dein_dir, ' ,'), ' \')
   let g:dein#enable_name_conversion  = 1
   let g:dein#install_max_processes   = min([s:cpucores(), 8])
