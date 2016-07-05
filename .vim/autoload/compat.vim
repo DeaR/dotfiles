@@ -1,7 +1,7 @@
 " Vim compatibility
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  29-Jun-2016.
+" Last Change:  04-Jul-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -68,21 +68,14 @@ endif
 
 "------------------------------------------------------------------------------
 " Prelude.glob: {{{
-" 7.3.465  cannot get file name with newline from glob()
 " 7.4.654  glob()/ globpath() cannot include links to non-existing files
 if compat#has_patch('7.4.654')
   function! compat#glob(...) abort
     return call('glob', a:000)
   endfunction
-elseif compat#has_patch('7.3.465')
-  function! compat#glob(...) abort
-    return call('glob', a:000[:2])
-  endfunction
 else
   function! compat#glob(...) abort
-    return get(a:000, 2) ?
-    \ split(call('glob', a:000[:1]), '\n') :
-    \ call('glob', a:000[:1])
+    return call('glob', a:000[:2])
   endfunction
 endif
 " }}}
