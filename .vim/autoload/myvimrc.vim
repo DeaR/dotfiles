@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  29-Jun-2016.
+" Last Change:  05-Jul-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -419,8 +419,7 @@ endfunction
 " Quick Close: {{{
 function! myvimrc#quick_close()
   if (&readonly || !&modifiable) && empty(maparg('q', 'n'))
-    nnoremap <buffer><silent><expr> q
-    \ winnr('$') != 1 ? ':<C-U>close<CR>' : 'q'
+    nnoremap <buffer> q :<C-U>bdelete<CR>
   endif
 endfunction
 " }}}

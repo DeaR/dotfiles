@@ -1,7 +1,7 @@
-" Close mapping
+" Quick Close
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-Sep-2015.
+" Last Change:  05-Jul-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,8 +28,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-nnoremap <buffer><expr> q
-\ winnr('$') != 1 ? ':<C-U>close<CR>' : ''
+nnoremap <buffer> q :<C-U>bdelete<CR>
 
 if exists('b:undo_ftplugin')
   let b:undo_ftplugin .= ' |'

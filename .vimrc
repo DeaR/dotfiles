@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  29-Jun-2016.
+" Last Change:  05-Jul-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1733,32 +1733,28 @@ if s:dein_tap('ctrlp')
     let g:ctrlp_mruf_case_sensitive = !&fileignorecase
 
     let g:ctrlp_custom_ignore       = {
-    \ 'dir'  : join(s:ignore_dir, '\|'),
-    \ 'file' : '\.\%(' . join(s:ignore_ext, '\|') . '\)$'}
+    \ 'dir'  : join(map(copy(s:ignore_dir),
+    \   'escape(v:val, "\\[].*^$")'), '\|'),
+    \ 'file' : '\.\%(' . join(map(copy(s:ignore_ext),
+    \   'escape(v:val, "\\[].*^$")'), '\|') . '\)$'}
     let g:ctrlp_mruf_exclude        =
-    \ join(s:ignore_dir, '\|')
+    \ g:ctrlp_custom_ignore.dir . '\|' . g:ctrlp_custom_ignore.file
 
-    if !has('win32') && s:executable('find')
-      let l:ctrlp_user_command =
-      \ 'find -L %s -type f'
-    " elseif has('win32')
-    "   let l:ctrlp_user_command =
-    "   \ 'dir %s /-n /b /s /a-d'
-    elseif s:executable('files')
-      let l:ctrlp_user_command =
-      \ 'files ' .
+    if s:executable('files')
+      let g:ctrlp_user_command =
+      \ 'files -a ' .
       \ (s:cpucores() > 1 ? '-A ' : '') .
       \ '%s'
-    endif
-    if exists('l:ctrlp_user_command')
-      let g:ctrlp_user_command = {
-      \ 'fallback' : l:ctrlp_user_command,
-      \ 'ignore'   : 1}
+      let $FILES_IGNORE_PATTERN =
+      \ join(map(copy(s:ignore_dir),
+      \   'escape(v:val, "\\[](){}|.?+*^$")'), '|') .
+      \ '|\.(' . join(map(copy(s:ignore_ext),
+      \   'escape(v:val, "\\[](){}|.?+*^$")'), '|') . ')$'
     endif
   endfunction
 
-  NXnoremap <Leader>e :<C-U>CtrlPMRUFiles<CR>
-  NXnoremap <Leader>E :<C-U>CtrlP<CR>
+  NXnoremap <Leader>e     :<C-U>CtrlP<CR>
+  NXnoremap <Leader><M-e> :<C-U>CtrlPMRUFiles<CR>
 
   NXnoremap <Leader>u :<C-U>CtrlPUndo<CR>
   NXnoremap <Leader>j :<C-U>CtrlPChange<CR>
@@ -2143,9 +2139,7 @@ if s:dein_tap('metarw-local')
     let g:metarw_local_enable_fallback = 1
   endfunction
 
-  if empty(dein#get('ctrlp'))
-    NXnoremap <Leader>E :<C-U>Edit local:<CR>
-  endif
+  NXnoremap <Leader>E :<C-U>Edit local:<CR>
 endif
 " }}}
 
@@ -3339,7 +3333,7 @@ if s:dein_tap('tabpagebuffer-misc')
   endfunction
 
   NXnoremap <Leader>B :<C-U>TpbBuffers<CR>
-  NXnoremap <Leader>q :<C-U>TpbDelete<CR>
+  " NXnoremap <Leader>q :<C-U>TpbDelete<CR>
   NXnoremap <Leader>Q :<C-U>TpbDeleteAll<CR>
 
   if !empty(dein#get('ctrlp'))
