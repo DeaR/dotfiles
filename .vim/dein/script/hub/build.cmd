@@ -1,3 +1,3 @@
 @echo off
 
-call script\build.bat -o ~/Bin/hub.exe %*
+call script\build.bat -o "%HOME%\Bin\hub.exe" %*

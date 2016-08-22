@@ -1,10 +1,6 @@
 #!/bin/sh
 
 ./autogen.sh
-./configure
+./configure --prefix=~
 make $*
-if which sudo > /dev.null; then
-  sudo make install
-else
-  make install
-fi
+make install

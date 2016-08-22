@@ -1,6 +1,8 @@
 syntax: glob
 
 tags
+tags-??
+*~
 *.swp
 *.swo
 *.swn

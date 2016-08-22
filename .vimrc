@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  05-Jul-2016.
+" Last Change:  22-Aug-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -93,11 +93,18 @@ augroup END
 " Ignore pattern
 let s:ignore_dir = [
 \ '.git', '.hg', '.bzr', '.svn']
-let s:ignore_ext = [
-\ 'o', 'obj', 'a', 'lib', 'so', 'dll', 'dylib', 'exe', 'bin',
-\ 'swp', 'swo', 'swn', 'lc', 'elc', 'fas', 'pyc', 'pyd', 'pyo', 'luac', 'zwc']
+let s:ignore_file = [
+\ '*.exe', '*.bin',
+\ '*.o', '*.obj', '*.a', '*.lib', '*.so', '*.dll', '*.dylib',
+\ 'tags', 'tags-??', '*~', '*.swp', '*.swo', '*.swn', '*.lc',
+\ '*.elc', '*.fas', '*.pyc', '*.pyd', '*.pyo', '*.luac', '*.zwc']
 let s:ignore_ft = [
 \ 'gitcommit', 'gitrebase', 'hgcommit']
+
+if has('win32')
+  call extend(s:ignore_dir, [
+  \ 'AppData', 'TuruKameData'])
+endif
 
 "------------------------------------------------------------------------------
 " Common: {{{
@@ -245,8 +252,7 @@ set ambiwidth=double
 
 " Wild menu
 set wildmenu
-execute 'set wildignore+=' . join(s:ignore_dir +
-\ map(copy(s:ignore_ext), '"*." . escape(escape(v:val, " ,"), " \\")'), ',')
+execute 'set wildignore+=' . join(s:ignore_dir + s:ignore_file, ',')
 
 " Mouse
 set mouse=a
@@ -346,7 +352,6 @@ set copyindent
 set cinoptions=:0,l1,g0,(0,U1,Ws,j1,J1,)20
 
 " Folding
-set nofoldenable
 " set foldcolumn=2
 set foldlevelstart=99
 " }}}
@@ -1099,7 +1104,7 @@ autocmd MyVimrc FileType *
 augroup MyVimrc
   autocmd BufWinEnter,WinEnter *
   \ if &buftype == 'quickfix' && !exists('b:qflisttype') |
-  \   call myvimrc#set_qflisttype() |
+  \   let b:qflisttype = myvimrc#get_qflisttype() |
   \ endif
   autocmd QuickFixCmdPost [^l]*
   \ cwindow
@@ -1726,30 +1731,26 @@ if s:dein_tap('ctrlp')
     let g:ctrlp_working_path_mode   = ''
     let g:ctrlp_clear_cache_on_exit = 0
     let g:ctrlp_show_hidden         = 1
-    let g:ctrlp_max_files           = 10000
-    let g:ctrlp_max_depth           = 20
     let g:ctrlp_open_new_file       = 'r'
     let g:ctrlp_mruf_max            = 1000
     let g:ctrlp_mruf_case_sensitive = !&fileignorecase
 
-    let g:ctrlp_custom_ignore       = {
+    let g:ctrlp_custom_ignore = {
     \ 'dir'  : join(map(copy(s:ignore_dir),
-    \   'escape(v:val, "\\[].*^$")'), '\|'),
-    \ 'file' : '\.\%(' . join(map(copy(s:ignore_ext),
-    \   'escape(v:val, "\\[].*^$")'), '\|') . '\)$'}
-    let g:ctrlp_mruf_exclude        =
-    \ g:ctrlp_custom_ignore.dir . '\|' . g:ctrlp_custom_ignore.file
+    \   'compat#glob2regpat(v:val)'), '\|'),
+    \ 'file' : join(map(copy(s:ignore_file),
+    \   'compat#glob2regpat(v:val)'), '\|')}
+    let g:ctrlp_mruf_exclude =
+    \ join(map(s:ignore_dir + s:ignore_file,
+    \   'compat#glob2regpat(v:val)'), '\|')
 
     if s:executable('files')
+      let g:ctrlp_compare_lim  = 0
       let g:ctrlp_user_command =
-      \ 'files -a ' .
-      \ (s:cpucores() > 1 ? '-A ' : '') .
-      \ '%s'
+      \ 'files -a -S' . (s:cpucores() > 1 ? ' -A' : '') . ' %s'
       let $FILES_IGNORE_PATTERN =
-      \ join(map(copy(s:ignore_dir),
-      \   'escape(v:val, "\\[](){}|.?+*^$")'), '|') .
-      \ '|\.(' . join(map(copy(s:ignore_ext),
-      \   'escape(v:val, "\\[](){}|.?+*^$")'), '|') . ')$'
+      \ join(map(s:ignore_dir + s:ignore_file,
+      \   'compat#glob2regpat(v:val)'), '|')
     endif
   endfunction
 

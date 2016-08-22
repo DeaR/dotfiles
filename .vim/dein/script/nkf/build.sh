@@ -1,8 +1,4 @@
 #!/bin/sh
 
 make $*
-if which sudo > /dev/null; then
-  sudo make install
-else
-  make install
-fi
+make MKDIR="mkdir -p" prefix=~ install-main

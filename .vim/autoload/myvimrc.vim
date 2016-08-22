@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  05-Jul-2016.
+" Last Change:  22-Aug-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -426,36 +426,36 @@ endfunction
 
 "------------------------------------------------------------------------------
 " QuickFix: {{{
-function! s:get_qflisttype() abort
-  if exists('b:qflisttype')
-    return b:qflisttype
-  endif
-
-  let save_ei = &eventignore
-  try
-    set eventignore+=BufWinLeave,WinLeave,BufWinEnter,WinEnter
-    let ret = 'location'
-    let cur = winnr()
-    let rest = winrestcmd()
-    let view = winsaveview()
-    lopen
-    if winnr() != cur
-      lclose
-      execute cur 'wincmd w'
-      execute rest
-      let ret = 'quickfix'
-    endif
-    call winrestview(view)
-    return ret
-  catch /^Vim\%((\a\+)\)\=:E776/
-    return 'quickfix'
-  finally
-    let &eventignore = save_ei
-  endtry
-endfunction
-function! myvimrc#set_qflisttype() abort
-  let b:qflisttype = s:get_qflisttype()
-endfunction
+if s:has_patch('7.4.2215')
+  function! myvimrc#get_qflisttype() abort
+    return getwininfo(win_getid())[0].loclist ?
+    \ 'location' : 'quickfix'
+  endfunction
+else
+  function! myvimrc#get_qflisttype() abort
+    let save_ei = &eventignore
+    try
+      set eventignore+=BufWinLeave,WinLeave,BufWinEnter,WinEnter
+      let ret = 'location'
+      let cur = winnr()
+      let rest = winrestcmd()
+      let view = winsaveview()
+      lopen
+      if winnr() != cur
+        lclose
+        execute cur 'wincmd w'
+        execute rest
+        let ret = 'quickfix'
+      endif
+      call winrestview(view)
+      return ret
+    catch /^Vim\%((\a\+)\)\=:E776/
+      return 'quickfix'
+    finally
+      let &eventignore = save_ei
+    endtry
+  endfunction
+endif
 " }}}
 " }}}
 
