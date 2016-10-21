@@ -1,7 +1,7 @@
 # Dein settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  28-Sep-2016.
+# Last Change:  21-Oct-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -28,6 +28,9 @@
 #------------------------------------------------------------------------------
 [ftplugin]
 _ = '''
+if &diff
+  setlocal foldmethod=diff
+endif
 if expand('<amatch>') ==# 'dosbatch'
   let b:caw_oneline_comment = 'rem'
 endif
