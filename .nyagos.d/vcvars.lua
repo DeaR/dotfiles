@@ -1,7 +1,7 @@
 -- Visual Studio prompt for NYAGOS
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  20-Apr-2016.
+-- Last Change:  26-Sep-2016.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -52,6 +52,10 @@ share.__vcvarsall = function(arch)
     nyagos.stat(d70)  and d70
   if nyagos.stat(sdk) then
     nyagos.setenv('SDK_INCLUDE_DIR', sdk)
+  end
+
+  if nyagos.getenv('PROGRAMFILES(X86)') then
+    nyagos.setenv('CMAKE_GENERATOR_PLATFORM', 'x64')
   end
 end
 

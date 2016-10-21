@@ -1,7 +1,7 @@
 # Edit plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  01-Jun-2016.
+# Last Change:  21-Oct-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -84,7 +84,6 @@ on_map = [['ic', '<Plug>']]
 repo = 'Konfekt/FastFold'
 on_cmd = 'FastFoldUpdate'
 on_map = [['n', '<Plug>'], ['nx', '<Plug>(submode:ff/']]
-on_if = 1
 depends = 'submode'
 
 #------------------------------------------------------------------------------

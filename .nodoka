@@ -1,7 +1,7 @@
 # Nodoka settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  10-Jun-2016.
+# Last Change:  24-Sep-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -44,7 +44,9 @@ endif
 #------------------------------------------------------------------------------
 # Realforce101: {{{
 if(!HHKB)
-  include ".nodoka.d/104.nodoka"
+  include "104.nodoka"
+  mod Ctrl += Caps
+  key *Caps = *LCtrl
 endif
 # }}}
 
@@ -208,10 +210,8 @@ endif
 
 #------------------------------------------------------------------------------
 # Vim: {{{
-if(USEdefault)
-  window Vim /vim\.exe/ : RAltIme
-  window GVim /gvim\.exe/ : RAltIme
-endif
+window Vim /vim\.exe/ : RAltIme
+window GVim /gvim\.exe/ : RAltIme
 # }}}
 
 #------------------------------------------------------------------------------
@@ -282,6 +282,14 @@ window TalesWeaver /InphaseNXD\.exe/ : RAltIme
 #------------------------------------------------------------------------------
 # TERA: {{{
 window TERA /TERA_Invoker\.exe/ : RAltIme
+# }}}
+
+#------------------------------------------------------------------------------
+# Tree of Savior: {{{
+window TreeOfSavior /client_tos\.exe/ : RAltIme
+ mod Ctrl += Caps
+ key *Caps = *LCtrl
+# }}}
 
 #------------------------------------------------------------------------------
 # ŽµŽlŽ®“dŽqŠÏ‘ª‹V: {{{

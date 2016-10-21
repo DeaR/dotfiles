@@ -1,7 +1,7 @@
 -- NYAGOS settings
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  15-Jun-2016.
+-- Last Change:  24-Sep-2016.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -157,11 +157,11 @@ end
 
 -------------------------------------------------------------------------------
 -- Catalog: {{{
-use 'autocd'
+-- use 'autocd'
 use 'dollar'
-if nyagos.which('peco') then
-  use 'peco'
-end
+-- if nyagos.which('peco') then
+--   use 'peco'
+-- end
 
 use 'ignoreeof'
 use 'vcvars'
@@ -191,7 +191,7 @@ share.org_clone = share._clone
 share._clone = function(action)
   local prof = nyagos.getenv('USERPROFILE')
   local arch = nyagos.getenv('PROGRAMFILES(X86)') and 'x64' or 'x86'
-  local ckw  = prof .. '\\Apps\\ckw-mod-0.9.1-mod-r3_' .. arch .. '\\ckw.exe'
+  local ckw  = prof .. '\\Apps\\ckw-mod-0.9.1-mod-r4_' .. arch .. '\\ckw.exe'
   local cwd  = nyagos.netdrivetounc(nyagos.getwd())
   local args = '-cd "' .. cwd .. '"'
   local status, err = nyagos.shellexecute(action, ckw, args)
@@ -208,7 +208,7 @@ alias {
     end
     local prof = nyagos.getenv('USERPROFILE')
     local arch = nyagos.getenv('PROGRAMFILES(X86)') and 'x64' or 'x86'
-    local ckw  = prof .. '\\Apps\\ckw-mod-0.9.1-mod-r3_' .. arch .. '\\ckw.exe'
+    local ckw  = prof .. '\\Apps\\ckw-mod-0.9.1-mod-r4_' .. arch .. '\\ckw.exe'
     local cwd  = nyagos.netdrivetounc(nyagos.getwd())
     local args = '-cd "' .. cwd .. '" -e "' .. table.concat(args, ' ') .. '"'
     local status, err = nyagos.shellexecute('runas', ckw, args)

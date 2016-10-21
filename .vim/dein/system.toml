@@ -1,7 +1,7 @@
 # System plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  01-Jun-2016.
+# Last Change:  21-Oct-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -44,6 +44,12 @@ on_if = 'empty(&buftype) && (line("$") > 1 || col("$") > 1)'
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'Shougo/dein.vim'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'tweekmonster/helpful.vim'
+on_ft = ['help', 'vim']
+on_cmd = 'HelpfulVersion'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -150,6 +156,7 @@ depends = ['ctrlp', 'tabpagebuffer']
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'lambdalisue/vim-unified-diff'
+on_if = '&diff'
 
 #------------------------------------------------------------------------------
 [[plugins]]

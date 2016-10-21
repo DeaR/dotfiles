@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  22-Aug-2016.
+" Last Change:  21-Oct-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1020,6 +1020,9 @@ if has('win32')
       let $SDK_INCLUDE_DIR = s:pf32 . '\Microsoft SDKs\Windows\v7.0\Include'
     endif
   endif
+  if has('win64')
+    let $CMAKE_GENERATOR_PLATFORM = 'x64'
+  endif
 
   if exists('$VCVARSALL')
     command! -bar
@@ -1752,6 +1755,12 @@ if s:dein_tap('ctrlp')
       \ join(map(s:ignore_dir + s:ignore_file,
       \   'compat#glob2regpat(v:val)'), '|')
     endif
+
+    if !empty(dein#get('cpsm'))
+      let g:ctrlp_match_func = {'match' : 'cpsm#CtrlPMatch'}
+    elseif !empty(dein#get('ctrlp-py-matcher'))
+      let g:ctrlp_match_func = {'match' : 'pymatcher#PyMatch'}
+    endif
   endfunction
 
   NXnoremap <Leader>e     :<C-U>CtrlP<CR>
@@ -1797,15 +1806,6 @@ endif
 " CtrlP Mark: {{{
 if s:dein_tap('ctrlp-mark')
   NXnoremap <Leader>m :<C-U>CtrlPMark<CR>
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" CtrlP Py Matcher: {{{
-if s:dein_tap('ctrlp-py-matcher')
-  function! g:dein#plugin.hook_source() abort
-    let g:ctrlp_match_func = {'match' : 'pymatcher#PyMatch'}
-  endfunction
 endif
 " }}}
 
@@ -2276,8 +2276,6 @@ endif
 if s:dein_tap('omnisharp')
   function! g:dein#plugin.hook_source() abort
     " let g:OmniSharp_server_type = 'roslyn'
-    let g:OmniSharp_server_path =
-    \ g:dein#plugin.path . '/server/OmniSharp/bin/Release/OmniSharp.exe'
     let g:OmniSharp_selector_ui = 'ctrlp'
   endfunction
 
@@ -4086,10 +4084,6 @@ endif
 " Unified Diff: {{{
 if s:dein_tap('unified-diff')
   set diffexpr=unified_diff#diffexpr()
-
-  if has('vim_starting') && &diff
-    call dein#source(dein#name)
-  endif
 endif
 " }}}
 
@@ -4279,11 +4273,11 @@ elseif filereadable($HOME . '/.vim/vimrc_local.vim')
   source ~/.vim/vimrc_local.vim
 endif
 
-" Enable plugin
-filetype plugin indent on
-
 " Syntax highlight
 syntax enable
+
+" Enable plugin
+filetype plugin indent on
 
 " ColorScheme
 if !exists('g:colors_name') && !has('gui_running') && s:is_colored_ui

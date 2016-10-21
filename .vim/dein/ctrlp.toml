@@ -1,7 +1,7 @@
 # CtrlP plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  27-May-2016.
+# Last Change:  27-Sep-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -24,6 +24,13 @@
 #     OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
 #     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # }}}
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'nixprime/cpsm'
+if = '(has("python") || has("python3")) && executable("cmake")'
+on_source = 'ctrlp'
+build = '~/.vim/dein/script/cpsm/build'
 
 #------------------------------------------------------------------------------
 [[plugins]]

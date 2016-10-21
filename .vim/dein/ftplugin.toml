@@ -1,7 +1,7 @@
 # FileType plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  02-Jun-2016.
+# Last Change:  26-Sep-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -133,14 +133,14 @@ depends = 'watchdogs'
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'taku25/vim-visualstudio'
-if = 'has("win32") && exists("$VCVARSALL")'
+if = 'exists("$VCVARSALL")'
 on_cmd = ['VSCompile', 'VSBuild', 'VSReBuild', 'VSBuildProject', 'VSReBuildProject', 'VSCompileNoWait', 'VSBuildNoWait', 'VSReBuildNoWait', 'VSBuildProjectNoWait', 'VSReBuildProjectNoWait', 'VSSetBuildConfig', 'VSSetPlatform', 'VSCancelBuild', 'VSClean', 'VSOutput', 'VSErorrList', 'VSRun', 'VSDebugRun', 'VSSetStartupProject', 'VSStopDebugRun', 'VSFindSolution1', 'VSFindSolution2', 'VSFindSolutionNoWait1', 'VSFindSolutionNoWait2', 'VSFindProject1', 'VSFindProject2', 'VSFindProjectNoWait1', 'VSFindProjectNoWait2', 'VSFindSymbol', 'VSFindSymbolNoWait', 'VSFindResult1', 'VSFindResult2', 'VSFindSymbolResult', 'VSOpenFile', 'VSGetFile', 'VSAddBreakPoint', 'VSChangeDirectory', 'VSGoToDefinition']
 depends = 'VisualStudioController'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'taku25/VisualStudioController'
-if = 'has("win32") && exists("$VCVARSALL")'
+if = 'exists("$VCVARSALL")'
 rtp = ''
 
 #------------------------------------------------------------------------------

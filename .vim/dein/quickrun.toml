@@ -1,7 +1,7 @@
 # QuickRun plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  23-May-2016.
+# Last Change:  18-Oct-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -30,11 +30,12 @@
 repo = 'thinca/vim-quickrun'
 on_map = [['nv', '<Plug>']]
 on_cmd = 'QuickRun'
+depends = 'vimproc'
 
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'osyo-manga/quickrun-hook-vcvarsall'
-if = 'has("win32") && exists("$VCVARSALL")'
+if = 'exists("$VCVARSALL")'
 on_source = 'quickrun'
 
 #------------------------------------------------------------------------------
