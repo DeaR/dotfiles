@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  21-Oct-2016.
+" Last Change:  26-Oct-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1658,6 +1658,19 @@ endif
 " }}}
 
 "------------------------------------------------------------------------------
+" CPSM: {{{
+if s:dein_tap('cpsm')
+  function! g:dein#plugin.hook_source() abort
+    if has('win64')
+      let $PATH = $XDG_DATA_HOME . '\icu\bin64;' . $PATH
+    elseif has('win32')
+      let $PATH = $XDG_DATA_HOME . '\icu\bin;' . $PATH
+    endif
+  endfunction
+endif
+" }}}
+
+"------------------------------------------------------------------------------
 " Universal Ctags: {{{
 if s:dein_tap('ctags')
   call extend(s:neocomplete_tags_filter_patterns, {
@@ -2557,8 +2570,7 @@ endif
 if s:dein_tap('perlomni')
   function! g:dein#plugin.hook_source() abort
     if has('win32')
-      let $PATH =
-      \ substitute(g:dein#plugin.path, '/', '\\', 'g') . '\bin;' . $PATH
+      let $PATH = g:dein#plugin.path . '\bin;' . $PATH
     else
       let $PATH = g:dein#plugin.path . '/bin:' . $PATH
     endif
