@@ -1666,6 +1666,9 @@ if s:dein_tap('cpsm')
     elseif has('win32')
       let $PATH = $XDG_DATA_HOME . '\icu\bin;' . $PATH
     endif
+    if s:executable('icuinfo')
+      let g:cpsm_unicode = 1
+    endif
   endfunction
 endif
 " }}}
