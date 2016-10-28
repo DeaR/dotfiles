@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  26-Oct-2016.
+" Last Change:  28-Oct-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1019,9 +1019,6 @@ if has('win32')
     elseif isdirectory(s:pf32 . '\Microsoft SDKs\Windows\v7.0\Include')
       let $SDK_INCLUDE_DIR = s:pf32 . '\Microsoft SDKs\Windows\v7.0\Include'
     endif
-  endif
-  if has('win64')
-    let $CMAKE_GENERATOR_PLATFORM = 'x64'
   endif
 
   if exists('$VCVARSALL')
