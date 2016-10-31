@@ -1,34 +1,42 @@
 @echo off
 
-if exist "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" (
-  set "VCVARSALL=%VS140COMNTOOLS%..\..\VC\vcvarsall.bat"
-) else if exist "%VS120COMNTOOLS%..\..\VC\vcvarsall.bat" (
-  set "VCVARSALL=%VS120COMNTOOLS%..\..\VC\vcvarsall.bat"
-) else if exist "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" (
-  set "VCVARSALL=%VS110COMNTOOLS%..\..\VC\vcvarsall.bat"
-) else if exist "%VS100COMNTOOLS%..\..\VC\vcvarsall.bat" (
-  set "VCVARSALL=%VS100COMNTOOLS%..\..\VC\vcvarsall.bat"
-) else if exist "%VS90COMNTOOLS%..\..\VC\vcvarsall.bat" (
-  set "VCVARSALL=%VS90COMNTOOLS%..\..\VC\vcvarsall.bat"
-) else if exist "%VS80COMNTOOLS%..\..\VC\vcvarsall.bat" (
-  set "VCVARSALL=%VS80COMNTOOLS%..\..\VC\vcvarsall.bat"
-) else (
-  echo MSVC not found.
-  exit /b 1
+if not defined VCVARSALL (
+  if exist "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" (
+    set "VCVARSALL=%VS140COMNTOOLS%..\..\VC\vcvarsall.bat"
+  ) else if exist "%VS120COMNTOOLS%..\..\VC\vcvarsall.bat" (
+    set "VCVARSALL=%VS120COMNTOOLS%..\..\VC\vcvarsall.bat"
+  ) else if exist "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" (
+    set "VCVARSALL=%VS110COMNTOOLS%..\..\VC\vcvarsall.bat"
+  ) else if exist "%VS100COMNTOOLS%..\..\VC\vcvarsall.bat" (
+    set "VCVARSALL=%VS100COMNTOOLS%..\..\VC\vcvarsall.bat"
+  ) else if exist "%VS90COMNTOOLS%..\..\VC\vcvarsall.bat" (
+    set "VCVARSALL=%VS90COMNTOOLS%..\..\VC\vcvarsall.bat"
+  ) else if exist "%VS80COMNTOOLS%..\..\VC\vcvarsall.bat" (
+    set "VCVARSALL=%VS80COMNTOOLS%..\..\VC\vcvarsall.bat"
+  ) else (
+    echo MSVC not found.
+    exit /b 1
+  )
 )
 call "%VCVARSALL%" %PROCESSOR_ARCHITECTURE%
 
-set "BOOST_ROOT=%HOMEDRIVE%\local\boost_1_62_0"
+if not defined BOOST_ROOT (
+  set "BOOST_ROOT=%HOMEDRIVE%\local\boost_1_62_0"
+  if "%PROCESSOR_ARCHITECTURE%" == "x86" (
+    set "BOOST_LIBRARYDIR=%BOOST_ROOT%\lib-msvc-%VisualStudioVersion%"
+  ) else (
+    set "BOOST_LIBRARYDIR=%BOOST_ROOT%\lib64-msvc-%VisualStudioVersion%"
+  )
+  if not exist "%BOOST_LIBRARYDIR%" (
+    echo BOOST not found.
+    exit /b 1
+  )
+)
+
 if "%PROCESSOR_ARCHITECTURE%" == "x86" (
-  set "BOOST_LIBRARYDIR=%BOOST_ROOT%\lib-msvc-%VisualStudioVersion%"
   set "CMAKE_GENERATOR_PLATFORM="
 ) else (
-  set "BOOST_LIBRARYDIR=%BOOST_ROOT%\lib64-msvc-%VisualStudioVersion%"
   set "CMAKE_GENERATOR_PLATFORM=x64"
-)
-if not exist "%BOOST_LIBRARYDIR%" (
-  echo BOOST not found.
-  exit /b 1
 )
 
 chcp 65001 >nul
