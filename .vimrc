@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Oct-2016.
+" Last Change:  31-Oct-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1750,6 +1750,7 @@ if s:dein_tap('ctrlp')
     let g:ctrlp_open_new_file       = 'r'
     let g:ctrlp_mruf_max            = 1000
     let g:ctrlp_mruf_case_sensitive = !&fileignorecase
+    let g:ctrlp_compare_lim         = 0
 
     let g:ctrlp_custom_ignore = {
     \ 'dir'  : join(map(copy(s:ignore_dir),
@@ -1761,7 +1762,6 @@ if s:dein_tap('ctrlp')
     \   'compat#glob2regpat(v:val)'), '\|')
 
     if s:executable('files')
-      let g:ctrlp_compare_lim  = 0
       let g:ctrlp_user_command =
       \ 'files -a -S' . (s:cpucores() > 1 ? ' -A' : '') . ' %s'
       let $FILES_IGNORE_PATTERN =

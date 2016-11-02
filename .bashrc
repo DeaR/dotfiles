@@ -1,7 +1,7 @@
 # Bash interactive settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  13-Jun-2016.
+# Last Change:  02-Nov-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -35,7 +35,9 @@
 if [[ -z ${TMUX} && -z ${STY} ]]; then
   if type tmux >/dev/null 2>&1; then
     if tmux ls >/dev/null 2>&1; then
-      if hash iselect; then
+      if hash cho; then
+        REPLY=$(tmux ls | cho | sed "s/:.*//")
+      elif hash iselect; then
         REPLY=$(tmux ls | iselect -a -f | sed "s/:.*//")
       else
         tmux ls
@@ -46,7 +48,9 @@ if [[ -z ${TMUX} && -z ${STY} ]]; then
     tmux && exit
   elif type screen >/dev/null 2>&1; then
     if [[ $(screen -ls | wc -l) -ge 3 ]]; then
-      if hash iselect; then
+      if hash cho; then
+        REPLY=$(screen -ls | sed -n "/^\t/p" | cho | awk '{print $1}')
+      elif hash iselect; then
         REPLY=$(screen -ls | sed -n "/^\t/p" | iselect -a -f | awk '{print $1}')
       else
         screen -ls
