@@ -1,7 +1,7 @@
 -- NYAGOS settings
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  24-Sep-2016.
+-- Last Change:  04-Nov-2016.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -159,9 +159,9 @@ end
 -- Catalog: {{{
 -- use 'autocd'
 use 'dollar'
--- if nyagos.which('peco') then
---   use 'peco'
--- end
+if nyagos.which('peco') then
+  use 'peco'
+end
 
 use 'ignoreeof'
 use 'vcvars'
@@ -189,12 +189,12 @@ share.ignoreeof = 1
 share.org_sudo  = nyagos.alias.sudo
 share.org_clone = share._clone
 share._clone = function(action)
-  local prof = nyagos.getenv('USERPROFILE')
-  local arch = nyagos.getenv('PROGRAMFILES(X86)') and 'x64' or 'x86'
-  local ckw  = prof .. '\\Apps\\ckw-mod-0.9.1-mod-r4_' .. arch .. '\\ckw.exe'
+  local arch = nyagos.getenv('PROGRAMFILES(X86)') and '64' or ''
+  local cemu = nyagos.getenv('PROGRAMFILES') .. '\\ConEmu\\ConEmu' .. arch .. '.exe'
   local cwd  = nyagos.netdrivetounc(nyagos.getwd())
-  local args = '-cd "' .. cwd .. '"'
-  local status, err = nyagos.shellexecute(action, ckw, args)
+  local elv  = string.match(action, 'runas') and ':a' or ''
+  local args = '-single -cmd "{nyagos}" -cur_console' .. elv
+  local status, err = nyagos.shellexecute('open', cemu, args)
   if not status and string.match(err, '^Error%(5%)') then
     status, err = share.org_clone(action)
   end
@@ -206,12 +206,11 @@ alias {
       assert(share._clone('runas'))
       return
     end
-    local prof = nyagos.getenv('USERPROFILE')
-    local arch = nyagos.getenv('PROGRAMFILES(X86)') and 'x64' or 'x86'
-    local ckw  = prof .. '\\Apps\\ckw-mod-0.9.1-mod-r4_' .. arch .. '\\ckw.exe'
+    local arch = nyagos.getenv('PROGRAMFILES(X86)') and '64' or ''
+    local cemu = nyagos.getenv('PROGRAMFILES') .. '\\ConEmu\\ConEmu' .. arch .. '.exe'
     local cwd  = nyagos.netdrivetounc(nyagos.getwd())
-    local args = '-cd "' .. cwd .. '" -e "' .. table.concat(args, ' ') .. '"'
-    local status, err = nyagos.shellexecute('runas', ckw, args)
+    local args = '-single -cmd "' .. table.concat(args, ' ') .. '" -cur_console:a'
+    local status, err = nyagos.shellexecute('open', cemu, args)
     if not status and string.match(err, '^Error%(5%)') then
       share.org_sudo()
     end

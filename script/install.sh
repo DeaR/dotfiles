@@ -3,7 +3,7 @@
 # Install DotFiles
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  07-Jun-2016.
+# Last Change:  02-Nov-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -94,7 +94,6 @@ fi
 
 # Nodoka
 # if which nodoka >/dev/null 2>&1; then
-#   mklink .nodoka.d
 #   mklink .nodoka
 # fi
 

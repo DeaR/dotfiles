@@ -4,7 +4,7 @@ goto :runas
 rem Install DotFiles
 rem
 rem Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-rem Last Change:  07-Jun-2016.
+rem Last Change:  02-Nov-2016.
 rem License:      MIT License {{{
 rem     Copyright (c) 2016 DeaR <nayuri@kuonn.mydns.jp>
 rem
@@ -122,7 +122,6 @@ if exist "%USERPROFILE%\Apps\nyagos-*" (
 
 rem NODOKA
 if exist "%PF64%\nodoka" (
-  call :mklink .nodoka.d
   call :mklink .nodoka
 )
 
