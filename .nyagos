@@ -193,7 +193,7 @@ share._clone = function(action)
   local cemu = nyagos.getenv('PROGRAMFILES') .. '\\ConEmu\\ConEmu' .. arch .. '.exe'
   local cwd  = nyagos.netdrivetounc(nyagos.getwd())
   local elv  = string.match(action, 'runas') and ':a' or ''
-  local args = '-single -cmd "{nyagos}" -cur_console' .. elv
+  local args = '-single -run {nyagos} -cur_console' .. elv
   local status, err = nyagos.shellexecute('open', cemu, args)
   if not status and string.match(err, '^Error%(5%)') then
     status, err = share.org_clone(action)
