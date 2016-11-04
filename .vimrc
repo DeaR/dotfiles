@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  31-Oct-2016.
+" Last Change:  04-Nov-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1763,7 +1763,7 @@ if s:dein_tap('ctrlp')
 
     if s:executable('files')
       let g:ctrlp_user_command =
-      \ 'files -a -S' . (s:cpucores() > 1 ? ' -A' : '') . ' %s'
+      \ 'files -a ' . (s:cpucores() > 1 ? '-A ' : '') . '%s'
       let $FILES_IGNORE_PATTERN =
       \ join(map(s:ignore_dir + s:ignore_file,
       \   'compat#glob2regpat(v:val)'), '|')

@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 
 if not defined VCVARSALL (
   if exist "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" (
@@ -15,20 +16,22 @@ if not defined VCVARSALL (
     set "VCVARSALL=%VS80COMNTOOLS%..\..\VC\vcvarsall.bat"
   ) else (
     echo MSVC not found.
+    endlocal
     exit /b 1
   )
 )
 call "%VCVARSALL%" %PROCESSOR_ARCHITECTURE%
 
-if not defined BOOST_ROOT (
+if not defined BOOST_LIBRARYDIR (
   set "BOOST_ROOT=%HOMEDRIVE%\local\boost_1_62_0"
   if "%PROCESSOR_ARCHITECTURE%" == "x86" (
-    set "BOOST_LIBRARYDIR=%BOOST_ROOT%\lib-msvc-%VisualStudioVersion%"
+    set "BOOST_LIBRARYDIR=!BOOST_ROOT!\lib-msvc-%VisualStudioVersion%"
   ) else (
-    set "BOOST_LIBRARYDIR=%BOOST_ROOT%\lib64-msvc-%VisualStudioVersion%"
+    set "BOOST_LIBRARYDIR=!BOOST_ROOT!\lib64-msvc-%VisualStudioVersion%"
   )
-  if not exist "%BOOST_LIBRARYDIR%" (
+  if not exist "!BOOST_LIBRARYDIR!" (
     echo BOOST not found.
+    endlocal
     exit /b 1
   )
 )
@@ -47,3 +50,5 @@ msbuild INSTALL.vcxproj /p:Configuration=Release && msbuild RUN_TESTS.vcxproj /p
 popd
 
 if exist "autoload\cpsm_py.dll" move /y autoload\cpsm_py.dll autoload\cpsm_py.pyd
+
+endlocal

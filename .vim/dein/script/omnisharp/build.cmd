@@ -1,4 +1,5 @@
 @echo off
+setlocal
 
 if not defined VCVARSALL (
   if exist "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" (
@@ -15,6 +16,7 @@ if not defined VCVARSALL (
     set "VCVARSALL=%VS80COMNTOOLS%..\..\VC\vcvarsall.bat"
   ) else (
     echo MSVC not found.
+    endlocal
     exit /b 1
   )
 )
@@ -22,3 +24,5 @@ call "%VCVARSALL%" %PROCESSOR_ARCHITECTURE%
 
 chcp 65001 >nul
 msbuild server\OmniSharp.sln /p:Platform="Any CPU" %*
+
+endlocal

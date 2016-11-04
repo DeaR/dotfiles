@@ -1,7 +1,7 @@
 # Fetch plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  02-Nov-2016.
+# Last Change:  04-Nov-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -41,12 +41,10 @@ build = '~/.vim/dein/script/ctags/build'
 
 #------------------------------------------------------------------------------
 [[plugins]]
-# repo = 'mattn/files'
-repo = 'DeaR/files'
+repo = 'mattn/files'
 if = 'executable("go")'
 rtp = ''
-# build = 'go get -u github.com/mattn/files'
-build = 'go get -u github.com/DeaR/files'
+build = 'go get -u github.com/mattn/files'
 
 #------------------------------------------------------------------------------
 [[plugins]]
