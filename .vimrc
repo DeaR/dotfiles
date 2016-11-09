@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Nov-2016.
+" Last Change:  08-Nov-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1339,6 +1339,7 @@ let g:vim_indent_cont = 0
 " Disable
 let g:loaded_getscript       = 1
 let g:loaded_getscriptPlugin = 1
+let g:loaded_rrhelper        = 1
 let g:loaded_vimball         = 1
 let g:loaded_vimballPlugin   = 1
 " }}}
