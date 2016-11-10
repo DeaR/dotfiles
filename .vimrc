@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  08-Nov-2016.
+" Last Change:  10-Nov-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1339,7 +1339,6 @@ let g:vim_indent_cont = 0
 " Disable
 let g:loaded_getscript       = 1
 let g:loaded_getscriptPlugin = 1
-let g:loaded_rrhelper        = 1
 let g:loaded_vimball         = 1
 let g:loaded_vimballPlugin   = 1
 " }}}
@@ -1356,7 +1355,7 @@ if isdirectory(s:dein_dir)
 
   if dein#load_state($XDG_DATA_HOME . '/dein')
     let s:dein_toml = compat#glob($HOME . '/.vim/dein/*.toml', 0, 1)
-    call dein#begin($XDG_DATA_HOME . '/dein', [$MYVIMRC] + s:dein_toml)
+    call dein#begin($XDG_DATA_HOME . '/dein')
 
     for s:toml in s:dein_toml
       call dein#load_toml(s:toml, {'lazy' : 1})
@@ -1506,7 +1505,6 @@ if s:dein_tap('clurin')
     \   'def' : [],
     \   'nomatch' : function('myvimrc#clurin_nomatch'),
     \   'jump' : 1},
-    \ 'c' : {},
     \ 'use_default' : 0}
 
     call extend(g:clurin['-'].def, [
@@ -1581,21 +1579,21 @@ if s:dein_tap('clurin')
     \  {'pattern' : '\(-\?\d*[04-9]TH\)\C',
     \   'replace' : function('myvimrc#clurin_ordinal')}],
     \
-    \ [{'pattern' : '\(-\?\d\*1\)\%(st\)\@!\C',
+    \ [{'pattern' : '\(-\?\d*1\)\%(st\)\@!\C',
     \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d\*2\)\%(nd\)\@!\C',
+    \  {'pattern' : '\(-\?\d*2\)\%(nd\)\@!\C',
     \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d\*3\)\%(rd\)\@!\C',
+    \  {'pattern' : '\(-\?\d*3\)\%(rd\)\@!\C',
     \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d\*[04-9]\)\%(th\)\@!\C',
+    \  {'pattern' : '\(-\?\d*[04-9]\)\%(th\)\@!\C',
     \   'replace' : function('myvimrc#clurin_bypass')}],
-    \ [{'pattern' : '\(-\?\d\*1\)\%(ST\)\@!\C',
+    \ [{'pattern' : '\(-\?\d*1\)\%(ST\)\@!\C',
     \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d\*2\)\%(ND\)\@!\C',
+    \  {'pattern' : '\(-\?\d*2\)\%(ND\)\@!\C',
     \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d\*3\)\%(RD\)\@!\C',
+    \  {'pattern' : '\(-\?\d*3\)\%(RD\)\@!\C',
     \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d\*[04-9]\)\%(TH\)\@!\C',
+    \  {'pattern' : '\(-\?\d*[04-9]\)\%(TH\)\@!\C',
     \   'replace' : function('myvimrc#clurin_bypass')}]])
 
     if !empty(&nrformats)

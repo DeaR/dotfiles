@@ -1,7 +1,7 @@
 # FileType plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  26-Sep-2016.
+# Last Change:  10-Nov-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -100,11 +100,11 @@ repo = 'thinca/vim-qfreplace'
 on_ft = 'qf'
 on_cmd = 'Qfreplace'
 
-#------------------------------------------------------------------------------
-[[plugins]]
-repo = 'osyo-manga/vim-snowdrop'
-if =  'has("python") && executable("clang")'
-on_cmd = ['SnowdropVerify', 'SnowdropEchoClangVersion', 'SnowdropLogs', 'SnowdropClearLogs']
+# #------------------------------------------------------------------------------
+# [[plugins]]
+# repo = 'osyo-manga/vim-snowdrop'
+# if =  'has("python") && executable("clang")'
+# on_cmd = ['SnowdropVerify', 'SnowdropEchoClangVersion', 'SnowdropLogs', 'SnowdropClearLogs']
 
 #------------------------------------------------------------------------------
 [[plugins]]
