@@ -42,7 +42,6 @@ if "%PROCESSOR_ARCHITECTURE%" == "x86" (
   set "CMAKE_GENERATOR_PLATFORM=x64"
 )
 
-chcp 65001 >nul
 if not exist "build" mkdir build
 pushd build
 cmake -DPY3:BOOL=OFF -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DPYTHON_LIBRARIES="C:\Python27\Libs\python27.lib" -DCMAKE_GENERATOR_PLATFORM=%CMAKE_GENERATOR_PLATFORM% ..

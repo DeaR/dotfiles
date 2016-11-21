@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Nov-2016.
+" Last Change:  21-Nov-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -1349,6 +1349,7 @@ let s:dein_dir = $XDG_DATA_HOME . '/dein/repos/github.com/Shougo/dein.vim'
 if isdirectory(s:dein_dir)
   execute 'set runtimepath^=' . escape(escape(s:dein_dir, ' ,'), ' \')
   let g:dein#enable_name_conversion  = 1
+  let g:dein#cache_directory         = $XDG_CACHE_HOME . '/dein'
   let g:dein#install_max_processes   = min([s:cpucores(), 8])
   let g:dein#install_process_timeout = 6000
   let g:dein#install_progress_type   = 'title'
@@ -1360,6 +1361,15 @@ if isdirectory(s:dein_dir)
     for s:toml in s:dein_toml
       call dein#load_toml(s:toml, {'lazy' : 1})
     endfor
+
+    if has('win32')
+      for s:dein_plug in values(dein#get())
+        if has_key(s:dein_plug, 'build')
+          let s:dein_plug.build = expand(s:dein_plug.build)
+        endif
+      endfor
+      unlet! s:dein_plug
+    endif
 
     call dein#end()
     call dein#save_state()

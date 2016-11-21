@@ -1,7 +1,7 @@
 -- NYAGOS settings
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  04-Nov-2016.
+-- Last Change:  15-Nov-2016.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -221,23 +221,6 @@ end
 -- }}}
 
 -------------------------------------------------------------------------------
--- Less TailF: {{{
-if nyagos.which('less') then
-  alias {
-    ltail = function(args)
-      local o = nyagos.getenv('LESSOPEN')
-      local c = nyagos.getenv('LESSCLOSE')
-      nyagos.setenv('LESSOPEN')
-      nyagos.setenv('LESSCLOSE')
-      nyagos.exec('less +F ' .. table.concat(args.rawargs, ' '))
-      nyagos.setenv('LESSOPEN', o)
-      nyagos.setenv('LESSCLOSE', c)
-    end
-  }
-end
--- }}}
-
--------------------------------------------------------------------------------
 -- LS: {{{
 share._llx = function(args, ...)
   local a = {...}
@@ -284,9 +267,7 @@ end
 if nyagos.which('head') then
   alias { h = ext('head') }
 end
-if nyagos.getalias('ltail') then
-  alias { t = 'ltail' }
-elseif nyagos.which('tailf') then
+if nyagos.which('tailf') then
   alias { t = ext('tailf') }
 elseif nyagos.which('tail') then
   alias { t = ext('tail') .. ' -f' }
@@ -310,6 +291,9 @@ if nyagos.which('grep') then
 end
 if nyagos.which('colordiff') then
   alias { diff = ext('colordiff') }
+end
+if nyagos.which('less') then
+  alias { ltail = ext('less') .. ' +F -L' }
 end
 
 if nyagos.stat(prof .. '\\Apps\\PortableGit') then

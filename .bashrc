@@ -1,7 +1,7 @@
 # Bash interactive settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  02-Nov-2016.
+# Last Change:  15-Nov-2016.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -134,17 +134,6 @@ elif [[ -f /etc/bash_completion ]]; then
 fi
 #}}}
 
-#------------------------------------------------------------------------------
-# Less TailF: {{{
-if type less >/dev/null 2>&1; then
-  function ltail {
-    LESSOPEN=
-    LESSCLOSE=
-    less +F $@
-  }
-fi
-#}}}
-
 #-----------------------------------------------------------------------------
 # LS: {{{
 if type grep >/dev/null 2>&1; then
@@ -178,9 +167,7 @@ fi
 if type head >/dev/null 2>&1; then
   alias h="head"
 fi
-if type ltail >/dev/null 2>&1; then
-  alias t="ltail"
-elif type tailf >/dev/null 2>&1; then
+if type tailf >/dev/null 2>&1; then
   alias t="tailf"
 elif type tail >/dev/null 2>&1; then
   alias t="tail -f"
@@ -202,6 +189,9 @@ if type grep >/dev/null 2>&1; then
 fi
 if type head >/dev/null 2>&1; then
   alias diff="colordiff"
+fi
+if type less >/dev/null 2>&1; then
+  alias ltail="less +F -L"
 fi
 #}}}
 

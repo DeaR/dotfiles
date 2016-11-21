@@ -22,7 +22,6 @@ if not defined VCVARSALL (
 )
 call "%VCVARSALL%" %PROCESSOR_ARCHITECTURE%
 
-chcp 65001 >nul
 msbuild server\OmniSharp.sln /p:Platform="Any CPU" %*
 
 endlocal
