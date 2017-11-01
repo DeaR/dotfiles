@@ -2,7 +2,9 @@
 setlocal enabledelayedexpansion
 
 if not defined VCVARSALL (
-  if exist "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" (
+  if exist "%VS141COMNTOOLS%..\..\VC\vcvarsall.bat" (
+    set "VCVARSALL=%VS141COMNTOOLS%..\..\VC\vcvarsall.bat"
+  ) else if exist "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" (
     set "VCVARSALL=%VS140COMNTOOLS%..\..\VC\vcvarsall.bat"
   ) else if exist "%VS120COMNTOOLS%..\..\VC\vcvarsall.bat" (
     set "VCVARSALL=%VS120COMNTOOLS%..\..\VC\vcvarsall.bat"
@@ -23,7 +25,7 @@ if not defined VCVARSALL (
 call "%VCVARSALL%" %PROCESSOR_ARCHITECTURE%
 
 if not defined BOOST_LIBRARYDIR (
-  set "BOOST_ROOT=%HOMEDRIVE%\local\boost_1_62_0"
+  set "BOOST_ROOT=%HOMEDRIVE%\local\boost_1_64_0"
   if "%PROCESSOR_ARCHITECTURE%" == "x86" (
     set "BOOST_LIBRARYDIR=!BOOST_ROOT!\lib-msvc-%VisualStudioVersion%"
   ) else (
@@ -44,7 +46,7 @@ if "%PROCESSOR_ARCHITECTURE%" == "x86" (
 
 if not exist "build" mkdir build
 pushd build
-cmake -DPY3:BOOL=OFF -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DPYTHON_LIBRARIES="C:\Python27\Libs\python27.lib" -DCMAKE_GENERATOR_PLATFORM=%CMAKE_GENERATOR_PLATFORM% ..
+cmake -DPY3:BOOL=OFF -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DPYTHON_LIBRARIES="%HOMEDRIVE%\Python27\libs\python27.lib" -DCMAKE_GENERATOR_PLATFORM=%CMAKE_GENERATOR_PLATFORM% ..
 msbuild INSTALL.vcxproj /p:Configuration=Release && msbuild RUN_TESTS.vcxproj /p:Configuration=Release
 popd
 

@@ -1,7 +1,7 @@
-" FileType detects for Default
+" Caw for VB.NET
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  18-May-2016.
+" Last Change:  20-Sep-2017.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -25,7 +25,22 @@
 "     THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 
-autocmd BufNewFile,BufRead *
-\ if !empty(bufname('%')) && empty(&filetype) |
-\   setfiletype text |
-\ endif
+if exists('b:did_caw_ftplugin')
+  finish
+endif
+
+let s:save_cpo = &cpo
+set cpo&vim
+
+let b:caw_oneline_comment = ''''
+
+if exists('b:undo_ftplugin')
+  let b:undo_ftplugin .= ' |'
+else
+  let b:undo_ftplugin = ''
+endif
+let b:undo_ftplugin .= '
+\ unlet! b:caw_oneline_comment b:caw_wrap_oneline_comment b:caw_wrap_multiline_comment b:did_caw_ftplugin'
+
+let &cpo = s:save_cpo
+unlet s:save_cpo

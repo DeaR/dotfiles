@@ -1,7 +1,7 @@
 -- Visual Studio prompt for NYAGOS
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  28-Oct-2016.
+-- Last Change:  24-May-2017.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -26,24 +26,27 @@
 -- }}}
 
 share.__vcvarsall = function(arch)
-  local vs14 = nyagos.getenv('VS140COMNTOOLS')
-  local vs12 = nyagos.getenv('VS120COMNTOOLS')
-  local vs11 = nyagos.getenv('VS110COMNTOOLS')
-  local vs10 = nyagos.getenv('VS100COMNTOOLS')
-  local vs09 = nyagos.getenv('VS90COMNTOOLS')
-  local vs08 = nyagos.getenv('VS80COMNTOOLS')
-  if vs14 and nyagos.stat(vs14 .. '..\\..\\VC\\vcvarsall.bat') then
-    nyagos.exec('source "' .. vs14 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
-  elseif vs12 and nyagos.stat(vs12 .. '..\\..\\VC\\vcvarsall.bat') then
-    nyagos.exec('source "' .. vs12 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
-  elseif vs11 and nyagos.stat(vs11 .. '..\\..\\VC\\vcvarsall.bat') then
-    nyagos.exec('source "' .. vs11 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
-  elseif vs10 and nyagos.stat(vs10 .. '..\\..\\VC\\vcvarsall.bat') then
-    nyagos.exec('source "' .. vs10 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
-  elseif vs09 and nyagos.stat(vs09 .. '..\\..\\VC\\vcvarsall.bat') then
-    nyagos.exec('source "' .. vs09 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
-  elseif vs08 and nyagos.stat(vs08 .. '..\\..\\VC\\vcvarsall.bat') then
-    nyagos.exec('source "' .. vs08 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
+  local vs141 = nyagos.getenv('VS141COMNTOOLS')
+  local vs140 = nyagos.getenv('VS140COMNTOOLS')
+  local vs120 = nyagos.getenv('VS120COMNTOOLS')
+  local vs110 = nyagos.getenv('VS110COMNTOOLS')
+  local vs100 = nyagos.getenv('VS100COMNTOOLS')
+  local vs090 = nyagos.getenv('VS90COMNTOOLS')
+  local vs080 = nyagos.getenv('VS80COMNTOOLS')
+  if vs141 and nyagos.stat(vs141 .. '..\\..\\VC\\vcvarsall.bat') then
+    nyagos.exec('source "' .. vs141 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
+  elseif vs140 and nyagos.stat(vs140 .. '..\\..\\VC\\vcvarsall.bat') then
+    nyagos.exec('source "' .. vs140 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
+  elseif vs120 and nyagos.stat(vs120 .. '..\\..\\VC\\vcvarsall.bat') then
+    nyagos.exec('source "' .. vs120 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
+  elseif vs110 and nyagos.stat(vs110 .. '..\\..\\VC\\vcvarsall.bat') then
+    nyagos.exec('source "' .. vs110 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
+  elseif vs100 and nyagos.stat(vs100 .. '..\\..\\VC\\vcvarsall.bat') then
+    nyagos.exec('source "' .. vs100 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
+  elseif vs090 and nyagos.stat(vs090 .. '..\\..\\VC\\vcvarsall.bat') then
+    nyagos.exec('source "' .. vs090 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
+  elseif vs080 and nyagos.stat(vs080 .. '..\\..\\VC\\vcvarsall.bat') then
+    nyagos.exec('source "' .. vs080 .. '..\\..\\VC\\vcvarsall.bat" ' .. arch)
   else
     nyagos.write('MSVC not found.\n')
     return

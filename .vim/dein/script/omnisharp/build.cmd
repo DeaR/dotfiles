@@ -2,7 +2,9 @@
 setlocal
 
 if not defined VCVARSALL (
-  if exist "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" (
+  if exist "%VS141COMNTOOLS%..\..\VC\vcvarsall.bat" (
+    set "VCVARSALL=%VS141COMNTOOLS%..\..\VC\vcvarsall.bat"
+  ) else if exist "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" (
     set "VCVARSALL=%VS140COMNTOOLS%..\..\VC\vcvarsall.bat"
   ) else if exist "%VS120COMNTOOLS%..\..\VC\vcvarsall.bat" (
     set "VCVARSALL=%VS120COMNTOOLS%..\..\VC\vcvarsall.bat"

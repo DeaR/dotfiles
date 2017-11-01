@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  22-Aug-2016.
+" Last Change:  04-Mar-2017.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -514,8 +514,6 @@ if s:dein_tap('clurin')
   endfunction
 
   function! myvimrc#clurin_bypass(str, cnt, def) abort
-    echomsg string(a:str)
-    echomsg string(a:def)
     if a:cnt >= 0
       call feedkeys(a:cnt . "\<C-A>", 'n')
     else

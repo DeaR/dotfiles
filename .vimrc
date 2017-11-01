@@ -3,7 +3,7 @@ scriptencoding utf-8
 " Vim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  21-Nov-2016.
+" Last Change:  31-Oct-2017.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -29,7 +29,7 @@ scriptencoding utf-8
 
 "==============================================================================
 " Pre Init: {{{
-" Skip vim-tiny, vim-small, below vim-7.3
+" Skip vim-tiny, vim-small, below vim-7.4
 if v:version < 704 | finish | endif
 
 " Be iMproved
@@ -94,7 +94,7 @@ augroup END
 let s:ignore_dir = [
 \ '.git', '.hg', '.bzr', '.svn']
 let s:ignore_file = [
-\ '*.exe', '*.bin',
+\ '*.exe', '*.bin', '*.axf',
 \ '*.o', '*.obj', '*.a', '*.lib', '*.so', '*.dll', '*.dylib',
 \ 'tags', 'tags-??', '*~', '*.swp', '*.swo', '*.swn', '*.lc',
 \ '*.elc', '*.fas', '*.pyc', '*.pyd', '*.pyo', '*.luac', '*.zwc']
@@ -280,7 +280,6 @@ set showcmd
 " Display NonText
 set list
 set listchars=eol:$,tab:>-,extends:>,precedes:<
-set fillchars=vert:\|
 
 " Help
 set helpheight=999
@@ -409,29 +408,23 @@ set showtabline=2
 
 "------------------------------------------------------------------------------
 " File Encodings: {{{
-if s:has_jisx0213
-  set fileencodings=iso-2022-jp-3,cp932,euc-jisx0213,euc-jp,ucs-bom
-else
-  set fileencodings=iso-2022-jp,cp932,euc-jp,ucs-bom
-endif
-if has('guess_encode')
-  set fileencodings^=guess
-endif
-
-augroup MyVimrc
-  if has('iconv')
-    let s:last_enc = &encoding
-    autocmd EncodingChanged *
-    \ if s:last_enc !=# &encoding |
-    \   let &runtimepath = iconv(&runtimepath, s:last_enc, &encoding) |
-    \   let s:last_enc = &encoding |
-    \ endif
+if has('iconv')
+  if s:has_jisx0213
+    set fileencodings=iso-2022-jp-3,cp932,euc-jisx0213,euc-jp,ucs-bom
+  else
+    set fileencodings=iso-2022-jp,cp932,euc-jp,ucs-bom
   endif
-  autocmd BufReadPost *
-  \ if &modifiable && !search('[^\x00-\x7F]', 'cnw') |
-  \   setlocal fileencoding= |
+  if has('guess_encode')
+    set fileencodings^=guess
+  endif
+
+  let s:last_enc = &encoding
+  autocmd MyVimrc EncodingChanged *
+  \ if s:last_enc !=# &encoding |
+  \   let &runtimepath = iconv(&runtimepath, s:last_enc, &encoding) |
+  \   let s:last_enc = &encoding |
   \ endif
-augroup END
+endif
 " }}}
 
 "------------------------------------------------------------------------------
@@ -898,6 +891,26 @@ nnoremap   s?? g??
 " Commands: {{{
 
 "------------------------------------------------------------------------------
+" Change Indent Option: {{{
+command! -bar
+\ IndentTab4
+\ setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab
+command! -bar
+\ IndentTab8
+\ setlocal shiftwidth=8 tabstop=8 softtabstop=8 noexpandtab
+
+command! -bar
+\ IndentSpace2
+\ setlocal shiftwidth=2 softtabstop=2 expandtab
+command! -bar
+\ IndentSpace4
+\ setlocal shiftwidth=4 softtabstop=4 expandtab
+command! -bar
+\ IndentSpace8
+\ setlocal shiftwidth=8 softtabstop=8 expandtab
+" }}}
+
+"------------------------------------------------------------------------------
 " Change File Format Option: {{{
 command! -bar
 \ FfUnix
@@ -914,13 +927,13 @@ command! -bar
 " Change File Encoding Option: {{{
 command! -bar
 \ FencUtf8
-\ setlocal fileencoding=utf-8
+\ setlocal fileencoding=utf-8 nobomb
 command! -bar
 \ FencUtf16le
-\ setlocal fileencoding=utf-16le
+\ setlocal fileencoding=utf-16le bomb
 command! -bar
 \ FencUtf16
-\ setlocal fileencoding=utf-16
+\ setlocal fileencoding=utf-16 bomb
 command! -bar
 \ FencCp932
 \ setlocal fileencoding=cp932
@@ -995,7 +1008,9 @@ endif
 " VcVarsAll: {{{
 if has('win32')
   if !exists('$VCVARSALL')
-    if filereadable($VS140COMNTOOLS . '..\..\VC\vcvarsall.bat')
+    if filereadable($VS141COMNTOOLS . '..\..\VC\vcvarsall.bat')
+      let $VCVARSALL = $VS141COMNTOOLS . '..\..\VC\vcvarsall.bat'
+    elseif filereadable($VS140COMNTOOLS . '..\..\VC\vcvarsall.bat')
       let $VCVARSALL = $VS140COMNTOOLS . '..\..\VC\vcvarsall.bat'
     elseif filereadable($VS120COMNTOOLS . '..\..\VC\vcvarsall.bat')
       let $VCVARSALL = $VS120COMNTOOLS . '..\..\VC\vcvarsall.bat'
@@ -1375,7 +1390,14 @@ if isdirectory(s:dein_dir)
     call dein#save_state()
   endif
 
-  autocmd MyVimrc VimEnter * filetype detect
+  function! s:detect(file) abort
+    if !exists('s:_detect') && !empty(a:file)
+      filetype detect
+      let s:_detect = 1
+    endif
+  endfunction
+  autocmd MyVimrc BufEnter *
+  \ call s:detect(expand('<afile>'))
 endif
 unlet! s:dein_dir s:dein_toml
 " }}}
@@ -1416,6 +1438,10 @@ endif
 "------------------------------------------------------------------------------
 " Altr: {{{
 if s:dein_tap('altr')
+  function! g:dein#plugin.hook_source() abort
+    call altr#define('%.prg', '%.dat')
+  endfunction
+
   nmap g<M-f>     <Plug>(altr-forward)
   nmap g<M-F>     <Plug>(altr-back)
   nmap <C-W><M-f> <SID>(split)<Plug>(altr-forward)
@@ -1572,38 +1598,9 @@ if s:dein_tap('clurin')
     \  'eleventh',  'twelfth',     'thirteenth', 'fourteenth', 'fifteenth',
     \  'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth', 'twentieth'],
     \
-    \ [{'pattern' : '\(-\?\d*1st\)\C',
-    \   'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\(-\?\d*2nd\)\C',
-    \   'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\(-\?\d*3rd\)\C',
-    \   'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\(-\?\d*[04-9]th\)\C',
+    \ [{'pattern' : '\(-\?\d\+\%(st\|nd\|rd\|th\)\)\c',
     \   'replace' : function('myvimrc#clurin_ordinal')}],
-    \ [{'pattern' : '\(-\?\d*1ST\)\C',
-    \   'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\(-\?\d*2ND\)\C',
-    \   'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\(-\?\d*3RD\)\C',
-    \   'replace' : function('myvimrc#clurin_ordinal')},
-    \  {'pattern' : '\(-\?\d*[04-9]TH\)\C',
-    \   'replace' : function('myvimrc#clurin_ordinal')}],
-    \
-    \ [{'pattern' : '\(-\?\d*1\)\%(st\)\@!\C',
-    \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d*2\)\%(nd\)\@!\C',
-    \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d*3\)\%(rd\)\@!\C',
-    \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d*[04-9]\)\%(th\)\@!\C',
-    \   'replace' : function('myvimrc#clurin_bypass')}],
-    \ [{'pattern' : '\(-\?\d*1\)\%(ST\)\@!\C',
-    \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d*2\)\%(ND\)\@!\C',
-    \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d*3\)\%(RD\)\@!\C',
-    \   'replace' : function('myvimrc#clurin_bypass')},
-    \  {'pattern' : '\(-\?\d*[04-9]\)\%(TH\)\@!\C',
+    \ [{'pattern' : '\(-\?\d\+\)\%(st\|nd\|rd\|th\)\@!\c',
     \   'replace' : function('myvimrc#clurin_bypass')}]])
 
     if !empty(&nrformats)
@@ -1667,11 +1664,15 @@ endif
 " CPSM: {{{
 if s:dein_tap('cpsm')
   function! g:dein#plugin.hook_source() abort
-    if has('win64')
-      let $PATH = $XDG_DATA_HOME . '\icu\bin64;' . $PATH
-    elseif has('win32')
-      let $PATH = $XDG_DATA_HOME . '\icu\bin;' . $PATH
-    endif
+    " if has('win64')
+    "   if isdirectory($XDG_DATA_HOME . '\icu\bin64')
+    "     let $PATH = $XDG_DATA_HOME . '\icu\bin64;' . $PATH
+    "   endif
+    " elseif has('win32')
+    "   if isdirectory($XDG_DATA_HOME . '\icu\bin')
+    "     let $PATH = $XDG_DATA_HOME . '\icu\bin;' . $PATH
+    "   endif
+    " endif
     if s:executable('icuinfo')
       let g:cpsm_unicode = 1
     endif

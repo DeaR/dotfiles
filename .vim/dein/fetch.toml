@@ -1,7 +1,7 @@
 # Fetch plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  04-Nov-2016.
+# Last Change:  08-Feb-2017.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -81,6 +81,13 @@ repo = 'laurent22/massren'
 if = 'executable("go")'
 rtp = ''
 build = 'go get -u github.com/laurent22/massren'
+
+#------------------------------------------------------------------------------
+[[plugins]]
+repo = 'mattn/memo'
+if = 'executable("go")'
+rtp = ''
+build = 'go get -u github.com/mattn/memo'
 
 #------------------------------------------------------------------------------
 [[plugins]]

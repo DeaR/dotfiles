@@ -1,7 +1,7 @@
 # System plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  21-Oct-2016.
+# Last Change:  31-Oct-2017.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -78,7 +78,7 @@ lazy = 0
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'DeaR/vim-maplist'
-on_cmd = ['MapList', 'NMapList', 'OMapList', 'VMapList', 'XMapList', 'SMapList', 'IMapList', 'CMapList', 'LMapList']
+on_cmd = ['MapList', 'NMapList', 'OMapList', 'VMapList', 'XMapList', 'SMapList', 'IMapList', 'CMapList', 'LMapList', 'TMapList']
 
 #------------------------------------------------------------------------------
 [[plugins]]

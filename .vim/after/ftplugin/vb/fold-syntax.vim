@@ -1,7 +1,7 @@
-" Syntax settings for C
+" Syntax folding
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  08-Feb-2017.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -28,38 +28,15 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-"------------------------------------------------------------------------------
-" Block Folding: {{{
-if exists('g:c_no_block_fold')
-  syntax clear cBlock
-  if exists('g:c_curly_error')
-    syntax match cCurlyError "}"
-    syntax region cBlock start="{" end="}" contains=ALLBUT,cBadBlock,cCurlyError,@cParenGroup,cErrInParen,cCppParen,cErrInBracket,cCppBracket,cCppString,@Spell
-  else
-    syntax region cBlock start="{" end="}" transparent
-  endif
+setlocal foldmethod=syntax
+
+if exists('b:undo_ftplugin')
+  let b:undo_ftplugin .= ' |'
+else
+  let b:undo_ftplugin = ''
 endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Define Folding: {{{
-if !exists('g:c_no_define_fold')
-  syntax clear cDefine
-  syntax region cDefine start="^\s*\(%:\|#\)\s*\(define\|undef\)\>" skip="\\$" end="$" keepend contains=ALLBUT,@cPreProcGroup,@Spell fold
-endif
-" }}}
-
-"------------------------------------------------------------------------------
-" Keyword: {{{
-syntax keyword cType BOOL BYTE WORD DWORD
-syntax keyword cType CHAR SHORT LONG UCHAR USHORT ULONG
-syntax keyword cBoolean TRUE FALSE
-
-syntax keyword cType u8 u16 u32 u64 s8 s16 s32 s64
-syntax keyword cStorageClass sconst
-
-highlight def link cBoolean Boolean
-" }}}
+let b:undo_ftplugin .= '
+\ setlocal foldmethod<'
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

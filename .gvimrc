@@ -3,7 +3,7 @@ scriptencoding utf-8
 " GVim settings
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  29-Jun-2016.
+" Last Change:  31-Oct-2017.
 " License:      MIT License {{{
 "     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -29,7 +29,7 @@ scriptencoding utf-8
 
 "==============================================================================
 " Pre Init: {{{
-" Skip vim-tiny, vim-small, below vim-7.3
+" Skip vim-tiny, vim-small, below vim-7.4
 if v:version < 704 | finish | endif
 
 " GVimrc autocmd group

@@ -1,7 +1,7 @@
 -- NYAGOS settings
 --
 -- Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
--- Last Change:  15-Nov-2016.
+-- Last Change:  01-Sep-2017.
 -- License:      MIT License {{{
 --     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 --
@@ -163,6 +163,7 @@ if nyagos.which('peco') then
   use 'peco'
 end
 
+share.ignoreeof = 1
 use 'ignoreeof'
 use 'vcvars'
 -- }}}
@@ -175,45 +176,49 @@ nyagos.prompt = function(template)
   local home = nyagos.getenv('HOME') or nyagos.getenv('USERPROFILE')
   local pat  = '^' .. home:gsub('[().%%+-*?%[%]^$]', '%%%0')
   local cwd  = nyagos.netdrivetounc(nyagos.getwd()):gsub(pat, '~')
-  local _, err = nyagos.raweval('net', 'session')
-  local root = err and '$$' or '#'
+  local root = nyagos.elevated() and '#' or '$$'
   return nyagos.default_prompt(
     '$e[32;1m' .. user .. '@' .. host ..
     ' $e[33;1m' .. cwd .. '\n$e[m' .. root .. ' ')
 end
-share.ignoreeof = 1
 -- }}}
 
 -------------------------------------------------------------------------------
 -- Su: {{{
 if nyagos.getenv('ConEmuDir') then
-  share.org_sudo  = nyagos.alias.sudo
-  share.org_clone = share._clone
-  share._clone = function(action)
+  share._clone = function(elv, org)
     local arch = nyagos.getenv('PROGRAMFILES(X86)') and '64' or ''
     local cemu = nyagos.getenv('ConEmuDir') .. '\\ConEmu' .. arch .. '.exe'
+    local args = '-single -run {NYAGOS}' .. (elv and ' -cur_console:a' or '')
     local cwd  = nyagos.netdrivetounc(nyagos.getwd())
-    local elv  = string.match(action, 'runas') and '-cur_console:a' or ''
-    local args = '-single -run {NYAGOS} ' .. elv
-    local status, err = nyagos.shellexecute('open', cemu, args)
-    if not status and string.match(err, '^Error%(5%)') then
-      status, err = share.org_clone(action)
+    local status, err = nyagos.shellexecute('open', cemu, args, cwd)
+    if status then
+      return status, err
+    end
+    if string.match(err,"^Error%(5%)") or string.match(err,"winapi error") then
+      status, err = nyagos.exec(org)
     end
     return status, err
   end
   alias {
-    sudo = function(args)
+    clone = function()
+      assert(share._clone(false, '__clone__'))
+    end,
+    su = function(args)
       if #args <= 0 then
-        assert(share._clone('runas'))
+        assert(share._clone(true, '__su__'))
         return
       end
       local arch = nyagos.getenv('PROGRAMFILES(X86)') and '64' or ''
       local cemu = nyagos.getenv('ConEmuDir') .. '\\ConEmu' .. arch .. '.exe'
+      local args = '-single -cmd "' .. table.concat(args.rawargs, ' ') .. '" -cur_console:a'
       local cwd  = nyagos.netdrivetounc(nyagos.getwd())
-      local args = '-single -cmd "' .. table.concat(args, ' ') .. '" -cur_console:a'
-      local status, err = nyagos.shellexecute('open', cemu, args)
-      if not status and string.match(err, '^Error%(5%)') then
-        share.org_sudo()
+      local status, err = nyagos.shellexecute('open', cemu, args, cwd)
+      if status then
+        return
+      end
+      if string.match(err,"^Error%(5%)") or string.match(err,"winapi error") then
+        status, err = nyagos.exec('__su__ ' .. table.concat(args.rawargs, ' '))
       end
     end,
   }
@@ -257,6 +262,7 @@ alias {
 alias {
   q     = '__exit__',
   clear = '__cls__',
+  sudo  = 'su',
 }
 if nyagos.getenv('EDITOR') then
   alias { e = '%EDITOR%' }
@@ -322,6 +328,11 @@ end
 suffix.htm  = 'open'
 suffix.html = 'open'
 suffix.msi  = 'open'
+suffix.js   = 'cscript //nologo'
+suffix.vbs  = 'cscript //nologo'
+suffix.wsf  = 'cscript //nologo'
+suffix.ps1  = 'powershell -ExecutionPolicy RemoteSigned -file'
+suffix.lua  = 'nyagos.exe -f'
 if nyagos.which('sh') then
   suffix.sh = 'sh'
 end
@@ -330,6 +341,18 @@ if nyagos.which('bash') then
 end
 if nyagos.which('zsh') then
   suffix.zsh = 'zsh'
+end
+if nyagos.which('gawk') then
+  suffix.awk = 'gawk -f'
+end
+if nyagos.which('perl') then
+  suffix.pl = 'perl'
+end
+if nyagos.which('ruby') then
+  suffix.rb = 'ruby'
+end
+if nyagos.which('python') then
+  suffix.py = 'python'
 end
 -- }}}
 

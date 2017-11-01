@@ -1,7 +1,7 @@
 # Edit plugins
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  21-Oct-2016.
+# Last Change:  01-Nov-2017.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -40,7 +40,7 @@ on_map = [['n', '<Plug>'], ['n', '<Plug>(anzu-jump-n)<Plug>(anzu', '<Plug>(anzu-
 
 #------------------------------------------------------------------------------
 [[plugins]]
-repo = 'autodate.vim'
+repo = 'vim-scripts/autodate.vim'
 on_cmd = ['Autodate', 'AutodateOFF', 'AutodateON']
 on_if = 'empty(&buftype)'
 
@@ -53,6 +53,7 @@ repo = 'vim-jp/autofmt'
 repo = 'tyru/caw.vim'
 on_map = [['nox', '<Plug>'], ['nox', '<Plug>(operator-caw']]
 depends = 'operator-user'
+on_if = 'empty(&buftype)'
 
 #------------------------------------------------------------------------------
 [[plugins]]
@@ -96,6 +97,7 @@ depends = 'operator-user'
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'haya14busa/incsearch.vim'
+if = '!has("patch-8.0.1238")'
 on_cmd = ['IncSearchNoreMap', 'IncSearchMap']
 on_map = [['nov', '<Plug>']]
 
@@ -140,7 +142,7 @@ depends = ['operator-user', 'submode']
 #------------------------------------------------------------------------------
 [[plugins]]
 repo = 'mbbill/undotree'
-on_cmd = ['UndotreeToggle', 'UndotreeHidew', 'UndotreeShow', 'UndotreeFocus']
+on_cmd = ['UndotreeToggle', 'UndotreeHide', 'UndotreeShow', 'UndotreeFocus']
 on_func = 'UndotreeToggle'
 
 #------------------------------------------------------------------------------

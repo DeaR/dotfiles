@@ -1,7 +1,7 @@
 # Nodoka settings
 #
 # Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-# Last Change:  31-Oct-2016.
+# Last Change:  28-May-2017.
 # License:      MIT License {{{
 #     Copyright (c) 2013 DeaR <nayuri@kuonn.mydns.jp>
 #
@@ -46,8 +46,9 @@ endif
 if(!HHKB)
   include "104.nodoka"
 
-  mod Ctrl += Caps
-  key *Caps = *LCtrl
+  keymap Global
+   mod Ctrl += Caps
+   key *Caps = *LCtrl
 endif
 # }}}
 
@@ -111,7 +112,7 @@ keymap Global
  mod Alt = LAlt !!RAlt
  key *RAlt = $ToggleIME
 
-keymap RAltIme = &Default
+keymap KeymapDefault
  mod Alt = LAlt !!RAlt
  key *RAlt = $ToggleIME
 
@@ -178,6 +179,7 @@ if(USEdefault)
   window MicrosoftExcel /EXCEL\.EXE:XLMAIN:/ : EmacsEdit
   window PowerPoint /POWERPNT\.EXE:.*:(paneClassDC|REComboBox20W|RichEdit20W)$/ : EmacsEdit
   window PowerPoint2 /POWERPNT\.EXE:PP9FrameClass.*/ : EmacsEdit
+  window Visio /VISIO\.EXE/ : EmacsEdit
 endif
 # }}}
 
@@ -211,8 +213,8 @@ endif
 
 #------------------------------------------------------------------------------
 # Vim: {{{
-window Vim /vim\.exe/ : RAltIme
-window GVim /gvim\.exe/ : RAltIme
+window Vim /vim\.exe/ : KeymapDefault
+window GVim /gvim\.exe/ : KeymapDefault
 # }}}
 
 #------------------------------------------------------------------------------
@@ -261,35 +263,33 @@ endif
 
 #------------------------------------------------------------------------------
 # Drift City: {{{
-window DriftCity /driftcity\.exe/ : RAltIme
+window DriftCity /driftcity\.exe/ : KeymapDefault
 # }}}
 
 #------------------------------------------------------------------------------
 # Fantasy Earth Zero: {{{
-window FantasyEarthZero /FEzero_Client\.exe/ : RAltIme
+window FantasyEarthZero /FEzero_Client\.exe/ : KeymapDefault
 # }}}
 
 #------------------------------------------------------------------------------
 # Ragnarok Online: {{{
-window RagnarokOnline /ragexe\.exe/ : RAltIme
+window RagnarokOnline /ragexe\.exe/ : KeymapDefault
  key A-X = ESC
 # }}}
 
 #------------------------------------------------------------------------------
 # TalesWeaver: {{{
-window TalesWeaver /InphaseNXD\.exe/ : RAltIme
+window TalesWeaver /InphaseNXD\.exe/ : KeymapDefault
 # }}}
 
 #------------------------------------------------------------------------------
 # TERA: {{{
-window TERA /TERA_Invoker\.exe/ : RAltIme
+window TERA /TERA_Invoker\.exe/ : KeymapDefault
 # }}}
 
 #------------------------------------------------------------------------------
 # Tree of Savior: {{{
-window TreeOfSavior /client_tos\.exe/ : RAltIme
- mod Ctrl += Caps
- key *Caps = *LCtrl
+window TreeOfSavior /client_tos\.exe/ : KeymapDefault
 # }}}
 
 #------------------------------------------------------------------------------
